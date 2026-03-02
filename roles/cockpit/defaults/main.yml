@@ -8,6 +8,6 @@ cockpit_org: Home
 cockpit_cn: nuc-server
 
 cockpit_san:
-  - DNS:nuc-server
-  - IP:{{ server_lan_ip }}
-  - IP:127.0.0.1
+  - "DNS:nuc-server"
+  - "IP:{{ server_lan_ip }}"
+  - "IP:127.0.0.1"

@@ -1,6 +1,3 @@
-- также потом пройтись по ролям и инструкциям в тгканале
-- j2 плагины для vim
-
 установка
 ```
 sudo apt update
@@ -15,6 +12,16 @@ ansible --version
 ```
 IkBenGeenRobot.ansible-variable-lookup
 ```
+# содержание
+[1. создание конфигов ансибла](#создаём-конфиги-ансибла)  
+[2. создаём хранилище секретов](#vault)  
+[3. устанавливаем коллекции ансибла для openssl](#openssl)  
+[4. создаём роли](#роли)  
+[5. размещаем конфиги сервера в репозитории](#размещаем-конфиги-сервера-в-репозитории)  
+[6. редактируем конфиги которые закинули в репозиторий](#редактируем-конфиги-которые-закинули-в-templates)  
+[7. тестирование всего плейбука](#тестирование-всего-плейбука)  
+[8. создаём юнит-тесты](#юнит-тесты)  
+[9. запуск плейбука](#запуск-плейбука)  
 
 # создаём конфиги ансибла
 ### корневая папка репозитория
@@ -185,14 +192,14 @@ ansible-galaxy collection install -r collections/requirements.yml
 
 - name: Deploy config
   template:
-    src: {{ wireguard_interface }}.conf.j2
-    dest: /etc/wireguard/{{ wireguard_interface }}.conf
+    src: "{{ wireguard_interface }}.conf.j2"
+    dest: "/etc/wireguard/{{ wireguard_interface }}.conf"
     mode: '0600'
   notify: restart wg
 
 - name: Enable service
   systemd:
-    name: wg-quick@{{ wireguard_interface }}
+    name: "wg-quick@{{ wireguard_interface }}"
     enabled: yes
     state: started
 ```
@@ -590,8 +597,8 @@ cockpit_san:
   become: yes
   become_user: "{{ user }}"
   file:
-    src: /home/{{ user }}/{{ zsh_repo_dir }}/.zshrc
-    dest: /home/{{ user }}/.zshrc
+    src: "/home/{{ user }}/{{ zsh_repo_dir }}/.zshrc"
+    dest: "/home/{{ user }}/.zshrc"
     state: link
 ```
 `roles/zsh/defaults/main.yml`
@@ -672,10 +679,10 @@ ssh_hosts:
     identity: github
 
   - name: redmi
-    hostname: {{ phone_ip }}
-    port: {{ termux_port }}
-    user: {{ termux_user }}
-    identity: {{ termux_key }}
+    hostname: "{{ phone_ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux_user }}"
+    identity: "{{ termux_key }}"
 ```
 заменяем содержимое шаблонизированным циклом  
 `roles/ssh_client/templates/config.j2`
@@ -781,7 +788,7 @@ firewall_tcp_ports:
   - 443
 
 firewall_udp_ports:
-  - {{ wireguard_port }}
+  - "{{ wireguard_port }}"
 
 firewall_wan_interface: wlp2s0
 ```
@@ -839,8 +846,8 @@ table inet filter {
 `roles/fail2ban/defaults/main.yml`
 ```
 fail2ban_ignoreip:
-  - {{ home_ip }}
-  - {{ server_lan_ip }}
+  - "{{ home_ip }}"
+  - "{{ server_lan_ip }}"
 
 fail2ban_bantime: 1h
 fail2ban_bantime_increment: true
@@ -1093,9 +1100,29 @@ android_mount_point: /srv/android
 ```
 ansible-playbook playbook.yml --ask-vault-pass
 ```
+проверка синтаксиса
+```
+ansible-playbook playbook.yml --syntax-check
+```
 проверка на ошибки
 ```
 ansible-playbook playbook.yml --check
+```
+если в ямлах есть ошибки - пароль не будет принят  
+тогда для дебага можно запускать проверки сразу с запросом пароля
+```
+ansible-playbook playbook.yml --ask-vault-pass --syntax-check
+ansible-playbook playbook.yml --ask-vault-pass --check
+```
+если пишет про ошибку без конкретики
+```
+PLAY [server] ********************************************************************************************************************************************************
+[ERROR]: YAML parsing failed: This may be an issue with missing quotes around a template block.
+```
+то запускаем с добавлением verbose режима
+```
+ansible-playbook playbook.yml --ask-vault-pass --syntax-check -vvv
+ansible-playbook playbook.yml --ask-vault-pass --check -vvv
 ```
 убедиться что ssh открыт до применеия роли [firewall](#role-firewall), иначе можно заблокировать себя. запускать команду с открытой ssh-сессией
 ```

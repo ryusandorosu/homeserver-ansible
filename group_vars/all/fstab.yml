@@ -1,5 +1,5 @@
 nfs_mounts:
-  - path: {{ diskstation_mount_point }}/pub
-    src: {{ diskstation_lan_ip }}:/volume1/PUB
-  - path: {{ diskstation_mount_point }}/web
-    src: {{ diskstation_lan_ip }}:/volume1/web
+  - path: "{{ diskstation_mount_point }}/pub"
+    src: "{{ diskstation_lan_ip }}:/volume1/PUB"
+  - path: "{{ diskstation_mount_point }}/web"
+    src: "{{ diskstation_lan_ip }}:/volume1/web"
