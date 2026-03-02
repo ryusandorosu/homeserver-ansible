@@ -30,13 +30,13 @@
   become: yes
   become_user: "{{ user }}"
   git:
-    repo: {{ zsh_repo_url }}
-    dest: /home/{{ user }}/{{ zsh_repo_dir }}
+    repo: "{{ zsh_repo_url }}"
+    dest: "/home/{{ user }}/{{ zsh_repo_dir }}"
 
 - name: Symlink .zshrc
   become: yes
   become_user: "{{ user }}"
   file:
-    src: /home/{{ user }}/{{ zsh_repo_dir }}/.zshrc
-    dest: /home/{{ user }}/.zshrc
+    src: "/home/{{ user }}/{{ zsh_repo_dir }}/.zshrc"
+    dest: "/home/{{ user }}/.zshrc"
     state: link

@@ -1,6 +1,6 @@
 fail2ban_ignoreip:
-  - {{ home_ip }}
-  - {{ server_lan_ip }}
+  - "{{ home_ip }}"
+  - "{{ server_lan_ip }}"
 
 fail2ban_bantime: 1h
 fail2ban_bantime_increment: true

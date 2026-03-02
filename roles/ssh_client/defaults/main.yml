@@ -5,7 +5,7 @@ ssh_hosts:
     identity: github
 
   - name: redmi
-    hostname: {{ phone_ip }}
-    port: {{ termux_port }}
-    user: {{ termux_user }}
-    identity: {{ termux_key }}
+    hostname: "{{ phone_ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux_user }}"
+    identity: "{{ termux_key }}"

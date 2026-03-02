@@ -504,7 +504,7 @@ roles/notifications/
     mode: '0600'
 
 - name: Generate self-signed certificate
-  community.crypto.openssl_certificate:
+  community.crypto.x509_certificate:
     path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.cert"
     privatekey_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
     provider: selfsigned
