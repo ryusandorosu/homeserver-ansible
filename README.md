@@ -389,10 +389,10 @@ nfs_mounts: []
 `group_vars/all/fstab.yml`
 ```
 nfs_mounts:
-  - path: {{ diskstation_mount_point }}/pub
-    src: {{ diskstation_lan_ip }}:/volume1/PUB
-  - path: {{ diskstation_mount_point }}/web
-    src: {{ diskstation_lan_ip }}:/volume1/web
+  - path: "{{ diskstation_mount_point }}/pub"
+    src: "{{ diskstation_lan_ip }}:/volume1/PUB"
+  - path: "{{ diskstation_mount_point }}/web"
+    src: "{{ diskstation_lan_ip }}:/volume1/web"
 ```
 ## role: mount_android
 `roles/mount_android/tasks/main.yml`
@@ -543,9 +543,9 @@ cockpit_org: Home
 cockpit_cn: nuc-server
 
 cockpit_san:
-  - DNS:nuc-server
-  - IP:{{ server_lan_ip }}
-  - IP:127.0.0.1
+  - "DNS:nuc-server"
+  - "IP:{{ server_lan_ip }}"
+  - "IP:127.0.0.1"
 ```
 `roles/cockpit/handlers/main.yml`
 ```
@@ -919,9 +919,9 @@ samba_shares: []
 ```
 samba_shares:
   - name: NUC
-    path: {{ shared_dir }}
+    path: "{{ shared_dir }}"
   - name: REDMI
-    path: {{ android_mount_point }}
+    path: "{{ android_mount_point }}"
 ```
 `roles/samba/templates/smb.conf.j2`  
 в разделе `[global]` подставляем шаблоны
