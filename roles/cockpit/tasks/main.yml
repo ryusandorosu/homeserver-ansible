@@ -1,0 +1,39 @@
+- name: Install Cockpit
+  apt:
+    name: cockpit
+    state: present
+    update_cache: yes
+
+- name: Ensure cert directory exists
+  file:
+    path: "{{ cockpit_cert_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Generate private CA key
+  community.crypto.openssl_privatekey:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
+    size: 4096
+    type: RSA
+    mode: '0600'
+
+- name: Generate self-signed certificate
+  community.crypto.openssl_certificate:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.cert"
+    privatekey_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
+    provider: selfsigned
+    subject:
+      countryName: "{{ cockpit_country }}"
+      stateOrProvinceName: "{{ cockpit_state }}"
+      localityName: "{{ cockpit_locality }}"
+      organizationName: "{{ cockpit_org }}"
+      commonName: "{{ cockpit_cn }}"
+    subject_alt_name: "{{ cockpit_san }}"
+    not_after: "+365d"
+  notify: restart cockpit
+
+- name: Enable cockpit
+  systemd:
+    name: cockpit
+    enabled: yes
+    state: started

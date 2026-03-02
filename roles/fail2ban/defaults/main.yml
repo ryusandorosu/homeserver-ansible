@@ -1,0 +1,25 @@
+fail2ban_ignoreip:
+  - {{ home_ip }}
+  - {{ server_lan_ip }}
+
+fail2ban_bantime: 1h
+fail2ban_bantime_increment: true
+fail2ban_bantime_factor: 2
+fail2ban_bantime_max: 1week
+fail2ban_findtime: 10m
+fail2ban_maxretry: 3
+fail2ban_backend: systemd
+fail2ban_action: telegram
+
+fail2ban_jails:
+  - name: sshd
+    enabled: true
+    port: 22
+
+  - name: recidive
+    enabled: true
+    logpath: /var/log/fail2ban.log
+    backend: auto
+    bantime: 1month
+    findtime: 1d
+    maxretry: 2

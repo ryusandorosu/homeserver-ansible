@@ -1,0 +1,48 @@
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority 0;
+        policy drop;
+
+        ct state established,related accept
+        iif lo accept
+
+{% for port in firewall_tcp_ports %}
+{% if port == 22 %}
+    tcp dport 22 ct state new limit rate 10/minute burst 20 packets accept
+{% else %}
+    tcp dport {{ port }} accept
+{% endif %}
+{% endfor %}
+
+{% for port in firewall_udp_ports %}
+        udp dport {{ port }} accept
+{% endfor %}
+
+        iif "{{ wireguard_interface }}" accept
+
+        limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
+    }
+
+    chain forward {
+        type filter hook forward priority 0;
+        policy drop;
+
+        ct state established,related accept
+        iif "{{ wireguard_interface }}" oif "{{ firewall_wan_interface }}" accept
+        iif "{{ wireguard_interface }}" oif "{{ wireguard_interface }}" accept
+    }
+
+    chain output {
+        type filter hook output priority 0;
+        policy accept;
+    }
+}
+
+table ip nat {
+    chain postrouting {
+        type nat hook postrouting priority 100;
+        oifname "{{ firewall_wan_interface }}" ip saddr {{ wireguard_network }} masquerade
+    }
+}

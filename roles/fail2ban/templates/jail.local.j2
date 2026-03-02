@@ -1,0 +1,20 @@
+[DEFAULT]
+ignoreip = {{ fail2ban_ignoreip | join(' ') }}
+bantime = {{ fail2ban_bantime }}
+bantime.increment = {{ fail2ban_bantime_increment | lower }}
+bantime.factor = {{ fail2ban_bantime_factor }}
+bantime.max = {{ fail2ban_bantime_max }}
+findtime = {{ fail2ban_findtime }}
+maxretry = {{ fail2ban_maxretry }}
+backend = {{ fail2ban_backend }}
+action = {{ fail2ban_action }}
+
+{% for jail in fail2ban_jails %}
+[{{ jail.name }}]
+enabled = {{ jail.enabled | lower }}
+
+{% for key, value in jail.items() if key not in ['name', 'enabled'] %}
+{{ key }} = {{ value }}
+{% endfor %}
+
+{% endfor %}

@@ -1,0 +1,12 @@
+- name: Install msmtp
+  apt:
+    name: msmtp
+    state: present
+
+- name: Deploy msmtp config
+  template:
+    src: msmtprc.j2
+    dest: /etc/msmtprc
+    owner: root
+    group: msmtp
+    mode: '0640'

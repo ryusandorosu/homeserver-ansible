@@ -1,0 +1,34 @@
+#!/bin/bash
+
+declare -A WAS_ZERO
+
+while true; do
+    while read -r PUBKEY EPOCH; do
+
+        # если peer ещё никогда не подключался
+        if [[ "$EPOCH" == "0" ]]; then
+            WAS_ZERO[$PUBKEY]=1
+            continue
+        fi
+
+        # если раньше было 0 и теперь стало > 0
+        if [[ "${WAS_ZERO[$PUBKEY]}" == "1" ]]; then
+
+            ENDPOINT=$(wg show {{ wireguard_interface }} endpoints | grep "$PUBKEY" | awk '{print $2}')
+            ALLOWED=$(wg show {{ wireguard_interface }} allowed-ips | grep "$PUBKEY" | awk '{print $2}')
+            IP=$(echo "$ENDPOINT" | cut -d: -f1)
+            AS_IP=$(echo "$ALLOWED" | cut -d: -f1)
+
+MESSAGE="🔐 VPN connection success
+From: $IP
+<pre>$(curl -s http://ip-api.com/json/${IP} | jq)</pre>
+As: $AS_IP"
+/usr/local/bin/tgbot_notify.sh "$MESSAGE"
+
+            WAS_ZERO[$PUBKEY]=0
+        fi
+
+    done < <(wg show {{ wireguard_interface }} latest-handshakes)
+
+    sleep 10
+done

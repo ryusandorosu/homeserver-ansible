@@ -1,0 +1,4 @@
+- name: restart cockpit
+  systemd:
+    name: cockpit
+    state: restarted

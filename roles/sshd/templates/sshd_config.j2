@@ -1,0 +1,19 @@
+Port {{ sshd_port }}
+
+Protocol 2
+
+PermitRootLogin {{ sshd_permit_root_login }}
+PasswordAuthentication {{ sshd_password_authentication }}
+PubkeyAuthentication {{ sshd_pubkey_authentication }}
+
+ChallengeResponseAuthentication no
+UsePAM yes
+
+X11Forwarding no
+PrintMotd no
+
+{% if sshd_allow_users | length > 0 %}
+AllowUsers {% for user in sshd_allow_users %}{{ user }} {% endfor %}
+{% endif %}
+
+Subsystem sftp /usr/lib/openssh/sftp-server

@@ -1,0 +1,31 @@
+# WireGuard core
+wireguard_interface: wg0
+wireguard_network: 10.10.0.0/24
+wireguard_port: 51820
+wireguard_server_ip: 10.10.0.1
+
+# Devices
+laptop_ip: 10.10.0.2
+phone_ip: 10.10.0.3
+pad_ip: 10.10.0.4
+
+wireguard_peers:
+  - name: laptop
+    public_key: "pjZYrTpbiOeQM0oeIDonvowhswh/cFIlAhPwFRvVpik="
+    ip: "{{ laptop_ip }}"
+  - name: phone
+    public_key: "KI9NnUCB2uKZOZTYvfa/D7nXRMRjKAWSZlGKqDjB61U="
+    ip: "{{ phone_ip }}"
+  - name: pad
+    public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
+    ip: "{{ pad_ip }}"
+
+# Home Network
+home_ip: 87.117.169.26
+server_lan_ip: 192.168.0.107
+diskstation_lan_ip: 192.168.0.111
+
+# Termux
+termux_port: 8022
+termux_user: u0_a497
+termux_key: android_termux

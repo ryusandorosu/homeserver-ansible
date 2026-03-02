@@ -1,0 +1,8 @@
+- name: validate ssh
+  command: sshd -t
+  changed_when: false
+
+- name: restart ssh
+  service:
+    name: ssh
+    state: restarted

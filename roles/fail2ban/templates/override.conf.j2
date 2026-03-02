@@ -1,0 +1,6 @@
+[Service]
+ExecStartPost=
+ExecStartPost=/bin/bash -c '/usr/local/bin/tgbot_notify.sh "🟢 fail2ban service started"'
+
+ExecStopPost=
+ExecStopPost=/bin/bash -c '/usr/local/bin/tgbot_notify.sh "🔴 fail2ban service stopped"'

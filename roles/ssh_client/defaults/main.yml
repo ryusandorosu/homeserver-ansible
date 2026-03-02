@@ -1,0 +1,11 @@
+ssh_hosts:
+  - name: github
+    hostname: github.com
+    user: git
+    identity: github
+
+  - name: redmi
+    hostname: {{ phone_ip }}
+    port: {{ termux_port }}
+    user: {{ termux_user }}
+    identity: {{ termux_key }}

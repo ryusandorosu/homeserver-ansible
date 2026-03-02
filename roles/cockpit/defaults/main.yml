@@ -1,0 +1,13 @@
+cockpit_cert_dir: /etc/cockpit/ws-certs.d
+cockpit_cert_name: 10-nuc
+
+cockpit_country: RU
+cockpit_state: Tatarstan
+cockpit_locality: Kazan
+cockpit_org: Home
+cockpit_cn: nuc-server
+
+cockpit_san:
+  - DNS:nuc-server
+  - IP:{{ server_lan_ip }}
+  - IP:127.0.0.1

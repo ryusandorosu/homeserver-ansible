@@ -1,0 +1,3 @@
+shared_dir: /srv/share
+diskstation_mount_point: /mnt/ds209
+android_mount_point: /srv/android

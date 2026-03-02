@@ -1,0 +1,42 @@
+- name: Install zsh
+  apt:
+    name: zsh
+    state: present
+
+- name: Clone oh-my-zsh
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: /home/{{ user }}/.oh-my-zsh
+    version: master
+    update: no
+
+- name: Clone syntax highlighting
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: /home/{{ user }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+- name: Clone autosuggestions
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: /home/{{ user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+- name: Clone personal config
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: {{ zsh_repo_url }}
+    dest: /home/{{ user }}/{{ zsh_repo_dir }}
+
+- name: Symlink .zshrc
+  become: yes
+  become_user: "{{ user }}"
+  file:
+    src: /home/{{ user }}/{{ zsh_repo_dir }}/.zshrc
+    dest: /home/{{ user }}/.zshrc
+    state: link

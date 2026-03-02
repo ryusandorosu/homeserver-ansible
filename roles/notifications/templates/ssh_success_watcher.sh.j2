@@ -1,0 +1,12 @@
+#!/bin/bash
+
+journalctl -fu ssh.service -fu sshd.service | while read line; do
+    if echo "$line" | grep -q "Accepted "; then
+	ip=$(echo "$line" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)')
+	MESSAGE="🔐 SSH LOGIN SUCCESS\njournalctl: <pre>$(echo ${line})</pre>"
+	if [[ "$ip" != "{{ home_ip }}" ]]; then
+	MESSAGE+="geoip: <pre>$(curl -s http://ip-api.com/json/${ip} | jq)</pre>"
+	fi
+        /usr/local/bin/tgbot_notify.sh "$MESSAGE"
+    fi
+done

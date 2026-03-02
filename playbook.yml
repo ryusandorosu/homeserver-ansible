@@ -1,0 +1,27 @@
+- hosts: server
+  become: yes
+
+  pre_tasks:
+    - name: Check OS family
+      assert:
+        that: ansible_os_family == "Debian"
+        fail_msg: "This playbook supports only Debian-based systems"
+
+  vars_files:
+    - group_vars/all/vault.yml
+
+  roles:
+    - { role: base, tags: base }
+    - { role: sysctl, tags: sysctl }
+    - { role: sshd, tags: sshd }
+    - { role: ssh_client, tags: ssh_client }
+    - { role: wireguard, tags: wireguard }
+    - { role: firewall, tags: firewall }
+    - { role: fail2ban, tags: fail2ban }
+    - { role: samba, tags: samba }
+    - { role: mount_diskstation, tags: diskstation }
+    - { role: mount_android, tags: android }
+    - { role: mail_sender, tags: mail }
+    - { role: notifications, tags: notifications }
+    - { role: cockpit, tags: cockpit }
+    - { role: zsh, tags: zsh }

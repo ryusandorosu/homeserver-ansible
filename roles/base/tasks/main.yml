@@ -1,0 +1,12 @@
+- name: Install base packages
+  apt:
+    name:
+      - git
+      - curl
+      - jq
+      - tcpdump
+      - rsync
+      - ca-certificates
+      - unattended-upgrades
+    state: present
+    update_cache: yes

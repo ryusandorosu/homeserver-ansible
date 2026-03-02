@@ -1,0 +1,5 @@
+samba_shares:
+  - name: NUC
+    path: {{ shared_dir }}
+  - name: REDMI
+    path: {{ android_mount_point }}

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+MESSAGE=$(printf "$1")
+
+MAX_RETRIES=15
+RETRY_DELAY=2
+
+for ((i=1; i<=MAX_RETRIES; i++)); do
+    response=$(
+	curl -s -o /dev/null -w "%{http_code}" \
+        -X POST "https://api.telegram.org/bot{{ telegram_bot_token }}/sendMessage" \
+        -d chat_id="{{ telegram_chat_id }}" \
+        -d text="${MESSAGE}" \
+	-d parse_mode="HTML"
+    )
+
+    if [ "$response" = "200" ]; then
+        exit 0
+    fi
+
+    sleep $RETRY_DELAY
+done
+
+exit 1

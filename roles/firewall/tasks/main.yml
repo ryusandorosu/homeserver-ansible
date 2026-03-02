@@ -1,0 +1,52 @@
+- name: Ensure required network vars defined
+  assert:
+    that:
+      - wireguard_interface is defined
+      - wireguard_network is defined
+      - wireguard_port is defined
+    fail_msg: "Required WireGuard variables are not defined"
+
+- name: Install nftables
+  apt:
+    name: nftables
+    state: present
+
+- name: Create systemd override directory
+  file:
+    path: /etc/systemd/system/nftables.service.d
+    state: directory
+    mode: '0755'
+
+- name: Check if wireguard service is enabled
+  systemd:
+    name: wg-quick@{{ wireguard_interface }}
+  register: wg_service
+  failed_when: false
+  changed_when: false
+
+- name: Fail if wireguard service is not enabled
+  fail:
+    msg: "WireGuard service wg-quick@{{ wireguard_interface }} is not enabled"
+  when: not wg_service.status.enabled
+
+- name: Ensure wireguard starts before nftables
+  copy:
+    dest: /etc/systemd/system/nftables.service.d/override.conf
+    content: |
+      [Unit]
+      After=wg-quick@{{ wireguard_interface }}.service
+      Requires=wg-quick@{{ wireguard_interface }}.service
+  notify:
+    - daemon reload
+
+- name: Deploy nftables config
+  template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+  notify: reload nftables
+
+- name: Enable and start nftables
+  systemd:
+    name: nftables
+    enabled: yes
+    state: started

@@ -1,0 +1,10 @@
+{% for host in ssh_hosts %}
+Host {{ host.name }}
+    HostName {{ host.hostname }}
+    User {{ host.user }}
+    IdentityFile ~/.ssh/{{ host.identity }}
+{% if host.port is defined %}
+    Port {{ host.port }}
+{% endif %}
+
+{% endfor %}

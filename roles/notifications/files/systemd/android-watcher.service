@@ -1,0 +1,13 @@
+[Unit]
+Description=Android SSHFS Auto Watcher
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/android-connection-watcher.sh
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+

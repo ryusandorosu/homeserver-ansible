@@ -1,0 +1,13 @@
+- name: Ensure .ssh dir
+  file:
+    path: /home/{{ user }}/.ssh
+    state: directory
+    mode: '0700'
+    owner: "{{ user }}"
+
+- name: Deploy SSH config
+  template:
+    src: config.j2
+    dest: /home/{{ user }}/.ssh/config
+    mode: '0600'
+    owner: "{{ user }}"

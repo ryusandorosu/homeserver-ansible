@@ -1,0 +1,10 @@
+[Unit]
+Description=WireGuard Telegram Notifier
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/vpn_success_watcher.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
