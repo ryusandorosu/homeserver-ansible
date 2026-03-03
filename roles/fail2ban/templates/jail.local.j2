@@ -12,7 +12,6 @@ action = {{ fail2ban_action }}
 {% for jail in fail2ban_jails %}
 [{{ jail.name }}]
 enabled = {{ jail.enabled | lower }}
-
 {% for key, value in jail.items() if key not in ['name', 'enabled'] %}
 {{ key }} = {{ value }}
 {% endfor %}

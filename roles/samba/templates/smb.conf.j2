@@ -239,8 +239,9 @@
 {% for share in samba_shares %}
 [{{ share.name }}]
    path = {{ share.path }}
-   browsable = yes
+   browseable = yes
    writable = yes
    guest ok = no
    read only = no
+
 {% endfor %}

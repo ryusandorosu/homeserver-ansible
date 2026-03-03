@@ -1,5 +1,5 @@
 ssh_hosts:
-  - name: github
+  - name: github.com
     hostname: github.com
     user: git
     identity: github
