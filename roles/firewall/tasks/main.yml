@@ -32,7 +32,7 @@
 - name: Fail if wireguard service is not enabled
   fail:
     msg: "WireGuard service wg-quick@{{ wireguard_interface }} is not enabled"
-  when: not wg_service.status.enabled
+  when: wg_service.status.UnitFileState != "enabled"
 
 - name: Ensure wireguard starts before nftables
   copy:
