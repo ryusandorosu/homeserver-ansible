@@ -9,7 +9,7 @@
 - name: Ensure ssh port allowed in firewall
   assert:
     that: sshd_port in firewall_tcp_ports
-  fail_msg: "SSH port is not listed in firewall settings"
+    fail_msg: "SSH port is not listed in firewall settings"
 
 - name: Install nftables
   apt:
