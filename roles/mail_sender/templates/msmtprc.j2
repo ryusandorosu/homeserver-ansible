@@ -8,8 +8,8 @@ syslog         on
 account {{ msmtp_account }}
 host {{ msmtp_host }}
 port {{ msmtp_port }}
-from {{ msmtp_user }}
-user {{ msmtp_user }}
-password {{ msmtp_password }}
+from {{ vault_msmtp_user }}
+user {{ vault_msmtp_user }}
+password {{ vault_msmtp_password }}
 
 account default : {{ msmtp_account }}

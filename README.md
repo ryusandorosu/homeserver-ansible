@@ -55,8 +55,7 @@ ansible-playbook playbook.yml -vv --diff
 ```
 если не задали в `ansible.cfg` записывание в лог и запускали без этих флагов, то мы не увидим что было изменено!
 ### playbook: разница между флагами verbose и diff
-`-v` показывает немного больше информации  
-?  
+`-v` показывает чуть больше информации, толку особо нет  
 `-vv` показывает
 - register variables
 - return values structure
@@ -101,11 +100,11 @@ ansible-playbook playbook.yml -K --ask-vault-pass
 если в `inventory` в группе хостов указано несколько и плейбук запускается без этого параметра - он будет деплоиться на все!  
 для запуска локально
 ```
-ansible-playbook -l server_local playbook.yml -K --ask-vault-pass
+ansible-playbook -l local playbook.yml -K --ask-vault-pass
 ```
 для запуска удалённо
 ```
-ansible-playbook -l server_remote playbook.yml -K --ask-vault-pass
+ansible-playbook -l remote playbook.yml -K --ask-vault-pass
 ```
 ###
 ? убедиться что ssh открыт до применеия роли [firewall](#role-firewall), иначе можно заблокировать себя. запускать команду с открытой ssh-сессией
@@ -124,17 +123,21 @@ ansible-playbook playbook.yml --limit test-host
 ansible-vault create group_vars/all/vault.yml
 ```
 заносим туда  
-(переименовать остальное тоже с приставкой `vault_`)
 ```
-telegram_bot_token: "СВОЙ_TOKEN"
-telegram_chat_id: "СВОЙ_CHAT_ID"
-msmtp_user: "ПОЧТОВЫЙ_ЯЩИК_GMAIL"
-msmtp_password: "ПАРОЛЬ_ПРИЛОЖЕНИЯ_GMAIL"
+vault_telegram_bot_token: "СВОЙ_TOKEN"
+vault_telegram_chat_id: "СВОЙ_CHAT_ID"
+vault_msmtp_user: "ПОЧТОВЫЙ_ЯЩИК_GMAIL"
+vault_msmtp_password: "ПАРОЛЬ_ПРИЛОЖЕНИЯ_GMAIL"
 vault_wireguard_private_key: "ПРИВАТНЫЙ_КЛЮЧ_СЕРВЕРА"
 ```
 если надо редактируем так
 ```
 ansible-vault edit group_vars/all/vault.yml
+```
+пароль от хранилища можно считывать из файла, указав к нему путь в `ansible.cfg`
+```
+[defaults]
+vault_password_file = path_to_password_file
 ```
 ## OpenSSL
 нужно для генерации сертификата в роли [cockpit](#role-cockpit)  
