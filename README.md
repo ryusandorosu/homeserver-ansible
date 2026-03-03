@@ -47,11 +47,36 @@ ansible-playbook playbook.yml --ask-vault-pass --check -vvv
 просто verbose пишет о произведённых изменениях в конфигах  
 да, без них ансибл просто пишет о статусе выполненной роли
 ```
-ansible-playbook playbook.yml -vvv
+ansible-playbook playbook.yml -v
 ansible-playbook playbook.yml -vv
+ansible-playbook playbook.yml -vvv
 ansible-playbook playbook.yml --diff
+ansible-playbook playbook.yml -vv --diff
 ```
 если не задали в `ansible.cfg` записывание в лог и запускали без этих флагов, то мы не увидим что было изменено!
+### playbook: разница между флагами verbose и diff
+`-v` показывает немного больше информации  
+?  
+`-vv` показывает
+- register variables
+- return values structure
+- больше деталей модуля
+
+`-vvv` показывает
+- ssh debug
+- точные команды
+- python interpreter
+- internal execution
+- по сути это дебаг-режим
+
+`--diff` показывает  
+старое содержимое → новое содержимое  
+работает для
+- template
+- copy
+- lineinfile
+- blockinfile
+
 ### playbook: sudo
 если просит пароль sudo
 ```
@@ -72,15 +97,17 @@ ansible-playbook playbook.yml --ask-vault-pass --ask-become-pass
 ```
 ansible-playbook playbook.yml -K --ask-vault-pass
 ```
-если в `inventory` указано несколько хостов - для запуска локально
+### playbook: host
+если в `inventory` в группе хостов указано несколько и плейбук запускается без этого параметра - он будет деплоиться на все!  
+для запуска локально
 ```
 ansible-playbook -l server_local playbook.yml -K --ask-vault-pass
 ```
-### playbook: host
-если в `inventory` указано несколько хостов - для запуска удалённо
+для запуска удалённо
 ```
 ansible-playbook -l server_remote playbook.yml -K --ask-vault-pass
 ```
+###
 ? убедиться что ssh открыт до применеия роли [firewall](#role-firewall), иначе можно заблокировать себя. запускать команду с открытой ssh-сессией
 ```
 ansible-playbook playbook.yml --limit test-host
@@ -89,7 +116,7 @@ ansible-playbook playbook.yml --limit test-host
 # создаём конфиги ансибла
 ### корневая папка репозитория
 `ansible.cfg` - задаём параметры выполнения плейбука  
-`inventory` - задаём перечень хостов/хоста с которых можно будет деплоить  
+`inventory` - задаём перечень хостов/хоста на которых будет выполняться плейбук  
 `playbook.yml` - задаём порядок выполнения ролей
 ## Vault
 создаём хранилище секретов

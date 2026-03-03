@@ -1,2 +1,9 @@
-[server]
+[local]
 localhost ansible_connection=local
+
+[remote]
+nuc-server ansible_host=192.168.0.107 ansible_user=ryusandorosu
+
+[server:children]
+local
+remote
