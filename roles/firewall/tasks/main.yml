@@ -6,6 +6,11 @@
       - wireguard_port is defined
     fail_msg: "Required WireGuard variables are not defined"
 
+- name: Ensure ssh port allowed in firewall
+  assert:
+    that: sshd_port in firewall_tcp_ports
+  fail_msg: "SSH port is not listed in firewall settings"
+
 - name: Install nftables
   apt:
     name: nftables
@@ -17,7 +22,7 @@
     state: directory
     mode: '0755'
 
-- name: Check if wireguard service is enabled
+- name: Get wireguard service status
   systemd:
     name: wg-quick@{{ wireguard_interface }}
   register: wg_service

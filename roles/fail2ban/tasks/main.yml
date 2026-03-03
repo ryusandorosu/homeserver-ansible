@@ -28,6 +28,7 @@
   file:
     path: /etc/systemd/system/fail2ban.service.d
     state: directory
+    mode: '0755'
 
 - name: Deploy override
   template:
