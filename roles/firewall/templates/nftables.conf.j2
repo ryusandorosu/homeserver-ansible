@@ -9,7 +9,7 @@ table inet filter {
         iif lo accept
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
-{% for port in firewall_tcp_ports %}
+{% for port in firewall_tcp_ports if not sshd_port %}
         tcp dport {{ port }} accept
 {% endfor %}
 
