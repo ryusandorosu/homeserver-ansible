@@ -8,10 +8,12 @@
 - name: Validate SSH config
   assert:
     that:
-      - item.hostname == item.name
+      - host_item.hostname == host_item.name
     fail_msg: "GitHub host is different from its hostname"
   loop: "{{ ssh_hosts }}"
-  when: item.hostname == "github.com"
+  loop_control:
+    loop_var: host_item
+  when: host_item.hostname == "github.com"
 
 - name: Deploy SSH config
   template:
