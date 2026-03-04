@@ -1,0 +1,16 @@
+- name: Install etckeeper
+  apt:
+    name: etckeeper
+    state: present
+    update_cache: yes
+
+- name: Initialize etckeeper
+  # become: yes
+  command: etckeeper init
+  args:
+    creates: /etc/.git
+
+- name: Initial commit
+  command: etckeeper commit "Initial commit"
+  args:
+    chdir: /etc

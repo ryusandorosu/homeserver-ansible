@@ -20,6 +20,7 @@
   vars:
     roles_list:
       - base
+      - etckeeper
       - sysctl
       - sshd
       - ssh_client
@@ -32,6 +33,7 @@
       - mail_sender
       - notifications
       - cockpit
+      - vim
       - zsh
 
   tasks:

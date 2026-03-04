@@ -34,6 +34,12 @@ ansible-playbook playbook.yml --ask-vault-pass
 ansible-playbook playbook.yml --ask-vault-pass --syntax-check
 ansible-playbook playbook.yml --ask-vault-pass --check
 ```
+пароль от хранилища можно считывать из файла, указав к нему путь в `ansible.cfg`  
+тогда флаг использовать не нужно
+```
+[defaults]
+vault_password_file = path_to_password_file
+```
 ### playbook: verbose
 если пишет про ошибку без конкретики
 ```
@@ -44,7 +50,6 @@ PLAY [server] ******************************************************************
 ```
 ansible-playbook playbook.yml --ask-vault-pass --check -vvv
 ```
-просто verbose пишет о произведённых изменениях в конфигах  
 да, без них ансибл просто пишет о статусе выполненной роли
 ```
 ansible-playbook playbook.yml -v
@@ -55,7 +60,7 @@ ansible-playbook playbook.yml -vv --diff
 ```
 если не задали в `ansible.cfg` записывание в лог и запускали без этих флагов, то мы не увидим что было изменено!
 ### playbook: разница между флагами verbose и diff
-`-v` показывает чуть больше информации, толку особо нет  
+`-v` показывает немного больше информации  
 `-vv` показывает
 - register variables
 - return values structure
@@ -96,6 +101,17 @@ ansible-playbook playbook.yml --ask-vault-pass --ask-become-pass
 ```
 ansible-playbook playbook.yml -K --ask-vault-pass
 ```
+или добавляем в `inventory` для хоста и НЕ используем флаг, но перед запуском плейбука выполняем команду `sudo -v`
+```
+ansible_become=true ansible_become_method=sudo
+```
+или добавляем в `ansible.cfg` блок и НЕ используем флаг
+```
+[privilege_escalation]
+become=True
+become_method=sudo
+become_ask_pass=True
+```
 ### playbook: host
 если в `inventory` в группе хостов указано несколько и плейбук запускается без этого параметра - он будет деплоиться на все!  
 для запуска локально
@@ -106,6 +122,19 @@ ansible-playbook -l local playbook.yml -K --ask-vault-pass
 ```
 ansible-playbook -l remote playbook.yml -K --ask-vault-pass
 ```
+### playbook: tags
+запустить тег что задаётся каждой роли в `playbook.yml`
+```
+ansible-playbook playbook.yml -l local -K --tag cockpit
+```
+пропустить тег что задаётся каждой роли в `playbook.yml`
+```
+ansible-playbook playbook.yml -l local -K --skip-tags cockpit --check
+```
+нужно например при запуске с флагом `--check`, так как например роль [cockpit](#role-cockpit) на нём будет валиться несмотря на то что отрабатывает при обычном запуске без ошибок.  
+в нём используются модули `community.crypto` которые плохо совместимы с check mode поскольку работают с реальными файлами и криптографией.  
+также с флагом `--check` не работает template validate  
+проверять [юнит-тестами](#юнит-тесты)
 ###
 ? убедиться что ssh открыт до применеия роли [firewall](#role-firewall), иначе можно заблокировать себя. запускать команду с открытой ssh-сессией
 ```
@@ -114,8 +143,9 @@ ansible-playbook playbook.yml --limit test-host
 #
 # создаём конфиги ансибла
 ### корневая папка репозитория
-`ansible.cfg` - задаём параметры выполнения плейбука  
-`inventory` - задаём перечень хостов/хоста на которых будет выполняться плейбук  
+`ansible.cfg` - задаём глобальные параметры выполнения плейбука  
+- `log_path` = куда записывать лог. если параметр не задан - вывод только в терминал
+`inventory` - задаём перечень хостов/хоста на которых будет выполняться плейбук и параметры для них  
 `playbook.yml` - задаём порядок выполнения ролей
 ## Vault
 создаём хранилище секретов
@@ -133,11 +163,6 @@ vault_wireguard_private_key: "ПРИВАТНЫЙ_КЛЮЧ_СЕРВЕРА"
 если надо редактируем так
 ```
 ansible-vault edit group_vars/all/vault.yml
-```
-пароль от хранилища можно считывать из файла, указав к нему путь в `ansible.cfg`
-```
-[defaults]
-vault_password_file = path_to_password_file
 ```
 ## OpenSSL
 нужно для генерации сертификата в роли [cockpit](#role-cockpit)  
