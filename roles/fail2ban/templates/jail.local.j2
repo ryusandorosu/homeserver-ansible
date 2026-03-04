@@ -7,7 +7,14 @@ bantime.max = {{ fail2ban_bantime_max }}
 findtime = {{ fail2ban_findtime }}
 maxretry = {{ fail2ban_maxretry }}
 backend = {{ fail2ban_backend }}
+{% if fail2ban_action is string %}
 action = {{ fail2ban_action }}
+{% else %}
+action =
+{% for act in fail2ban_action %}
+         {{ act }}
+{% endfor %}
+{% endif %}
 
 {% for jail in fail2ban_jails %}
 [{{ jail.name }}]

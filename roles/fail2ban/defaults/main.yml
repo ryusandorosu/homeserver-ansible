@@ -9,7 +9,9 @@ fail2ban_bantime_max: 1week
 fail2ban_findtime: 10m
 fail2ban_maxretry: 3
 fail2ban_backend: systemd
-fail2ban_action: telegram
+fail2ban_action:
+  - nftables-multiport
+  - telegram
 
 fail2ban_jails:
   - name: sshd
