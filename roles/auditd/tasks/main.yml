@@ -1,0 +1,20 @@
+- name: Install auditd
+  apt:
+    name: auditd
+    state: present
+    update_cache: yes
+
+- name: Deploy audit rules
+  template:
+    src: audit.rules.j2
+    dest: /etc/audit/rules.d/homeserver.rules
+    owner: root
+    group: root
+    mode: '0640'
+  notify: restart auditd
+
+- name: Enable auditd
+  service:
+    name: auditd
+    enabled: yes
+    state: started

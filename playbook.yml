@@ -21,6 +21,7 @@
     roles_list:
       - base
       - etckeeper
+      - auditd
       - sysctl
       - sshd
       - ssh_client

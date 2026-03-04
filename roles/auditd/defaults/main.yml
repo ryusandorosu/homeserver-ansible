@@ -1,0 +1,13 @@
+audit_ruleset: homeserver
+audit_paths:
+  - /etc/ssh/sshd_config
+  - /etc/systemd/system
+  - /etc/group
+  - /etc/shadow
+  - /etc/sudoers
+  - /etc/passwd
+  - /etc/nftables.conf
+  - /etc/wireguard/{{ wireguard_interface }}.conf
+  - /etc/fail2ban/jail.local
+  - /etc/msmtprc
+  - /home/{{ user }}/.ssh/authorized_keys

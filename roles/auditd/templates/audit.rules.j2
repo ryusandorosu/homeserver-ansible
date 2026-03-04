@@ -1,0 +1,3 @@
+{% for path in audit_paths %}
+-a always,exit -F path={{ path }} -F perm=wa -F auid>=1000 -F auid!=unset -k {{ audit_ruleset }}
+{% endfor %}
