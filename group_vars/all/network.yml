@@ -26,6 +26,7 @@ sshd_port: 22
 home_ip: 87.117.169.26
 server_lan_ip: 192.168.0.107
 diskstation_lan_ip: 192.168.0.111
+home_network: 192.168.0.0/24
 
 # Termux
 termux_port: 8022

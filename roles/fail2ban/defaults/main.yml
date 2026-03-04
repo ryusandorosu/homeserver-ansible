@@ -16,7 +16,7 @@ fail2ban_action:
 fail2ban_jails:
   - name: sshd
     enabled: true
-    port: 22
+    port: "{{ sshd_port }}"
 
   - name: recidive
     enabled: true

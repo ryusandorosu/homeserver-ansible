@@ -8,12 +8,9 @@ table inet filter {
         ct state established,related accept
         iif lo accept
 
+        tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
 {% for port in firewall_tcp_ports %}
-{% if port == 22 %}
-    tcp dport 22 ct state new limit rate 10/minute burst 20 packets accept
-{% else %}
-    tcp dport {{ port }} accept
-{% endif %}
+        tcp dport {{ port }} accept
 {% endfor %}
 
 {% for port in firewall_udp_ports %}
@@ -21,6 +18,7 @@ table inet filter {
 {% endfor %}
 
         iif "{{ wireguard_interface }}" accept
+        iif "{{ lan_interface }}" tcp dport { {{ lan_ports | join(' ') }} } accept
 
         limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
     }
@@ -30,7 +28,7 @@ table inet filter {
         policy drop;
 
         ct state established,related accept
-        iif "{{ wireguard_interface }}" oif "{{ firewall_wan_interface }}" accept
+        iif "{{ wireguard_interface }}" oif "{{ lan_interface }}" accept
         iif "{{ wireguard_interface }}" oif "{{ wireguard_interface }}" accept
     }
 
@@ -43,6 +41,6 @@ table inet filter {
 table ip nat {
     chain postrouting {
         type nat hook postrouting priority 100;
-        oifname "{{ firewall_wan_interface }}" ip saddr {{ wireguard_network }} masquerade
+        oifname "{{ lan_interface }}" ip saddr {{ wireguard_network }} masquerade
     }
 }

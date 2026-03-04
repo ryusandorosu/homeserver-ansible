@@ -1,9 +1,12 @@
 firewall_tcp_ports:
-  - 22
   - 80
   - 443
 
 firewall_udp_ports:
   - "{{ wireguard_port }}"
 
-firewall_wan_interface: wlp2s0
+lan_interface: wlp2s0
+lan_ports:
+  - 139
+  - 445
+  - 9090
