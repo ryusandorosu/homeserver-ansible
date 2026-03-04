@@ -9,16 +9,16 @@ table inet filter {
         iif lo accept
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
-{% for port in firewall_tcp_ports if not sshd_port %}
+{% for port in firewall_tcp_ports %}{% if port != sshd_port %}
         tcp dport {{ port }} accept
-{% endfor %}
+{% endif %}{% endfor %}
 
 {% for port in firewall_udp_ports %}
         udp dport {{ port }} accept
 {% endfor %}
 
         iif "{{ wireguard_interface }}" accept
-        iif "{{ lan_interface }}" tcp dport { {{ lan_ports | join(' ') }} } accept
+        iif "{{ lan_interface }}" tcp dport { {{ lan_ports | join(', ') }} } accept
 
         limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
     }
