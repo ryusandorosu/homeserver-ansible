@@ -7,6 +7,28 @@
         that: ansible_os_family == "Debian"
         fail_msg: "This playbook supports only Debian-based systems"
 
+    - name: Fail if unknown tag is used
+      tags: always
+      assert:
+        that: ansible_run_tags | difference(valid_tags) | length == 0
+        fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags) }}"
+      vars:
+        valid_tags:
+          - base
+          - sysctl
+          - sshd
+          - ssh_client
+          - wireguard
+          - firewall
+          - fail2ban
+          - samba
+          - diskstation
+          - android
+          - mail
+          - notifications
+          - cockpit
+          - zsh
+
   vars_files:
     - group_vars/all/vault.yml
 
