@@ -5,6 +5,14 @@
     mode: '0700'
     owner: "{{ user }}"
 
+- name: Validate SSH config
+  assert:
+    that:
+      - item.hostname == item.name
+    fail_msg: "GitHub host is different from its hostname"
+  loop: "{{ ssh_hosts }}"
+  when: item.hostname == "github.com"
+
 - name: Deploy SSH config
   template:
     src: config.j2
