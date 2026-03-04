@@ -20,6 +20,8 @@ wireguard_peers:
     public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
     ip: "{{ pad_ip }}"
 
+sshd_port: 22
+
 # Home Network
 home_ip: 87.117.169.26
 server_lan_ip: 192.168.0.107
