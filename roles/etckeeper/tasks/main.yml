@@ -4,13 +4,17 @@
     state: present
     update_cache: yes
 
+- name: Check if etckeeper is initialized
+  stat:
+    path: /etc/.git
+  register: etckeeper_git
+
 - name: Initialize etckeeper
-  # become: yes
   command: etckeeper init
-  args:
-    creates: /etc/.git
+  when: not etckeeper_git.stat.exists
 
 - name: Initial commit
   command: etckeeper commit "Initial commit"
   args:
     chdir: /etc
+  when: not etckeeper_git.stat.exists
