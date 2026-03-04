@@ -6,44 +6,40 @@
       assert:
         that: ansible_os_family == "Debian"
         fail_msg: "This playbook supports only Debian-based systems"
-
     - name: Fail if unknown tag is used
       tags: always
       assert:
-        that: ansible_run_tags | difference(valid_tags) | length == 0
-        fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags) }}"
+        that: ansible_run_tags | difference(valid_tags + ['all']) | length == 0
+        fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags + ['all']) }}"
       vars:
-        valid_tags:
-          - base
-          - sysctl
-          - sshd
-          - ssh_client
-          - wireguard
-          - firewall
-          - fail2ban
-          - samba
-          - diskstation
-          - android
-          - mail
-          - notifications
-          - cockpit
-          - zsh
+        valid_tags: "{{ roles_list }}"
 
   vars_files:
     - group_vars/all/vault.yml
 
-  roles:
-    - { role: base, tags: base }
-    - { role: sysctl, tags: sysctl }
-    - { role: sshd, tags: sshd }
-    - { role: ssh_client, tags: ssh_client }
-    - { role: wireguard, tags: wireguard }
-    - { role: firewall, tags: firewall }
-    - { role: fail2ban, tags: fail2ban }
-    - { role: samba, tags: samba }
-    - { role: mount_diskstation, tags: diskstation }
-    - { role: mount_android, tags: android }
-    - { role: mail_sender, tags: mail }
-    - { role: notifications, tags: notifications }
-    - { role: cockpit, tags: cockpit }
-    - { role: zsh, tags: zsh }
+  vars:
+    roles_list:
+      - base
+      - sysctl
+      - sshd
+      - ssh_client
+      - wireguard
+      - firewall
+      - fail2ban
+      - samba
+      - mount_diskstation
+      - mount_android
+      - mail_sender
+      - notifications
+      - cockpit
+      - zsh
+
+  tasks:
+    - name: Include roles dynamically
+      include_role:
+        name: "{{ item }}"
+        apply:
+          tags: "{{ item }}"
+      loop: "{{ roles_list }}"
+      tags:
+        - always
