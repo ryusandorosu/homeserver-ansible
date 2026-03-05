@@ -4,6 +4,8 @@
       - git
       - curl
       - jq
+      - tree
+      - far2l
       - tcpdump
       - rsync
       - ca-certificates
