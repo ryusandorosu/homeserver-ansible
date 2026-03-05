@@ -25,11 +25,11 @@
     repo: https://github.com/airblade/vim-gitgutter.git
     dest: /home/{{ user }}/.vim/pack/plugins/start/vim-gitgutter
 
-- name: Clone ansible vim plugin
+- name: Clone vim airline plugin
   become_user: "{{ user }}"
   git:
-    repo: https://github.com/pearofducks/ansible-vim.git
-    dest: /home/{{ user }}/.vim/pack/plugins/start/ansible-vim
+    repo: https://github.com/vim-airline/vim-airline.git
+    dest: /home/{{ user }}/.vim/pack/plugins/start/vim-airline
 
 - name: Deploy vimrc
   copy:
