@@ -1,0 +1,62 @@
+- name: Ensure cert directory exists
+  file:
+    path: "{{ cockpit_cert_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Ensure pki directory exists
+  file:
+    path: /etc/pki
+    state: directory
+    mode: '0755'
+
+- name: Generate Root CA key
+  community.crypto.openssl_privatekey:
+    path: /etc/pki/rootCA.key
+    size: 4096
+    type: RSA
+    mode: '0600'
+    return_content: true
+
+- name: Generate Root CA certificate
+  community.crypto.x509_certificate:
+    path: /etc/pki/rootCA.crt
+    privatekey_path: /etc/pki/rootCA.key
+    provider: selfsigned
+    selfsigned_not_after: "+3650d"
+    return_content: true
+
+- name: Generate private key
+  community.crypto.openssl_privatekey:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
+    size: 4096
+    type: RSA
+    mode: '0600'
+    return_content: true
+
+- name: Generate CSR
+  community.crypto.openssl_csr:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.csr"
+    privatekey_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
+    subject:
+      countryName: "{{ cockpit_country }}"
+      stateOrProvinceName: "{{ cockpit_state }}"
+      localityName: "{{ cockpit_locality }}"
+      organizationName: "{{ cockpit_org }}"
+      commonName: "{{ cockpit_cn }}"
+    subject_alt_name: "{{ cockpit_san }}"
+    return_content: true
+
+- name: Sign server certificate
+  community.crypto.x509_certificate:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.cert"
+    csr_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.csr"
+    provider: ownca
+    ownca_path: /etc/pki/rootCA.crt
+    ownca_privatekey_path: /etc/pki/rootCA.key
+    ownca_not_after: "+825d"
+
+- name: Remove CSR
+  file:
+    path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.csr"
+    state: absent
