@@ -1,3 +1,5 @@
+{# cockpit_generate_cert: false #}
+
 cockpit_cert_dir: /etc/cockpit/ws-certs.d
 cockpit_cert_name: 10-nuc
 

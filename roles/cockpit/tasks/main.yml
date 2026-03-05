@@ -10,6 +10,33 @@
     state: directory
     mode: '0755'
 
+- name: Ensure pki directory exists
+  file:
+    path: /etc/pki
+    state: directory
+    mode: '0755'
+
+- name: Generate Root CA key
+  community.crypto.openssl_privatekey:
+    path: /etc/pki/rootCA.key
+    size: 4096
+    type: RSA
+    mode: '0600'
+
+- name: Generate Root CA certificate
+  community.crypto.x509_certificate:
+    path: /etc/pki/rootCA.crt
+    privatekey_path: /etc/pki/rootCA.key
+    provider: selfsigned
+    selfsigned_not_after: "+3650d"
+    subject:
+      common_name: "Homeserver Root CA"
+    basic_constraints:
+      - CA:TRUE
+    key_usage:
+      - keyCertSign
+      - cRLSign
+
 - name: Generate private CA key
   community.crypto.openssl_privatekey:
     path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
@@ -31,19 +58,22 @@
     subject_alt_name: "{{ cockpit_san }}"
     return_content: true
 
-- name: Generate self-signed certificate
+- name: Sign server certificate
   community.crypto.x509_certificate:
     path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.cert"
     csr_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.csr"
-    privatekey_path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.key"
-    provider: selfsigned
-    selfsigned_not_after: "+365d"
-  notify: restart cockpit
+    provider: ownca
+    ownca_path: /etc/pki/rootCA.crt
+    ownca_privatekey_path: /etc/pki/rootCA.key
+    ownca_not_after: "+825d"
 
 - name: Remove CSR
   file:
     path: "{{ cockpit_cert_dir }}/{{ cockpit_cert_name }}.csr"
     state: absent
+
+{# - import_tasks: cert.yml
+  when: cockpit_generate_cert #}
 
 - name: Enable cockpit
   systemd:
