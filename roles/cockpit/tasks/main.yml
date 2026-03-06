@@ -4,6 +4,20 @@
     state: present
     update_cache: yes
 
+- name: Create override dir
+  file:
+    path: /etc/systemd/system/cockpit.socket.d
+    state: directory
+    mode: '0755'
+
+- name: Deploy override
+  template:
+    src: override.conf.j2
+    dest: /etc/systemd/system/cockpit.socket.d/override.conf
+  notify:
+    - daemon reload
+    - restart cockpit socket
+
 - import_tasks: cert.yml
   when: cockpit_generate_cert
 

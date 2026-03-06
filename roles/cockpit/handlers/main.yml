@@ -2,3 +2,16 @@
   systemd:
     name: cockpit
     state: restarted
+
+- name: restart cockpit socket
+  systemd:
+    name: cockpit.socket
+    state: restarted
+
+- name: daemon reexec
+  systemd:
+    daemon_reexec: yes
+
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
