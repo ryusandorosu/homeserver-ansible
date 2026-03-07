@@ -1,5 +1,2 @@
-{% for ng in nginx_sites %}
-address=/{{ ng.server_name }}/{{ server_lan_ip }}
-{% endfor %}
-#this makes wildcard for subdomains. add {{ wireguard_server_ip }} to client wireguard config as dns to access subdomains
-{# address=/{{ domain }}/{{ server_lan_ip }} #}
+#this makes wildcard for subdomains. add {{ wireguard_server_ip }} to client wireguard config as dns to access restricted subdomains
+address=/{{ domain }}/{{ server_lan_ip }}
