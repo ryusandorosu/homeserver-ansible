@@ -1,0 +1,14 @@
+domain: ryusandorosu.ru
+email: boulate.sibgatoulline@gmail.com
+
+nginx_sites:
+  - server_name: "{{ domain }}"
+    public: true
+  - server_name: "www.{{ domain }}"
+    public: true
+  - server_name: "cockpit.{{ domain }}"
+    port: "{{ cockpit_port }}"
+    proto: https
+    public: false
+
+letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"

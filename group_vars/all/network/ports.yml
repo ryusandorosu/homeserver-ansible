@@ -1,0 +1,8 @@
+sshd_port: 22
+http_port: 80
+https_port: 443
+wireguard_port: 51820
+termux_port: 8022
+smb_netbios_port: 139
+smb_port: 445
+cockpit_port: 9090

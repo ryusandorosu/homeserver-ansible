@@ -1,0 +1,15 @@
+# Subnets
+wireguard_network: 10.10.0.0/24
+home_network: 192.168.0.0/24
+
+wireguard_server_ip: 10.10.0.1
+
+# Wireguard Devices
+laptop_ip: 10.10.0.2
+phone_ip: 10.10.0.3
+pad_ip: 10.10.0.4
+
+# Home Network
+home_ip: 87.117.169.26
+server_lan_ip: 192.168.0.107
+diskstation_lan_ip: 192.168.0.111

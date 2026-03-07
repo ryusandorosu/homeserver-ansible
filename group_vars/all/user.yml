@@ -2,3 +2,7 @@ user: ryusandorosu
 
 sshd_allow_users:
   - "{{ user }}"
+
+# Termux
+termux_user: u0_a497
+termux_key: android_termux
