@@ -1,13 +1,13 @@
 firewall_tcp_ports:
   - "{{ sshd_port }}"
-  - 80
-  - 443
+  - "{{ http_port }}"
+  - "{{ https_port }}"
 
 firewall_udp_ports:
   - "{{ wireguard_port }}"
 
 lan_interface: wlp2s0
 lan_ports:
-  - 139
-  - 445
-  - 9090
+  - "{{ smb_netbios_port }}"
+  - "{{ smb_port }}"
+  - "{{ cockpit_port }}"

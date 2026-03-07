@@ -140,6 +140,23 @@ ansible-playbook playbook.yml -l local -K --skip-tags cockpit --check
 ```
 ansible-playbook playbook.yml --limit test-host
 ```
+проверить какие значения подставляются в шаблоны без запуска плейбука можно создав тестовый плейбук
+```
+- hosts: localhost
+  connection: local
+  vars_files:
+    - roles/роль/defaults/main.yml
+
+  tasks:
+    - template:
+        src: roles/роль/templates/шаблон.j2
+        dest: файл
+```
+и запускать его командой
+```
+ansible-playbook test.yml && cat файл
+```
+или веб-морда для этого: https://ansible.sivel.net/test/
 #
 # создаём конфиги ансибла
 ### корневая папка репозитория
@@ -165,10 +182,12 @@ vault_wireguard_private_key: "ПРИВАТНЫЙ_КЛЮЧ_СЕРВЕРА"
 ansible-vault edit group_vars/all/vault.yml
 ```
 ## OpenSSL
+(устаревшая часть инструкции, чисто для справки)
 нужно для генерации сертификата в роли [cockpit](#role-cockpit)  
 установить если отсутствует
 ```
 ansible-galaxy collection install community.crypto
+ansible-galaxy collection install community.crypto --upgrade
 ```
 либо создаём конфиг с требованиями  
 `collections/requirements.yml`
@@ -179,6 +198,13 @@ collections:
 тогда команда установки будет выглядеть так
 ```
 ansible-galaxy collection install -r collections/requirements.yml
+```
+схема сертификатов
+```
+rootCA.key   (никогда никому не шарить)
+rootCA.crt   (для браузера)
+server.key   (только на сервере)
+server.cert  (для cockpit)
 ```
 # создаём роли
 ## role: base

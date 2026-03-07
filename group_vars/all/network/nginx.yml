@@ -1,5 +1,4 @@
 domain: ryusandorosu.ru
-email: boulate.sibgatoulline@gmail.com
 
 nginx_sites:
   - server_name: "{{ domain }}"
