@@ -2,7 +2,7 @@
   apt:
     name:
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-nginx
     state: present
 
 - name: Build domain args

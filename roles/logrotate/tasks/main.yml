@@ -13,4 +13,3 @@
     mode: '0644'
   loop:
     - nginx
-    - syslog
