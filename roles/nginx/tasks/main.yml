@@ -14,14 +14,12 @@
   copy:
     src: nginx.conf
     dest: /etc/nginx
-#    validate: nginx -t
   notify: validate and reload nginx
 
 - name: Deploy nginx sites
   template:
     src: site.j2
     dest: "/etc/nginx/sites-available/{{ item.server_name }}"
-#    validate: nginx -t
   loop: "{{ nginx_sites }}"
   notify: validate and reload nginx
 

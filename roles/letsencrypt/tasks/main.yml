@@ -1,0 +1,20 @@
+- name: Install certbot
+  apt:
+    name:
+      - certbot
+      - python-certbot-nginx
+    state: present
+
+- name: Build domain args
+  set_fact:
+    certbot_domains: "{{ letsencrypt_domains | map('regex_replace', '^(.*)$', '-d \\1') | join(' ') }}"
+
+- name: Obtain certificate
+  command: >
+    certbot --nginx
+    {{ certbot_domains }}
+    --non-interactive
+    --agree-tos
+    --email {{ vault_mail }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain }}/fullchain.pem

@@ -1,0 +1,21 @@
+/var/log/nginx/*.log {
+
+    daily
+    rotate 14
+    size 10M
+
+    compress
+    delaycompress
+
+    missingok
+    notifempty
+
+    create 0640 www-data adm
+
+    sharedscripts
+
+    postrotate
+        systemctl reload nginx > /dev/null
+    endscript
+
+}

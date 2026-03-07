@@ -1,0 +1,7 @@
+/var/log/syslog {
+    rotate 7
+    daily
+    compress
+    missingok
+    notifempty
+}
