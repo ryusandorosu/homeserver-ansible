@@ -11,9 +11,9 @@
     state: started
 
 - name: Deploy nginx config
-  copy:
-    src: nginx.conf
-    dest: /etc/nginx
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
   notify: validate and reload nginx
 
 - name: Deploy nginx sites
