@@ -4,16 +4,17 @@ table inet filter {
 
     set blacklist {
         type ipv4_addr
-        flags interval
+        flags interval,timeout
     }
 
     chain input {
         type filter hook input priority 0;
-        ip saddr @blacklist drop
         policy drop;
 
         ct state established,related accept
         iif lo accept
+
+        ip saddr @blacklist drop
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
 {% for port in firewall_tcp_ports %}{% if port != sshd_port %}

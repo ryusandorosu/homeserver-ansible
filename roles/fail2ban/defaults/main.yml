@@ -9,8 +9,9 @@ fail2ban_bantime_max: 1week
 fail2ban_findtime: 10m
 fail2ban_maxretry: 1
 fail2ban_backend: systemd
+fail2ban_actionstart_on_demand: true
 fail2ban_action:
-  - nftables-multiport
+  - nftables-tempoban
   - telegram
 
 fail2ban_jails:
@@ -19,12 +20,27 @@ fail2ban_jails:
     port: "{{ sshd_port }}"
 
   - name: nginx-http-auth
-    logpath: /var/log/nginx/*access.log
     enabled: true
+    logpath: /var/log/nginx/*access.log
 
   - name: nginx-botsearch
-    logpath: /var/log/nginx/*access.log
     enabled: true
+    logpath: /var/log/nginx/*access.log
+
+  - name: nginx-badbots
+    enabled: true
+    logpath: /var/log/nginx/*access.log
+
+  - name: nginx-noscript
+    enabled: true
+    logpath: /var/log/nginx/*access.log
+
+  - name: nginx-404-scan
+    enabled: true
+    logpath: /var/log/nginx/*access.log
+    maxretry: 20
+    findtime: 1m
+    bantime: 1h
 
   - name: nginx-limit-req
     enabled: true
@@ -40,3 +56,6 @@ fail2ban_jails:
     bantime: 1month
     findtime: 1d
     maxretry: 1
+    action:
+      - nftables-permaban
+      - telegram

@@ -1,0 +1,28 @@
+bad_bot:
+  - sqlmap
+  - nikto
+  - acunetix
+  - dirbuster
+  - masscan
+  - nmap
+  - zmap
+  - zgrab
+
+bad_bot_regex: "{{ bad_bot | join('|') }}"
+
+tarpit:
+  - \.php
+  - \.env
+  - \.git
+  - \.sql
+  - \.bak
+  - \.old
+  - \.htaccess
+  - wp-admin
+  - wp-login
+  - xmlrpc
+  - phpmyadmin
+  - wget
+  - curl
+
+tarpit_regex: "{{ tarpit | join('|') }}"

@@ -7,6 +7,7 @@ bantime.max = {{ fail2ban_bantime_max }}
 findtime = {{ fail2ban_findtime }}
 maxretry = {{ fail2ban_maxretry }}
 backend = {{ fail2ban_backend }}
+actionstart_on_demand = {{ fail2ban_actionstart_on_demand | lower }}
 {% if fail2ban_action is string %}
 action = {{ fail2ban_action }}
 {% else %}
@@ -19,8 +20,18 @@ action =
 {% for jail in fail2ban_jails %}
 [{{ jail.name }}]
 enabled = {{ jail.enabled | lower }}
-{% for key, value in jail.items() if key not in ['name', 'enabled'] %}
+{% for key, value in jail.items() if key not in ['name', 'enabled', 'action'] %}
 {{ key }} = {{ value }}
+{% endfor %}
+{% for key, value in jail.items() if key in ['action'] %}
+{% if value is string %}
+{{ key }} = {{ value }}
+{% else %}
+{{ key }} =
+{% for act in value %}
+         {{ act }}
+{% endfor %}
+{% endif %}
 {% endfor %}
 
 {% endfor %}
