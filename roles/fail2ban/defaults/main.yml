@@ -18,6 +18,21 @@ fail2ban_jails:
     enabled: true
     port: "{{ sshd_port }}"
 
+  - name: nginx-http-auth
+    logpath: /var/log/nginx/*access.log
+    enabled: true
+
+  - name: nginx-botsearch
+    logpath: /var/log/nginx/*access.log
+    enabled: true
+
+  - name: nginx-limit-req
+    enabled: true
+    logpath: /var/log/nginx/*access.log
+    maxretry: 10
+    findtime: 10m
+    bantime: 1h
+
   - name: recidive
     enabled: true
     logpath: /var/log/fail2ban.log
