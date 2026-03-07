@@ -10,14 +10,14 @@
     dest: "/usr/local/bin/{{ item | regex_replace('.j2','') }}"
     mode: '0755'
   with_fileglob:
-    - "{{ role_path }}/templates/*"
+    - "templates/*"
 
 - name: Deploy systemd services
   copy:
     src: "{{ item }}"
     dest: "/etc/systemd/system/{{ item }}"
   with_fileglob:
-    - "{{ role_path }}/files/systemd/*"
+    - "files/systemd/*"
   notify: daemon reload
 
 - name: Enable services
