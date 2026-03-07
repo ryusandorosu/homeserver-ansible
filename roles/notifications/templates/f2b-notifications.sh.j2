@@ -7,7 +7,7 @@ failures="$4"
 ipfailures="$5"
 ipjailfailures="$6"
 
-if grep "Restore Ban" $logpath; then return; fi
+if grep -m 20 -wF $banned_ip $logpath | grep "Restore Ban"; then return; fi
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned $banned_ip from $(hostname)
 failures: $failures / ipfailures: $ipfailures / ipjailfailures: $ipjailfailures
