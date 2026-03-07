@@ -1,0 +1,11 @@
+- name: Install dnsmasq
+  apt:
+    name: dnsmasq
+    state: present
+    update_cache: yes
+
+- name: Deploy dnsmasq config
+  template:
+    src: lan_split.conf.j2
+    dest: "/etc/dnsmasq.d/lan_split.conf"
+  notify: reload dnsmasq

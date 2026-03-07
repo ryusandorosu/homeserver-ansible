@@ -27,7 +27,11 @@
       - ssh_client
       - wireguard
       - firewall
+      - nginx
       - fail2ban
+      - dnsmasq
+      - letsencrypt
+      - logrotate
       - samba
       - mount_diskstation
       - mount_android
@@ -40,9 +44,11 @@
   tasks:
     - name: Include roles dynamically
       include_role:
-        name: "{{ item }}"
+        name: "{{ role_item }}"
         apply:
-          tags: "{{ item }}"
+          tags: "{{ role_item }}"
       loop: "{{ roles_list }}"
+      loop_control:
+        loop_var: role_item
       tags:
         - always
