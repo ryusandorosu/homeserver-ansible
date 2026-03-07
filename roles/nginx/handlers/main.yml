@@ -1,3 +1,7 @@
+- name: validate and reload nginx
+  command: nginx -t
+  notify: reload nginx
+
 - name: reload nginx
   service:
     name: nginx
