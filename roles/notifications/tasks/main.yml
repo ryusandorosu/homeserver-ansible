@@ -9,20 +9,15 @@
     src: "{{ item }}"
     dest: "/usr/local/bin/{{ item | regex_replace('.j2','') }}"
     mode: '0755'
-  loop:
-    - android-connection-watcher.sh.j2
-    - ssh_success_watcher.sh.j2
-    - tgbot_notify.sh.j2
-    - vpn_success_watcher.sh.j2
+  with_fileglob:
+    - "{{ role_path }}/templates/*"
 
 - name: Deploy systemd services
   copy:
-    src: "systemd/{{ item }}"
+    src: "{{ item }}"
     dest: "/etc/systemd/system/{{ item }}"
-  loop:
-    - android-watcher.service
-    - ssh-success-watcher.service
-    - vpn-success-watcher.service
+  with_fileglob:
+    - "{{ role_path }}/files/systemd/*"
   notify: daemon reload
 
 - name: Enable services
