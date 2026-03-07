@@ -31,6 +31,6 @@
   loop: "{{ nginx_sites }}"
 
 - name: Replace cockpit motd
-  template:
-    src: cockpit.active.issue.j2
+  copy:
+    content: "Web console: https://{{ 'cockpit.' ~ domain }}"
     dest: "/run/cockpit/active.issue"

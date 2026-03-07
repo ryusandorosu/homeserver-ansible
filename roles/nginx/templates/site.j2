@@ -4,6 +4,10 @@ server {
 
     server_name {{ item.server_name }};
 
+    if ($bad_bot) {
+        return 444;
+    }
+
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header X-XSS-Protection "1; mode=block" always;
@@ -48,5 +52,9 @@ server {
 
     }
 {% endif %}
+
+    location ~* ({{ tarpit_regex }}) {
+        limit_req zone=tarpit burst=1;
+    }
 
 }
