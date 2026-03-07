@@ -17,12 +17,11 @@ server {
 
 {% if item.public %}
     root {{ item.root | default('/var/www/html') }};
-  {# {% if item.root == '/var/www/html' or item.index == '' %} #}
-  {% if item.root | default('/var/www/html') == '/var/www/html' %}
+{% if item.root | default('/var/www/html') == '/var/www/html' %}
     index index.nginx-debian.html;
-  {% else %}
+{% else %}
     index {{ item.index }};
-  {% endif %}
+{% endif %}
 
     location / {
 
@@ -32,6 +31,7 @@ server {
 {% else %}
     allow {{ wireguard_network }};
     allow {{ home_network }};
+    deny all;
 
     location / {
 
@@ -39,11 +39,10 @@ server {
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-  {# {% if item.server_name == cockpit.{{ domain }} %} #}
-  {% if item.server_name == 'cockpit.' ~ domain %}
+{% if item.server_name == 'cockpit.' ~ domain %}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-  {% endif %}
+{% endif %}
 
         proxy_ssl_verify off;
 
