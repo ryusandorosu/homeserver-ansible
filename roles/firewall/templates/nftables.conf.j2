@@ -1,8 +1,15 @@
 flush ruleset
 
 table inet filter {
+
+    set blacklist {
+        type ipv4_addr
+        flags interval
+    }
+
     chain input {
         type filter hook input priority 0;
+        ip saddr @blacklist drop
         policy drop;
 
         ct state established,related accept
