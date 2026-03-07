@@ -11,7 +11,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
         -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
         -d chat_id="{{ vault_telegram_chat_id }}" \
         -d text="${MESSAGE}" \
-	-d parse_mode="HTML"
+	      -d parse_mode="HTML"
     )
 
     if [ "$response" = "200" ]; then
