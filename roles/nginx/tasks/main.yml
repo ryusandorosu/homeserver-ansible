@@ -29,3 +29,8 @@
     dest: "/etc/nginx/sites-enabled/{{ item.server_name }}"
     state: link
   loop: "{{ nginx_sites }}"
+
+- name: Replace cockpit motd
+  template:
+    src: cockpit.active.issue.j2
+    dest: "/run/cockpit/active.issue"
