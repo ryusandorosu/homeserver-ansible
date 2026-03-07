@@ -22,10 +22,8 @@
 
 - name: Enable services
   systemd:
-    name: "{{ item }}"
+    name: "{{ item | basename | regex_replace('.service','') }}"
     enabled: yes
     state: started
-  loop:
-    - android-watcher
-    - ssh-success-watcher
-    - vpn-success-watcher
+  with_fileglob:
+    - "files/systemd/*.service"
