@@ -7,17 +7,17 @@
 - name: Deploy watcher scripts
   template:
     src: "{{ item }}"
-    dest: "/usr/local/bin/{{ item | regex_replace('.j2','') }}"
+    dest: "/usr/local/bin/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0755'
   with_fileglob:
-    - "templates/*"
+    - "templates/*.j2"
 
 - name: Deploy systemd services
   copy:
     src: "{{ item }}"
-    dest: "/etc/systemd/system/{{ item }}"
+    dest: /etc/systemd/system/
   with_fileglob:
-    - "files/systemd/*"
+    - "files/systemd/*.service"
   notify: daemon reload
 
 - name: Enable services
