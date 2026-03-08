@@ -8,7 +8,11 @@ failures="$5"
 ipfailures="$6"
 ipjailfailures="$7"
 
-if grep -m 20 -awF $banned_ip $logpath | grep -a "Restore Ban"; then exit 0; fi
+if [[ $logpath != /var/log/fail2ban.log ]]; then
+  if grep -m 20 -awF $banned_ip /var/log/fail2ban.log | grep -a "Restore Ban"; then exit 0; fi
+else
+  if grep -m 20 -awF $banned_ip $logpath | grep -a "Restore Ban"; then exit 0; fi
+fi
 
 BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 if (( $bantime >= 86400 )); then
