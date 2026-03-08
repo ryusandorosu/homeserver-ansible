@@ -10,12 +10,14 @@ ipjailfailures="$7"
 
 if grep -m 20 -awF $banned_ip $logpath | grep -a "Restore Ban"; then exit 0; fi
 
-BANTIME="$(date -d@$bantime -u +%_H | sed 's/\ //') hours"
+BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 if (( $bantime >= 86400 )); then
-BANTIME="$(date -d@$bantime -u +%_d) days"
+BANTIME=" $(date -d@$bantime -u +%_d) days"
+elif [[ $jail_name == recidive ]]; then
+BANTIME="ever"
 fi
 
-MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for <b>$BANTIME</b>
+MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 <pre>$(curl -s http://ip-api.com/json/$banned_ip | jq)</pre>
 logpath: <code>$logpath</code>
