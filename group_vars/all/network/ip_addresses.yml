@@ -4,10 +4,16 @@ home_network: 192.168.0.0/24
 
 wireguard_server_ip: 10.10.0.1
 
-# Wireguard Devices
-laptop_ip: 10.10.0.2
-phone_ip: 10.10.0.3
-pad_ip: 10.10.0.4
+wireguard_devices:
+  laptop:
+    ip: 10.10.0.2
+    name: Asus K95VB
+  phone:
+    ip: 10.10.0.3
+    name: Redmi 14C
+  pad:
+    ip: 10.10.0.4
+    name: Samsung Galaxy Tab A6
 
 # Home Network
 home_ip: 87.117.169.26

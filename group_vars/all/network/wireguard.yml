@@ -1,12 +1,9 @@
 # WireGuard core
 wireguard_interface: wg0
 wireguard_peers:
-  - name: laptop
+  - device: laptop
     public_key: "pjZYrTpbiOeQM0oeIDonvowhswh/cFIlAhPwFRvVpik="
-    ip: "{{ laptop_ip }}"
-  - name: phone
+  - device: phone
     public_key: "KI9NnUCB2uKZOZTYvfa/D7nXRMRjKAWSZlGKqDjB61U="
-    ip: "{{ phone_ip }}"
-  - name: pad
+  - device: pad
     public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
-    ip: "{{ pad_ip }}"

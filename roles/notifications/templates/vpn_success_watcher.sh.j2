@@ -1,5 +1,11 @@
 #!/bin/bash
 
+declare -A PEER_NAMES
+
+{% for peer in wireguard_peers %}
+PEER_NAMES["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
+{% endfor %}
+
 declare -A WAS_ZERO
 
 while true; do
@@ -17,12 +23,14 @@ while true; do
             ENDPOINT=$(wg show {{ wireguard_interface }} endpoints | grep "$PUBKEY" | awk '{print $2}')
             ALLOWED=$(wg show {{ wireguard_interface }} allowed-ips | grep "$PUBKEY" | awk '{print $2}')
             IP=$(echo "$ENDPOINT" | cut -d: -f1)
-            AS_IP=$(echo "$ALLOWED" | cut -d: -f1)
+            VPN_IP=$(echo "$ALLOWED" | cut -d: -f1)
+            DEVICE_NAME="${PEER_NAMES[$PUBKEY]}"
 
 MESSAGE="🔐 VPN connection success
 From: $IP
 <pre>$(curl -s http://ip-api.com/json/${IP} | jq)</pre>
-As: $AS_IP"
+Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
+"
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
 
             WAS_ZERO[$PUBKEY]=0

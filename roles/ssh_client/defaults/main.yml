@@ -5,7 +5,7 @@ ssh_hosts:
     identity: github
 
   - name: redmi
-    hostname: "{{ phone_ip }}"
+    hostname: "{{ wireguard_devices.phone.ip }}"
     port: "{{ termux_port }}"
     user: "{{ termux_user }}"
     identity: "{{ termux_key }}"
