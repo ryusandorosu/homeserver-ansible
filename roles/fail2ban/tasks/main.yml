@@ -12,6 +12,10 @@
     mode: '0644'
   notify: restart fail2ban
 
+- name: Share bantime variable with firewall role
+  set_fact:
+    nft_bantime: "{{ fail2ban_bantime }}"
+
 - name: Deploy custom fail2ban actions
   copy:
     src: "{{ item }}"
