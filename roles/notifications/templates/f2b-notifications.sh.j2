@@ -8,11 +8,12 @@ failures="$5"
 ipfailures="$6"
 ipjailfailures="$7"
 
-grep -m 20 -wF $banned_ip $logpath | grep "Restore Ban" | exit 0
+if grep -m 20 -awF $banned_ip $logpath | grep -a "Restore Ban"; then exit 0; fi
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned $banned_ip from $(hostname) for <b>$bantime</b>
 failures: $failures / ipfailures: $ipfailures / ipjailfailures: $ipjailfailures
 <pre>$(curl -s http://ip-api.com/json/$banned_ip | jq)</pre>
-<pre>$(grep -m 20 -wF $banned_ip $logpath | grep -v " sudo: " | tail -n 20)</pre>"
+logpath: <code>$logpath</code>
+<pre>$(grep -m 20 -awF $banned_ip $logpath | grep -v ' sudo: ' | tail -n 20)</pre>"
 
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
