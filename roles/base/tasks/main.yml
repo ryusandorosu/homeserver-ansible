@@ -5,6 +5,7 @@
       - curl
       - jq
       - tree
+      - bat
       - far2l
       - tcpdump
       - rsync
@@ -12,3 +13,11 @@
       - unattended-upgrades
     state: present
     update_cache: yes
+
+- name: Bat settings
+  copy:
+    content: |
+      --style=plain
+      --paging=never
+    dest: /home/{{ user }}/.config/bat/config
+
