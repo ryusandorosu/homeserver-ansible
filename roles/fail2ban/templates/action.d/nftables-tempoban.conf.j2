@@ -4,6 +4,6 @@ table_family = inet
 table = filter
 addr_set = blacklist
 
-actionban = nft add element <table_family> <table> <addr_set> \{ <ip> timeout {{ nft_bantime }} \}
+actionban = nft add element <table_family> <table> <addr_set> \{ <ip> \}
 actionunban = nft delete element <table_family> <table> <addr_set> \{ <ip> \}
 actioncheck = nft list set <table_family> <table> <addr_set>
