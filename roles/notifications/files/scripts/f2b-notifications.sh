@@ -15,11 +15,8 @@ else
 fi
 
 BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
-if (( $bantime >= 86400 )); then
-BANTIME=" $(date -d@$bantime -u +%_d) days"
-elif [[ $jail_name == recidive ]]; then
-BANTIME="ever"
-fi
+(( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d) days"
+[[ $jail_name == recidive ]] && BANTIME="ever"
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
