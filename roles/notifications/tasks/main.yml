@@ -11,7 +11,10 @@
     mode: '0755'
   with_fileglob:
     - "templates/*.j2"
-  notify: restart services
+  notify:
+    - restart services
+    - ensure wireguard logs directory exists
+    - ensure geo ip cache directory exists
 
 - name: Deploy systemd services
   copy:

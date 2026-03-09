@@ -1,5 +1,5 @@
 #!/bin/bash
-
+. /usr/local/bin/get_ip_geo.sh
 jail_name="$1"
 banned_ip="$2"
 logpath="$3"
@@ -20,7 +20,7 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
-<pre>$(curl -s http://ip-api.com/json/$banned_ip | jq)</pre>
+<pre>$(get_ip_geo $banned_ip)</pre>
 logpath: <code>$logpath</code>
 <pre>$(grep -m 20 -awF $banned_ip $logpath | grep -v ' sudo: ' | tail -n 20)</pre>"
 

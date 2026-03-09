@@ -9,3 +9,13 @@
     state: restarted
   with_fileglob:
     - "files/systemd/*.service"
+
+- name: ensure wireguard logs directory exists
+  file:
+    path: "{{ wireguard_connections_log | dirname }}"
+    state: directory
+
+- name: ensure geo ip cache directory exists
+  file:
+    path: "{{ geo_ip_cache }}"
+    state: directory

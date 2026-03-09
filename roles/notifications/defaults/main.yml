@@ -1,0 +1,2 @@
+wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
+geo_ip_cache: /var/cache/telegram/

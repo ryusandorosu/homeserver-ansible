@@ -1,0 +1,11 @@
+#!/bin/bash
+get_ip_geo() {
+  CACHE_FILE="{{ geo_ip_cache }}/$1.json"
+  if [[ -f "$CACHE_FILE" && $(find "$CACHE_FILE" -mtime -7) ]]; then
+    cat "$CACHE_FILE"
+    return
+  fi
+  DATA=$(curl -s http://ip-api.com/json/$1)
+  echo "$DATA" > "$CACHE_FILE"
+  echo "$DATA"
+}
