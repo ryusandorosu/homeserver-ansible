@@ -20,7 +20,7 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
-<pre>$(get_ip_geo $banned_ip)</pre>
+<pre>$(get_ip_geo $banned_ip | jq)</pre>
 logpath: <code>$logpath</code>
 <pre>$(grep -m 20 -awF $banned_ip $logpath | grep -v ' sudo: ' | tail -n 20)</pre>"
 
