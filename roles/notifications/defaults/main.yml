@@ -1,2 +1,12 @@
 wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
 geo_ip_cache: /var/cache/telegram/
+
+allowed_countries:
+  - Russia
+
+allowed_regions:
+  - Tatarstan Republic
+
+allowed_asn:
+  - AS12389 PJSC Rostelecom
+  - AS16345 PJSC \"Vimpelcom\"

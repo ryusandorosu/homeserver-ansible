@@ -7,21 +7,24 @@ PEER_NAMES["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
 {% endfor %}
 
 ALLOWED_COUNTRIES=(
-  "Russia"
+{% for country in allowed_countries %}
+  "{{ country }}"
+{% endfor %}
 )
 ALLOWED_REGIONS=(
-  "Tatarstan Republic"
+{% for region in allowed_regions %}
+  "{{ region }}"
+{% endfor %}
 )
 ALLOWED_ASN=(
-  "AS12389 PJSC Rostelecom"
-  "AS16345 PJSC \"Vimpelcom\""
+{% for asn in allowed_asn %}
+  "{{ asn }}"
+{% endfor %}
 )
 
 declare -A NEW_HANDSHAKE
-declare -A LAST_IP
 
 while true; do
-wg show {{ wireguard_interface }} dump | tail -n +2 | \
 while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
 
 if [[ "$EPOCH" == "0" ]]; then
@@ -30,7 +33,7 @@ if [[ "$EPOCH" == "0" ]]; then
 fi
 
 if [[ "${NEW_HANDSHAKE[$PUBKEY]}" == "1" ]]; then
-  
+
 IP="${ENDPOINT%:*}"
 PORT="${ENDPOINT#*:}"
 VPN_IP="${ALLOWED%%/*}"
@@ -57,7 +60,9 @@ Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
 Location: <a href='https://2gis.ru/geo/$LON%2C$LAT'>2GIS</a> | <a href='https://maps.google.com/?q=$LAT,$LON'>Google Maps</a>
 "
 
-PREV_IP=${LAST_IP[$PUBKEY]}
+if [[ -f {{ wireguard_connections_log }} ]]; then
+PREV_IP=$(grep "$PUBKEY" {{ wireguard_connections_log }} | tail -n1 | awk '{print $3}' | cut -d: -f1 )
+fi
 if [[ -n "$PREV_IP" && "$PREV_IP" != "$IP" ]]; then
 PREV_IP_INFO="$(get_ip_geo $PREV_IP)"
 pASN="$(echo "$IP_INFO" | jq -r .as)"
@@ -87,7 +92,7 @@ fi
 NEW_HANDSHAKE[$PUBKEY]=0
 LAST_IP[$PUBKEY]=$IP
 fi
-done
+done < <(wg show {{ wireguard_interface }} dump | tail -n +2)
 
 sleep 10
 done
