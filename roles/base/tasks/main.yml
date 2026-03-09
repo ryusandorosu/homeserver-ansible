@@ -20,4 +20,3 @@
       --style=plain
       --paging=never
     dest: /home/{{ user }}/.config/bat/config
-

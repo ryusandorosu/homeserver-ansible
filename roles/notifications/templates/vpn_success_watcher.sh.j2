@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LOGFILE=/var/log/wireguard/connections.log
+
 declare -A PEER_NAMES
 
 {% for peer in wireguard_peers %}
@@ -7,36 +9,85 @@ PEER_NAMES["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
 {% endfor %}
 
 declare -A WAS_ZERO
+declare -A LAST_IP
+
+wg_show() { wg show {{ wireguard_interface }} $1; }
 
 while true; do
-    while read -r PUBKEY EPOCH; do
+  while read -r PUBKEY EPOCH; do
 
-        # если peer ещё никогда не подключался
-        if [[ "$EPOCH" == "0" ]]; then
-            WAS_ZERO[$PUBKEY]=1
-            continue
-        fi
+    # если peer ещё никогда не подключался
+    if [[ "$EPOCH" == "0" ]]; then
+      WAS_ZERO[$PUBKEY]=1
+      continue
+    fi
 
-        # если раньше было 0 и теперь стало > 0
-        if [[ "${WAS_ZERO[$PUBKEY]}" == "1" ]]; then
+    # если раньше было 0 и теперь стало > 0
+    if [[ "${WAS_ZERO[$PUBKEY]}" == "1" ]]; then
+      
+      wg_grep() { echo $(wg_show $1 | grep "$PUBKEY" | awk '{print $2}'); }
+      IP=$(wg_grep endpoints | cut -d: -f1)
+      PORT=$(wg_grep endpoints | cut -d: -f2)
+      VPN_IP=$(wg_grep allowed-ips | cut -d: -f1)
+      DEVICE_NAME="${PEER_NAMES[$PUBKEY]}"
 
-            ENDPOINT=$(wg show {{ wireguard_interface }} endpoints | grep "$PUBKEY" | awk '{print $2}')
-            ALLOWED=$(wg show {{ wireguard_interface }} allowed-ips | grep "$PUBKEY" | awk '{print $2}')
-            IP=$(echo "$ENDPOINT" | cut -d: -f1)
-            VPN_IP=$(echo "$ALLOWED" | cut -d: -f1)
-            DEVICE_NAME="${PEER_NAMES[$PUBKEY]}"
+      get_ip_geo() { curl -s http://ip-api.com/json/$1; }
+      IP_INFO="$(get_ip_geo $IP)"
+
+      COUNTRY=$(echo "$IP_INFO" | jq -r .country)
+      REGION=$(echo "$IP_INFO" | jq -r .regionName)
+      LAT=$(echo "$IP_INFO" | jq -r .lat)
+      LON=$(echo "$IP_INFO" | jq -r .lon)
+
+      IP_CURRENT=$IP
+      IP_PREVIOUS=${LAST_IP[$PUBKEY]}
+      if [[ -n "$IP_PREVIOUS" ]]; then
+        PREVIOUS_IP_INFO="$(get_ip_geo $IP_PREVIOUS)"
+        pLAT=$(echo "$PREVIOUS_IP_INFO" | jq -r .lat)
+        pLON=$(echo "$PREVIOUS_IP_INFO" | jq -r .lon)
+      fi
+
+      ALLOWED_COUNTRIES=(
+        "Russia"
+      )
+      ALLOWED_REGIONS=(
+        "Tatarstan Republic"
+      )
 
 MESSAGE="🔐 VPN connection success
-From: $IP
-<pre>$(curl -s http://ip-api.com/json/${IP} | jq)</pre>
-Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
 "
-/usr/local/bin/tgbot_notify.sh "$MESSAGE"
+if ( [[ ! " ${ALLOWED_COUNTRIES[*]} " =~ " ${COUNTRY} " ]] || [[ ! " ${ALLOWED_REGIONS[*]} " =~ " ${REGION} " ]] ); then
+MESSAGE="⚠️ Suspicious VPN login
+"
+elif [[ -n "$IP_PREVIOUS" && "$IP_PREVIOUS" != "$IP_CURRENT" ]]; then
+MESSAGE="⚠️ VPN connection from different IP
+Previous IP: $IP_PREVIOUS
+<pre>$(echo "$PREVIOUS_IP_INFO" | jq)</pre>
+"
+fi
+MESSAGE+="From: $IP
+<pre>$(echo "$IP_INFO" | jq)</pre>
+Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
+Location: <a href='https://2gis.ru/geo/$LON%2C$LAT'>2GIS</a> | <a href='https://maps.google.com/?q=$LAT,$LON'>Google Maps</a>
+"
+if [[ -n "$IP_PREVIOUS" && "$IP_PREVIOUS" != "$IP_CURRENT" ]]; then
+MESSAGE+="Previous location: <a href='https://2gis.ru/geo/$pLON%2C$pLAT'>2GIS</a> | <a href='https://maps.google.com/?q=$pLAT,$pLON'>Google Maps</a>"
+fi
 
-            WAS_ZERO[$PUBKEY]=0
-        fi
+      /usr/local/bin/tgbot_notify.sh "$MESSAGE"
 
-    done < <(wg show {{ wireguard_interface }} latest-handshakes)
+      if [[ "$IP" != "{{ home_ip }}" ]]; then
+      CITY=$(echo "$IP_INFO" | jq -r .city)
+      TIMEZONE=$(echo "$IP_INFO" | jq -r .timezone)
+      ORG="$(echo "$IP_INFO" | jq -r .as)"
+      echo "$(date --rfc-3339=seconds) $IP:$PORT \"$DEVICE_NAME\" $PUBKEY $VPN_IP $LAT,$LON \"$COUNTRY\" \"$REGION\" \"$CITY\" $TIMEZONE \"$ORG\"" >> $LOGFILE
+      fi
 
-    sleep 10
+      WAS_ZERO[$PUBKEY]=0
+      LAST_IP[$PUBKEY]=$IP_CURRENT
+    fi
+
+  done < <(wg_show latest-handshakes)
+
+  sleep 10
 done
