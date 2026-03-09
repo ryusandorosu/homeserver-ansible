@@ -3,10 +3,15 @@ bad_bot:
   - nikto
   - acunetix
   - dirbuster
+  - gobuster
+  - feroxbuster
   - masscan
   - nmap
   - zmap
   - zgrab
+  - ffuf
+  - dirsearch
+  - wpscan
 
 bad_bot_regex: "{{ bad_bot | join('|') }}"
 
@@ -17,12 +22,19 @@ tarpit:
   - \.sql
   - \.bak
   - \.old
+  - \.aws
+  - \.ssh
+  - \.kube
+  - \.docker
   - \.htaccess
   - wp-admin
   - wp-login
   - xmlrpc
   - phpmyadmin
+  - id_rsa
+  - vendor
   - wget
   - curl
+  - composer\.json
 
 tarpit_regex: "{{ tarpit | join('|') }}"

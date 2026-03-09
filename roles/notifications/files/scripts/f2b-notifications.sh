@@ -12,7 +12,9 @@ if grep -m 20 -awF $banned_ip /var/log/fail2ban.log | grep -aE "Restore Ban|alre
 
 BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 (( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d) days"
-[[ $jail_name == recidive ]] && BANTIME="ever"
+(( $bantime >= 2678400 )) && BANTIME=" $(date -d@$bantime -u +%_d) months"
+#[[ "$BANTIME" == "" ]] #need regex here to detect plural if there is 1
+(( $bantime == -1 )) && BANTIME="ever"
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures

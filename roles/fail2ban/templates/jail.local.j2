@@ -7,6 +7,8 @@ bantime.max = {{ fail2ban_bantime_max }}
 findtime = {{ fail2ban_findtime }}
 maxretry = {{ fail2ban_maxretry }}
 backend = {{ fail2ban_backend }}
+usedns = {{ fail2ban_usedns }}
+dbpurgeage = {{ fail2ban_dbpurgeage }}
 actionstart_on_demand = {{ fail2ban_actionstart_on_demand | lower }}
 {% if fail2ban_action is string %}
 action = {{ fail2ban_action }}
