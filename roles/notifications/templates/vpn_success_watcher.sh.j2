@@ -54,9 +54,9 @@ MESSAGE="🚨 UNKNOWN PEER CONNECTED: <code>$PUBKEY</code>
 MESSAGE="🔐 VPN connection success
 "; fi
 
-MESSAGE+="From: $IP
-<pre>$(echo "$IP_INFO" | jq)</pre>
+MESSAGE+="From: <code>$IP</code>
 Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
+<pre>$(echo "$IP_INFO" | jq)</pre>
 Location: <a href='https://2gis.ru/geo/$LON%2C$LAT'>2GIS</a> | <a href='https://maps.google.com/?q=$LAT,$LON'>Google Maps</a>
 "
 
@@ -81,6 +81,9 @@ MESSAGE+="⚠️ VPN connection from the different country
 "; fi
 if [[ ! " ${ALLOWED_REGIONS[*]} " =~ " ${REGION} " ]]; then
 MESSAGE+="⚠️ VPN connection from the different region
+"; fi
+if [[ ! " ${ALLOWED_ASN[*]} " =~ " ${ASN} " ]]; then
+MESSAGE+="⚠️ VPN connection from the different ASN
 "; fi
 
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
