@@ -13,7 +13,7 @@
     - "templates/*.j2"
   notify:
     - restart services
-    - ensure wireguard logs file exists
+    - ensure wireguard logs directory exists
     - ensure geo ip cache directory exists
 
 - name: Deploy systemd services

@@ -86,11 +86,11 @@ MESSAGE+="⚠️ VPN connection from the different region
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
 
 if [[ "$IP" != "{{ home_ip }}" ]]; then
+[[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}
 echo "$(date --rfc-3339=seconds) $ENDPOINT \"$DEVICE_NAME\" $PUBKEY $VPN_IP $LAT,$LON \"$COUNTRY\" \"$REGION\" \"$CITY\" $TIMEZONE \"$ASN\"" >> {{ wireguard_connections_log }}
 fi
 
 NEW_HANDSHAKE[$PUBKEY]=0
-LAST_IP[$PUBKEY]=$IP
 fi
 done < <(wg show {{ wireguard_interface }} dump | tail -n +2)
 

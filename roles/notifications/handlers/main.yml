@@ -10,10 +10,10 @@
   with_fileglob:
     - "files/systemd/*.service"
 
-- name: ensure wireguard logs file exists
+- name: ensure wireguard logs directory exists
   file:
-    path: "{{ wireguard_connections_log }}"
-    state: touch
+    path: "{{ wireguard_connections_log | dirname }}"
+    state: directory
 
 - name: ensure geo ip cache directory exists
   file:
