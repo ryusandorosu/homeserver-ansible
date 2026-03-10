@@ -22,7 +22,7 @@ length=${#MESSAGE}
 {% endraw %}
 
 if (( length > 4096 )); then
-  MESSAGE="$(echo "$MESSAGE" | cut -d'<pre>' -f1)"
+  MESSAGE="$(awk -F'<pre>' '{print $1}' <<< "$MESSAGE")"
   MESSAGE+="\nAttention: $length>4096 symbols in message, posted without log
 watch log: grep -m NUM -awF IP LOGPATH | tail -n NUM"
 fi
