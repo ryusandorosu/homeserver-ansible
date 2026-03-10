@@ -19,3 +19,8 @@
   file:
     path: "{{ geo_ip_cache }}"
     state: directory
+
+- name: ensure telegram bot log directory exists
+  file:
+    path: "{{ telegram_bot_log }}"
+    state: directory

@@ -15,6 +15,7 @@
     - restart services
     - ensure wireguard logs directory exists
     - ensure geo ip cache directory exists
+    - ensure telegram bot log directory exists
 
 - name: Deploy systemd services
   copy:

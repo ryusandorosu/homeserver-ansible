@@ -1,25 +1,50 @@
 #!/bin/bash
 
-MESSAGE=$(printf "%s" "$1")
+CALLER=$(basename ${BASH_SOURCE[1]})
+PARSE_MODE=$2
+[[ -z "$2" ]] && PARSE_MODE=HTML
+
+#"%s" in printf OR --data-urlencode "text=..." instead of -d in curl
+if [[ "$PARSE_MODE" == HTML ]]; then
+MESSAGE=$(
+  printf "$1" | \
+  sed -e 's/&/\&amp;/g' \
+      -e 's/</\&lt;/g' \
+      -e 's/>/\&gt;/g'
+)
+elif [[ "$PARSE_MODE" == Markdown* ]]; then
+MESSAGE=$(
+  printf "$1" | \
+  sed 's/[_*[\]()~`>#+-=|{}.!]/\\&/g'
+)
+fi
+
+length=${#MESSAGE}
+#length=$(echo -n "${MESSAGE}" | wc -m)
+
+if (( length > 4096 )); then
+  MESSAGE="${MESSAGE:0:4000}... Attention: $length>4096 symbols in message"
+fi
 
 MAX_RETRIES=15
 RETRY_DELAY=2
 
 for ((i=1; i<=MAX_RETRIES; i++)); do
-    response=$(
-	curl -s -o /dev/null -w "%{http_code}" \
-        -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
-        -d chat_id="{{ vault_telegram_chat_id }}" \
-        -d text="${MESSAGE}" \
-	      -d parse_mode="HTML"
-    )
+#-o /dev/null -w "%{http_code}" to receive only http code
+  response=$(
+	curl -s \
+      -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
+      --data-urlencode "text=${MESSAGE}" \
+      -d chat_id="{{ vault_telegram_chat_id }}" \
+      -d parse_mode="$PARSE_MODE"
+  )
 
-    if [ "$response" = "200" ]; then
-        exit 0
-    fi
-    echo "$response"
+  response_code=$(echo $response | jq .error_code)
+  [[ "$response_code" = "200" ]] && exit 0
+  echo "$response"
 
-    sleep $RETRY_DELAY
+  sleep $RETRY_DELAY
 done
+echo "$(date --rfc-3339=seconds) $CALLER $length $(echo $response | jq .ok) $response_code \"$(echo $response | jq .description)\"" >> {{ telegram_bot_log }}
 
 exit 1
