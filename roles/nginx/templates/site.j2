@@ -55,6 +55,7 @@ server {
 
     location ~* ({{ tarpit_regex }}) {
         limit_req zone=tarpit burst=1;
+        return 444;
     }
 
 }

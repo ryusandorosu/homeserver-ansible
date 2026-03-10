@@ -2,10 +2,17 @@ flush ruleset
 
 table inet filter {
 
-    set blacklist {
-        type ipv4_addr
-        flags interval,timeout
+{% for set in inet_filter_sets %}
+    set {{ set.name }} {
+{% for key, value in set.items() if key not in ['name'] %}
+{% if value is string %}
+        {{ key }} {{ value }}
+{% else %}
+        {{ key }} {{ value | join(',') }}
+{% endif %}
+{% endfor %}
     }
+{% endfor %}
 
     chain input {
         type filter hook input priority 0;
@@ -14,7 +21,10 @@ table inet filter {
         ct state established,related accept
         iif lo accept
 
-        ip saddr @blacklist drop
+        ip saddr @whitelist accept
+{% for set in inet_filter_sets if set.name != "whitelist" %}
+        ip saddr @{{ set.name }} drop
+{% endfor %}
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
 {% for port in firewall_tcp_ports %}{% if port != sshd_port %}
