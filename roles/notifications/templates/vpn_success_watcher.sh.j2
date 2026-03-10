@@ -1,99 +1,111 @@
 #!/bin/bash
 . /usr/local/bin/get_ip_geo.sh
 
-declare -A PEER_NAMES
+declare -A peer_names
 {% for peer in wireguard_peers %}
-PEER_NAMES["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
+peer_names["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
 {% endfor %}
 
-ALLOWED_COUNTRIES=(
+allowed_countries=(
 {% for country in allowed_countries %}
   "{{ country }}"
 {% endfor %}
 )
-ALLOWED_REGIONS=(
+allowed_regions=(
 {% for region in allowed_regions %}
   "{{ region }}"
 {% endfor %}
 )
-ALLOWED_ASN=(
+allowed_asn=(
 {% for asn in allowed_asn %}
   "{{ asn }}"
 {% endfor %}
 )
+not_allowed_flag=false
 
-declare -A NEW_HANDSHAKE
+declare -A new_handshake
 
 while true; do
 while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
 
 if [[ "$EPOCH" == "0" ]]; then
-  NEW_HANDSHAKE[$PUBKEY]=1
+  new_handshake[$PUBKEY]=1
   continue
 fi
 
-if [[ "${NEW_HANDSHAKE[$PUBKEY]}" == "1" ]]; then
+if [[ "${new_handshake[$PUBKEY]}" == "1" ]]; then
 
-IP="${ENDPOINT%:*}"
-PORT="${ENDPOINT#*:}"
-VPN_IP="${ALLOWED%%/*}"
-DEVICE_NAME="${PEER_NAMES[$PUBKEY]}"
+ip="${ENDPOINT%:*}"
+port="${ENDPOINT#*:}"
+vpn_ip="${ALLOWED%%/*}"
+device_name="${peer_names[$PUBKEY]}"
 
-IP_INFO="$(get_ip_geo $IP)"
-COUNTRY=$(echo "$IP_INFO" | jq -r .country)
-REGION=$(echo "$IP_INFO" | jq -r .regionName)
-CITY=$(echo "$IP_INFO" | jq -r .city)
-TIMEZONE=$(echo "$IP_INFO" | jq -r .timezone)
-ASN="$(echo "$IP_INFO" | jq -r .as)"
-LAT=$(echo "$IP_INFO" | jq -r .lat)
-LON=$(echo "$IP_INFO" | jq -r .lon)
+ip_info="$(get_ip_geo $ip)"
+country=$(echo "$ip_info" | jq -r .country)
+region=$(echo "$ip_info" | jq -r .regionName)
+city=$(echo "$ip_info" | jq -r .city)
+timezone=$(echo "$ip_info" | jq -r .timezone)
+asn="$(echo "$ip_info" | jq -r .as)"
+lat=$(echo "$ip_info" | jq -r .lat)
+lon=$(echo "$ip_info" | jq -r .lon)
 
-if [[ -z "$DEVICE_NAME" ]]; then
+if [[ -z "$device_name" ]]; then
 MESSAGE="🚨 UNKNOWN PEER CONNECTED: <code>$PUBKEY</code>
 "; else
 MESSAGE="🔐 VPN connection success
 "; fi
 
-MESSAGE+="From: <code>$IP</code>
-Device: <b>$DEVICE_NAME</b> as <code>$VPN_IP</code>
-<pre>$(echo "$IP_INFO" | jq)</pre>
-Location: <a href='https://2gis.ru/geo/$LON%2C$LAT'>2GIS</a> | <a href='https://maps.google.com/?q=$LAT,$LON'>Google Maps</a>
+MESSAGE+="From: <code>$ip</code>
+Device: <b>$device_name</b> as <code>$vpn_ip</code>
+<pre>$(echo "$ip_info" | jq)</pre>
+Location: <a href='https://2gis.ru/geo/$lon%2C$lat'>2GIS</a> | <a href='https://maps.google.com/?q=$lat,$lon'>Google Maps</a>
 "
 
-if [[ -f {{ wireguard_connections_log }} ]]; then
-PREV_IP=$(grep "$PUBKEY" {{ wireguard_connections_log }} | tail -n1 | awk '{print $3}' | cut -d: -f1 )
-fi
-if [[ -n "$PREV_IP" && "$PREV_IP" != "$IP" ]]; then
-PREV_IP_INFO="$(get_ip_geo $PREV_IP)"
-pASN="$(echo "$IP_INFO" | jq -r .as)"
-pLAT=$(echo "$PREV_IP_INFO" | jq -r .lat)
-pLON=$(echo "$PREV_IP_INFO" | jq -r .lon)
-
-[[ "$pASN" != "$ASN" ]] && MESSAGE+="⚠️ ASN changed"
-MESSAGE+="⚠️ VPN connection from different IP
-Previous IP: $PREV_IP
-<pre>$(echo "$PREV_IP_INFO" | jq)</pre>
-Previous location: <a href='https://2gis.ru/geo/$pLON%2C$pLAT'>2GIS</a> | <a href='https://maps.google.com/?q=$pLAT,$pLON'>Google Maps</a>
-"; fi
-
-if [[ ! " ${ALLOWED_COUNTRIES[*]} " =~ " ${COUNTRY} " ]]; then
+if [[ ! " ${allowed_countries[*]} " =~ " ${country} " ]]; then
 MESSAGE+="⚠️ VPN connection from the different country
-"; fi
-if [[ ! " ${ALLOWED_REGIONS[*]} " =~ " ${REGION} " ]]; then
+"; not_allowed_flag=true; fi
+if [[ ! " ${allowed_regions[*]} " =~ " ${region} " ]]; then
 MESSAGE+="⚠️ VPN connection from the different region
-"; fi
-if [[ ! " ${ALLOWED_ASN[*]} " =~ " ${ASN} " ]]; then
+"; not_allowed_flag=true; fi
+if [[ ! " ${allowed_asn[*]} " =~ " ${asn} " ]]; then
 MESSAGE+="⚠️ VPN connection from the different ASN
+"; not_allowed_flag=true; fi
+
+if [[ -f {{ wireguard_connections_log }} ]]; then
+prev_ip=$(grep "$PUBKEY" {{ wireguard_connections_log }} | tail -n1 | awk '{print $3}' | cut -d: -f1 )
+fi
+
+if [[ -n "$prev_ip" && "$prev_ip" != "$ip" ]]; then
+prev_ip_info="$(get_ip_geo $prev_ip)"
+prev_asn="$(echo "$ip_info" | jq -r .as)"
+prev_lat=$(echo "$prev_ip_info" | jq -r .lat)
+prev_lon=$(echo "$prev_ip_info" | jq -r .lon)
+
+if [[ "$not_allowed_flag" == false ]]; then
+[[ "$prev_asn" != "$asn" ]] && MESSAGE+="ASN changed
+"
+MESSAGE+="VPN connection from different IP
+Previous IP: <code>$prev_ip</code>
+"
+elif [[ "$not_allowed_flag" == true ]]; then
+[[ "$prev_asn" != "$asn" ]] && MESSAGE+="⚠️ ASN changed
+"
+MESSAGE+="⚠️ VPN connection from different IP
+Previous IP: <code>$prev_ip</code>
+<pre>$(echo "$prev_ip_info" | jq)</pre>
+Previous location: <a href='https://2gis.ru/geo/$prev_lon%2C$prev_lat'>2GIS</a> | <a href='https://maps.google.com/?q=$prev_lat,$prev_lon'>Google Maps</a>
 "; fi
+
+fi
 
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
 
-if [[ "$IP" != "{{ home_ip }}" ]]; then
+if [[ "$ip" != "{{ home_ip }}" ]]; then
 [[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}
-echo "$(date --rfc-3339=seconds) $ENDPOINT \"$DEVICE_NAME\" $PUBKEY $VPN_IP $LAT,$LON \"$COUNTRY\" \"$REGION\" \"$CITY\" $TIMEZONE \"$ASN\"" >> {{ wireguard_connections_log }}
+echo "$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\"" >> {{ wireguard_connections_log }}
 fi
 
-NEW_HANDSHAKE[$PUBKEY]=0
+new_handshake[$PUBKEY]=0
 fi
 done < <(wg show {{ wireguard_interface }} dump | tail -n +2)
 
