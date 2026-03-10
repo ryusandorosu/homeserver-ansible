@@ -33,7 +33,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   echo "$response"
   [[ -z {{ telegram_bot_log }} ]] && touch {{ telegram_bot_log }}
-  echo "$(date --rfc-3339=seconds) \"$CALLER\" ${#MESSAGE} $response" >> {{ telegram_bot_log }}
+  echo "$(date --rfc-3339=seconds) \"$CALLER\" $(echo -n "${MESSAGE}" | wc -m) $response" >> {{ telegram_bot_log }}
 
   sleep $RETRY_DELAY
 done
