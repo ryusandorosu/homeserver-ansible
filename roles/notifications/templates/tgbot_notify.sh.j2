@@ -16,15 +16,17 @@ MESSAGE=$(
 )
 fi
 
-#length=$(echo -n "${MESSAGE}" | wc -m)
 {% raw %}
 length=${#MESSAGE}
 {% endraw %}
-
 if (( length > 4096 )); then
-  MESSAGE="$(awk '{sub(/<pre>.*/, ""); print}' <<< "$MESSAGE")"
-  MESSAGE+="\nAttention: $length>4096 symbols in message, posted without log
-watch log: grep -m NUM -awF IP LOGPATH | tail -n NUM"
+  MESSAGE="$(awk '/logpath/{exit} {print}' <<< "$MESSAGE")"
+{% raw %}
+awklength=${#MESSAGE}
+{% endraw %}
+  MESSAGE+="Attention: $length>4096 symbols in message, posted without log. length after awk: $awklength
+watch log: <code>grep -m NUM -awF IP LOGPATH | tail -n NUM</code>"
+printf "$MESSAGE"
 fi
 
 MAX_RETRIES=15

@@ -17,10 +17,20 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 [[ "$BANTIME" =~ ^\ 1\ (hours|days|months)$ ]] && BANTIME=${BANTIME%s}
 (( $bantime == -1 )) && BANTIME="ever"
 
+logtext="$(grep -m $loglines -awF $banned_ip $logpath | tail -n $loglines)"
+loglength=${#logtext}
+
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b> (debug: $bantime)
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 <pre>$(get_ip_geo $banned_ip | jq)</pre>
-logpath: <code>$logpath</code>
-<pre>$(grep -m $loglines -awF $banned_ip $logpath | grep -v ' sudo: ' | tail -n $loglines)</pre>"
+logpath: <code>$logpath</code>"
+
+if (( loglength > 3500 )); then
+logtext="${logtext:0:3500}"
+MESSAGE+="<pre>$logtext...</pre>
+log length: $loglength>3500"
+else
+MESSAGE+="<pre>$logtext</pre>"
+fi
 
 /usr/local/bin/tgbot_notify.sh "$MESSAGE"
