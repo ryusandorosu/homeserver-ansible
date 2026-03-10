@@ -26,9 +26,8 @@ failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 logpath: <code>$logpath</code>"
 
 if (( loglength > 3500 )); then
-logtext="${logtext:0:3500}"
-MESSAGE+="<pre>$logtext...</pre>
-log length: $loglength>3500"
+MESSAGE+="
+Posted without log because log length: $loglength>3500, so this message does not fit into 4096 symbols restriction"
 else
 MESSAGE+="<pre>$logtext</pre>"
 fi

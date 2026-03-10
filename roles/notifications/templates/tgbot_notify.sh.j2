@@ -16,24 +16,10 @@ MESSAGE=$(
 )
 fi
 
-{% raw %}
-length=${#MESSAGE}
-{% endraw %}
-if (( length > 4096 )); then
-  MESSAGE="$(awk '/logpath/{exit} {print}' <<< "$MESSAGE")"
-{% raw %}
-awklength=${#MESSAGE}
-{% endraw %}
-  MESSAGE+="Attention: $length>4096 symbols in message, posted without log. length after awk: $awklength
-watch log: <code>grep -m NUM -awF IP LOGPATH | tail -n NUM</code>"
-printf "$MESSAGE"
-fi
-
 MAX_RETRIES=15
 RETRY_DELAY=2
 
 for ((i=1; i<=MAX_RETRIES; i++)); do
-#-o /dev/null -w "%{http_code}" to receive only http code
   response=$(
 	curl -s \
       -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
@@ -47,7 +33,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   echo "$response"
   [[ -z {{ telegram_bot_log }} ]] && touch {{ telegram_bot_log }}
-  echo "$(date --rfc-3339=seconds) $CALLER $length $response" >> {{ telegram_bot_log }}
+  echo "$(date --rfc-3339=seconds) \"$CALLER\" ${#MESSAGE} $response" >> {{ telegram_bot_log }}
 
   sleep $RETRY_DELAY
 done
