@@ -35,7 +35,7 @@
   notify: restart fail2ban
 
 - name: Deploy custom fail2ban template actions
-  copy:
+  template:
     src: "{{ item }}"
     dest: "/etc/fail2ban/action.d/{{ item | basename | regex_replace('.j2','') }}"
     owner: root
@@ -46,7 +46,7 @@
   notify: restart fail2ban
 
 - name: Deploy custom fail2ban template filters
-  copy:
+  template:
     src: "{{ item }}"
     dest: "/etc/fail2ban/filter.d/{{ item | basename | regex_replace('.j2','') }}"
     owner: root
