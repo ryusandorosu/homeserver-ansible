@@ -1,6 +1,6 @@
 wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
 geo_ip_cache: /var/cache/telegram/
-telegram_bot_log: /var/log/telegram/
+telegram_bot_log: /var/log/telegram/bot_responses.log
 
 allowed_countries:
   - Russia
