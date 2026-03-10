@@ -86,6 +86,7 @@ if [[ "$not_allowed_flag" == false ]]; then
 "
 MESSAGE+="VPN connection from different IP
 Previous IP: <code>$prev_ip</code>
+Check log: <code>{{ wireguard_connections_log }}</code>
 "
 elif [[ "$not_allowed_flag" == true ]]; then
 [[ "$prev_asn" != "$asn" ]] && MESSAGE+="⚠️ ASN changed
@@ -94,6 +95,7 @@ MESSAGE+="⚠️ VPN connection from different IP
 Previous IP: <code>$prev_ip</code>
 <pre>$(echo "$prev_ip_info" | jq)</pre>
 Previous location: <a href='https://2gis.ru/geo/$prev_lon%2C$prev_lat'>2GIS</a> | <a href='https://maps.google.com/?q=$prev_lat,$prev_lon'>Google Maps</a>
+Check log: <code>{{ wireguard_connections_log }}</code>
 "; fi
 
 fi
