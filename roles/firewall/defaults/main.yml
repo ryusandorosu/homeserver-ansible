@@ -26,6 +26,6 @@ inet_filter_sets:
     type: ipv4_addr
     flags: interval
 
-  - name: geo_block
+  - name: asn_blacklist
     type: ipv4_addr
     flags: interval
