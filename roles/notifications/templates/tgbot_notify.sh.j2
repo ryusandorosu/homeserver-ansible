@@ -7,10 +7,7 @@ PARSE_MODE=$2
 #"%s" in printf OR --data-urlencode "text=..." instead of -d in curl
 if [[ "$PARSE_MODE" == HTML ]]; then
 MESSAGE=$(
-  printf "$1" | \
-  sed -e 's/&/\&amp;/g' \
-      -e 's/</\&lt;/g' \
-      -e 's/>/\&gt;/g'
+  printf "$1"
 )
 elif [[ "$PARSE_MODE" == Markdown* ]]; then
 MESSAGE=$(
@@ -19,8 +16,10 @@ MESSAGE=$(
 )
 fi
 
-length=${#MESSAGE}
 #length=$(echo -n "${MESSAGE}" | wc -m)
+{% raw %}
+length=${#MESSAGE}
+{% endraw %}
 
 if (( length > 4096 )); then
   MESSAGE="${MESSAGE:0:4000}... Attention: $length>4096 symbols in message"
@@ -39,8 +38,8 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
       -d parse_mode="$PARSE_MODE"
   )
 
-  response_code=$(echo $response | jq .error_code)
-  [[ "$response_code" = "200" ]] && exit 0
+  response_ok=$(echo $response | jq .ok)
+  [[ $response_ok = true ]] && exit 0
   echo "$response"
 
   sleep $RETRY_DELAY
