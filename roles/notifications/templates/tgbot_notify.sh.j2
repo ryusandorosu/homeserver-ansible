@@ -40,11 +40,12 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   response_ok=$(echo $response | jq .ok)
   [[ $response_ok = true ]] && exit 0
+
   echo "$response"
+  [[ -z {{ telegram_bot_log }} ]] && touch {{ telegram_bot_log }}
+  echo "$(date --rfc-3339=seconds) $CALLER $length $response" >> {{ telegram_bot_log }}
 
   sleep $RETRY_DELAY
 done
-[[ -z {{ telegram_bot_log }} ]] && touch {{ telegram_bot_log }}
-echo "$(date --rfc-3339=seconds) $CALLER $length ok=$response_ok error_code=$(echo $response | jq .error_code) \"$(echo $response | jq .description)\"" >> {{ telegram_bot_log }}
 
 exit 1
