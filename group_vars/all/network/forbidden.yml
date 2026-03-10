@@ -35,6 +35,17 @@ tarpit:
   - vendor
   - wget
   - curl
+  - owa
+  - ecp
+  - jdni
+  - autodiscover
+  - powershell
+  - actuator
+  - exchange
+  - microsoft.exchange
   - composer\.json
+  - 'ldap://'
+  - 'rmi://'
+  - 'dns://'
 
 tarpit_regex: "{{ tarpit | join('|') }}"
