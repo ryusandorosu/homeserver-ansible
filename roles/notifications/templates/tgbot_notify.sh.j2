@@ -22,7 +22,9 @@ length=${#MESSAGE}
 {% endraw %}
 
 if (( length > 4096 )); then
-  MESSAGE="${MESSAGE:0:4000}... Attention: $length>4096 symbols in message"
+  MESSAGE="$(echo "$MESSAGE" | cut -d'<pre>' -f1)"
+  MESSAGE+="\nAttention: $length>4096 symbols in message, posted without log
+watch log: grep -m NUM -awF IP LOGPATH | tail -n NUM"
 fi
 
 MAX_RETRIES=15
