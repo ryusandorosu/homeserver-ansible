@@ -44,7 +44,7 @@ fail2ban_jails:
   - name: nginx-404-scan
     enabled: true
     logpath: /var/log/nginx/*access.log
-    maxretry: 20
+    maxretry: 10
     findtime: 1m
     bantime: 1h
 

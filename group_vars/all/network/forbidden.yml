@@ -29,8 +29,11 @@ tarpit:
   - \.htaccess
   - wp-admin
   - wp-login
+  - wp-config
+  - wordpress
   - xmlrpc
   - phpmyadmin
+  - phpunit
   - id_rsa
   - vendor
   - wget
@@ -42,6 +45,8 @@ tarpit:
   - powershell
   - actuator
   - exchange
+  - adminer
+  - boaform
   - microsoft.exchange
   - composer\.json
   - 'ldap://'
