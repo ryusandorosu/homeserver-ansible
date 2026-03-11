@@ -12,8 +12,8 @@ loglines=20
 if grep -m $loglines -awF $banned_ip /var/log/fail2ban.log | grep -aE "Restore Ban|already banned"; then exit 0; fi
 
 BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
-(( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d) days"
-(( $bantime >= 2678400 )) && BANTIME=" $(date -d@$bantime -u +%_d) months"
+(( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d | sed 's/\ //') days"
+(( $bantime >= 2678400 )) && BANTIME=" $(date -d@$bantime -u +%_d | sed 's/\ //') months"
 [[ "$BANTIME" =~ ^\ 1\ (hours|days|months)$ ]] && BANTIME=${BANTIME%s}
 (( $bantime == -1 )) && BANTIME="ever"
 
@@ -27,7 +27,7 @@ logpath: <code>$logpath</code>"
 
 if (( loglength > 3500 )); then
 MESSAGE+="
-Posted without log because log length: $loglength>3500, so this message does not fit into 4096 symbols restriction"
+posted without log because of log length: $loglength>3500, so this message does not fit into 4096 symbols restriction"
 else
 MESSAGE+="<pre>$logtext</pre>"
 fi
