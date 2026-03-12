@@ -1,0 +1,97 @@
+- name: Install CrowdSec
+  apt:
+    name: crowdsec
+    state: present
+    update_cache: yes
+
+- name: Install firewall bouncer
+  apt:
+    name: crowdsec-firewall-bouncer-nftables
+    state: present
+    update_cache: yes
+
+- name: Ensure CrowdSec hub index is up to date
+  become: yes
+  command: cscli hub update
+
+- name: Ensure CrowdSec collections are present and up to date
+  become: yes
+  command: "cscli collections install crowdsecurity/{{ item }}"
+  loop: "{{ crowdsecurity_collections }}"
+  register: crowdsec_collections
+#  changed_when: "'Nothing to install or remove.' not in item.stdout"
+  changed_when: false
+  failed_when: false
+  notify: reload crowdsec
+
+- name: Ensure CrowdSec parsers are present and up to date
+  become: yes
+  command: "cscli parsers install crowdsecurity/{{ item }}"
+  loop: "{{ crowdsecurity_parsers }}"
+  register: crowdsec_parsers
+#  changed_when: "'Nothing to install or remove.' not in item.stdout"
+  changed_when: false
+  failed_when: false
+  notify: reload crowdsec
+
+- name: Check the engine enrollment
+  stat:
+    path: /etc/crowdsec/online_api_credentials.yaml
+  register: engine_enrolled
+
+- name: Enroll the engine
+  become: yes
+  command: cscli console enroll {{ vault_crowdsec_enrollment_key }}
+  when: not engine_enrolled.stat.exists
+
+- name: Ensure acquisitions directory exists
+  file:
+    path: /etc/crowdsec/acquis.d
+    state: directory
+    mode: '0755'
+
+- name: Deploy acquisitions
+  template:
+    src: "{{ item }}"
+    dest: "/etc/crowdsec/acquis.d/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - "templates/acquis.d/*.j2"
+  notify: restart crowdsec
+
+- name: Deploy telegram notifications config
+  template:
+    src: notifications/telegram.yaml.j2
+    dest: /etc/crowdsec/notifications/telegram.yaml
+  notify: restart crowdsec
+
+- name: Deploy crowdsec profiles config
+  template:
+    src: profiles.yaml.j2
+    dest: /etc/crowdsec/profiles.yaml
+  notify: restart crowdsec
+
+- name: Create custom profiles directory
+  file:
+    path: /etc/crowdsec/profiles.d
+    state: directory
+    mode: '0755'
+
+#by separate files
+#- name: Deploy custom profiles
+#  template:
+#    src: "{{ item }}"
+#    dest: "/etc/crowdsec/profiles.d/{{ item | basename | regex_replace('.j2','') }}"
+#  with_fileglob:
+#    - "templates/profiles.d/*.j2"
+#  notify: restart crowdsec
+
+#templated
+- name: Deploy custom profiles
+  template:
+    src: custom_profile.yaml.j2
+    dest: "/etc/crowdsec/profiles.d/{{ item.name }}.yaml"
+  loop: "{{ custom_profiles }}"
+  notify: restart crowdsec
+
+- import_tasks: appsec.yml
+  when: appsec_install

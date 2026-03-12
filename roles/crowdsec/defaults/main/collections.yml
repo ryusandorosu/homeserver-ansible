@@ -1,0 +1,24 @@
+crowdsecurity_collections:
+  - nginx
+  - linux
+  - sshd
+  - base-http-scenarios
+  - http-dos
+
+crowdsecurity_parsers:
+  - geoip-enrich
+  - sshd-logs
+  - sshd-success-logs
+  - syslog-logs
+  - http-logs
+  - nginx-logs
+  - smb-logs
+  - auditd
+#not installed yet:
+#  - blocklist-mirror
+#  - docker-logs
+#  - grafana-logs
+#  - nginx-proxy-manager-logs
+#  - synology-dsm-logs
+#  - tcpdump-logs
+#  - wireguard-logs

@@ -1,0 +1,60 @@
+# see https://docs.crowdsec.net/docs/next/local_api/notification_plugins/telegram/
+type: http
+name: telegram
+
+log_level: info
+
+#possibly put range meta inside of range events
+format: |
+ {
+  "chat_id": "878478706",
+
+  "text": "
+  [CrowdSec]
+  {{range . -}}
+  {{$alert := . -}}
+
+  {{range .Decisions -}}
+  Scenario: {{.Scenario}}
+  Decision: {{.Type}}
+  IP: {{.Value}}
+  Duration: {{.Duration}}
+  {{end -}}
+
+  {{range .Events -}}
+  Events:
+  {{.Line.Raw}}
+  {{end -}}
+
+  {{range .Meta -}}
+  Meta:
+  {{.Key}} = {{.Value}}
+  {{end -}}
+
+  {{end -}}
+  ",
+
+  "reply_markup": {
+  "inline_keyboard": [
+   {{ $arrLength := len . -}}
+   {{ range $i, $value := . -}}
+   {{ $V := $value.Source.Value -}}
+   [
+    {
+     "text": "Check IP: shodan.io",
+     "url": "https://www.shodan.io/host/{{ $V -}}"
+    },
+    {
+     "text": "Check IP: crowdsec.net",
+     "url": "https://app.crowdsec.net/cti/{{ $V -}}"
+    }
+   ]{{if lt $i ( sub $arrLength 1) }},{{end }}
+   {{end -}}
+  ]
+ }
+
+url: https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage
+
+method: POST
+headers:
+  Content-Type: "application/json"

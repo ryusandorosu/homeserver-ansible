@@ -1,0 +1,20 @@
+blacklist_asn_ids:
+#Microsoft Azure Cloud
+  - 8075
+#DigitalOcean
+  - 14061
+#Alibaba Cloud
+  - 45102
+#Telegram Messenger
+  - 62041
+#Tcloudnet
+  - 399077
+#Tencent
+  - 132203
+
+blacklist_asn_names:
+  - Alibaba
+  - DigitalOcean
+  - Telegram Messenger
+  - Tcloudnet
+  - Tencent

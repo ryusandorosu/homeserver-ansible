@@ -1,0 +1,40 @@
+- name: Install nginx bouncer dependencies
+  apt:
+    name:
+      - lua5.1
+      - libnginx-mod-http-lua
+      - luarocks
+      - gettext-base
+      - lua-cjson
+    state: present
+    update_cache: yes
+
+- name: Install nginx bouncer
+  apt:
+    name: crowdsec-nginx-bouncer
+    state: present
+    update_cache: yes
+
+- name: Ensure AppSec collections are present
+  become: yes
+  command: "cscli collections install crowdsecurity/appsec-{{ item }}"
+  loop: "{{ appsecurity_collections }}"
+  register: appsec_collections
+#  changed_when: "'Nothing to install or remove.' not in item.stdout"
+  changed_when: false
+  failed_when: false
+  notify: reload crowdsec
+
+- name: Ensure bouncers directory exists
+  file:
+    path: /etc/crowdsec/bouncers
+    state: directory
+    mode: '0755'
+
+- name: Deploy bouncers configs
+  template:
+    src: "{{ item }}"
+    dest: "/etc/crowdsec/bouncers/{{ item | basename | regex_replace('.j2','.local') }}"
+  with_fileglob:
+    - "templates/bouncers/*.j2"
+  notify: restart crowdsec

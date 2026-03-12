@@ -1,0 +1,18 @@
+---
+name: ban_asn_by_name
+filters:
+#{% if blacklist_asn_names is string %}
+#  - Alert.Source.ASName contains "{{ blacklist_asn_names }}"
+#{% elif blacklist_asn_names|length == 1 %}
+#  - Alert.Source.ASName contains "{{ blacklist_asn_names | first }}"
+#{% else %}
+{% for asn in blacklist_asn_names %}
+  - Alert.Source.ASName contains "{{ asn }}"
+{% endfor %}
+#{% endif %}
+decisions:
+  - type: ban
+    duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * {{ ban_duration_factor }})
+notifications:
+  - telegram
+on_success: break

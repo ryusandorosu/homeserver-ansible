@@ -1,0 +1,26 @@
+#---
+#name: {{ custom_profiles.name }}
+#filters:
+#  - {{ custom_profiles.filter }}
+#decisions:
+#  - type: ban
+#    duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * {{ ban_duration_factor }})
+#notifications:
+#  - telegram
+#on_success: break
+---
+name: {{ item.name }}
+filters:
+{% if item.operator == "contains" %}
+{% for val in item.values %}
+  - {{ item.field }} {{ item.operator }} {{ val }}
+{% endfor %}
+{% else %}
+  - {{ item.field }} {{ item.operator }} {{ item.values }}
+{% endif %}
+decisions:
+  - type: ban
+    duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * {{ ban_duration_factor }})
+notifications:
+  - telegram
+on_success: break

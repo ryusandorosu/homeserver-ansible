@@ -1,0 +1,23 @@
+ban_duration_factor: 16
+
+#custom_profiles:
+#  - name: asname_remedation
+#    filter: Alert.Source.ASName contains {{ blacklist_asn_names }}
+#  - name: asnumber_remedation
+#    filter: Alert.Source.ASNumber in {{ blacklist_asn_ids }}
+#  - name: country_remedation
+#    filter: Alert.Source.Country in {{ blacklist_countries }}
+
+custom_profiles:
+  - name: asname_remedation
+    field: Alert.Source.ASName
+    operator: contains
+    values: "{{ blacklist_asn_names }}"
+  - name: asnumber_remedation
+    field: Alert.Source.ASNumber
+    operator: in
+    values: "{{ blacklist_asn_ids }}"
+  - name: country_remedation
+    field: Alert.Source.Country
+    operator: in
+    values: "{{ blacklist_countries }}"

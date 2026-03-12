@@ -1,0 +1,18 @@
+blacklist_countries:
+  - CN
+  - VN
+  - ID
+  - PK
+  - CL
+  - HK
+  - CO
+  - IN
+  - MY
+  - BR
+  - EC
+  - AR
+  - BD
+  - KR
+  - TN
+  - NG
+  - TW
