@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/get_ip_geo.sh
+. /usr/local/bin/get-ip-geo.sh
 
 declare -A peer_names
 {% for peer in wireguard_peers %}
@@ -100,7 +100,7 @@ Check log: <code>{{ wireguard_connections_log }}</code>
 
 fi
 
-/usr/local/bin/tgbot_notify.sh "$MESSAGE"
+/usr/local/bin/telegram.sh "$MESSAGE" status "$0"
 
 if [[ "$ip" != "{{ home_ip }}" ]]; then
 [[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}

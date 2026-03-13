@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/android-connection-watcher.sh
+ExecStart=/usr/local/bin/android-watcher.sh
 Restart=always
 User=root
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/get_ip_geo.sh
+. /usr/local/bin/get-ip-geo.sh
 jail_name="$1"
 banned_ip="$2"
 logpath="$3"
@@ -32,4 +32,4 @@ else
 MESSAGE+="<pre>$logtext</pre>"
 fi
 
-/usr/local/bin/tgbot_notify.sh "$MESSAGE"
+/usr/local/bin/telegram.sh "$MESSAGE" alert "$0"

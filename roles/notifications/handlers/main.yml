@@ -22,5 +22,5 @@
 
 - name: ensure telegram bot log directory exists
   file:
-    path: "{{ telegram_bot_log | dirname }}"
+    path: "{{ telegram_bot_logs | dirname }}"
     state: directory

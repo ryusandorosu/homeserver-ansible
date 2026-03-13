@@ -3,7 +3,7 @@ Description=WireGuard Telegram Notifier
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/vpn_success_watcher.sh
+ExecStart=/usr/local/bin/vpn-success-watcher.sh
 Restart=always
 
 [Install]

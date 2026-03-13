@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/get_ip_geo.sh
+. /usr/local/bin/get-ip-geo.sh
 
 journalctl -fu ssh.service -fu sshd.service | while read line; do
 
@@ -12,7 +12,7 @@ if [[ "$ip" != "{{ home_ip }}" ]]; then
 MESSAGE+="geoip: <pre>$(echo $(get_ip_geo $ip) | jq)</pre>"
 fi
 
-/usr/local/bin/tgbot_notify.sh "$MESSAGE"
+/usr/local/bin/telegram.sh "$MESSAGE" status "$0"
 fi
 
 done

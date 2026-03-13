@@ -3,7 +3,7 @@ Description=SSH Success Login Watcher
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/ssh_success_watcher.sh
+ExecStart=/usr/local/bin/ssh-success-watcher.sh
 Restart=always
 User=root
 
