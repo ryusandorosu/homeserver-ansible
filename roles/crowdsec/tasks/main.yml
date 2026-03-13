@@ -78,6 +78,14 @@
   loop: "{{ custom_profiles | dict2items }}"
   notify: restart crowdsec
 
+- name: Deploy custom scenarios
+  template:
+    src: "{{ item }}"
+    dest: "/etc/crowdsec/scenarios/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - "templates/scenarios/*.j2"
+  notify: restart crowdsec
+
 - import_tasks: appsec.yml
   when: appsec_install
 
