@@ -1,13 +1,12 @@
 #!/bin/bash
 
-if [[ "$2" == alert ]]; then
+TYPE=$2
+if [[ "$TYPE" == alert ]]; then
   TOKEN="{{ vault_telegram_alert_bot_token }}"
-  CHAT="{{ vault_telegram_alert_chat_id }}"
-elif [[ "$2" == status ]]; then
+elif [[ "$TYPE" == status ]]; then
   TOKEN="{{ vault_telegram_status_bot_token }}"
-  CHAT="{{ vault_telegram_status_chat_id }}"
 else
-  echo "usage: $(basename $0) message \"\$0\" alert|status"
+  echo "usage: $(basename $0) \"message\" alert|status \"\$0\""
   exit 1
 fi
 
@@ -39,12 +38,12 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   response=$(
 	curl -s \
     -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
-    -d chat_id="$CHAT" \
+    -d chat_id="{{ vault_telegram_user_chat_id }}" \
     -d text="${MESSAGE}" \
     -d parse_mode="$PARSE_MODE"
   )
 
-  logline="$(date --rfc-3339=seconds) $CALLER $3 $(echo -n "${MESSAGE}" | wc -m) $i $response"
+  logline="$(date --rfc-3339=seconds) $CALLER $TYPE $(echo -n "${MESSAGE}" | wc -m) $i $response"
   response_ok=$(echo $response | jq .ok)
 
   if [[ $response_ok = true ]]; then
