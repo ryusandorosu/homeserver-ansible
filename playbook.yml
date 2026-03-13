@@ -41,6 +41,7 @@
       - cockpit
       - vim
       - zsh
+      - docker
 
   tasks:
     - name: Include roles dynamically
