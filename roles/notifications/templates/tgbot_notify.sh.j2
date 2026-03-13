@@ -1,13 +1,13 @@
 #!/bin/bash
 
-CALLER=$(basename ${BASH_SOURCE[1]})
+CALLER=$(ps -o args= -p "$PPID" | awk '{print $1}')
 PARSE_MODE=$2
 [[ -z "$2" ]] && PARSE_MODE=HTML
 
 #"%s" in printf OR --data-urlencode "text=..." instead of -d in curl
 if [[ "$PARSE_MODE" == HTML ]]; then
 MESSAGE=$(
-  printf "$1"
+  printf "%s" "$1"
 )
 elif [[ "$PARSE_MODE" == Markdown* ]]; then
 MESSAGE=$(
@@ -22,10 +22,10 @@ RETRY_DELAY=2
 for ((i=1; i<=MAX_RETRIES; i++)); do
   response=$(
 	curl -s \
-      -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
-      --data-urlencode "text=${MESSAGE}" \
-      -d chat_id="{{ vault_telegram_chat_id }}" \
-      -d parse_mode="$PARSE_MODE"
+    -X POST "https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage" \
+    -d chat_id="{{ vault_telegram_chat_id }}" \
+    -d text="${MESSAGE}" \
+    -d parse_mode="$PARSE_MODE"
   )
 
   response_ok=$(echo $response | jq .ok)

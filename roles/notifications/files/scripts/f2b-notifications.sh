@@ -20,7 +20,7 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 logtext="$(grep -m $loglines -awF $banned_ip $logpath | tail -n $loglines)"
 loglength=${#logtext}
 
-MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b> (debug: $bantime)
+MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 <pre>$(get_ip_geo $banned_ip | jq)</pre>
 logpath: <code>$logpath</code>"
