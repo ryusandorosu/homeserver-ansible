@@ -11,25 +11,21 @@
     update_cache: yes
 
 - name: Ensure CrowdSec hub index is up to date
-  become: yes
   command: cscli hub update
+  changed_when: false
 
 - name: Ensure CrowdSec collections are present and up to date
-  become: yes
   command: "cscli collections install crowdsecurity/{{ item }}"
   loop: "{{ crowdsecurity_collections }}"
   register: crowdsec_collections
-#  changed_when: "'Nothing to install or remove.' not in item.stdout"
   changed_when: false
   failed_when: false
   notify: reload crowdsec
 
 - name: Ensure CrowdSec parsers are present and up to date
-  become: yes
   command: "cscli parsers install crowdsecurity/{{ item }}"
   loop: "{{ crowdsecurity_parsers }}"
   register: crowdsec_parsers
-#  changed_when: "'Nothing to install or remove.' not in item.stdout"
   changed_when: false
   failed_when: false
   notify: reload crowdsec
@@ -40,7 +36,6 @@
   register: engine_enrolled
 
 - name: Enroll the engine
-  become: yes
   command: cscli console enroll {{ vault_crowdsec_enrollment_key }}
   when: not engine_enrolled.stat.exists
 
@@ -76,22 +71,20 @@
     state: directory
     mode: '0755'
 
-#by separate files
-#- name: Deploy custom profiles
-#  template:
-#    src: "{{ item }}"
-#    dest: "/etc/crowdsec/profiles.d/{{ item | basename | regex_replace('.j2','') }}"
-#  with_fileglob:
-#    - "templates/profiles.d/*.j2"
-#  notify: restart crowdsec
-
-#templated
 - name: Deploy custom profiles
   template:
-    src: custom_profile.yaml.j2
-    dest: "/etc/crowdsec/profiles.d/{{ item.name }}.yaml"
-  loop: "{{ custom_profiles }}"
+    src: profiles.d/custom_profile.yaml.j2
+    dest: "/etc/crowdsec/profiles.d/{{ item.key }}.yaml"
+  loop: "{{ custom_profiles | dict2items }}"
   notify: restart crowdsec
 
 - import_tasks: appsec.yml
   when: appsec_install
+
+- name: Validate CrowdSec config
+  command: crowdsec -c /etc/crowdsec/config.yaml -t
+  changed_when: false
+
+- name: Check CrowdSec service health
+  command: cscli metrics
+  changed_when: false

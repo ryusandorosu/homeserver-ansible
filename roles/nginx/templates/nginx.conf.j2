@@ -28,11 +28,16 @@ http {
           ~*({{ bad_bot_regex }}) 1;
         }
 
+        # AppSec requirement
+        include /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf;
+
         client_max_body_size 10M;
         # Rate limit
         limit_req_zone $binary_remote_addr zone=global:10m rate=10r/s;
         limit_req_zone $binary_remote_addr zone=tarpit:10m rate=1r/m;
         limit_req_status 429;
+
+        # / Custom settings
 
         # server_names_hash_bucket_size 64;
         # server_name_in_redirect off;

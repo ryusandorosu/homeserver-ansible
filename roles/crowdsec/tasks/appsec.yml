@@ -16,11 +16,9 @@
     update_cache: yes
 
 - name: Ensure AppSec collections are present
-  become: yes
   command: "cscli collections install crowdsecurity/appsec-{{ item }}"
   loop: "{{ appsecurity_collections }}"
   register: appsec_collections
-#  changed_when: "'Nothing to install or remove.' not in item.stdout"
   changed_when: false
   failed_when: false
   notify: reload crowdsec

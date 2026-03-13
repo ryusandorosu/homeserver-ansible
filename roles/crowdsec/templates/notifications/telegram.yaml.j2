@@ -8,7 +8,7 @@ log_level: info
 format: |
  {
   "chat_id": "878478706",
-
+{% raw %}
   "text": "
   [CrowdSec]
   {{range . -}}
@@ -52,6 +52,7 @@ format: |
    {{end -}}
   ]
  }
+{% endraw %}
 
 url: https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage
 

@@ -4,8 +4,8 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 decisions:
  - type: ban
-   duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * {{ ban_duration_factor }})
-#duration: 4h
+   duration: 4h
+#   duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 # notifications:
 #   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 #   - splunk_default # Set the splunk url and token in /etc/crowdsec/notifications/splunk.yaml before enabling this.
@@ -21,8 +21,8 @@ filters:
  - Alert.Remediation == true && Alert.GetScope() == "Range"
 decisions:
  - type: ban
-   duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * {{ ban_duration_factor }})
-#duration: 4h
+   duration: 4h
+#   duration_expr: Sprintf('%dh', (GetDecisionsCount(Alert.GetValue()) + 1) * 4)
 # notifications:
 #   - slack_default  # Set the webhook in /etc/crowdsec/notifications/slack.yaml before enabling this.
 #   - splunk_default # Set the splunk url and token in /etc/crowdsec/notifications/splunk.yaml before enabling this.
@@ -31,3 +31,4 @@ decisions:
 notifications:
   - telegram
 on_success: break
+
