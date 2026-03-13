@@ -28,8 +28,10 @@ http {
           ~*({{ bad_bot_regex }}) 1;
         }
 
+{% if appsec_install %}
         # AppSec requirement
         include /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf;
+{% endif %}
 
         client_max_body_size 10M;
         # Rate limit
