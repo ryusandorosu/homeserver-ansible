@@ -21,16 +21,6 @@ format: |
   Duration: {{.Duration}}
   {{end -}}
 
-  {{range .Events -}}
-  Events:
-  {{.Line.Raw}}
-  {{end -}}
-
-  {{range .Meta -}}
-  Meta:
-  {{.Key}} = {{.Value}}
-  {{end -}}
-
   {{end -}}
   ",
 
