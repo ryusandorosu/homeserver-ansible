@@ -24,6 +24,7 @@ tarpit:
   - \.old
   - \.aws
   - \.ssh
+  - \.svn
   - \.kube
   - \.docker
   - \.htaccess
@@ -41,6 +42,7 @@ tarpit:
   - owa
   - ecp
   - jdni
+  - cgi-bin
   - autodiscover
   - powershell
   - actuator

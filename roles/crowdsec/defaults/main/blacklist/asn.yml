@@ -11,6 +11,10 @@ blacklist_asn_ids:
   - 399077
 #Tencent
   - 132203
+#Byteplus
+  - 150436
+#Proton66
+  - 198953
 
 blacklist_asn_names:
   - Alibaba
@@ -18,3 +22,5 @@ blacklist_asn_names:
   - Telegram Messenger
   - Tcloudnet
   - Tencent
+  - Byteplus
+  - Proton66
