@@ -4,6 +4,9 @@ description: "Detect traffic from blacklisted ASN"
 
 filter: |
   evt.Meta.ASNumber in {{ blacklist_asn_ids | map('string') | to_json }}
+{% for name in blacklist_asn_names %}
+  or evt.Meta.ASName contains "{{ name }}"
+{% endfor %}
 
 groupby: evt.Meta.source_ip
 
