@@ -3,7 +3,7 @@ name: custom/asn-blacklist
 description: "Detect traffic from blacklisted ASN"
 
 filter: |
-  evt.Meta.ASNumber in {{ blacklist_asn_ids }}
+  evt.Meta.ASNumber in {{ blacklist_asn_ids | map('string') | to_json }}
 
 groupby: evt.Meta.source_ip
 
