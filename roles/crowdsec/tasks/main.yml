@@ -39,6 +39,13 @@
   command: cscli console enroll {{ vault_crowdsec_enrollment_key }}
   when: not engine_enrolled.stat.exists
 
+#sudo cscli lapi register
+- name: Validate pending CrowdSec machine
+  shell: |
+    cscli machines list -o json \
+    | jq -r '.[] | select(.isValidated == false) | .machineId' \
+    | xargs -r -n1 cscli machines validate
+
 - name: Ensure acquisitions directory exists
   file:
     path: /etc/crowdsec/acquis.d
