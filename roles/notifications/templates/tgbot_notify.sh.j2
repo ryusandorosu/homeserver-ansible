@@ -4,7 +4,6 @@ CALLER=$(ps -o args= -p "$PPID" | awk '{print $1}')
 PARSE_MODE=$2
 [[ -z "$2" ]] && PARSE_MODE=HTML
 
-#"%s" in printf OR --data-urlencode "text=..." instead of -d in curl
 if [[ "$PARSE_MODE" == HTML ]]; then
 MESSAGE=$(
   printf "%s" "$1"

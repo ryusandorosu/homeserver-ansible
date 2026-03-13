@@ -7,7 +7,7 @@ log_level: info
 #possibly put range meta inside of range events
 format: |
  {
-  "chat_id": "878478706",
+  "chat_id": "{{ vault_telegram_alert_chat_id }}",
 {% raw %}
   "text": "
   [CrowdSec]
@@ -44,7 +44,7 @@ format: |
  }
 {% endraw %}
 
-url: https://api.telegram.org/bot{{ vault_telegram_bot_token }}/sendMessage
+url: https://api.telegram.org/bot{{ vault_telegram_alert_bot_token }}/sendMessage
 
 method: POST
 headers:
