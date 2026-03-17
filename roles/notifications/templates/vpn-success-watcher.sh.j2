@@ -78,7 +78,7 @@ fi
 
 if [[ -n "$prev_ip" && "$prev_ip" != "$ip" ]]; then
 prev_ip_info="$(get_ip_geo $prev_ip)"
-prev_asn="$(echo "$ip_info" | jq -r .as)"
+prev_asn="$(echo "$prev_ip_info" | jq -r .as)"
 prev_lat=$(echo "$prev_ip_info" | jq -r .lat)
 prev_lon=$(echo "$prev_ip_info" | jq -r .lon)
 
