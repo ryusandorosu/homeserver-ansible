@@ -12,6 +12,9 @@ bad_bot:
   - ffuf
   - dirsearch
   - wpscan
+  - nvdorz
+  - Scanner
+  - DomainChecker
 
 bad_bot_regex: "{{ bad_bot | join('|') }}"
 
@@ -42,6 +45,9 @@ tarpit:
   - owa
   - ecp
   - jdni
+  - evox
+  - sdk
+  - nmap
   - cgi-bin
   - autodiscover
   - powershell
@@ -54,5 +60,7 @@ tarpit:
   - 'ldap://'
   - 'rmi://'
   - 'dns://'
+  - HNAP1
+  - MGLNDD
 
 tarpit_regex: "{{ tarpit | join('|') }}"
