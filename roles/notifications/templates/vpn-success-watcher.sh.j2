@@ -59,6 +59,7 @@ MESSAGE+="From: <code>$ip</code>
 Device: <b>$device_name</b> as <code>$vpn_ip</code>
 <pre>$(echo "$ip_info" | jq)</pre>
 Location: <a href='https://2gis.ru/geo/$lon%2C$lat'>2GIS</a> | <a href='https://maps.google.com/?q=$lat,$lon'>Google Maps</a>
+Check log: <code>{{ wireguard_connections_log }}</code>
 "
 
 if [[ ! " ${allowed_countries[*]} " =~ " ${country} " ]]; then
@@ -86,7 +87,6 @@ if [[ "$not_allowed_flag" == false ]]; then
 "
 MESSAGE+="VPN connection from different IP
 Previous IP: <code>$prev_ip</code>
-Check log: <code>{{ wireguard_connections_log }}</code>
 "
 elif [[ "$not_allowed_flag" == true ]]; then
 [[ "$prev_asn" != "$asn" ]] && MESSAGE+="⚠️ ASN changed
@@ -95,7 +95,6 @@ MESSAGE+="⚠️ VPN connection from different IP
 Previous IP: <code>$prev_ip</code>
 <pre>$(echo "$prev_ip_info" | jq)</pre>
 Previous location: <a href='https://2gis.ru/geo/$prev_lon%2C$prev_lat'>2GIS</a> | <a href='https://maps.google.com/?q=$prev_lat,$prev_lon'>Google Maps</a>
-Check log: <code>{{ wireguard_connections_log }}</code>
 "; fi
 
 fi
