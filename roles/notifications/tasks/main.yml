@@ -1,10 +1,32 @@
+- name: Ensure scripts directory exists
+  file:
+    path: "/usr/local/bin/scripts/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - ""
+    - "includes"
+  loop_control:
+    label: "{{ item }}"
+
 - name: Copy scripts directory
   copy:
     src: scripts/
-    dest: /usr/local/bin/
+    dest: /usr/local/bin/scripts
     mode: '0755'
 
-- name: Deploy watcher scripts
+- name: Deploy scripts with includes directory
+  template:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/scripts/{{ item | regex_replace('templates/scripts/','') | regex_replace('.j2','') }}"
+    mode: '0755'
+  with_fileglob:
+    - "templates/scripts/**/*.j2"
+  notify:
+    - restart services
+    - ensure telegram bot log directory exists
+
+- name: Deploy simple scripts
   template:
     src: "{{ item }}"
     dest: "/usr/local/bin/{{ item | basename | regex_replace('.j2','') }}"
@@ -15,7 +37,6 @@
     - restart services
     - ensure wireguard logs directory exists
     - ensure geo ip cache directory exists
-    - ensure telegram bot log directory exists
 
 - name: Deploy systemd services
   copy:

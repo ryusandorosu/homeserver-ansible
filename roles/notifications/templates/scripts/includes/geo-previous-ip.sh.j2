@@ -1,0 +1,40 @@
+#!/bin/bash
+
+previous_ip_check() {
+  local KEY="$1"
+  local LOG="$2"
+  local previous=""
+
+  if [[ -f "$LOG" ]]; then
+    if [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
+    previous=$(log_tail "$KEY" "$LOG" | awk '{print $3}' | cut -d: -f1)
+    elif [[ "$LOG" == "{{ sshd_log }}" ]]; then
+    previous=$(log_tail "$KEY" "$LOG" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | head -n1)
+    fi
+    echo "$previous"
+  fi
+}
+
+previous_ip_geo_message() {
+local IP="$1"
+local PREVIOUS_IP="$2"
+
+if [[ -n "$PREVIOUS_IP" && "$PREVIOUS_IP" != "$IP" ]]; then
+
+local LOG="$3"
+local KEY="$4"
+local current_asn="$asn"
+local current_lat="$lat"
+local current_lon="$lon"
+
+previous_ip_info="$(get_ip_geo $PREVIOUS_IP)"
+geo_parse_ip_info "$previous_ip_info"
+
+[[ "$not_allowed_flag" == true ]] && MESSAGE+="⚠️ "
+[[ "$current_asn" != "$asn" ]] && MESSAGE+="ASN changed, "
+MESSAGE+="Connection from the different IP. Previous IP:
+"
+geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" ""
+
+fi
+}

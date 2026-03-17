@@ -21,3 +21,10 @@
     dest: /home/{{ user }}/.ssh/config
     mode: '0600'
     owner: "{{ user }}"
+
+- name: Deploy SSH authorized keys
+  template:
+    src: authorized_keys.j2
+    dest: /home/{{ user }}/.ssh/authorized_keys
+    mode: '0600'
+    owner: "{{ user }}"

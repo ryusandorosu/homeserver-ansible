@@ -1,0 +1,3 @@
+{% for item in ssh_authorized %}
+{{ item.type }} {{ item.public_key }} {{ item.name }}
+{% endfor %}

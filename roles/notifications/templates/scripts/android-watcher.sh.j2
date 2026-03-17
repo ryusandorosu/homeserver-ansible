@@ -1,0 +1,36 @@
+#!/bin/bash
+
+get_id() {
+  echo $(id "$1") | grep -oP "[[:alnum:]]+=[^]+\([^\)]+" | grep "$2" | grep -oP "[[:digit:]]+" ;
+}
+
+PHONE_IP={{ wireguard_devices.phone.ip }}
+SSH_KEY=/home/{{ user }}/.ssh/{{ termux_key }}
+SSH_COMMAND="ssh -i $SSH_KEY -p {{ termux_port }}"
+SSH_HOST={{ termux_user }}@$PHONE_IP
+SSH_PATH=/data/data/com.termux/files/home/storage/shared/
+SSH_TARGET=$SSH_HOST:$SSH_PATH
+
+while true; do
+  if ping -c1 -W1 $PHONE_IP >/dev/null 2>&1; then
+    if ! mountpoint -q "{{ android_mount_point }}"; then
+      echo "Phone detected. Mounting..."
+      /usr/bin/sshfs \
+      -o ssh_command="$SSH_COMMAND" \
+      -o allow_other \
+      -o reconnect \
+      -o uid=$(get_id {{ user }} uid) \
+      -o gid=$(get_id {{ user }} gid) \
+      -o umask=0022 \
+      $SSH_TARGET \
+      {{ android_mount_point }}
+    fi
+  else
+    if mountpoint -q "{{ android_mount_point }}"; then
+      echo "Phone lost. Unmounting..."
+      fusermount -u "{{ android_mount_point }}"
+    fi
+  fi
+  sleep 3
+done
+

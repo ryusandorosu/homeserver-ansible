@@ -1,0 +1,36 @@
+#!/bin/bash
+. /usr/local/bin/scripts/includes/geo-include.sh
+
+declare -A new_handshake
+
+while true; do
+while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
+
+  if [[ "$EPOCH" == "0" ]]; then
+    new_handshake[$PUBKEY]=1
+    continue
+  fi
+
+  if [[ "${new_handshake[$PUBKEY]}" == "1" ]]; then
+
+    ip="${ENDPOINT%:*}"
+    port="${ENDPOINT#*:}"
+    vpn_ip="${ALLOWED%%/*}"
+    device_name="${vpn_peer_names[$PUBKEY]}"
+
+    common_message_init VPN "$PUBKEY" "$device_name"
+    generate_geo_message "$ip" "{{ wireguard_connections_log }}" "$PUBKEY" "$device_name" "$vpn_ip"
+
+    /usr/local/bin/telegram.sh "$MESSAGE" status "$0"
+
+    [[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}
+    echo "$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\"" >> {{ wireguard_connections_log }}
+
+    new_handshake[$PUBKEY]=0
+
+  fi
+
+done < <(wg show {{ wireguard_interface }} dump | tail -n +2)
+
+sleep 10
+done

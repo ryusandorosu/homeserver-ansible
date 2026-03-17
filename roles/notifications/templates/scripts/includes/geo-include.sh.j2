@@ -1,0 +1,53 @@
+#!/bin/bash
+. /usr/local/bin/scripts/includes/allowed-peers.sh
+
+common_message_init() {
+local METHOD="$1"
+local KEY="$2"
+local PEER="$3"
+if [[ -z "$PEER" ]]; then
+MESSAGE="🚨 UNKNOWN PEER CONNECTED: <code>$KEY</code>
+"; else
+MESSAGE="🔐 $METHOD connection success
+"; fi
+}
+
+log_tail() {
+  local KEY="$1"
+  local LOG="$2"
+  local line=""
+  if [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
+  line=$(grep "$KEY" "$LOG" | tail -n1)
+  elif [[ "$LOG" == "{{ sshd_log }}" ]]; then
+  line=$(grep "$KEY" "$LOG" | grep "Accepted "  | tail -n2)
+  fi
+  echo "$line"
+}
+
+. /usr/local/bin/scripts/includes/geo-get-json.sh
+. /usr/local/bin/scripts/includes/geo-parse.sh
+#requires get_ip_geo, geo_parse_ip_info:
+. /usr/local/bin/scripts/includes/geo-common.sh
+
+. /usr/local/bin/scripts/includes/geo-allowed.sh
+. /usr/local/bin/scripts/includes/allowed-subnets.sh
+. /usr/local/bin/scripts/includes/geo-allowed-check.sh
+
+. /usr/local/bin/scripts/includes/geo-previous-ip.sh
+
+generate_geo_message() {
+  local IP="$1"
+  local LOG="$2"
+  local KEY="$3"
+  local DEVICE="$4"
+  local VPN_IP="$5"
+
+  ip_info="$(get_ip_geo $IP)"
+  geo_parse_ip_info "$ip_info"
+  geo_message_common "$IP" "$ip_info" "$LOG" "$KEY" "$DEVICE" "$VPN_IP"
+
+  geo_message_allowed_check "$IP"
+
+  previous_ip=$(previous_ip_check "$KEY" "$LOG")
+  previous_ip_geo_message "$IP" "$previous_ip" "$LOG" "$KEY"
+}

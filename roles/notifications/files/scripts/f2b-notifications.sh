@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/get-ip-geo.sh
+. /usr/local/bin/scripts/includes/geo-get-json.sh
 jail_name="$1"
 banned_ip="$2"
 logpath="$3"

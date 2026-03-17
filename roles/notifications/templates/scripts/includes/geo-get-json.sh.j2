@@ -1,7 +1,9 @@
 #!/bin/bash
 get_ip_geo() {
   CACHE_FILE="{{ geo_ip_cache }}/$1.json"
-  if [[ -f "$CACHE_FILE" && $(find "$CACHE_FILE" -mtime -7) ]]; then
+  if [[ -f "$CACHE_FILE" &&
+        $(stat -c %Y "$CACHE_FILE") -gt $(date -d '7 days ago' +%s)
+  ]]; then
     cat "$CACHE_FILE"
     return
   fi

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+declare -A vpn_peer_names
+{% for peer in wireguard_peers %}
+vpn_peer_names["{{ peer.public_key }}"]="{{ wireguard_devices[peer.device].name }}"
+{% endfor %}
+
+declare -A ssh_peer_names
+{% for peer in ssh_authorized %}
+ssh_peer_names["$(echo "{{ peer.type }} {{ peer.public_key }}" | ssh-keygen -lf - | awk '{print $2}')"]="{{ peer.name }}"
+{% endfor %}

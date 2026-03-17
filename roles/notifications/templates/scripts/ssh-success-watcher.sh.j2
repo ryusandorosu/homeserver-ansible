@@ -1,0 +1,21 @@
+#!/bin/bash
+. /usr/local/bin/scripts/includes/geo-include.sh
+
+journalctl -fu ssh.service -fu sshd.service | \
+while read line; do
+
+  if echo "$line" | grep -q "Accepted publickey"; then
+
+    ip=$(echo "$line" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)')
+    [[ -z "$ip" ]] && continue
+    key=$(echo "$line" | grep -oP 'SHA256:\S+')
+    device_name="${ssh_peer_names[$key]}"
+
+    common_message_init SSH "$key" "$device_name"
+    generate_geo_message "$ip" "{{ sshd_log }}" "$key" "$device_name"
+
+    /usr/local/bin/telegram.sh "$MESSAGE" status "$0"
+
+  fi
+
+done

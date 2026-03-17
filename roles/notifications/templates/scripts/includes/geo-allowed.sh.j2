@@ -1,0 +1,22 @@
+#!/bin/bash
+
+allowed_countries=(
+{% for country in allowed_countries %}
+  "{{ country }}"
+{% endfor %}
+)
+allowed_regions=(
+{% for region in allowed_regions %}
+  "{{ region }}"
+{% endfor %}
+)
+allowed_asn=(
+{% for asn in allowed_asn %}
+  "{{ asn }}"
+{% endfor %}
+)
+allowed_subnets=(
+{% for subnet in allowed_subnets %}
+  "{{ subnet }}"
+{% endfor %}
+)

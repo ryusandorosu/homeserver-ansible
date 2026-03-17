@@ -1,3 +1,4 @@
+sshd_log: /var/log/auth.log
 wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
 telegram_bot_logs: /var/log/telegram
 geo_ip_cache: /var/cache/telegram/
@@ -13,3 +14,8 @@ allowed_regions:
 allowed_asn:
   - AS12389 PJSC Rostelecom
   - AS16345 PJSC \"Vimpelcom\"
+
+allowed_subnets:
+  - "{{ home_network }}"
+  - "{{ wireguard_network }}"
+  - "{{ home_ip }}/32"
