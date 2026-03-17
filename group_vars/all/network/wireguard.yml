@@ -1,9 +1,11 @@
 # WireGuard core
 wireguard_interface: wg0
 wireguard_peers:
-  - device: laptop
+  - device: large_laptop
     public_key: "pjZYrTpbiOeQM0oeIDonvowhswh/cFIlAhPwFRvVpik="
   - device: phone
     public_key: "KI9NnUCB2uKZOZTYvfa/D7nXRMRjKAWSZlGKqDjB61U="
   - device: pad
     public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
+  - device: laptop
+    public_key: "DjgmmaaCgusEhn+PY1SjwvmMdqPfDMoGUmUGaCyFAQo="

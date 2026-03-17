@@ -5,7 +5,7 @@ home_network: 192.168.0.0/24
 wireguard_server_ip: 10.10.0.1
 
 wireguard_devices:
-  laptop:
+  large_laptop:
     ip: 10.10.0.2
     name: Asus K95VB
   phone:
@@ -14,6 +14,9 @@ wireguard_devices:
   pad:
     ip: 10.10.0.4
     name: Samsung Galaxy Tab A6
+  laptop:
+    ip: 10.10.0.5
+    name: Honor MagicBook X 14
 
 # Home Network
 home_ip: 87.117.169.26
