@@ -15,16 +15,29 @@
     dest: /usr/local/bin/scripts
     mode: '0755'
 
-- name: Deploy scripts with includes directory
+- name: Deploy watcher scripts
   template:
     src: "{{ item }}"
-    dest: "/usr/local/bin/scripts/{{ item | regex_replace('templates/scripts/','') | regex_replace('.j2','') }}"
+    dest: "/usr/local/bin/scripts/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0755'
   with_fileglob:
-    - "templates/scripts/**/*.j2"
+    - "templates/scripts/*.j2"
   notify:
     - restart services
-    - ensure telegram bot log directory exists
+    - ensure wireguard logs directory exists
+    - ensure geo ip cache directory exists
+
+- name: Deploy watcher scripts includes
+  template:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/scripts/includes/{{ item | basename | regex_replace('.j2','') }}"
+    mode: '0755'
+  with_fileglob:
+    - "templates/scripts/includes/*.j2"
+  notify:
+    - restart services
+    - ensure wireguard logs directory exists
+    - ensure geo ip cache directory exists
 
 - name: Deploy simple scripts
   template:
@@ -35,8 +48,7 @@
     - "templates/*.j2"
   notify:
     - restart services
-    - ensure wireguard logs directory exists
-    - ensure geo ip cache directory exists
+    - ensure telegram bot log directory exists
 
 - name: Deploy systemd services
   copy:
