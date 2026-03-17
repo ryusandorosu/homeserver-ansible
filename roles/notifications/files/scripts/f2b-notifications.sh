@@ -32,4 +32,5 @@ else
 MESSAGE+="<pre>$logtext</pre>"
 fi
 
-/usr/local/bin/telegram.sh "$MESSAGE" alert "$0"
+/usr/local/bin/telegram.sh "$MESSAGE" alert "$0" &
+disown
