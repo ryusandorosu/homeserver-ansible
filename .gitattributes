@@ -1,2 +1,6 @@
 roles/*/files/* text eol=lf
+roles/*/files/*/* text eol=lf
+roles/*/files/*/*/* text eol=lf
 roles/*/templates/* text eol=lf
+roles/*/templates/*/* text eol=lf
+roles/*/templates/*/*/* text eol=lf
