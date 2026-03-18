@@ -1,20 +1,20 @@
-duration: 48h
+duration: 720h
 
 custom_profiles:
   asname_remedation:
     field: Alert.Source.ASName
     operator: contains
     vars: "{{ blacklist_asn_names }}"
-    duration: 720h
+    duration: 2160h
 
   asnumber_remedation:
     field: Alert.Source.ASNumber
     operator: in
     vars: "{{ blacklist_asn_ids }}"
-    duration: 720h
+    duration: 2160h
 
   country_remedation:
     field: Alert.Source.Country
     operator: in
     vars: "{{ blacklist_countries }}"
-    duration: 168h
+    duration: 1440h
