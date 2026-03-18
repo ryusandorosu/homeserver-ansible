@@ -1,5 +1,5 @@
 - hosts: server
-  become: yes
+  gather_facts: false
 
   pre_tasks:
     - name: Check OS family
