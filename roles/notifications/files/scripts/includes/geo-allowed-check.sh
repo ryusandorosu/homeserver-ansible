@@ -14,14 +14,14 @@ for subnet in "${allowed_subnets[@]}"; do
 done
 
 if [[ "$allowed_subnet" == false ]]; then
-MESSAGE+="⚠️ Connection fom the different subnet
+MESSAGE+="⚠️ Connection from the different subnet
 "; not_allowed_flag=true; fi
 
 [[ "$geoip_json" == "fail" && \
    "$geoip_msg" == "private range" ]] && return
 
 if [[ ! " ${allowed_countries[*]} " =~ " ${country} " ]]; then
-MESSAGE+="⚠️ Connectio from the different country
+MESSAGE+="⚠️ Connection from the different country
 "; not_allowed_flag=true; fi
 
 if [[ ! " ${allowed_regions[*]} " =~ " ${region} " ]]; then
