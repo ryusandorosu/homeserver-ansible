@@ -30,10 +30,10 @@ local current_lon="$lon"
 previous_ip_info="$(get_ip_geo $PREVIOUS_IP)"
 geo_parse_ip_info "$previous_ip_info"
 
-[[ "$not_allowed_flag" == true ]] && MESSAGE+="
-⚠️ "
+[[ "$not_allowed_flag" == true ]] && MESSAGE+="⚠️ "
 [[ "$current_asn" != "$asn" ]] && MESSAGE+="ASN changed, "
-MESSAGE+="Connection from the different IP. Previous IP:
+MESSAGE+="Connection from the different IP
+Previous IP:
 "
 geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" ""
 

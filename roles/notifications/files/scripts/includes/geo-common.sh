@@ -14,7 +14,8 @@ MESSAGE+="From: <code>$IP</code>
 MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
 MESSAGE+="Check log: <code>$LOG</code>
-<pre>$(log_tail "$KEY" "$LOG")</pre>"
+<pre>$(log_tail "$KEY" "$LOG")</pre>
+"
 }
 
 geo_map_link() {

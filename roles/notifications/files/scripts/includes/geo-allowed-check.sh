@@ -8,12 +8,15 @@ local IP="$1"
 for subnet in "${allowed_subnets[@]}"; do
 
 if [[ "$(ip_in_subnet "$IP" "$subnet")" == "True" ]]; then
+MESSAGE+="Connection from the allowed subnet: $subnet = $allowed_subnet
+"
   allowed_subnet=true
   break
+#else allowed_subnet=false
 fi
 
 if [[ "$allowed_subnet" == false ]]; then
-MESSAGE+="⚠️ Connection from the different subnet
+MESSAGE+="⚠️ Connection from the different subnet: $subnet
 "
 not_allowed_flag=true
 fi

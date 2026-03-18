@@ -19,7 +19,7 @@ log_tail() {
   if [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
   line=$(grep "$KEY" "$LOG" | tail -n1)
   elif [[ "$LOG" == "{{ sshd_log }}" ]]; then
-  line=$(grep "$KEY" "$LOG" | grep "Accepted "  | tail -n2)
+  line=$(grep "$KEY" "$LOG" | grep "Accepted publickey"  | tail -n1)
   fi
   echo "$line"
 }
