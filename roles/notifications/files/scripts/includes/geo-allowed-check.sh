@@ -17,8 +17,8 @@ if [[ "$allowed_subnet" == false ]]; then
 MESSAGE+="⚠️ Connection fom the different subnet
 "; not_allowed_flag=true; fi
 
-if [[ "$geoip_json" == "fail" && \
-      "$geoip_msg" == "private range" ]] && return
+[[ "$geoip_json" == "fail" && \
+   "$geoip_msg" == "private range" ]] && return
 
 if [[ ! " ${allowed_countries[*]} " =~ " ${country} " ]]; then
 MESSAGE+="⚠️ Connectio from the different country

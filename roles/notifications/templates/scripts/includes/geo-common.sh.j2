@@ -19,16 +19,16 @@ MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
 
 MESSAGE+="Check log: <code>$LOG</code>"
-if [[ "$LOG" == "{{ sshd_log }}" ]]
+if [[ "$LOG" == "{{ sshd_log }}" ]]; then
 MESSAGE+="<pre>${SSHLOG}</pre>
 "
-elif [[ "$LOG" == "{{ wireguard_connections_log }}" ]]
+elif [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
 MESSAGE+="<pre>$(log_tail "$KEY" "$LOG")</pre>
 "; fi
 }
 
 geo_map_link() {
-if [[ "$geoip_json" == "fail" && "$geoip_msg" == "private range" ]] && return
+[[ "$geoip_json" == "fail" && "$geoip_msg" == "private range" ]] && return
 MESSAGE+="Location: <a href='https://2gis.ru/geo/$2%2C$1'>2GIS</a> | <a href='https://maps.google.com/?q=$1,$2'>Google Maps</a>
 "
 }

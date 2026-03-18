@@ -35,7 +35,7 @@ geo_parse_ip_info "$previous_ip_info"
 MESSAGE+="Connection from the different IP
 Previous IP:
 "
-geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" ""
+geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" "" "$(log_tail "$KEY" "$LOG")"
 
 fi
 }
