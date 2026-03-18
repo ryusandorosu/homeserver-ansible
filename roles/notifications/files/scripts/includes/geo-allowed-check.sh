@@ -13,8 +13,6 @@ for subnet in "${allowed_subnets[@]}"; do
   fi
 done
 
-#MESSAGE+="Connection from the allowed subnet: $IP in $subnet = $allowed_subnet
-#"
 if [[ "$allowed_subnet" == false ]]; then
 MESSAGE+="⚠️ Connection fom the different subnet
 "; not_allowed_flag=true; fi

@@ -9,7 +9,7 @@ previous_ip_check() {
     if [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
     previous=$(log_tail "$KEY" "$LOG" | awk '{print $3}' | cut -d: -f1)
     elif [[ "$LOG" == "{{ sshd_log }}" ]]; then
-    previous=$(log_tail "$KEY" "$LOG" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | head -n1)
+    previous=$(log_tail "$KEY" "$LOG" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | head -n1) #?
     fi
     echo "$previous"
   fi

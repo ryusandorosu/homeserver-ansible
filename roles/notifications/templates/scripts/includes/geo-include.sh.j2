@@ -41,10 +41,11 @@ generate_geo_message() {
   local KEY="$3"
   local DEVICE="$4"
   local VPN_IP="$5"
+  local SSHLOG="$6"
 
   ip_info="$(get_ip_geo $IP)"
   geo_parse_ip_info "$ip_info"
-  geo_message_common "$IP" "$ip_info" "$LOG" "$KEY" "$DEVICE" "$VPN_IP"
+  geo_message_common "$IP" "$ip_info" "$LOG" "$KEY" "$DEVICE" "$VPN_IP" "$SSHLOG"
 
   geo_message_allowed_check "$IP"
 

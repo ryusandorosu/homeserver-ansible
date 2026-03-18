@@ -7,15 +7,24 @@ local LOG="$3"
 local KEY="$4"
 local DEVICE="$5"
 local VPN_IP="$6"
+local SSHLOG="$7"
+
 MESSAGE+="From: <code>$IP</code>
 "
+
 [[ -n "$DEVICE" ]] && MESSAGE+="Device: <b>$DEVICE</b>"
 [[ -n "$DEVICE" && -n "$VPN_IP" ]] && MESSAGE+=" as <code>$VPN_IP</code>"
+
 MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
-MESSAGE+="Check log: <code>$LOG</code>
-<pre>$(log_tail "$KEY" "$LOG")</pre>
+
+MESSAGE+="Check log: <code>$LOG</code>"
+if [[ "$LOG" == "{{ sshd_log }}" ]]
+MESSAGE+="<pre>${SSHLOG}</pre>
 "
+elif [[ "$LOG" == "{{ wireguard_connections_log }}" ]]
+MESSAGE+="<pre>$(log_tail "$KEY" "$LOG")</pre>
+"; fi
 }
 
 geo_map_link() {

@@ -12,7 +12,7 @@ while read line; do
     device_name="${ssh_peer_names[$key]}"
 
     common_message_init SSH "$key" "$device_name"
-    generate_geo_message "$ip" "{{ sshd_log }}" "$key" "$device_name"
+    generate_geo_message "$ip" "{{ sshd_log }}" "$key" "$device_name" "" "$line"
 
     /usr/local/bin/telegram.sh "$MESSAGE" status "$0"
 
