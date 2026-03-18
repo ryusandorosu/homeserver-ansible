@@ -6,14 +6,14 @@
   loop:
     - ""
     - "includes"
-  loop_control:
-    label: "{{ item }}"
 
 - name: Copy scripts directory
   copy:
     src: scripts/
     dest: /usr/local/bin/scripts
     mode: '0755'
+  notify:
+    - restart services
 
 - name: Deploy watcher scripts
   template:
