@@ -18,11 +18,11 @@ MESSAGE+="From: <code>$IP</code>
 MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
 
-MESSAGE+="Check log: <code>$LOG</code>"
-if [[ "$LOG" == "{{ sshd_log }}" ]]; then
+MESSAGE+="logpath: <code>$LOG</code>"
+if [[ -n "$SSHLOG" ]]; then
 MESSAGE+="<pre>${SSHLOG}</pre>
 "
-elif [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
+else
 MESSAGE+="<pre>$(log_tail "$KEY" "$LOG")</pre>
 "; fi
 }
