@@ -1,5 +1,6 @@
 - hosts: server
-  gather_facts: false
+  gather_subset:
+    - min
 
   pre_tasks:
     - name: Check OS family
