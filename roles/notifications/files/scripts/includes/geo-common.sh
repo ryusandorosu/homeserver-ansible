@@ -19,6 +19,7 @@ MESSAGE+="Check log: <code>$LOG</code>
 }
 
 geo_map_link() {
+if [[ "$geoip_json" == "fail" && "$geoip_msg" == "private range" ]] && return
 MESSAGE+="Location: <a href='https://2gis.ru/geo/$2%2C$1'>2GIS</a> | <a href='https://maps.google.com/?q=$1,$2'>Google Maps</a>
 "
 }

@@ -8,4 +8,6 @@ geo_parse_ip_info() {
   asn="$(echo "$1" | jq -r .as)"
   lat=$(echo "$1" | jq -r .lat)
   lon=$(echo "$1" | jq -r .lon)
+  geoip_json=$(echo "$1" | jq -r .status)
+  [[ "$geoip_json" == "fail" ]] && geoip_msg="$(echo "$1" | jq -r .message)"
 }
