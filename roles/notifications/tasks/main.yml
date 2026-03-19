@@ -7,13 +7,13 @@
     - ""
     - "includes"
 
-- name: Copy scripts directory
+- name: Copy scripts
   copy:
-    src: scripts/
-    dest: /usr/local/bin/scripts
-    mode: '0755'
-  notify:
-    - restart services
+    src: "{{ item }}"
+    dest: /usr/local/bin/scripts/
+  with_fileglob:
+    - "files/scripts/*.sh"
+  notify: restart services
 
 - name: Deploy watcher scripts
   template:
@@ -28,6 +28,17 @@
     - ensure geo ip cache directory exists
 
 - name: Deploy watcher scripts includes
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin/scripts/includes/
+  with_fileglob:
+    - "files/scripts/includes/*.sh"
+  notify:
+    - restart services
+    - ensure wireguard logs directory exists
+    - ensure geo ip cache directory exists
+
+- name: Deploy watcher scripts templated includes
   template:
     src: "{{ item }}"
     dest: "/usr/local/bin/scripts/includes/{{ item | basename | regex_replace('.j2','') }}"
