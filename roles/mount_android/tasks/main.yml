@@ -26,7 +26,7 @@
 - name: Deploy auto mount script
   template:
     src: android-watcher.sh.j2
-    dest: /usr/local/bin/scripts/
+    dest: /usr/local/bin/scripts/android-watcher.sh
   notify: restart watcher service
 
 - name: Deploy auto mount service
