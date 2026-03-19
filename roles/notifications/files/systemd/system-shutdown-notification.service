@@ -1,0 +1,11 @@
+[Unit]
+Description=Send Telegram notification on shutdown
+DefaultDependencies=no
+Before=shutdown.target reboot.target halt.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/telegram.sh "🔴 nuc-server shut down" status "$0"
+
+[Install]
+WantedBy=halt.target reboot.target shutdown.target
