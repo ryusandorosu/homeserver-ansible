@@ -1,0 +1,9 @@
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart watcher service
+  systemd:
+    name: android-watcher
+    enabled: yes
+    state: restarted

@@ -16,3 +16,27 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
+
+- name: Ensure scripts directory exists
+  file:
+    path: /usr/local/bin/scripts/
+    state: directory
+    mode: '0755'
+
+- name: Deploy auto mount script
+  template:
+    src: android-watcher.sh.j2
+    dest: /usr/local/bin/scripts/
+  notify: restart watcher service
+
+- name: Deploy auto mount service
+  copy:
+    src: android-watcher.service
+    dest: /etc/systemd/system/
+  notify: daemon reload
+
+- name: Enable auto mount service
+  systemd:
+    name: android-watcher
+    enabled: yes
+    state: started
