@@ -1,4 +1,5 @@
 duration: 720h
+remedation_filter: Alert.Remediation == true && Alert.GetScope() == "Ip"
 
 custom_profiles:
   asname_remedation:

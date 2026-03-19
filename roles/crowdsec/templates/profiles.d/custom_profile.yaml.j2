@@ -3,10 +3,10 @@ name: {{ item.key }}
 filters:
 {% if item.value.operator == "contains" %}
 {% for val in item.value.vars %}
-  - {{ item.value.field }} {{ item.value.operator }} {{ val | to_json }}
+  - {{ remedation_filter }} && {{ item.value.field }} {{ item.value.operator }} {{ val | to_json }}
 {% endfor %}
 {% else %}
-  - {{ item.value.field }} {{ item.value.operator }} {{ item.value.vars | to_json }}
+  - {{ remedation_filter }} && {{ item.value.field }} {{ item.value.operator }} {{ item.value.vars | to_json }}
 {% endif %}
 decisions:
   - type: ban
