@@ -2,6 +2,8 @@ clash_proxy_mode: rule
 #clash_proxy_mode: rule, global, direct
 clash_web_port: 9091
 
+clash_tunnel_enable: true
+
 clash_connection_type: url-test
 #clash_connection_type: select, fallback, url-test
 clash_connection_interval: 30
@@ -11,5 +13,6 @@ clash_rules:
   global:
     - MATCH,→ Remnawave
   split:
+    - "IP-CIDR,{{ wireguard_network }},DIRECT"
     - DOMAIN-SUFFIX,telegram.org,→ Remnawave
     - MATCH,DIRECT

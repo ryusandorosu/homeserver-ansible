@@ -5,6 +5,13 @@ allow-lan: true
 mode: {{ clash_proxy_mode }}
 log-level: debug
 external-controller: 127.0.0.1:{{ clash_web_port }}
+tun:
+  enable: {{ clash_tunnel_enable }}
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  route-exclude-address:
+    - {{ wireguard_network }}
 dns:
   enable: {{ clash_dns_enabled | lower }}
   use-hosts: true
