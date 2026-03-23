@@ -7,8 +7,9 @@ clash_connection_type: url-test
 clash_connection_interval: 30
 clash_connection_tolerance: 100
 
-clash_rules_global:
-  - MATCH,→ Remnawave
-clash_rules_split:
-  - DOMAIN-SUFFIX,telegram.org,→ Remnawave
-  - MATCH,DIRECT
+clash_rules:
+  global:
+    - MATCH,→ Remnawave
+  split:
+    - DOMAIN-SUFFIX,telegram.org,→ Remnawave
+    - MATCH,DIRECT

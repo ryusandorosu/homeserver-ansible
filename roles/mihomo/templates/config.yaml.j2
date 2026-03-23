@@ -5,17 +5,6 @@ allow-lan: true
 mode: {{ clash_proxy_mode }}
 log-level: debug
 external-controller: 127.0.0.1:{{ clash_web_port }}
-{% if clash_subscription_use %}
-proxy-providers:
-  remnawave:
-    type: http
-    url: "{{ clash_subscription_url }}"
-    interval: {{ clash_subscription_update_interval }}
-    path: ./providers/remnawave.yaml
-    health-check:
-      enable: true
-      url: {{ clash_healthcheck_url }}
-      interval: {{ clash_healthcheck_interval }}
 dns:
   enable: {{ clash_dns_enabled | lower }}
   use-hosts: true
@@ -33,6 +22,17 @@ dns:
 {% for fakeip in clash_dns_fake_ip_filter %}
       - {{ fakeip | to_json }}
 {% endfor %}
+{% if clash_subscription_use %}
+proxy-providers:
+  remnawave:
+    type: http
+    url: "{{ clash_subscription_url }}"
+    interval: {{ clash_subscription_update_interval }}
+    path: ./providers/remnawave.yaml
+    health-check:
+      enable: true
+      url: {{ clash_healthcheck_url }}
+      interval: {{ clash_healthcheck_interval }}
 {% else %}
 proxies:
 {% for proxy in clash_proxies %}
@@ -64,10 +64,6 @@ proxy-groups:
       - remnawave
     url: {{ clash_healthcheck_url }}
     interval: {{ clash_connection_interval }}
-#rules:
-#{% for rule in clash_rules_global %}
-#  - {{ rule }}
-#{% endfor %}
 {% else %}
     proxies:
 {% for proxy in clash_proxies %}
@@ -79,13 +75,8 @@ proxy-groups:
 {% if clash_connection_type == "url-test" %}
     tolerance: {{ clash_connection_tolerance }}
 {% endif %}
-#rules:
-#{% for rule in clash_rules_split %}
-#  - {{ rule }}
-#{% endfor %}
 {% endif %}
-
 rules:
-{% for rule in clash_rules_split %}
+{% for rule in clash_rules.split %}
   - {{ rule }}
 {% endfor %}
