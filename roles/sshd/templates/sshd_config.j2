@@ -3,12 +3,14 @@ Port {{ sshd_port }}
 Protocol 2
 
 PermitRootLogin {{ sshd_permit_root_login }}
-PasswordAuthentication {{ sshd_password_authentication }}
 PubkeyAuthentication {{ sshd_pubkey_authentication }}
+PasswordAuthentication {{ sshd_password_authentication }}
 
 ChallengeResponseAuthentication no
 UsePAM yes
 
+AllowTcpForwarding yes
+GatewayPorts yes
 X11Forwarding no
 PrintMotd no
 
