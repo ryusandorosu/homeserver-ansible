@@ -1,0 +1,115 @@
+clash_proxies:
+  - name: 🇩🇪 Germany - grpc
+    type: vless
+    server: de.mirolit.ru
+    port: 2053
+    network: grpc
+    udp: true
+    tls: true
+    servername: de.mirolit.ru
+    alpn:
+      - h2
+    grpc-opts:
+      grpc-service-name: grpc
+    reality-opts:
+      public-key: XVvbs2QDNuFhDtim7EVhd_yjY0QXjdWVnwi-r10Z61c
+      short-id: 2cdea27c989bce3e
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+  - name: 🇩🇪 Germany - tcp
+    type: vless
+    server: de.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
+    tls: true
+    servername: de.mirolit.ru
+    alpn:
+      - h2
+    reality-opts:
+      public-key: h6Cfxf_OaxW9-K-3-MM2Dp_kX9xyAbv3Ul88GAFOV0U
+      short-id: 0cdea27c989bce3e
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+  - name: 🇳🇱 Netherlands - grpc
+    type: vless
+    server: nl.mirolit.ru
+    port: 2053
+    network: grpc
+    udp: true
+    tls: true
+    servername: nl.mirolit.ru
+    alpn:
+      - h2
+    grpc-opts:
+      grpc-service-name: grpc
+    reality-opts:
+      public-key: 3qx-ddt6u0Th2WSkgxKJ70P4enZhD8NkA0HLENjvtmU
+      short-id: 6fa58d13db0ba66e
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+  - name: 🇳🇱 Netherlands - tcp
+    type: vless
+    server: nl.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
+    tls: true
+    servername: nl.mirolit.ru
+    alpn:
+      - h2
+    reality-opts:
+      public-key: q00THBp4dHVXS8jEAoY5LG53UHN2V0SNxK0GvAvxXT0
+      short-id: 8fa58d13db0ba66e
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+  - name: 🇫🇮 Finland - grpc
+    type: vless
+    server: fi.mirolit.ru
+    port: 8443
+    network: grpc
+    udp: true
+    tls: true
+    servername: fi.mirolit.ru
+    alpn:
+      - h2
+    grpc-opts:
+      grpc-service-name: grpc
+    reality-opts:
+      public-key: gp1VaLSSTty79cKOx96HhKE1uwV7Sn-MRJK_cWe5wj0
+      short-id: 2c0b3b481635dbb8
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+  - name: 🇫🇮 Finland - raw
+    type: vless
+    server: fi.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
+    tls: true
+    servername: fi.mirolit.ru
+    alpn:
+      - h2
+    reality-opts:
+      public-key: rhWG0KJfuzgL4XXH_PCKvh21twr5uxpFU_5yxQij7Rg
+      short-id: 1c0b3b481635dbb7
+    client-fingerprint: random
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+  - name: 🇷🇺 Russia - Shadowsocks
+    type: ss
+    server: ru.mirolit.ru
+    port: 10443
+    network: tcp
+    udp: true
+    client-fingerprint: random
+    password: {{ vault_clash_ru_shadowsocks_pass }}
+    cipher: chacha20-ietf-poly1305

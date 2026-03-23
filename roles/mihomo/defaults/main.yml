@@ -1,0 +1,14 @@
+clash_mode: rule
+#clash_mode: rule, global
+clash_web_port: 9091
+
+vault_clash_ru_shadowsocks_pass: J-Ah3ZNMYvqxrNeGfZWyvxKbokZFBoWQ
+
+clash_connection_type: url-test
+#clash_connection_type: select, fallback, url-test
+clash_connection_interval: 30
+clash_connection_tolerance: 100
+
+clash_rules:
+  - DOMAIN-SUFFIX,telegram.org,→ Remnawave
+  - MATCH,DIRECT

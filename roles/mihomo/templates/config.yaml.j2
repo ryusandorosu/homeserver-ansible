@@ -1,0 +1,63 @@
+mixed-port: 7890
+socks-port: {{ socks5_port }}
+#redir-port: 7892
+allow-lan: true
+mode: {{ clash_mode }}
+log-level: info
+external-controller: 127.0.0.1:{{ clash_web_port }}
+
+dns:
+  enable: {{ clash_dns_enabled | lower }}
+  use-hosts: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver:
+{% for nameserver in clash_dns_nameservers %}
+      - {{ nameserver }}
+{% endfor %}
+  nameserver:
+{% for nameserver in clash_dns_nameservers %}
+      - {{ nameserver }}
+{% endfor %}
+  fake-ip-filter:
+{% for fakeip in clash_dns_fake_ip_filter %}
+      - {{ fakeip }}
+{% endfor %}
+proxies:
+{% for proxy in clash_proxies %}
+  - name: {{ proxy.name }}
+{% for key, value in proxy.items() if key not in ['name'] %}
+{% set json_obj = value | from_json | dict2items if value in ['grpc-opts', 'reality-opts'] else value | default(null) %}
+{% if value is string or value is integer %}
+    {{ key }}: {{ value }}
+{% elif value is boolean %}
+    {{ key }}: {{ value | lower }}
+{% else %}
+    {{ key }}:
+{% if value|length==1 and key in ['alpn'] %}
+      - {{ value | join }}
+{% else %}
+{% for subkey, subvalue in json_obj.items() %}
+      {{ subkey }}: {{ subvalue }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+proxy-groups:
+  - name: → Remnawave
+    type: {{ clash_connection_type }}
+    proxies:
+{% for proxy in clash_proxies %}
+      - {{ proxy.name }}
+{% endfor %}
+{% if clash_connection_type == "url-test" %}
+    interval: {{ clash_connection_interval }}
+    tolerance: {{ clash_connection_tolerance }}
+{% elif clash_connection_type == "fallback" %}
+    interval: {{ clash_connection_interval }}
+{% endif %}
+rules:
+{% for rule in clash_rules %}
+  - {{ rule }}
+{% endfor %}

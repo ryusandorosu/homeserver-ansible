@@ -38,6 +38,7 @@
       - mount_diskstation
       - mount_android
       - mail_sender
+      - mihomo
       - notifications
       - cockpit
       - vim

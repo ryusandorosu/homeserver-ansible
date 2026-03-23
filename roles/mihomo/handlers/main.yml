@@ -1,0 +1,8 @@
+- name: daemon reexec
+  systemd:
+    daemon_reexec: yes
+
+- name: restart mihomo
+  systemd:
+    name: mihomo
+    state: restarted

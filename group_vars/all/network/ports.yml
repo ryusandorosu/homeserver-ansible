@@ -1,8 +1,16 @@
 sshd_port: 22
+termux_port: 8022
+
 http_port: 80
 https_port: 443
+
+#vpn
 wireguard_port: 51820
-termux_port: 8022
+socks5_port: 7891
+
+#samba
 smb_netbios_port: 139
 smb_port: 445
+
+#services
 cockpit_port: 9090

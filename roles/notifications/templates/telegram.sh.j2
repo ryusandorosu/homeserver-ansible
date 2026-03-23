@@ -36,7 +36,8 @@ addline() {
 
 for ((i=1; i<=MAX_RETRIES; i++)); do
   response=$(
-	curl -s \
+	curl -S \
+    --proxy "socks5h://127.0.0.1:{{ socks5_port }}" \
     -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
     -d chat_id="{{ vault_telegram_user_chat_id }}" \
     -d text="${MESSAGE}" \
