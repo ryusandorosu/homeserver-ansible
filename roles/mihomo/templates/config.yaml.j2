@@ -8,7 +8,7 @@ external-controller: 127.0.0.1:{{ clash_web_port }}
 tun:
   enable: {{ clash_tunnel_enable }}
   stack: system
-  auto-route: true
+  auto-route: false
   auto-detect-interface: true
   route-exclude-address:
     - {{ wireguard_network }}
