@@ -22,9 +22,10 @@
 
 - name: Load dns variables
   include_vars: "{{ role_path }}/defaults/dns.yml"
-
 - name: Load proxies variables
   include_vars: "{{ role_path }}/defaults/proxies.yml"
+- name: Load subscription variables
+  include_vars: "{{ role_path }}/defaults/subscription.yml"
 
 - name: Deploy config
   template:
@@ -45,4 +46,3 @@
   systemd:
     name: mihomo
     enabled: yes
-

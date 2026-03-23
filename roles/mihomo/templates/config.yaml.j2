@@ -2,10 +2,21 @@ mixed-port: 7890
 socks-port: {{ socks5_port }}
 #redir-port: 7892
 allow-lan: true
-mode: {{ clash_mode }}
+mode: {{ clash_proxy_mode }}
 log-level: info
 external-controller: 127.0.0.1:{{ clash_web_port }}
-
+{% if clash_subscription_use %}
+proxy-providers:
+  remnawave:
+    type: http
+    url: "{{ clash_subscription_url }}"
+    interval: {{ clash_subscription_update_interval }}
+    path: ./providers/remnawave.yaml
+    health-check:
+      enable: true
+      url: {{ clash_healthcheck_url }}
+      interval: {{ clash_healthcheck_interval }}
+{% else %}
 dns:
   enable: {{ clash_dns_enabled | lower }}
   use-hosts: true
@@ -44,20 +55,28 @@ proxies:
 {% endif %}
 {% endfor %}
 {% endfor %}
+{% endif %}
 proxy-groups:
   - name: → Remnawave
     type: {{ clash_connection_type }}
+{% if clash_subscription_use %}
+    use:
+      - remnawave
+    url: {{ clash_healthcheck_url }}
+    interval: {{ clash_connection_interval }}
+{% else %}
     proxies:
 {% for proxy in clash_proxies %}
       - {{ proxy.name }}
 {% endfor %}
+{% if clash_connection_type != "select" %}
+    interval: {{ clash_connection_interval }}
+{% endif %}
 {% if clash_connection_type == "url-test" %}
-    interval: {{ clash_connection_interval }}
     tolerance: {{ clash_connection_tolerance }}
-{% elif clash_connection_type == "fallback" %}
-    interval: {{ clash_connection_interval }}
 {% endif %}
 rules:
 {% for rule in clash_rules %}
   - {{ rule }}
 {% endfor %}
+{% endif %}
