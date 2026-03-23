@@ -15,6 +15,8 @@ bad_bot:
   - nvdorz
   - Scanner
   - DomainChecker
+  - l9explore
+  - Go-http-client
 
 bad_bot_regex: "{{ bad_bot | join('|') }}"
 
@@ -31,6 +33,8 @@ tarpit:
   - \.kube
   - \.docker
   - \.htaccess
+  - \.DS_Store
+  - \.go
   - wp-admin
   - wp-login
   - wp-config
