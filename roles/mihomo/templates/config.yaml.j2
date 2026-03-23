@@ -64,6 +64,7 @@ proxy-groups:
       - remnawave
     url: {{ clash_healthcheck_url }}
     interval: {{ clash_connection_interval }}
+rules:
 {% for rule in clash_rules_global %}
   - {{ rule }}
 {% endfor %}
