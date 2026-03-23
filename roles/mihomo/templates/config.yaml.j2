@@ -16,7 +16,6 @@ proxy-providers:
       enable: true
       url: {{ clash_healthcheck_url }}
       interval: {{ clash_healthcheck_interval }}
-{% else %}
 dns:
   enable: {{ clash_dns_enabled | lower }}
   use-hosts: true
@@ -34,6 +33,7 @@ dns:
 {% for fakeip in clash_dns_fake_ip_filter %}
       - {{ fakeip | to_json }}
 {% endfor %}
+{% else %}
 proxies:
 {% for proxy in clash_proxies %}
   - name: {{ proxy.name }}
@@ -64,10 +64,10 @@ proxy-groups:
       - remnawave
     url: {{ clash_healthcheck_url }}
     interval: {{ clash_connection_interval }}
-rules:
-{% for rule in clash_rules_global %}
-  - {{ rule }}
-{% endfor %}
+#rules:
+#{% for rule in clash_rules_global %}
+#  - {{ rule }}
+#{% endfor %}
 {% else %}
     proxies:
 {% for proxy in clash_proxies %}
@@ -79,8 +79,13 @@ rules:
 {% if clash_connection_type == "url-test" %}
     tolerance: {{ clash_connection_tolerance }}
 {% endif %}
+#rules:
+#{% for rule in clash_rules_split %}
+#  - {{ rule }}
+#{% endfor %}
+{% endif %}
+
 rules:
 {% for rule in clash_rules_split %}
   - {{ rule }}
 {% endfor %}
-{% endif %}
