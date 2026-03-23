@@ -3,7 +3,7 @@ socks-port: {{ socks5_port }}
 #redir-port: 7892
 allow-lan: true
 mode: {{ clash_proxy_mode }}
-log-level: info
+log-level: debug
 external-controller: 127.0.0.1:{{ clash_web_port }}
 {% if clash_subscription_use %}
 proxy-providers:
@@ -64,6 +64,9 @@ proxy-groups:
       - remnawave
     url: {{ clash_healthcheck_url }}
     interval: {{ clash_connection_interval }}
+{% for rule in clash_rules_global %}
+  - {{ rule }}
+{% endfor %}
 {% else %}
     proxies:
 {% for proxy in clash_proxies %}
@@ -76,7 +79,7 @@ proxy-groups:
     tolerance: {{ clash_connection_tolerance }}
 {% endif %}
 rules:
-{% for rule in clash_rules %}
+{% for rule in clash_rules_split %}
   - {{ rule }}
 {% endfor %}
 {% endif %}
