@@ -111,5 +111,5 @@ clash_proxies:
     network: tcp
     udp: true
     client-fingerprint: random
-    password: {{ vault_clash_ru_shadowsocks_pass }}
+    password: "{{ vault_clash_ru_shadowsocks_pass }}"
     cipher: chacha20-ietf-poly1305

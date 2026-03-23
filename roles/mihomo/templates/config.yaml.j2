@@ -21,7 +21,7 @@ dns:
 {% endfor %}
   fake-ip-filter:
 {% for fakeip in clash_dns_fake_ip_filter %}
-      - {{ fakeip }}
+      - {{ fakeip | to_json }}
 {% endfor %}
 proxies:
 {% for proxy in clash_proxies %}

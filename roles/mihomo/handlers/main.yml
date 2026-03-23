@@ -2,7 +2,29 @@
   systemd:
     daemon_reexec: yes
 
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
+
 - name: restart mihomo
   systemd:
     name: mihomo
     state: restarted
+
+- name: validate config and restart
+  command: /usr/local/bin/mihomo -t /etc/clash/config.yaml
+  notify: restart mihomo
+
+- name: check proxy
+  shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.ipify.org
+  register: proxy_check
+  retries: 5
+  delay: 5
+  until: proxy_check.rc == 0
+
+- name: check telegram availability
+  shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.telegram.org
+  register: telegram_check
+  retries: 5
+  delay: 5
+  until: telegram_check.rc == 0

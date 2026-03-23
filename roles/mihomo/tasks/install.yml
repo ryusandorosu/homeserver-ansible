@@ -1,0 +1,24 @@
+- name: Get latest mihomo release URL
+  shell: >
+    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest
+    | jq '.assets[].browser_download_url'
+    | grep linux-amd64-compatible
+  register: mihomo_url
+
+- name: Download mihomo
+  get_url:
+    url: "{{ mihomo_url.stdout }}"
+    dest: /tmp/mihomo.gz
+
+- name: Extract mihomo
+  command: gunzip -f /tmp/mihomo.gz
+
+- name: Move binary
+  command: mv /tmp/mihomo /usr/local/bin/mihomo
+  args:
+    creates: /usr/local/bin/mihomo
+
+- name: Set executable
+  file:
+    path: /usr/local/bin/mihomo
+    mode: '0755'

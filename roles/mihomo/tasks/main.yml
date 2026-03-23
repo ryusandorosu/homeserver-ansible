@@ -4,60 +4,45 @@
     state: directory
     mode: '0755'
 
-- name: Get latest mihomo release URL
+- name: Check mihomo version
+  shell: >
+    mihomo -v | head -n1 | awk '{print $3}'
+  register: mihomo_version
+
+- name: Get latest mihomo release version
   shell: >
     curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest
-    | grep browser_download_url
-    | grep linux-amd64-compatible
-    | cut -d '"' -f 4
-  register: mihomo_url
+    | grep browser_download_url \
+    | grep linux-amd64-compatible \
+    | cut -d '/' -f 8
+  register: mihomo_release_version
 
-- name: Download mihomo
-  get_url:
-    url: "{{ mihomo_url.stdout }}"
-    dest: /tmp/mihomo.gz
+- import_tasks: install.yml
+  when: mihomo_release_version.stdout != mihomo_version.stdout
 
-- name: Extract mihomo
-  command: gunzip -f /tmp/mihomo.gz
+- name: Load dns variables
+  include_vars: "{{ role_path }}/defaults/dns.yml"
 
-- name: Move binary
-  command: mv /tmp/mihomo /usr/local/bin/mihomo
-  args:
-    creates: /usr/local/bin/mihomo
-
-- name: Set executable
-  file:
-    path: /usr/local/bin/mihomo
-    mode: '0755'
+- name: Load proxies variables
+  include_vars: "{{ role_path }}/defaults/proxies.yml"
 
 - name: Deploy config
   template:
     src: config.yaml.j2
     dest: /etc/clash/config.yaml
-  include_vars: proxies.yml
-  notify: restart mihomo
+  notify:
+    - validate config and restart
+    - check proxy
+    - check telegram availability
 
 - name: Deploy systemd service
   template:
     src: mihomo.service.j2
     dest: /etc/systemd/system/mihomo.service
-  notify: daemon reexec
+  notify: daemon reload
 
 - name: Enable and start mihomo
   systemd:
     name: mihomo
     enabled: yes
 
-- name: Check proxy
-  shell: curl --proxy socks5h://127.0.0.1:7891 https://api.ipify.org
-  register: proxy_check
-  retries: 5
-  delay: 5
-  until: proxy_check.rc == 0
-
-- name: Check telegram availability
-  shell: curl --proxy socks5h://127.0.0.1:7891 https://api.telegram.org
-  register: telegram_check
-  retries: 5
-  delay: 5
-  until: telegram_check.rc == 0
