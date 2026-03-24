@@ -31,6 +31,8 @@
     name: mihomo
     image: metacubex/mihomo:latest
     restart_policy: unless-stopped
+    recreate: true
+    restart: true
     ports:
       - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
       - "{{ socks5_port }}:{{ socks5_port }}"

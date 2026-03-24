@@ -6,7 +6,7 @@
 - name: check proxy via container
   community.docker.docker_container_exec:
     container: mihomo
-    command: curl --proxy socks5h://127.0.0.1:7891 https://api.ipify.org
+    command: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.ipify.org
   register: proxy_check
   retries: 5
   delay: 5
