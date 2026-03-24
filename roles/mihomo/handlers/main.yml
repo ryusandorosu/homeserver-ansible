@@ -2,35 +2,3 @@
   community.docker.docker_container_exec:
     container: mihomo
     command: mihomo -t /root/.config/mihomo/config.yaml
-
-- name: check proxy via container
-  community.docker.docker_container_exec:
-    container: mihomo
-    command: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.ipify.org
-  register: proxy_check
-  retries: 5
-  delay: 5
-  until: proxy_check.rc == 0
-
-- name: check telegram availability via container
-  community.docker.docker_container_exec:
-    container: mihomo
-    command: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.telegram.org
-  register: proxy_check
-  retries: 5
-  delay: 5
-  until: proxy_check.rc == 0
-
-- name: check proxy in system
-  shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.ipify.org
-  register: proxy_check
-  retries: 5
-  delay: 5
-  until: proxy_check.rc == 0
-
-- name: check telegram availability in system
-  shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.telegram.org
-  register: telegram_check
-  retries: 5
-  delay: 5
-  until: telegram_check.rc == 0
