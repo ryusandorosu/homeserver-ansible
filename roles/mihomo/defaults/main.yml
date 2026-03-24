@@ -1,8 +1,11 @@
+clash_mixed_port: 7890
 clash_proxy_mode: rule
 #clash_proxy_mode: rule, global, direct
 clash_web_port: 9091
 
-clash_tunnel_enable: true
+clash_tunnel_enable: false
+clash_dns_enabled: false
+clash_subscription_use: true
 
 clash_connection_type: url-test
 #clash_connection_type: select, fallback, url-test

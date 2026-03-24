@@ -4,22 +4,6 @@
     state: directory
     mode: '0755'
 
-- name: Check mihomo version
-  shell: >
-    mihomo -v | head -n1 | awk '{print $3}'
-  register: mihomo_version
-
-- name: Get latest mihomo release version
-  shell: >
-    curl -s https://api.github.com/repos/MetaCubeX/mihomo/releases/latest
-    | grep browser_download_url \
-    | grep linux-amd64-compatible \
-    | cut -d '/' -f 8
-  register: mihomo_release_version
-
-- import_tasks: install.yml
-  when: mihomo_release_version.stdout != mihomo_version.stdout
-
 - name: Load dns variables
   include_vars: "{{ role_path }}/defaults/dns.yml"
 - name: Load proxies variables
@@ -36,13 +20,13 @@
     - check proxy
     - check telegram availability
 
-- name: Deploy systemd service
-  template:
-    src: mihomo.service.j2
-    dest: /etc/systemd/system/mihomo.service
-  notify: daemon reload
-
-- name: Enable and start mihomo
-  systemd:
+- name: Run mihomo container
+  community.docker.docker_container:
     name: mihomo
-    enabled: yes
+    image: metacubex/mihomo:latest
+    restart_policy: unless-stopped
+    ports:
+      - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
+      - "{{ socks5_port }}:{{ socks5_port }}"
+    volumes:
+      - /etc/clash:/root/.config/mihomo

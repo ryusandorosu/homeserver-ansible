@@ -20,7 +20,7 @@ clash_proxies:
   - name: 🇩🇪 Germany - tcp
     type: vless
     server: de.mirolit.ru
-    port: 443
+    port: "{{ https_port }}"
     network: tcp
     udp: true
     tls: true
@@ -55,7 +55,7 @@ clash_proxies:
   - name: 🇳🇱 Netherlands - tcp
     type: vless
     server: nl.mirolit.ru
-    port: 443
+    port: "{{ https_port }}"
     network: tcp
     udp: true
     tls: true
@@ -90,7 +90,7 @@ clash_proxies:
   - name: 🇫🇮 Finland - raw
     type: vless
     server: fi.mirolit.ru
-    port: 443
+    port: "{{ https_port }}"
     network: tcp
     udp: true
     tls: true
