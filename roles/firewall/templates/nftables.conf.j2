@@ -46,6 +46,10 @@ table inet filter {
         policy drop;
 
         ct state established,related accept
+
+        iif "docker0" accept
+        oif "docker0" accept
+
         iif "{{ wireguard_interface }}" oif "{{ lan_interface }}" accept
         iif "{{ wireguard_interface }}" oif "{{ wireguard_interface }}" accept
     }

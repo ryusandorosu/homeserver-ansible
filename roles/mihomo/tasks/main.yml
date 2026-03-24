@@ -20,6 +20,12 @@
     - check proxy
     - check telegram availability
 
+- name: Pull mihomo image
+  community.docker.docker_image:
+    name: metacubex/mihomo
+    tag: latest
+    source: pull
+
 - name: Run mihomo container
   community.docker.docker_container:
     name: mihomo
@@ -30,4 +36,3 @@
       - "{{ socks5_port }}:{{ socks5_port }}"
     volumes:
       - /etc/clash:/root/.config/mihomo
-    pull: yes
