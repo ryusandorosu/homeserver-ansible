@@ -16,7 +16,7 @@
     src: config.yaml.j2
     dest: /etc/clash/config.yaml
   notify:
-    - validate config and restart
+    - validate config in container
     - check proxy
     - check telegram availability
 
@@ -30,3 +30,4 @@
       - "{{ socks5_port }}:{{ socks5_port }}"
     volumes:
       - /etc/clash:/root/.config/mihomo
+    pull: yes

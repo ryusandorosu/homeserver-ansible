@@ -1,20 +1,34 @@
-- name: restart mihomo
-  systemd:
-    name: mihomo
-    state: restarted
+- name: validate config in container
+  community.docker.docker_container_exec:
+    container: mihomo
+    command: mihomo -t /root/.config/mihomo/config.yaml
 
-- name: validate config and restart
-  command: /usr/local/bin/mihomo -t /etc/clash/config.yaml
-  notify: restart mihomo
+- name: check proxy via container
+  community.docker.docker_container_exec:
+    container: mihomo
+    command: curl --proxy socks5h://127.0.0.1:7891 https://api.ipify.org
+  register: proxy_check
+  retries: 5
+  delay: 5
+  until: proxy_check.rc == 0
 
-- name: check proxy
+- name: check telegram availability via container
+  community.docker.docker_container_exec:
+    container: mihomo
+    command: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.telegram.org
+  register: proxy_check
+  retries: 5
+  delay: 5
+  until: proxy_check.rc == 0
+
+- name: check proxy in system
   shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.ipify.org
   register: proxy_check
   retries: 5
   delay: 5
   until: proxy_check.rc == 0
 
-- name: check telegram availability
+- name: check telegram availability in system
   shell: curl --proxy socks5h://127.0.0.1:{{ socks5_port }} https://api.telegram.org
   register: telegram_check
   retries: 5
