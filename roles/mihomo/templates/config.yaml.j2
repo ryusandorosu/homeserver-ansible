@@ -6,7 +6,7 @@ mode: {{ clash_proxy_mode }}
 log-level: debug
 external-controller: 127.0.0.1:{{ clash_web_port }}
 tun:
-  enable: {{ clash_tunnel_enable }}
+  enable: {{ clash_tunnel_enable | lower }}
   stack: system
   auto-route: false
   auto-detect-interface: true
