@@ -43,6 +43,7 @@ tarpit:
   - phpmyadmin
   - phpunit
   - id_rsa
+  - login
   - vendor
   - wget
   - curl
@@ -53,6 +54,7 @@ tarpit:
   - sdk
   - nmap
   - cgi-bin
+  - dns-query
   - autodiscover
   - powershell
   - actuator
