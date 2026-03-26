@@ -9,7 +9,6 @@ server {
     }
 
     if ($block_request) {
-        limit_req zone=tarpit burst=1;
         return 444;
     }
 
