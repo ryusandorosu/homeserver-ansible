@@ -4,13 +4,12 @@ server:
   http_listen_port: {{ loki_port }}
 
 common:
-  path: /loki
+  path_prefix: /loki
 
 storage_config:
   boltdb_shipper:
     active_index_directory: /loki/index
     cache_location: /loki/cache
-    shared_store: filesystem
   filesystem:
     directory: /loki/chunks
 
