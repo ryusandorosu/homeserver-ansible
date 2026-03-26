@@ -1,0 +1,2 @@
+ansible_user: "{{ win_honor_user }}"
+ansible_password: "{{ vault_windows_honor_password }}"
