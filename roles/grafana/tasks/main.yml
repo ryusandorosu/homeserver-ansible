@@ -42,6 +42,6 @@
     url: "http://127.0.0.1:{{ grafana_port }}"
     status_code: 200
   register: result
-  retries: 10
+  retries: 5
   delay: 3
   until: result.status == 200

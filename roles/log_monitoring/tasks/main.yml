@@ -27,3 +27,22 @@
   community.docker.docker_compose_v2:
     project_src: /opt/log_monitoring
     state: present
+
+- name: Check Loki container running status
+  uri:
+    url: "http://127.0.0.1:{{ loki_port }}"
+    status_code: 200
+  register: result
+  retries: 5
+  delay: 3
+  until: result.status == 200
+
+- name: Get Promtail container info
+  community.docker.docker_container_info:
+    name: log_monitoring-promtail-1
+  register: promtail_info
+
+- name: Fail if Promtail is not running
+  fail:
+    msg: "Promtail container is not running"
+  when: not promtail_info.container.State.Running
