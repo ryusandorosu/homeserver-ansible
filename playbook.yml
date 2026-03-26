@@ -77,7 +77,7 @@
 
   vars:
     roles_list:
-      - win_clash
+      - clash_meta
 
   tasks:
     - name: Include roles dynamically
