@@ -16,3 +16,4 @@ honor ansible_host={{ wireguard_devices.laptop.ip }} ansible_user={{ win_honor_u
 ansible_connection=winrm
 ansible_port=5985
 ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore

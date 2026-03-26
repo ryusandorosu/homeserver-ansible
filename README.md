@@ -82,6 +82,7 @@ ansible-playbook playbook.yml -vv --diff
 - blockinfile
 
 ### playbook: sudo
+`-K`/`--ask-vault-pass`  
 если просит пароль sudo
 ```
 [ERROR]: Task failed: Premature end of stream waiting for become success.
@@ -113,6 +114,7 @@ become_method=sudo
 become_ask_pass=True
 ```
 ### playbook: host
+`-l`/`--limit`  
 если в `inventory` в группе хостов указано несколько и плейбук запускается без этого параметра - он будет деплоиться на все!  
 для запуска на сервере локально
 ```
@@ -185,6 +187,7 @@ ansible honor -m win_ping
 ansible remote -m ping
 ```
 ### playbook: tags
+`-t`/`--tag`  
 запустить тег что задаётся каждой роли в `playbook.yml`
 ```
 ansible-playbook playbook.yml -l local -K --tag cockpit
