@@ -44,8 +44,8 @@ server {
 {% if item.basic_auth %}
         auth_basic "Restricted";
         auth_basic_user_file {{ nginx_basic_auth_path }};
-{% endif %}
 
+{% endif %}
         proxy_pass {{ item.proto }}://127.0.0.1:{{ item.port }};
 
         proxy_set_header Host $host;
