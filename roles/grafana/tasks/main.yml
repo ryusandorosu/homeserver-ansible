@@ -36,3 +36,12 @@
   community.docker.docker_compose_v2:
     project_src: "{{ grafana_base_dir }}"
     state: present
+
+- name: Check Grafana container running status
+  uri:
+    url: "http://127.0.0.1:{{ grafana_port }}"
+    status_code: 200
+  register: result
+  retries: 10
+  delay: 3
+  until: result.status == 200
