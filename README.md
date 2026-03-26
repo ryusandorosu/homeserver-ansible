@@ -114,13 +114,75 @@ become_ask_pass=True
 ```
 ### playbook: host
 если в `inventory` в группе хостов указано несколько и плейбук запускается без этого параметра - он будет деплоиться на все!  
-для запуска локально
+для запуска на сервере локально
 ```
 ansible-playbook -l local playbook.yml -K --ask-vault-pass
 ```
-для запуска удалённо
+для запуска с винды на сервер
 ```
 ansible-playbook -l remote playbook.yml -K --ask-vault-pass
+```
+запустить с сервера на ноут
+```
+ansible-playbook playbook.yml -l asus -t win_clash
+```
+запустить с сервера на все ноуты
+```
+ansible-playbook playbook.yml -l windows -t win_clash
+```
+
+перед деплоем роли на винду проверить winrm  
+powershell от админа
+```
+winrm quickconfig
+```
+если не активно то
+```
+Enable-PSRemoting -Force
+Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true
+Set-Item WSMan:\localhost\Service\AllowUnencrypted -Value $true
+```
+при возникновении ошибки
+```
+WSManFault
+    Message
+        ProviderFault
+            WSManFault
+                Message = WinRM firewall exception will not work since one of the network connection types on this machine is set to Public. Change the network connection type to either Domain or Private and try again.
+```
+проверить
+```
+Get-NetConnectionProfile
+```
+если там
+```
+NetworkCategory          : Public
+```
+то поменять на Private
+```
+Set-NetConnectionProfile -NetworkCategory Private
+```
+если всё равно ругается то можно сделать так но не рекомендуется
+```
+winrm quickconfig -force
+```
+
+wsl
+```
+sudo apt update
+sudo apt install ansible
+pip install pywinrm
+```
+проверка  
+пинг винды
+```
+ansible windows -m win_ping
+ansible asus -m win_ping
+ansible honor -m win_ping
+```
+пинг сервера
+```
+ansible remote -m ping
 ```
 ### playbook: tags
 запустить тег что задаётся каждой роли в `playbook.yml`
@@ -134,12 +196,8 @@ ansible-playbook playbook.yml -l local -K --skip-tags cockpit --check
 нужно например при запуске с флагом `--check`, так как например роль [cockpit](#role-cockpit) со включённым параметром `cockpit_generate_cert` на нём будет валиться несмотря на то что отрабатывает при обычном запуске без ошибок.  
 в нём используются модули `community.crypto` которые плохо совместимы с check mode поскольку работают с реальными файлами и криптографией.  
 также с флагом `--check` не работает template validate (роли `nginx`, [sshd](#role-sshd))  
-проверять [юнит-тестами](#юнит-тесты)
-###
-? убедиться что ssh открыт до применеия роли [firewall](#role-firewall), иначе можно заблокировать себя. запускать команду с открытой ssh-сессией
-```
-ansible-playbook playbook.yml --limit test-host
-```
+проверять [юнит-тестами](#юнит-тесты)  
+
 проверить какие значения подставляются в шаблоны без запуска плейбука можно создав тестовый плейбук
 ```
 - hosts: localhost

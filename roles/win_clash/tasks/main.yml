@@ -1,0 +1,69 @@
+- name: Read profile.yaml
+  win_slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\profile.yaml"
+  register: clash_profile
+
+- name: Extract current id
+  set_fact:
+    clash_id: "{{ (clash_profile.content | b64decode | from_yaml).current }}"
+
+- name: Read current rules
+  win_slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\rules\\{{ clash_id }}.yaml"
+  register: clash_rules
+
+- name: Load repo rules
+  set_fact:
+    repo_rules: "{{ lookup('file', 'files/rules.yaml') | from_yaml }}"
+
+- name: Parse remote rules
+  set_fact:
+    remote_rules: "{{ clash_rules.content | b64decode | from_yaml }}"
+
+- name: Stat remote rules
+  win_stat:
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\rules\\{{ clash_id }}.yaml"
+  register: remote_stat
+
+- name: Stat repo rules
+  delegate_to: localhost
+  stat:
+    path: roles/win_clash/files/rules.yaml
+  register: repo_stat
+
+- name: Decide what to do
+  set_fact:
+    rules_action: >-
+      {% if (remote_rules | to_json) == (repo_rules | to_json) %}
+        equal
+      {% elif repo_stat.stat.mtime > remote_stat.stat.mtime %}
+        deploy
+      {% elif repo_stat.stat.mtime < remote_stat.stat.mtime %}
+        remote_newer
+      {% else %}
+        conflict
+      {% endif %}
+
+- name: Debug action
+  debug:
+    msg: "Rules state: {{ rules_action }}"
+
+- name: Skip if rules are equal
+  meta: end_host
+  when: rules_action == "equal"
+
+- name: Fail if remote rules are newer
+  fail:
+    msg: "Current rules are newer! Sync manually from client to repo."
+  when: rules_action == "remote_newer"
+
+- name: Fail on conflict
+  fail:
+    msg: "Rules differ but timestamps are equal. Manual resolution needed."
+  when: rules_action == "conflict"
+
+- name: Deploy clash custom rules
+  win_copy:
+    src: files/rules.yaml
+    dest: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\rules\\{{ clash_id }}.yaml"
+  when: rules_action == "deploy"
