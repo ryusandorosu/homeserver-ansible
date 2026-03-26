@@ -17,6 +17,7 @@ bad_bot:
   - DomainChecker
   - l9explore
   - Go-http-client
+  - l9scan
 
 bad_bot_regex: "{{ bad_bot | join('|') }}"
 
@@ -35,6 +36,7 @@ tarpit:
   - \.htaccess
   - \.DS_Store
   - \.go
+  - \.well-known
   - wp-admin
   - wp-login
   - wp-config
@@ -61,6 +63,11 @@ tarpit:
   - exchange
   - adminer
   - boaform
+  - swagger
+  - graphql
+  - gql
+  - telescope
+  - webjars
   - microsoft.exchange
   - composer\.json
   - 'ldap://'
