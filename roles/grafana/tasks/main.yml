@@ -22,7 +22,7 @@
     src: "{{ item }}"
     dest: "{{ grafana_provisioning_dir }}/dashboards/{{ item | basename | regex_replace('.j2','') }}"
   with_fileglob:
-    - "templates/dashboards/*.json"
+    - "templates/dashboards/*.j2"
 
 - name: Deploy docker-compose
   template:
