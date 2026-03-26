@@ -12,6 +12,7 @@
 - name: Obtain certificate
   command: >
     certbot --nginx
+    --cert-name {{ domain }}
     {{ certbot_domains }}
     --expand
     --non-interactive
