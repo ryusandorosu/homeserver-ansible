@@ -19,5 +19,6 @@
     --agree-tos
     --email {{ vault_mail }}
     --deploy-hook "systemctl reload nginx"
+# comment lines below when adding new subdomains
   args:
     creates: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
