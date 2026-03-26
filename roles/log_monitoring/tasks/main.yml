@@ -1,32 +1,39 @@
-- name: Create main directory
+- name: Create common configs directory
   file:
-    path: /opt/log_monitoring
+    path: "{{ stack_config_dir }}"
     state: directory
 
-- name: Create configs directory
+- name: Create Loki directories
   file:
-    path: /opt/log_monitoring/config
+    path: "{{ item }}"
     state: directory
+    owner: 10001
+    group: 10001
+    mode: "0755"
+  loop:
+    - "{{ loki_data_dir }}/chunks"
+    - "{{ loki_data_dir }}/index"
 
 - name: Deploy docker-compose
   template:
     src: docker-compose.yml.j2
-    dest: /opt/log_monitoring/docker-compose.yml
+    dest: "{{ stack_base_dir }}/docker-compose.yml"
 
 - name: Deploy Loki config
   template:
     src: loki-config.yml.j2
-    dest: /opt/log_monitoring/config/loki.yml
+    dest: "{{ stack_config_dir }}/loki.yml"
 
 - name: Deploy Promtail config
   template:
     src: promtail-config.yml.j2
-    dest: /opt/log_monitoring/config/promtail.yml
+    dest: "{{ stack_config_dir }}/promtail.yml"
 
 - name: Run Loki stack
   community.docker.docker_compose_v2:
-    project_src: /opt/log_monitoring
+    project_src: "{{ stack_base_dir }}"
     state: present
+    recreate: always
 
 - name: Check Loki container running status
   uri:

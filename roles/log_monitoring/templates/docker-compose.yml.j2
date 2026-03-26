@@ -6,10 +6,11 @@ services:
   loki:
     image: grafana/loki:latest
     container_name: loki
+    user: "10001:10001"
     command: -config.file=/etc/loki/loki.yml
     volumes:
-      - ./config/loki.yml:/etc/loki/loki.yml
-      - ./data:/loki
+      - "{{ stack_config_dir }}/loki.yml:/etc/loki/loki.yml"
+      - "{{ loki_data_dir }}:/loki"
     ports:
       - "127.0.0.1:{{ loki_port }}:{{ loki_port }}"
     networks:
@@ -19,7 +20,7 @@ services:
     image: grafana/promtail:latest
     command: -config.file=/etc/promtail/promtail.yml
     volumes:
-      - ./config/promtail.yml:/etc/promtail/promtail.yml
+      - "{{ stack_config_dir }}/promtail.yml:/etc/promtail/promtail.yml"
       - /var/log:/var/log
       - /var/lib/docker/containers:/var/lib/docker/containers
       - /etc/machine-id:/etc/machine-id:ro

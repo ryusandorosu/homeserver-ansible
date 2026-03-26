@@ -1,0 +1,3 @@
+stack_base_dir: /opt/log_monitoring
+stack_config_dir: "{{ stack_base_dir }}/config"
+loki_data_dir: "{{ stack_base_dir }}/data"
