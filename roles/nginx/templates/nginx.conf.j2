@@ -28,6 +28,25 @@ http {
           ~*({{ bad_bot_regex }}) 1;
         }
 
+        map $host $is_internal_host {
+            default 0;
+{% for subdomain in nginx_sites %}
+{% if subdomain.public == false %}
+            {{ subdomain.server_name }} 1;
+{% endif %}
+{% endfor %}
+        }
+
+        map $request_uri $is_tarpit {
+            default 0;
+            ~*({{ tarpit_regex }}) 1;
+        }
+
+        map "$is_tarpit:$is_internal_host" $block_request {
+            default 0;
+            "1:0" 1;
+        }
+
 {% if appsec_install %}
         # AppSec requirement
         include /usr/share/crowdsec-nginx-bouncer/crowdsec_nginx.conf;
