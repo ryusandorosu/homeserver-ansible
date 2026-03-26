@@ -10,6 +10,10 @@ services:
     user: "472:472"
     ports:
       - "127.0.0.1:{{ grafana_port }}:{{ grafana_port }}"
+    environment:
+      - GF_SERVER_ROOT_URL=https://grafana.{{ domain }}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false
+      - GF_SERVER_PROTOCOL=http
     volumes:
       - {{ grafana_data_dir }}:{{ grafana_container_data_dir }}
       - {{ grafana_provisioning_dir }}:{{ grafana_container_provisioning_dir }}
