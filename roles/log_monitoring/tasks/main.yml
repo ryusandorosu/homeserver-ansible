@@ -11,8 +11,10 @@
     group: 10001
     mode: "0755"
   loop:
+    - "{{ loki_data_dir }}"
     - "{{ loki_data_dir }}/chunks"
     - "{{ loki_data_dir }}/index"
+    - "{{ loki_data_dir }}/tsdb-shipper-cache"
 
 - name: Deploy docker-compose
   template:
