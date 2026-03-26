@@ -13,15 +13,14 @@ all:
         asus:
           ansible_host: "{{ wireguard_devices.large_laptop.ip }}"
           ansible_user: "{{ win_asus_user }}"
-          ansible_password: !vault |
-            "{{ vault_windows_asus_password }}"
+          ansible_password: "{{ vault_windows_asus_password }}"
         honor:
           ansible_host: "{{ wireguard_devices.laptop.ip }}"
           ansible_user: "{{ win_honor_user }}"
-          ansible_password: !vault |
-            "{{ vault_windows_honor_password }}"
+          ansible_password: "{{ vault_windows_honor_password }}"
       vars:
         ansible_connection: winrm
         ansible_port: 5985
         ansible_winrm_transport: ntlm
         ansible_winrm_server_cert_validation: ignore
+        ansible_become: false
