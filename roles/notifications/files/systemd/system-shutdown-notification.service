@@ -2,6 +2,8 @@
 Description=Send Telegram notification on shutdown
 DefaultDependencies=no
 Before=shutdown.target reboot.target halt.target
+Wants=docker.service
+After=docker.service
 
 [Service]
 Type=oneshot
