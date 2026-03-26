@@ -6,8 +6,14 @@ nginx_sites:
   - server_name: "www.{{ domain }}"
     public: true
   - server_name: "cockpit.{{ domain }}"
+    public: false
+    basic_auth: false
     port: "{{ cockpit_port }}"
     proto: https
+  - server_name: "grafana.{{ domain }}"
     public: false
+    basic_auth: true
+    port: "{{ grafana_port }}"
+    proto: http
 
 letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"

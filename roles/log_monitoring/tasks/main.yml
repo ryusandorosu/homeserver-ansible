@@ -1,0 +1,29 @@
+- name: Create main directory
+  file:
+    path: /opt/log_monitoring
+    state: directory
+
+- name: Create configs directory
+  file:
+    path: /opt/log_monitoring/config
+    state: directory
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/log_monitoring/docker-compose.yml
+
+- name: Deploy Loki config
+  template:
+    src: loki-config.yml.j2
+    dest: /opt/log_monitoring/config/loki.yml
+
+- name: Deploy Promtail config
+  template:
+    src: promtail-config.yml.j2
+    dest: /opt/log_monitoring/config/promtail.yml
+
+- name: Run Loki stack
+  community.docker.docker_compose_v2:
+    project_src: /opt/log_monitoring
+    state: present

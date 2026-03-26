@@ -1,0 +1,6 @@
+grafana_base_dir: /opt/grafana
+grafana_data_dir: "{{ grafana_base_dir }}/grafana"
+grafana_provisioning_dir: "{{ grafana_base_dir }}/provisioning"
+
+grafana_container_data_dir: /var/lib/grafana
+grafana_container_provisioning_dir: /etc/grafana/provisioning

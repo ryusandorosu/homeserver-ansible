@@ -1,0 +1,3 @@
+- name: Create monitoring network
+  community.docker.docker_network:
+    name: monitoring

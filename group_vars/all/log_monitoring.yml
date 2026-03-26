@@ -1,0 +1,5 @@
+promtail_scrape_configs:
+  - name: docker
+    path: /var/lib/docker/containers/*/*.log
+  - name: syslog
+    path: /var/log/*.log

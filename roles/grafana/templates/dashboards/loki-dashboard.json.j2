@@ -1,0 +1,83 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "type": "logs",
+      "title": "All Logs",
+      "targets": [
+        {
+          "expr": "{job=~\".+\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
+    }{% if promtail_scrape_configs | length > 0 %},{% endif %}
+{% for job in promtail_scrape_configs %}
+    {
+      "type": "logs",
+      "title": "{{ job.name }} Logs",
+      "targets": [
+        {
+          "expr": "{job=\"{{ job.name }}\"}",
+          "refId": "{{ loop.index }}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 12 + (loop.index0 * 8) }}
+      }
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+{# 
+    {
+      "type": "logs",
+      "title": "Docker Logs",
+      "targets": [
+        {
+          "expr": "{job=\"docker\"}",
+          "refId": "B"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      }
+    },
+    {
+      "type": "logs",
+      "title": "System Logs",
+      "targets": [
+        {
+          "expr": "{job=\"syslog\"}",
+          "refId": "C"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      }
+    } #}
+  ],
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["loki"],
+  "templating": {
+    "list": []
+  },
+  "title": "Loki Logs Overview",
+  "version": 1
+}

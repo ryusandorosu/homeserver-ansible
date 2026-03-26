@@ -1,0 +1,12 @@
+- name: Install Apache2 utils
+  apt:
+    name: apache2-utils
+    state: present
+    update_cache: yes
+
+- name: Set password for Basic Auth
+  community.general.htpasswd:
+    path: "{{ nginx_basic_auth_path }}"
+    name: "{{ nginx_basic_auth_user }}"
+    password: "{{ vault_nginx_basic_auth_password }}"
+    crypt_scheme: bcrypt

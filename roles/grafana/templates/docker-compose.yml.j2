@@ -1,0 +1,16 @@
+version: "3.9"
+
+networks:
+  monitoring:
+    external: true
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "127.0.0.1:{{ grafana_port }}:{{ grafana_port }}"
+    volumes:
+      - {{ grafana_data_dir }}:{{ grafana_container_data_dir }}
+      - {{ grafana_provisioning_dir }}:{{ grafana_container_provisioning_dir }}
+    networks:
+      - monitoring

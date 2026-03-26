@@ -1,0 +1,28 @@
+version: "3.9"
+
+networks:
+  monitoring:
+    name: monitoring
+
+services:
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/loki.yml
+    volumes:
+      - ./config/loki.yml:/etc/loki/loki.yml
+      - ./data:/loki
+    ports:
+      - "127.0.0.1:{{ loki_port }}:{{ loki_port }}"
+    networks:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:latest
+    command: -config.file=/etc/promtail/promtail.yml
+    volumes:
+      - ./config/promtail.yml:/etc/promtail/promtail.yml
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - /etc/machine-id:/etc/machine-id:ro
+    networks:
+      - monitoring

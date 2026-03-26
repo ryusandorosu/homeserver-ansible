@@ -1,0 +1,2 @@
+nginx_basic_auth_path: /etc/nginx/.htpasswd
+nginx_basic_auth_user: "{{ user }}"

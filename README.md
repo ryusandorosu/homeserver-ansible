@@ -186,6 +186,11 @@ ansible honor -m win_ping
 ```
 ansible remote -m ping
 ```
+
+для деплоя на винду также нужно установить коллекцию
+```
+ansible-galaxy collection install ansible.windows
+```
 ### playbook: tags
 `-t`/`--tag`  
 запустить тег что задаётся каждой роли в `playbook.yml`

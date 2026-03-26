@@ -16,5 +16,6 @@
     --non-interactive
     --agree-tos
     --email {{ vault_mail }}
+    --deploy-hook "systemctl reload nginx"
   args:
     creates: /etc/letsencrypt/live/{{ domain }}/fullchain.pem

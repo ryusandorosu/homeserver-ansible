@@ -14,3 +14,6 @@ smb_port: 445
 
 #services
 cockpit_port: 9090
+grafana_port: 3000
+loki_port: 3100
+promtail_port: 9080
