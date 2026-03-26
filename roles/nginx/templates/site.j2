@@ -53,6 +53,17 @@ server {
 {% if item.server_name == 'cockpit.' ~ domain %}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+{% elif item.server_name == 'grafana.' ~ domain %}
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # for websocket (e.g. alerting)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+
+        # if grafana is under http, ssl verification is not needed
+        proxy_ssl_verify off;
 {% endif %}
 
         proxy_ssl_verify off;
