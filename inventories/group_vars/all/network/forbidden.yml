@@ -75,5 +75,6 @@ tarpit:
   - 'dns://'
   - HNAP1
   - MGLNDD
+  - LEAKIX
 
 tarpit_regex: "{{ tarpit | join('|') }}"
