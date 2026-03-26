@@ -1,5 +1,5 @@
 - name: Read profile.yaml
-  win_slurp:
+  ansible.windows.slurp:
     path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\profile.yaml"
   register: clash_profile
 
@@ -8,7 +8,7 @@
     clash_id: "{{ (clash_profile.content | b64decode | from_yaml).current }}"
 
 - name: Read current rules
-  win_slurp:
+  ansible.windows.slurp:
     path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\koala-clash\\rules\\{{ clash_id }}.yaml"
   register: clash_rules
 
