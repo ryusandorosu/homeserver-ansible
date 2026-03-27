@@ -1,5 +1,28 @@
+sshd_log: /var/log/auth.log
+wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
+telegram_bot_logs: /var/log/telegram
+geo_ip_cache: /var/cache/telegram/
+telegram_bot_error_log: "{{ telegram_bot_logs }}/message_error.log"
+telegram_bot_success_log: "{{ telegram_bot_logs }}/message_success.log"
+
 promtail_scrape_configs:
-  - name: docker
+  - name: Docker containers
     path: /var/lib/docker/containers/*/*.log
+  - name: SSH authentication
+    path: "{{ sshd_log }}"
+  - name: Wireguard connections
+    path: "{{ wireguard_connections_log }}"
+  - name: Telegram notifications
+    path: "{{ telegram_bot_logs }}/*.log"
   - name: syslog
-    path: /var/log/*.log
+    path: /var/log/syslog
+  - name: Fail2Ban
+    path: /var/log/fail2ban.log
+  - name: CrowdSec
+    path: /var/log/crowdsec*.log
+  - name: UFW
+    path: /var/log/ufw.log
+  - name: Samba
+    path: /var/log/samba/log.*
+  - name: userlog
+    path: /var/log/user.log

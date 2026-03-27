@@ -38,39 +38,6 @@
       }
     }{% if not loop.last %},{% endif %}
 {% endfor %}
-{# 
-    {
-      "type": "logs",
-      "title": "Docker Logs",
-      "targets": [
-        {
-          "expr": "{job=\"docker\"}",
-          "refId": "B"
-        }
-      ],
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 12
-      }
-    },
-    {
-      "type": "logs",
-      "title": "System Logs",
-      "targets": [
-        {
-          "expr": "{job=\"syslog\"}",
-          "refId": "C"
-        }
-      ],
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      }
-    } #}
   ],
   "schemaVersion": 39,
   "style": "dark",
