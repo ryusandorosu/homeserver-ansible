@@ -43,18 +43,3 @@
     name: "{{ user }}"
     groups: docker
     append: yes
-
-- name: Create systemd override dir for docker
-  file:
-    path: /etc/systemd/system/docker.service.d
-    state: directory
-    mode: '0755'
-
-- name: Ensure docker stops AFTER notification service
-  copy:
-    dest: /etc/systemd/system/docker.service.d/override.conf
-    content: |
-      [Unit]
-      After=system-shutdown-notification.service
-    mode: '0644'
-  notify: daemon reexec

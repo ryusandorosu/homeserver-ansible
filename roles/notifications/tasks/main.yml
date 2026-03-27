@@ -69,6 +69,21 @@
     - "files/systemd/*.service"
   notify: daemon reload
 
+- name: Create systemd override directory for Docker
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    mode: '0755'
+
+- name: Add system shutdown notification depending on docker stop
+  copy:
+    dest: /etc/systemd/system/docker.service.d/system-shutdown-notification.conf
+    content: |
+      [Service]
+      ExecStopPre=/usr/local/bin/telegram.sh "🔴 nuc-server shutting down with docker" status "$0"
+  notify:
+    - daemon reload
+
 - name: Enable services
   systemd:
     name: "{{ item | basename | regex_replace('.service','') }}"
