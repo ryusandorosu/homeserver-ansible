@@ -11,6 +11,9 @@ ssh_authorized:
   - name: termius@DESKTOP-2MJ0UCN
     public_key: AAAAC3NzaC1lZDI1NTE5AAAAIAqadWOC8soOoaxQ7g5FEqZjMngE81H6rNjhNsuctD1X
     type: ssh-ed25519
+  - name: termius@DESKTOP-5EFI5KM
+    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIG2Tjqq68/UtFI6+SK9ULIYOn9yG9Tw+wJ8M6BkqHeTW
+    type: ssh-ed25519
   - name: powershell:kutae@DESKTOP-2MJ0UCN
     public_key: AAAAC3NzaC1lZDI1NTE5AAAAIPzJ2Q7UG0gYwBb/BI8G/JnLlZ0O40GVF3TBAtQIyd3Q
     type: ssh-ed25519
