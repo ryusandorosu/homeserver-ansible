@@ -1,0 +1,10 @@
+prepend:
+  - 5,PROCESS-NAME,YandexDisk4.exe,DIRECT
+  - IP-CIDR,{{ home_network }},DIRECT
+  - IP-CIDR,{{ wireguard_network }},DIRECT
+  - 2,PROCESS-NAME,:System,DIRECT
+{% for domain in clash_domain_exclude %}
+  - DOMAIN-SUFFIX,{{ domain }},DIRECT
+{% endfor %}
+append: []
+delete: [] 

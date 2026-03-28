@@ -1,0 +1,81 @@
+external-controller: ""
+external-ui: ""
+external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip
+external-controller-cors:
+  allow-origins:
+    - https://metacubex.github.io
+    - https://board.zash.run.place
+  allow-private-network: false
+secret: ""
+mode: rule
+mixed-port: 7897
+socks-port: 0
+port: 0
+redir-port: 0
+tproxy-port: 0
+log-level: info
+find-process-mode: always
+interface-name: ""
+bind-address: "*"
+keep-alive-idle: 0
+keep-alive-interval: 0
+disable-keep-alive: false
+global-client-fingerprint: ""
+lan-allowed-ips:
+  - 0.0.0.0/0
+  - ::/0
+lan-disallowed-ips: []
+authentication: []
+skip-auth-prefixes:
+  - 127.0.0.1/32
+tun:
+  enable: false
+  device: mihomo
+  stack: mixed
+  auto-route: true
+  auto-redirect: false
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+  strict-route: false
+  route-exclude-address:
+    - 10.10.0.0/24
+  disable-icmp-forwarding: false
+  mtu: 1500
+profile:
+  store-selected: true
+  store-fake-ip: true
+geo-auto-update: false
+geo-update-interval: 24
+geodata-mode: false
+geox-url:
+  geoip: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat
+  geosite: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat
+  mmdb: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb
+  asn: https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb
+dns:
+  nameserver-policy: {}
+  ipv6: true
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: ""
+  fake-ip-filter:
+    - "*"
+    - +.lan
+    - +.local
+    - time.*.com
+    - ntp.*.com
+    - +.market.xiaomi.com
+{% for domain in clash_dns_exclude %}
+    - +.{{ domain }}
+{% endfor %}
+  enhanced-mode: fake-ip
+  use-hosts: false
+  use-system-hosts: false
+  respect-rules: false
+  default-nameserver:
+    - tls://223.5.5.5
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  proxy-server-nameserver: []
+  direct-nameserver: [] 
