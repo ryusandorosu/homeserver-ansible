@@ -1,11 +1,15 @@
 [Unit]
 Description=Send Telegram notification on shutdown before mihomo proxy container stops
 DefaultDependencies=no
-Before=docker.service
+Before=docker.service shutdown.target reboot.target halt.target
+Requires=docker.service
+After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/telegram.sh "🔴 nuc-server shutting down with docker" status "$0"
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=/usr/local/bin/telegram.sh "🔴 nuc-server shutting down with docker" status "$0"
 
 [Install]
 WantedBy=multi-user.target
