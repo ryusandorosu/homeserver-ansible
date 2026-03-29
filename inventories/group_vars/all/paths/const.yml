@@ -1,0 +1,4 @@
+systemd_services: /etc/systemd/system
+
+sshd_log: /var/log/auth.log
+f2b_log: /var/log/fail2ban.log

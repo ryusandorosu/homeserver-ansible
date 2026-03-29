@@ -1,5 +1,3 @@
-sshd_log: /var/log/auth.log
-f2b_log: /var/log/fail2ban.log
 wireguard_connections_log: /var/log/wireguard/{{ wireguard_interface }}_connections.log
 
 geo_ip_cache: /var/cache/telegram/
