@@ -7,10 +7,38 @@
   set_fact:
     clash_id: "{{ (clash_profile.content | b64decode | from_yaml).current }}"
 
+- name: Read remote rules before deploy
+  ansible.windows.slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+  register: before_rules
+  ignore_errors: true
+
+- name: Render rules template
+  set_fact:
+    rendered_rules: "{{ lookup('template', 'templates/rules.yaml.j2') }}"
+
+- name: Show unified rules diff
+  debug:
+    msg: "{{ before_rules.content | b64decode | community.general.unified_diff(rendered_rules) }}"
+
 - name: Deploy clash custom rules
   win_template:
     src: templates/rules.yaml.j2
     dest: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+
+- name: Read remote config before deploy
+  ansible.windows.slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+  register: before_config
+  ignore_errors: true
+
+- name: Render config template
+  set_fact:
+    rendered_config: "{{ lookup('template', 'templates/mihomo.yaml.j2') }}"
+
+- name: Show unified config diff
+  debug:
+    msg: "{{ before_config.content | b64decode | community.general.unified_diff(rendered_config) }}"
 
 - name: Deploy mihomo config
   win_template:
