@@ -62,7 +62,7 @@
   notify: daemon reload
 
 - name: Deploy templated systemd services
-  copy:
+  template:
     src: "{{ item }}"
     dest: "{{ systemd_services }}/{{ item | basename | regex_replace('.j2','') }}"
   with_fileglob:
