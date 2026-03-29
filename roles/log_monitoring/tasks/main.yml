@@ -42,7 +42,7 @@
     url: "http://{{ localhost }}:{{ loki_port }}/ready"
     status_code: [200, 204]
   register: result
-  retries: 2
+  retries: 5
   delay: 3
   until: result.status in [200, 204]
 
