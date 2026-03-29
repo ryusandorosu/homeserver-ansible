@@ -8,7 +8,7 @@
     enabled: yes
     state: restarted
   with_fileglob:
-    - "files/systemd/*.service"
+    - "templates/systemd/*.service"
 
 - name: ensure wireguard logs directory exists
   file:
