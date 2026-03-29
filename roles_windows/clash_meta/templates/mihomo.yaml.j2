@@ -39,7 +39,7 @@ tun:
     - any:53
   strict-route: false
   route-exclude-address:
-    - 10.10.0.0/24
+    - {{ wireguard_network }}
   disable-icmp-forwarding: false
   mtu: 1500
 profile:

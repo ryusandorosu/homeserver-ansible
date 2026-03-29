@@ -19,20 +19,20 @@
 
 - name: Ensure scripts directory exists
   file:
-    path: /usr/local/bin/scripts/
+    path: "{{ scripts_dir }}"
     state: directory
     mode: '0755'
 
 - name: Deploy auto mount script
   template:
     src: android-watcher.sh.j2
-    dest: /usr/local/bin/scripts/android-watcher.sh
+    dest: "{{ android_watcher_script }}"
   notify: restart watcher service
 
 - name: Deploy auto mount service
-  copy:
-    src: android-watcher.service
-    dest: /etc/systemd/system/
+  template:
+    src: android-watcher.service.j2
+    dest: "{{ systemd_services }}/android-watcher.service"
   notify: daemon reload
 
 - name: Enable auto mount service

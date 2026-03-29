@@ -39,7 +39,7 @@
 
 - name: Check Loki container running status
   uri:
-    url: "http://127.0.0.1:{{ loki_port }}/ready"
+    url: "http://{{ localhost }}:{{ loki_port }}/ready"
     status_code: [200, 204]
   register: result
   retries: 2

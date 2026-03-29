@@ -40,7 +40,7 @@ server {
     allow {{ wireguard_network }};
     allow {{ home_network }};
     allow {{ home_ip }};
-    allow 127.0.0.1;
+    allow {{ localhost }};
     deny all;
 
     location / {
@@ -50,7 +50,7 @@ server {
         auth_basic_user_file {{ nginx_basic_auth_path }};
 
 {% endif %}
-        proxy_pass {{ item.proto }}://127.0.0.1:{{ item.port }};
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ item.port }};
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;

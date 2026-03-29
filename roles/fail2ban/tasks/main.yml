@@ -58,14 +58,14 @@
 
 - name: Create override dir
   file:
-    path: /etc/systemd/system/fail2ban.service.d
+    path: "{{ systemd_services }}/fail2ban.service.d"
     state: directory
     mode: '0755'
 
 - name: Deploy override
   template:
     src: override.conf.j2
-    dest: /etc/systemd/system/fail2ban.service.d/override.conf
+    dest: "{{ systemd_services }}/fail2ban.service.d/override.conf"
   notify:
     - daemon reload
     - restart fail2ban

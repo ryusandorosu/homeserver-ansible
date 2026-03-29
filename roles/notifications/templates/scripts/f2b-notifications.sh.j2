@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/scripts/includes/geo-get-json.sh
+. {{ watcher_scripts_includes }}/geo-get-json.sh
 jail_name="$1"
 banned_ip="$2"
 logpath="$3"
@@ -9,7 +9,7 @@ ipfailures="$6"
 ipjailfailures="$7"
 
 loglines=20
-if grep -m $loglines -awF $banned_ip /var/log/fail2ban.log | grep -aE "Restore Ban|already banned"; then exit 0; fi
+if grep -m $loglines -awF $banned_ip {{ f2b_log }} | grep -aE "Restore Ban|already banned"; then exit 0; fi
 
 BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 (( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d | sed 's/\ //') days"
@@ -18,7 +18,9 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 (( $bantime == -1 )) && BANTIME="ever"
 
 logtext="$(grep -m $loglines -awF $banned_ip $logpath | tail -n $loglines)"
+{% raw %}
 loglength=${#logtext}
+{% endraw %}
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
@@ -32,5 +34,5 @@ else
 MESSAGE+="<pre>$logtext</pre>"
 fi
 
-/usr/local/bin/telegram.sh "$MESSAGE" alert "$0" &
+{{ telegram_script }} "$MESSAGE" alert "$0" &
 disown

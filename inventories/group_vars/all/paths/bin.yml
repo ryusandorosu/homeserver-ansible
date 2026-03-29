@@ -1,0 +1,10 @@
+scripts_dir: /usr/local/bin/scripts
+
+# Notifications
+telegram_script: /usr/local/bin/telegram.sh
+watcher_scripts_includes: "{{ scripts_dir }}/includes"
+ssh_watcher_script: "{{ scripts_dir }}/ssh-success-watcher.sh"
+vpn_watcher_script: "{{ scripts_dir }}/vpn-success-watcher.sh"
+f2b_tg_script: "{{ scripts_dir }}/f2b-notifications.sh"
+
+android_watcher_script: "{{ scripts_dir }}/android-watcher.sh"

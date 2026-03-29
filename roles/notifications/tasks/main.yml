@@ -1,24 +1,16 @@
 - name: Ensure scripts directory exists
   file:
-    path: "/usr/local/bin/scripts/{{ item }}"
+    path: "{{ scripts_dir }}/{{ item }}"
     state: directory
     mode: '0755'
   loop:
     - ""
     - "includes"
 
-- name: Copy scripts
-  copy:
-    src: "{{ item }}"
-    dest: /usr/local/bin/scripts/
-  with_fileglob:
-    - "files/scripts/*.sh"
-  notify: restart services
-
-- name: Deploy watcher scripts
+- name: Deploy scripts
   template:
     src: "{{ item }}"
-    dest: "/usr/local/bin/scripts/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "{{ scripts_dir }}/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0755'
   with_fileglob:
     - "templates/scripts/*.j2"
@@ -30,9 +22,9 @@
 - name: Deploy watcher scripts includes
   copy:
     src: "{{ item }}"
-    dest: /usr/local/bin/scripts/includes/
+    dest: "{{ watcher_scripts_includes }}"
   with_fileglob:
-    - "files/scripts/includes/*.sh"
+    - "templates/scripts/includes/*.sh"
   notify:
     - restart services
     - ensure wireguard logs directory exists
@@ -41,7 +33,7 @@
 - name: Deploy watcher scripts templated includes
   template:
     src: "{{ item }}"
-    dest: "/usr/local/bin/scripts/includes/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "{{ watcher_scripts_includes }}/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0755'
   with_fileglob:
     - "templates/scripts/includes/*.j2"
@@ -64,15 +56,24 @@
 - name: Deploy systemd services
   copy:
     src: "{{ item }}"
-    dest: /etc/systemd/system/
+    dest: "{{ systemd_services }}"
   with_fileglob:
-    - "files/systemd/*.service"
+    - "templates/systemd/*.service"
+  notify: daemon reload
+
+- name: Deploy templated systemd services
+  copy:
+    src: "{{ item }}"
+    dest: "{{ systemd_services }}/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - "templates/systemd/*.j2"
   notify: daemon reload
 
 - name: Enable services
   systemd:
-    name: "{{ item | basename | regex_replace('.service','') }}"
+    name: "{{ item | basename | regex_replace('.j2','') | regex_replace('.service','') }}"
     enabled: yes
     state: started
   with_fileglob:
-    - "files/systemd/*.service"
+    - "templates/systemd/*.service"
+    - "templates/systemd/*.service.j2"

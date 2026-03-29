@@ -2,7 +2,7 @@ fail2ban_ignoreip:
   - "{{ home_ip }}"
   - "{{ home_network }}"
   - "{{ wireguard_network }}"
-  - 127.0.0.1
+  - "{{ localhost }}"
   - ::1
 
 fail2ban_bantime: 3h
@@ -58,7 +58,7 @@ fail2ban_jails:
 
   - name: recidive
     enabled: true
-    logpath: /var/log/fail2ban.log
+    logpath: "{{ f2b_log }}"
     backend: auto
     bantime: -1
     findtime: 1w

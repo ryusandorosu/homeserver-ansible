@@ -3,7 +3,7 @@ Description=SSH Success Login Watcher
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/scripts/ssh-success-watcher.sh
+ExecStart={{ ssh_watcher_script }}
 Restart=always
 User=root
 

@@ -1,3 +1,3 @@
 #MODE=stream
-APPSEC_URL=http://127.0.0.1:{{ appsec_port }}
-EXCLUDE_IPS=127.0.0.1,{{ wireguard_network }},{{ home_network }},{{ home_ip }}
+APPSEC_URL=http://{{ localhost }}:{{ appsec_port }}
+EXCLUDE_IPS={{ localhost }},{{ wireguard_network }},{{ home_network }},{{ home_ip }}

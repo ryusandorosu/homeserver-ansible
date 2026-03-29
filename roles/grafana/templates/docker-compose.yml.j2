@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     user: "472:472"
     ports:
-      - "127.0.0.1:{{ grafana_port }}:{{ grafana_port }}"
+      - "{{ localhost }}:{{ grafana_port }}:{{ grafana_port }}"
     environment:
       - GF_SERVER_ROOT_URL=https://grafana.{{ domain }}
       - GF_SERVER_SERVE_FROM_SUB_PATH=false

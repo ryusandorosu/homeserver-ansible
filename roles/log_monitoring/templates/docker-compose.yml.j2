@@ -13,7 +13,7 @@ services:
       - "{{ stack_config_dir }}/loki.yml:/etc/loki/loki.yml"
       - "{{ loki_data_dir }}:/loki"
     ports:
-      - "127.0.0.1:{{ loki_port }}:{{ loki_port }}"
+      - "{{ localhost }}:{{ loki_port }}:{{ loki_port }}"
     networks:
       - monitoring
 

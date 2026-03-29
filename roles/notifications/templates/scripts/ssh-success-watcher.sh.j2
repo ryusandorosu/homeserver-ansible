@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/scripts/includes/geo-include.sh
+. {{ watcher_scripts_includes }}/geo-include.sh
 
 journalctl -fu ssh.service -fu sshd.service | \
 while read line; do
@@ -14,7 +14,7 @@ while read line; do
     common_message_init SSH "$key" "$device_name"
     generate_geo_message "$ip" "{{ sshd_log }}" "$key" "$device_name" "" "$line"
 
-    /usr/local/bin/telegram.sh "$MESSAGE" status "$0"
+    {{ telegram_script }} "$MESSAGE" status "$0"
 
   fi
 

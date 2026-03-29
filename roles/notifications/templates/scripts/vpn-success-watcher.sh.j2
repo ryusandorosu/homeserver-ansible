@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/bin/scripts/includes/geo-include.sh
+. {{ watcher_scripts_includes }}/geo-include.sh
 
 declare -A new_handshake
 
@@ -21,7 +21,7 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
     common_message_init VPN "$PUBKEY" "$device_name"
     generate_geo_message "$ip" "{{ wireguard_connections_log }}" "$PUBKEY" "$device_name" "$vpn_ip"
 
-    /usr/local/bin/telegram.sh "$MESSAGE" status "$0"
+    {{ telegram_script }} "$MESSAGE" status "$0"
 
     [[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}
     echo "$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\"" >> {{ wireguard_connections_log }}
