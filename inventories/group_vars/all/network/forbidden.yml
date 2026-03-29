@@ -18,6 +18,7 @@ bad_bot:
   - l9explore
   - Go-http-client
   - l9scan
+  - leakix
 
 bad_bot_regex: "{{ bad_bot | join('|') }}"
 
