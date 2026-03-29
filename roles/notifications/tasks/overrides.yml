@@ -1,0 +1,15 @@
+- name: Create systemd override directories
+  file:
+    path: "{{ systemd_services }}/{{ item }}.service.d"
+    state: directory
+    mode: '0755'
+  loop: "{{ service_override }}"
+
+- name: Deploy overrides
+  template:
+    src: templates/systemd/override.conf.j2
+    dest: "{{ systemd_services }}/{{ item }}.service.d/override.conf"
+  loop: "{{ service_override }}"
+  notify:
+    - daemon reload
+    - restart overrided services

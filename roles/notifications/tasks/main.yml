@@ -1,3 +1,8 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
 - name: Ensure scripts directory exists
   file:
     path: "{{ scripts_dir }}/{{ item }}"
@@ -16,8 +21,7 @@
     - "templates/scripts/*.j2"
   notify:
     - restart services
-    - ensure wireguard logs directory exists
-    - ensure geo ip cache directory exists
+    - ensure custom logs directories exist
 
 - name: Deploy watcher scripts includes
   copy:
@@ -27,8 +31,7 @@
     - "templates/scripts/includes/*.sh"
   notify:
     - restart services
-    - ensure wireguard logs directory exists
-    - ensure geo ip cache directory exists
+    - ensure custom logs directories exist
 
 - name: Deploy watcher scripts templated includes
   template:
@@ -39,8 +42,7 @@
     - "templates/scripts/includes/*.j2"
   notify:
     - restart services
-    - ensure wireguard logs directory exists
-    - ensure geo ip cache directory exists
+    - ensure custom logs directories exist
 
 - name: Deploy simple scripts
   template:
@@ -51,29 +53,8 @@
     - "templates/*.j2"
   notify:
     - restart services
-    - ensure telegram bot log directory exists
+    - ensure custom logs directories exist
 
-- name: Deploy systemd services
-  copy:
-    src: "{{ item }}"
-    dest: "{{ systemd_services }}"
-  with_fileglob:
-    - "templates/systemd/*.service"
-  notify: daemon reload
-
-- name: Deploy templated systemd services
-  template:
-    src: "{{ item }}"
-    dest: "{{ systemd_services }}/{{ item | basename | regex_replace('.j2','') }}"
-  with_fileglob:
-    - "templates/systemd/*.j2"
-  notify: daemon reload
-
-- name: Enable services
-  systemd:
-    name: "{{ item | basename | regex_replace('.j2','') | regex_replace('.service','') }}"
-    enabled: yes
-    state: started
-  with_fileglob:
-    - "templates/systemd/*.service"
-    - "templates/systemd/*.service.j2"
+- import_tasks: overrides.yml
+- import_tasks: services.yml
+#- import_tasks: container.yml

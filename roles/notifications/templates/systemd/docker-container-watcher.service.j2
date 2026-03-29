@@ -1,0 +1,12 @@
+[Unit]
+Description=Docker Container Status Telegram Notifier
+After=docker.service network.target
+Requires=docker.service
+
+[Service]
+ExecStart={{ docker_watcher_script }}
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

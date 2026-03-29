@@ -8,3 +8,4 @@ vpn_watcher_script: "{{ scripts_dir }}/vpn-success-watcher.sh"
 f2b_tg_script: "{{ scripts_dir }}/f2b-notifications.sh"
 
 android_watcher_script: "{{ scripts_dir }}/android-watcher.sh"
+docker_watcher_script: "{{ scripts_dir }}/docker-container-watcher.sh"

@@ -2,6 +2,12 @@
   systemd:
     daemon_reload: yes
 
+- name: restart overrided services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  loop: "{{ service_override }}"
+
 - name: restart services
   systemd:
     name: "{{ item | basename | regex_replace('.service','') }}"
@@ -10,17 +16,13 @@
   with_fileglob:
     - "templates/systemd/*.service"
 
-- name: ensure wireguard logs directory exists
+- name: ensure custom logs directories exist
   file:
-    path: "{{ wireguard_connections_log | dirname }}"
+    path: "{{ item }}"
     state: directory
-
-- name: ensure geo ip cache directory exists
-  file:
-    path: "{{ geo_ip_cache }}"
-    state: directory
-
-- name: ensure telegram bot log directory exists
-  file:
-    path: "{{ telegram_bot_logs | dirname }}"
-    state: directory
+    mode: '0755'
+  loop:
+    - "{{ telegram_bot_logs }}"
+    - "{{ geo_ip_cache }}"
+    - "{{ wireguard_connections_log | dirname }}"
+    - "{{ container_notifications_log | dirname }}"

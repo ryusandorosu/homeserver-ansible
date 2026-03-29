@@ -1,20 +1,19 @@
 - name: Create config dir
   file:
-    path: /etc/clash
+    path: "{{ clash_config_dir }}"
     state: directory
     mode: '0755'
 
-- name: Load dns variables
-  include_vars: "{{ role_path }}/defaults/dns.yml"
-- name: Load proxies variables
-  include_vars: "{{ role_path }}/defaults/proxies.yml"
-- name: Load subscription variables
-  include_vars: "{{ role_path }}/defaults/subscription.yml"
+- name: Load config values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/subscription.yml
+    - defaults/config/*.yml
 
 - name: Deploy config
   template:
     src: config.yaml.j2
-    dest: /etc/clash/config.yaml
+    dest: "{{ clash_config_dir }}/config.yaml"
   notify:
     - validate config in container
 
@@ -35,6 +34,8 @@
       - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
       - "{{ socks5_port }}:{{ socks5_port }}"
     volumes:
-      - /etc/clash:/root/.config/mihomo
+      - "{{ clash_config_dir }}/config.yaml:/root/.config/mihomo"
+      - "{{ telegram_script }}:{{ telegram_script }}:ro"
+    stop_timeout: 30
 
 - import_tasks: healthcheck.yml

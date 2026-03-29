@@ -1,0 +1,26 @@
+#!/bin/bash
+[[ -z {{ container_notifications_log }} ]] && touch {{ container_notifications_log }}
+
+while true; do
+
+docker events \
+  --filter type=container \
+  --filter event=start \
+  --filter event=die \
+  --filter event=stop \
+  --format '{{.Type}} {{.Action}} {{.Actor.Attributes.name}}' | \
+while read event action name; do
+  case "$action" in
+    start)
+      {{ container_telegram }} "🟢 $(hostname) container $name status: $action" status "$0"
+      ;;
+    die|stop)
+      {{ container_telegram }} "🔴 $(hostname) container $name status: $action" status "$0"
+      ;;
+  esac
+  echo "$(date --rfc-3339=seconds) $name $action $event" >> {{ container_notifications_log }}
+done
+
+echo "docker events stream ended"
+sleep 2
+done

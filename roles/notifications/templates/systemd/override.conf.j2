@@ -1,0 +1,6 @@
+[Service]
+ExecStartPost=
+ExecStartPost=/bin/bash -c '{{ telegram_script }} "🟢 {{ item }} service started" status "$0"'
+
+ExecStopPost=
+ExecStopPost=/bin/bash -c '{{ telegram_script }} "🔴 {{ item }} service stopped" status "$0"'
