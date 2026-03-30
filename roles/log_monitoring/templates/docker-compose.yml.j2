@@ -19,7 +19,7 @@ services:
 
   promtail:
     image: grafana/promtail:latest
-    container_name: promtail
+    container_name: {{ promtail_container }}
     restart: unless-stopped
     command: -config.file=/etc/promtail/promtail.yml
     volumes:

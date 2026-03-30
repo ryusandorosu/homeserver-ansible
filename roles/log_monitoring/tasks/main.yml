@@ -48,7 +48,7 @@
 
 - name: Get Promtail container info
   community.docker.docker_container_info:
-    name: log_monitoring-promtail-1
+    name: "{{ promtail_container }}"
   register: promtail_info
 
 - name: Fail if Promtail is not running

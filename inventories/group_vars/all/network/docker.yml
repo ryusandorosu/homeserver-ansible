@@ -1,1 +1,2 @@
 loki_container: loki
+promtail_container: promtail
