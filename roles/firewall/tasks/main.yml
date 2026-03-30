@@ -39,8 +39,8 @@
     dest: "{{ systemd_services }}/nftables.service.d/unit-wireguard.conf"
     content: |
       [Unit]
-      After=wg-quick@{{ wireguard_interface }}.service docker.service network.target
-      Requires=wg-quick@{{ wireguard_interface }}.service docker.service
+      After=wg-quick@{{ wireguard_interface }}.service
+      Requires=wg-quick@{{ wireguard_interface }}.service
   notify:
     - daemon reload
 
