@@ -1,6 +1,14 @@
 #!/bin/bash
 [[ -z {{ container_notifications_log }} ]] && touch {{ container_notifications_log }}
 
+docker ps \
+{% raw %}  --format '{{.Names}} {{.Status}}' | \
+{% endraw %}
+while read name status; do
+  echo "$(date --rfc-3339=seconds) snapshot $name $status" >> {{ container_notifications_log }}
+  {{ telegram_script }} "🟢 $(hostname) container $name status: $status (snapshot)" status "$0"
+done
+
 while true; do
 
 docker events \
@@ -19,7 +27,7 @@ while read event action name; do
       {{ telegram_script }} "🔴 $(hostname) container $name status: $action" status "$0"
       ;;
   esac
-  echo "$(date --rfc-3339=seconds) $name $action $event" >> {{ container_notifications_log }}
+  echo "$(date --rfc-3339=seconds) $event $name $action" >> {{ container_notifications_log }}
 done
 
 echo "docker events stream ended"
