@@ -4,7 +4,8 @@ After=docker.service network.target
 Requires=docker.service
 
 [Service]
-ExecStart={{ docker_watcher_script }}
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/bin/bash {{ docker_watcher_script }}
 Restart=always
 RestartSec=2
 
