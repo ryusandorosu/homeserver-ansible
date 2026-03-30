@@ -1,2 +1,2 @@
-ping_retry_command: "for i in {1..30}; do ping -c1 8.8.8.8 && break; sleep 2; done;"
-nc_retry_command: "for i in {1..30}; do nc -z {{ localhost }} {{ socks5_port }} && break; sleep 1; done;"
+ping_retry_command: "for i in {1..30}; do ping -c1 8.8.8.8 && break; sleep 3; done;"
+nc_retry_command: "for i in {1..30}; do nc -zv {{ localhost }} {{ socks5_port }} && break; sleep 2; done;"

@@ -1,6 +1,6 @@
 [Service]
 ExecStartPre=
-ExecStartPre=/bin/sleep 10
+ExecStartPre=/bin/bash -c 'systemctl daemon-reload'
 
 ExecStartPost=
 ExecStartPost=/bin/bash -c '{{ nc_retry_command }} {{ telegram_script }} "🟢 {{ item }} service started" status "$0"'
