@@ -5,7 +5,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://loki:{{ loki_port }}/loki/api/v1/push
+  - url: http://{{ loki_container }}:{{ loki_port }}/loki/api/v1/push
 
 scrape_configs:
 

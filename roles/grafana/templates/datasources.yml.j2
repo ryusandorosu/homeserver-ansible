@@ -4,5 +4,5 @@ datasources:
   - name: Loki
     type: loki
     access: proxy
-    url: http://loki:{{ loki_port }}
+    url: http://{{ loki_container }}:{{ loki_port }}
     isDefault: true

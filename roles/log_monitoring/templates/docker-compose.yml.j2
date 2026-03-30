@@ -5,8 +5,8 @@ networks:
 services:
   loki:
     image: grafana/loki:latest
+    container_name: {{ loki_container }}
     restart: unless-stopped
-    container_name: loki
     user: "10001:10001"
     command: -config.file=/etc/loki/loki.yml
     volumes:
@@ -19,6 +19,7 @@ services:
 
   promtail:
     image: grafana/promtail:latest
+    container_name: promtail
     restart: unless-stopped
     command: -config.file=/etc/promtail/promtail.yml
     volumes:
