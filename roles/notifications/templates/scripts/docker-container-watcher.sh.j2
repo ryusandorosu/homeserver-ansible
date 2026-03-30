@@ -5,8 +5,12 @@ docker ps \
 {% raw %}  --format '{{.Names}} {{.Status}}' | \
 {% endraw %}
 while read name status; do
+  if [[ "$status" == Up* ]]; then
+    {{ telegram_script }} "🟢 $(hostname) container $name status: running (snapshot)" status "$0"
+  else
+    {{ telegram_script }} "🟡 $(hostname) container $name status: $status (snapshot)" status "$0"
+  fi
   echo "$(date --rfc-3339=seconds) snapshot $name $status" >> {{ container_notifications_log }}
-  {{ telegram_script }} "🟢 $(hostname) container $name status: $status (snapshot)" status "$0"
 done
 
 while true; do
@@ -15,18 +19,14 @@ docker events \
   --filter type=container \
   --filter event=start \
   --filter event=die \
-  --filter event=stop \
 {% raw %}  --format '{{.Type}} {{.Action}} {{.Actor.Attributes.name}}' | \
 {% endraw %}
 while read event action name; do
-  case "$action" in
-    start)
-      {{ telegram_script }} "🟢 $(hostname) container $name status: $action" status "$0"
-      ;;
-    die|stop)
-      {{ telegram_script }} "🔴 $(hostname) container $name status: $action" status "$0"
-      ;;
-  esac
+  if [[ "$action" == start ]]; then
+    {{ telegram_script }} "🟢 $(hostname) container $name status: started" status "$0"
+  elif [[ "$action" == die ]]; then
+    {{ telegram_script }} "🔴 $(hostname) container $name status: stopped" status "$0"
+  fi
   echo "$(date --rfc-3339=seconds) $event $name $action" >> {{ container_notifications_log }}
 done
 

@@ -5,7 +5,7 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c 'for i in {1..30}; do ping -c1 8.8.8.8 && break; sleep 5; done; {{ telegram_script }} "🟢 nuc-server booted" status "$0"'
+ExecStart=/bin/bash -c '{{ ping_retry_command }} {{ telegram_script }} "🟢 nuc-server booted" status "$0"'
 
 [Install]
 WantedBy=multi-user.target

@@ -1,6 +1,9 @@
 [Service]
+ExecStartPre=
+ExecStartPre=/bin/sleep 10
+
 ExecStartPost=
-ExecStartPost=/bin/bash -c '{{ telegram_script }} "🟢 {{ item }} service started" status "$0"'
+ExecStartPost=/bin/bash -c '{{ ping_retry_command }} {{ telegram_script }} "🟢 {{ item }} service started" status "$0"'
 
 ExecStopPost=
 ExecStopPost=/bin/bash -c '{{ telegram_script }} "🔴 {{ item }} service stopped" status "$0"'

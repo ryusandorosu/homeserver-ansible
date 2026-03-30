@@ -1,0 +1,1 @@
+ping_retry_command: "for i in {1..30}; do ping -c1 8.8.8.8 && break; sleep 5; done;"

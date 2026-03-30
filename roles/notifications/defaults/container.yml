@@ -1,3 +1,0 @@
-#may not be needed if docker-container-watcher.service.j2 is better
-container_dir: /opt/notifications
-container_telegram: /telegram.sh
