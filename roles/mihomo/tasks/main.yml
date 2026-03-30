@@ -35,7 +35,7 @@
       - "{{ socks5_port }}:{{ socks5_port }}"
     volumes:
       - "{{ clash_config_dir }}/config.yaml:/root/.config/mihomo"
-      - "{{ telegram_script }}:{{ telegram_script }}:ro"
+      # - "{{ telegram_script }}:{{ telegram_script }}:ro"
     stop_timeout: 30
 
 - import_tasks: healthcheck.yml
