@@ -36,7 +36,7 @@
 
 - name: Ensure wireguard starts before nftables
   copy:
-    dest: "{{ systemd_services }}/nftables.service.d/override.conf"
+    dest: "{{ systemd_services }}/nftables.service.d/10-wireguard.conf"
     content: |
       [Unit]
       After=wg-quick@{{ wireguard_interface }}.service
