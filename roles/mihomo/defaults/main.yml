@@ -1,4 +1,3 @@
-#move /etc/clash
 clash_config_dir: /opt/clash
 
 clash_mixed_port: 7890

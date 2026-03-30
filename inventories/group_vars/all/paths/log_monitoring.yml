@@ -1,9 +1,7 @@
 telegram_bot_logs: /var/log/telegram
 telegram_bot_error_log: "{{ telegram_bot_logs }}/message_error.log"
 telegram_bot_success_log: "{{ telegram_bot_logs }}/message_success.log"
-#move /var/cache/telegram/
 geo_ip_cache: "{{ telegram_bot_logs }}/geo_cache"
-#move /var/log/wireguard/
 wireguard_connections_log: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
 container_notifications_log: "{{ telegram_bot_logs }}/docker/container_events.log"
 
