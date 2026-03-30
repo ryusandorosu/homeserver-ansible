@@ -10,11 +10,12 @@
 
 - name: restart services
   systemd:
-    name: "{{ item | basename | regex_replace('.service','') }}"
+    name: "{{ item | basename | regex_replace('.j2','') | regex_replace('.service','') }}"
     enabled: yes
     state: restarted
   with_fileglob:
     - "templates/systemd/*.service"
+    - "templates/systemd/*.service.j2"
 
 - name: ensure custom logs directories exist
   file:

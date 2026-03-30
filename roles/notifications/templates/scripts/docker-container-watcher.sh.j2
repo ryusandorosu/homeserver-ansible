@@ -8,7 +8,8 @@ docker events \
   --filter event=start \
   --filter event=die \
   --filter event=stop \
-{% raw %}  --format '{{.Type}} {{.Action}} {{.Actor.Attributes.name}}' | \{% endraw %}
+{% raw %}  --format '{{.Type}} {{.Action}} {{.Actor.Attributes.name}}' | \
+{% endraw %}
 while read event action name; do
   case "$action" in
     start)
