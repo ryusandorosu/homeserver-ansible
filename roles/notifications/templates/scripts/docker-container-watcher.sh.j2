@@ -13,10 +13,10 @@ docker events \
 while read event action name; do
   case "$action" in
     start)
-      {{ container_telegram }} "🟢 $(hostname) container $name status: $action" status "$0"
+      {{ telegram_script }} "🟢 $(hostname) container $name status: $action" status "$0"
       ;;
     die|stop)
-      {{ container_telegram }} "🔴 $(hostname) container $name status: $action" status "$0"
+      {{ telegram_script }} "🔴 $(hostname) container $name status: $action" status "$0"
       ;;
   esac
   echo "$(date --rfc-3339=seconds) $name $action $event" >> {{ container_notifications_log }}
