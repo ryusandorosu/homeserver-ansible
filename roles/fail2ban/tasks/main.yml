@@ -56,20 +56,6 @@
     - "templates/filter.d/*.j2"
   notify: restart fail2ban
 
-- name: Create override dir
-  file:
-    path: "{{ systemd_services }}/fail2ban.service.d"
-    state: directory
-    mode: '0755'
-
-- name: Deploy override
-  template:
-    src: override.conf.j2
-    dest: "{{ systemd_services }}/fail2ban.service.d/override.conf"
-  notify:
-    - daemon reload
-    - restart fail2ban
-
 - name: Enable and start fail2ban
   systemd:
     name: fail2ban
