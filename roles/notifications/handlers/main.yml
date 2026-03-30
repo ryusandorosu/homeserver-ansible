@@ -2,10 +2,10 @@
   systemd:
     daemon_reload: yes
 
-- name: restart overrided services
+- name: reload overrided services
   systemd:
     name: "{{ item }}"
-    state: restarted
+    state: reloaded
   loop: "{{ service_override }}"
 
 - name: restart services

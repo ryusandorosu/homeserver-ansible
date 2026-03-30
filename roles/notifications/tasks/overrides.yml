@@ -11,5 +11,5 @@
     dest: "{{ systemd_services }}/{{ item }}.service.d/service-telegram.conf"
   loop: "{{ service_override }}"
   notify:
+    - reload overrided services
     - daemon reload
-    - restart overrided services
