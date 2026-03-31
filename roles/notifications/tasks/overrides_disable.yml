@@ -1,0 +1,6 @@
+- name: Delete systemd overrides
+  file:
+    path: "{{ systemd_services }}/{{ item }}.service.d/service-telegram.conf"
+    state: absent
+  loop: "{{ service_override }}"
+  notify: daemon reload

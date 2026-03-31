@@ -1,4 +1,0 @@
-service_override:
-  - fail2ban
-  - docker
-#  - nftables

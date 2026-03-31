@@ -1,2 +1,13 @@
 ping_retry_command: "for i in {1..30}; do ping -c1 8.8.8.8 && break; sleep 5; done;"
 nc_retry_command: "for i in {1..30}; do nc -zv {{ localhost }} {{ socks5_port }} && break; sleep 2; done;"
+
+enable_service_overrides: false
+service_override:
+  - fail2ban
+  - docker
+  - nftables
+
+service_state:
+  - fail2ban
+  - docker
+  - nftables
