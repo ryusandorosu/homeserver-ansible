@@ -19,12 +19,12 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
     device_name="${vpn_peer_names[$PUBKEY]}"
 
     common_message_init VPN "$PUBKEY" "$device_name"
-    generate_geo_message "$ip" "{{ wireguard_connections_log }}" "$PUBKEY" "$device_name" "$vpn_ip"
+    generate_geo_message "$ip" "{{ custom_logs.wireguard }}" "$PUBKEY" "$device_name" "$vpn_ip"
 
     {{ telegram_script }} "$MESSAGE" status "$0"
 
-    [[ -z {{ wireguard_connections_log }} ]] && touch {{ wireguard_connections_log }}
-    echo "$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\"" >> {{ wireguard_connections_log }}
+    [[ -z {{ custom_logs.wireguard }} ]] && touch {{ custom_logs.wireguard }}
+    echo "$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\"" >> {{ custom_logs.wireguard }}
 
     new_handshake[$PUBKEY]=0
 

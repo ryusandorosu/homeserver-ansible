@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -z {{ container_notifications_log }} ]] && touch {{ container_notifications_log }}
+[[ -z {{ custom_logs.container }} ]] && touch {{ custom_logs.container }}
 
 docker ps \
 {% raw %}  --format '{{.Names}} {{.Status}}' | \
@@ -10,7 +10,7 @@ while read name status; do
   else
     {{ telegram_script }} "🟡 $(hostname) container $name status: $status (snapshot)" status "$0"
   fi
-  echo "$(date --rfc-3339=seconds) snapshot $name $status" >> {{ container_notifications_log }}
+  echo "$(date --rfc-3339=seconds) snapshot $name $status" >> {{ custom_logs.container }}
 done
 
 while true; do
@@ -27,7 +27,7 @@ while read event action name; do
   elif [[ "$action" == die ]]; then
     {{ telegram_script }} "🔴 $(hostname) container $name status: stopped" status "$0"
   fi
-  echo "$(date --rfc-3339=seconds) $event $name $action" >> {{ container_notifications_log }}
+  echo "$(date --rfc-3339=seconds) $event $name $action" >> {{ custom_logs.container }}
 done
 
 echo "docker events stream ended"

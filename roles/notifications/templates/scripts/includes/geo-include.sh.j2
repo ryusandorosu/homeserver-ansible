@@ -16,7 +16,7 @@ log_tail() {
   local KEY="$1"
   local LOG="$2"
   local line=""
-  if [[ "$LOG" == "{{ wireguard_connections_log }}" ]]; then
+  if [[ "$LOG" == "{{ custom_logs.wireguard }}" ]]; then
   line=$(grep "$KEY" "$LOG" | tail -n1)
   elif [[ "$LOG" == "{{ sshd_log }}" ]]; then
   line=$(grep "$KEY" "$LOG" | grep "Accepted publickey"  | tail -n1)

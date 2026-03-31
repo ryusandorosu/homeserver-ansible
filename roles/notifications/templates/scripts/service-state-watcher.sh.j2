@@ -8,7 +8,7 @@ services=(
 {% endfor %}
 )
 
-[[ -z {{ service_notifications_log }} ]] && touch {{ service_notifications_log }}
+[[ -z {{ custom_logs.services }} ]] && touch {{ custom_logs.services }}
 
 post_and_log() {
   if [[ "$1" == "active" ]]; then
@@ -16,7 +16,7 @@ post_and_log() {
   else
     {{ telegram_script }} "🔴 $(hostname) service $s status: $1" status "$0"
   fi
-  echo "$(date --rfc-3339=seconds) service $s $1" >> {{ service_notifications_log }}
+  echo "$(date --rfc-3339=seconds) service $s $1" >> {{ custom_logs.services }}
 }
 
 for s in "${services[@]}"; do

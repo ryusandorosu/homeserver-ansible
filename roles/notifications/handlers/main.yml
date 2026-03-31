@@ -24,8 +24,8 @@
     mode: '0755'
   loop:
     - "{{ telegram_bot_logs }}"
-    - "{{ geo_ip_cache }}"
-    - "{{ wireguard_connections_log | dirname }}"
-    - "{{ container_notifications_log | dirname }}"
-    - "{{ service_notifications_log | dirname }}"
+    - "{{ custom_logs.telegram.cache }}"
+    - "{{ custom_logs.wireguard | dirname }}"
+    - "{{ custom_logs.container | dirname }}"
+    - "{{ custom_logs.services | dirname }}"
   notify: daemon reload

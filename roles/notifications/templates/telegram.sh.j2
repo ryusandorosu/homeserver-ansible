@@ -48,12 +48,12 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   response_ok=$(echo $response | jq .ok)
 
   if [[ $response_ok = true ]]; then
-    addline "$logline" {{ telegram_bot_success_log }}
+    addline "$logline" {{ custom_logs.telegram.success }}
     exit 0
   fi
 
   echo "$response"
-  addline "$logline {\"$MESSAGE\"}" {{ telegram_bot_error_log }}
+  addline "$logline {\"$MESSAGE\"}" {{ custom_logs.telegram.error }}
 
   sleep $RETRY_DELAY
 done

@@ -1,11 +1,12 @@
 telegram_bot_logs: /var/log/telegram
-telegram_bot_error_log: "{{ telegram_bot_logs }}/message_error.log"
-telegram_bot_success_log: "{{ telegram_bot_logs }}/message_success.log"
-geo_ip_cache: "{{ telegram_bot_logs }}/geo_cache"
-wireguard_connections_log: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
-#move "{{ telegram_bot_logs }}/docker/container_events.log"
-container_notifications_log: "{{ telegram_bot_logs }}/systemd/docker_events.log"
-service_notifications_log: "{{ telegram_bot_logs }}/systemd/service_state.log"
+custom_logs:
+  telegram:
+    error: "{{ telegram_bot_logs }}/message_error.log"
+    success: "{{ telegram_bot_logs }}/message_success.log"
+    cache: "{{ telegram_bot_logs }}/geo_cache"
+  wireguard: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
+  container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
+  services: "{{ telegram_bot_logs }}/systemd/service_state.log"
 
 promtail_scrape_configs:
   - name: SSH authentication
@@ -15,7 +16,7 @@ promtail_scrape_configs:
   - name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
   - name: Wireguard connections
-    path: "{{ wireguard_connections_log }}"
+    path: "{{ custom_logs.wireguard }}"
   - name: Telegram notifications
     path: "{{ telegram_bot_logs }}/*.log"
   - name: Fail2Ban
