@@ -8,25 +8,30 @@ services=(
 {% endfor %}
 )
 
+[[ -z {{ service_notifications_log }} ]] && touch {{ service_notifications_log }}
+
+post_and_log() {
+  if [[ "$1" == "active" ]]; then
+    {{ telegram_script }} "🟢 $(hostname) service $s status: $1" status "$0"
+  else
+    {{ telegram_script }} "🔴 $(hostname) service $s status: $1" status "$0"
+  fi
+  echo "$(date --rfc-3339=seconds) service $s $1" >> {{ service_notifications_log }}
+}
+
 for s in "${services[@]}"; do
   state=$(systemctl is-active "$s")
+  post_and_log "$state"
   last_state[$s]="$state"
 done
 
 while true; do
   for s in "${services[@]}"; do
     state=$(systemctl is-active "$s")
-
     if [[ "${last_state[$s]}" != "$state" ]]; then
-      if [[ "$state" == "active" ]]; then
-        {{ telegram_script }} "🟢 $(hostname) service $s status: $state" status "$0"
-      else
-        {{ telegram_script }} "🔴 $(hostname) service $s status: $state" status "$0"
-      fi
-
+      post_and_log "$state"
       last_state[$s]="$state"
     fi
   done
-
   sleep 15
 done

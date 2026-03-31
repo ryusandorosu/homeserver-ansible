@@ -3,15 +3,17 @@ telegram_bot_error_log: "{{ telegram_bot_logs }}/message_error.log"
 telegram_bot_success_log: "{{ telegram_bot_logs }}/message_success.log"
 geo_ip_cache: "{{ telegram_bot_logs }}/geo_cache"
 wireguard_connections_log: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
-container_notifications_log: "{{ telegram_bot_logs }}/docker/container_events.log"
+#move "{{ telegram_bot_logs }}/docker/container_events.log"
+container_notifications_log: "{{ telegram_bot_logs }}/systemd/docker_events.log"
+service_notifications_log: "{{ telegram_bot_logs }}/systemd/service_state.log"
 
 promtail_scrape_configs:
   - name: SSH authentication
     path: "{{ sshd_log }}"
   - name: Docker containers
     path: /var/lib/docker/containers/*/*.log
-  - name: Containers statuses
-    path: "{{ container_notifications_log }}"
+  - name: Services and containers health
+    path: "{{ telegram_bot_logs }}/systemd/*.log"
   - name: Wireguard connections
     path: "{{ wireguard_connections_log }}"
   - name: Telegram notifications
