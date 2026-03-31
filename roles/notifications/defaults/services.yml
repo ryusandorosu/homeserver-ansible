@@ -8,11 +8,11 @@ service_state:
   - fail2ban
   - crowdsec
   - dnsmasq
-  - samba
+  - smbd
   - docker
 
 enable_service_overrides: false
 service_override:
-  - fail2ban
-  - docker
-  - nftables
+#  - fail2ban
+#  - docker
+#  - nftables
