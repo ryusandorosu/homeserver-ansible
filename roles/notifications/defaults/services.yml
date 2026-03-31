@@ -10,9 +10,3 @@ service_state:
   - dnsmasq
   - smbd
   - docker
-
-enable_service_overrides: false
-service_override:
-#  - fail2ban
-#  - docker
-#  - nftables

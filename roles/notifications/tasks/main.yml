@@ -55,10 +55,4 @@
     - restart services
     - ensure custom logs directories exist
 
-- import_tasks: overrides_deploy.yml
-  when: enable_service_overrides
-
-- import_tasks: overrides_disable.yml
-  when: not enable_service_overrides
-
 - import_tasks: services.yml

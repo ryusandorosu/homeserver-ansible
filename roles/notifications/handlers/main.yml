@@ -2,12 +2,6 @@
   systemd:
     daemon_reload: yes
 
-- name: reload overrided services
-  systemd:
-    name: "{{ item }}"
-    state: reloaded
-  loop: "{{ service_override }}"
-
 - name: restart services
   systemd:
     name: "{{ item | basename | regex_replace('.j2','') | regex_replace('.service','') }}"
