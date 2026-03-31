@@ -53,7 +53,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   fi
 
   echo "$response"
-  addline "$logline" {{ telegram_bot_error_log }}
+  addline "$logline {\"$MESSAGE\"}" {{ telegram_bot_error_log }}
 
   sleep $RETRY_DELAY
 done
