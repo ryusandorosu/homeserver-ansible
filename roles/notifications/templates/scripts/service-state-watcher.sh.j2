@@ -1,0 +1,32 @@
+#!/bin/bash
+
+declare -A last_state
+
+services=(
+{% for service in service_state %}
+  "{{ service }}"
+{% endfor %}
+)
+
+for s in "${services[@]}"; do
+  state=$(systemctl is-active "$s")
+  last_state[$s]="$state"
+done
+
+while true; do
+  for s in "${services[@]}"; do
+    state=$(systemctl is-active "$s")
+
+    if [[ "${last_state[$s]}" != "$state" ]]; then
+      if [[ "$state" == "active" ]]; then
+        {{ telegram_script }} "🟢 $(hostname) service $s status: $state" status "$0"
+      else
+        {{ telegram_script }} "🔴 $(hostname) service $s status: $state" status "$0"
+      fi
+
+      last_state[$s]="$state"
+    fi
+  done
+
+  sleep 15
+done

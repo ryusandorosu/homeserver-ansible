@@ -1,0 +1,11 @@
+[Unit]
+Description=Services Health Watcher
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+ExecStart={{ service_watcher_script }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
