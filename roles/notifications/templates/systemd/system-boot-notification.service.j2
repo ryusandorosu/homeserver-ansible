@@ -1,6 +1,6 @@
 [Unit]
 Description=Send Telegram notification on boot
-After=network-online.target
+After=network-online.target docker.service
 Wants=network-online.target
 
 [Service]
