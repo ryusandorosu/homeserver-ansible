@@ -27,3 +27,5 @@
     - "{{ geo_ip_cache }}"
     - "{{ wireguard_connections_log | dirname }}"
     - "{{ container_notifications_log | dirname }}"
+    - "{{ service_notifications_log | dirname }}"
+  notify: daemon reload
