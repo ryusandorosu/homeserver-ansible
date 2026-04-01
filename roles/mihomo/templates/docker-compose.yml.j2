@@ -1,0 +1,11 @@
+services:
+  mihomo:
+    image: metacubex/mihomo:latest
+    container_name: mihomo
+    restart: unless-stopped
+    ports:
+      - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
+      - "{{ socks5_port }}:{{ socks5_port }}"
+    volumes:
+      - "{{ clash_config_dir }}/config.yaml:/root/.config/mihomo/config.yaml"
+    stop_grace_period: 30
