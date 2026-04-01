@@ -1,25 +1,55 @@
+nginx_job: "{{ promtail_logs.nginx_access.name }}"
 nginx_dashboard:
-  acccess:
-    title: Nginx Access Logs
+  access:
+    title: Access logs
     type: logs
-    expr: '{job=\"{{ promtail_logs.nginx_access.name }}\"}'
-  requests:
-    title: Total Requests
-    type: stat
-    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"}[1m])'
-  errors_5xx:
-    title: 5xx Errors
-    type: stat
-    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"} |= "5" [1m])'
-  errors_4xx:
-    title: 4xx Errors
-    type: stat
-    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"} |= "4" [1m])'
-  errors:
-    title: Errors Only
-    type: logs
-    expr: '{job=\"{{ promtail_logs.nginx_access.name }}\"} |= \" 5\"'
+    expr: '{job=\"{{ nginx_job }}\"}'
   error_logs:
-    title: Nginx Error Logs
+    title: Error logs
     type: logs
     expr: '{job=\"{{ promtail_logs.nginx_error.name }}\"}'
+  5xx_log:
+    title: 5xx error logs
+    type: logs
+    expr: '{job=\"{{ nginx_job }}\", status=~\"5..\"}'
+  4xx_log:
+    title: 4xx error logs
+    type: logs
+    expr: '{job=\"{{ nginx_job }}\", status=~\"4..\"}'
+  top_urls:
+    title: Top URLs
+    type: timeseries
+    expr: 'topk(10, sum by (uri) (rate({job=\"{{ nginx_job }}\"}[1m])))'
+  top_ips:
+    title: Top IPs
+    type: timeseries
+    expr: 'topk(10, sum by (ip) (rate({job=\"{{ nginx_job }}\"}[1m])))'
+  requests:
+    title: Total requests
+    type: stat
+    expr: 'count_over_time({job=\"{{ nginx_job }}\"}[1m])'
+  rps:
+    title: Requests per second
+    type: timeseries
+    expr: 'sum(rate({job=\"{{ nginx_job }}\"}[1m]))'
+  5xx_sum:
+    title: 5xx errors summary
+    type: stat
+    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"5..\"}[1m]))'
+  4xx_sum:
+    title: 4xx errors summary
+    type: stat
+    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"4..\"}[1m]))'
+  5xx_rate:
+    title: 5xx error rate %
+    type: timeseries
+    expr: |
+      100 * (
+        sum(rate({job=\"{{ nginx_job }}\", status=~\"5..\"}[1m]))
+        /
+        sum(rate({job=\"{{ nginx_job }}\"}[1m]))
+      )
+  4xx_rate:
+    title: 4xx error rate
+    type: timeseries
+    expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"}[1m]))'

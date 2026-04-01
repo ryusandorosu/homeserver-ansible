@@ -4,22 +4,24 @@
   },
   "editable": true,
   "panels": [
+{% for key, job in promtail_logs.items() %}
     {
       "type": "logs",
-      "title": "All Logs",
+      "title": "{{ job.name }}",
       "targets": [
         {
-          "expr": "{job=~\".+\"}",
-          "refId": "A"
+          "expr": "{job=\"{{ job.name }}\"}",
+          "refId": "{{ loop.index }}"
         }
       ],
       "gridPos": {
-        "h": 32,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": {{ 0 + (loop.index0 * 8) }}
       }
-    }
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
   ],
   "schemaVersion": 39,
   "style": "dark",
