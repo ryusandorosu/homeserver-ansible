@@ -23,8 +23,6 @@ promtail_scrape_configs:
     path: "{{ f2b_log }}"
   - name: CrowdSec
     path: /var/log/crowdsec*.log
-  - name: UFW
-    path: /var/log/ufw.log
   - name: Samba
     path: /var/log/samba/log.*
   - name: Auditd
