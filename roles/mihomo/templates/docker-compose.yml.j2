@@ -3,9 +3,6 @@ services:
     image: metacubex/mihomo:latest
     container_name: {{ mihomo_container }}
     restart: unless-stopped
-    ports:
-      - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
-      - "{{ socks5_port }}:{{ socks5_port }}"
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"
     healthcheck:
@@ -13,4 +10,5 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    network_mode: host
     stop_grace_period: 30s
