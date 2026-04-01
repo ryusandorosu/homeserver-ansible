@@ -7,7 +7,7 @@ local LOG="$3"
 local KEY="$4"
 local DEVICE="$5"
 local VPN_IP="$6"
-local SSHLOG="$7"
+local LOGLINE="$7"
 
 MESSAGE+="From: <code>$IP</code>
 "
@@ -19,8 +19,8 @@ MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
 
 MESSAGE+="logpath: <code>$LOG</code>"
-if [[ -n "$SSHLOG" ]]; then
-MESSAGE+="<pre>${SSHLOG}</pre>
+if [[ -n "$LOGLINE" ]]; then
+MESSAGE+="<pre>${LOGLINE}</pre>
 "
 else
 MESSAGE+="<pre>$(log_tail "$KEY" "$LOG")</pre>
