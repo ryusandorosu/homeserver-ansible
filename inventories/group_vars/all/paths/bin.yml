@@ -1,6 +1,7 @@
 scripts_dir: /usr/local/bin/scripts
 
 android_watcher_script: "{{ scripts_dir }}/android-watcher.sh"
+proxy_watcher_script: "{{ scripts_dir }}/proxy-healthcheck.sh"
 
 # Notifications
 telegram_script: /usr/local/bin/telegram.sh

@@ -1,0 +1,12 @@
+[Unit]
+Description=Mihomo Proxy Health Check
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+ExecStart={{ proxy_watcher_script }}
+ExecStartPre=/bin/bash -c '{{ nc_retry_command }}'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

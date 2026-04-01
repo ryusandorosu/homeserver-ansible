@@ -1,0 +1,21 @@
+#!/bin/bash
+
+test_urls=(
+  "https://api.ipify.org"
+  "https://api.telegram.org"
+)
+
+fail_count=0
+
+while true; do
+  for url in "${test_urls[@]}"; do
+    if ! curl -s --max-time 5 --proxy socks5h://{{ localhost }}:{{ socks5_port }} "$url"; then
+      ((fail_count++))
+    fi
+  done
+  if [[ $fail_count -gt 0 ]]; then
+    echo "Proxy check failed, restarting mihomo"
+    docker restart mihomo
+  fi
+  sleep 15
+done
