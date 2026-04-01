@@ -25,7 +25,7 @@
 
 - name: Run mihomo container
   community.docker.docker_container:
-    name: mihomo
+    name: "{{ mihomo_container }}"
     image: metacubex/mihomo:latest
     restart_policy: unless-stopped
     recreate: true

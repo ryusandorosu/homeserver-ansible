@@ -1,7 +1,7 @@
 services:
   mihomo:
     image: metacubex/mihomo:latest
-    container_name: mihomo
+    container_name: {{ mihomo_container }}
     restart: unless-stopped
     ports:
       - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
