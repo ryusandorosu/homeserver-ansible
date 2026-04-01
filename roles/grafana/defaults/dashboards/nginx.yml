@@ -1,0 +1,25 @@
+nginx_dashboard:
+  acccess:
+    title: Nginx Access Logs
+    type: logs
+    expr: '{job=\"{{ promtail_logs.nginx_access.name }}\"}'
+  requests:
+    title: Total Requests
+    type: stat
+    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"}[1m])'
+  errors_5xx:
+    title: 5xx Errors
+    type: stat
+    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"} |= "5" [1m])'
+  errors_4xx:
+    title: 4xx Errors
+    type: stat
+    expr: 'count_over_time({job=\"{{ promtail_logs.nginx_access.name }}\"} |= "4" [1m])'
+  errors:
+    title: Errors Only
+    type: logs
+    expr: '{job=\"{{ promtail_logs.nginx_access.name }}\"} |= \" 5\"'
+  error_logs:
+    title: Nginx Error Logs
+    type: logs
+    expr: '{job=\"{{ promtail_logs.nginx_error.name }}\"}'

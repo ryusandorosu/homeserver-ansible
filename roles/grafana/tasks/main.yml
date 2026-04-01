@@ -1,3 +1,8 @@
+- name: Load dashboards values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/dashboards/*.yml
+
 - name: Create grafana directory
   file:
     path: "{{ item }}"

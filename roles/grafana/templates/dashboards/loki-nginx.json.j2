@@ -1,0 +1,34 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+{% for key, panel in nginx_dashboard.items() %}
+    {
+      "type": "{{ panel.type }}",
+      "title": "{{ panel.title }}",
+      "targets": [
+        {
+          "expr": "{{ panel.expr }}",
+          "refId": "{{ loop.index }}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 0 + (loop.index0 * 8) }}
+      }
+    }{% if not loop.last %},{% endif %}
+{% endfor %}
+  ],
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["loki"],
+  "templating": {
+    "list": []
+  },
+  "title": "Nginx Monitoring",
+  "version": 1
+}

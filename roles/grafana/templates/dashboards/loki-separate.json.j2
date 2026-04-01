@@ -4,26 +4,10 @@
   },
   "editable": true,
   "panels": [
+{% for key, job in promtail_logs.items() %}
     {
       "type": "logs",
-      "title": "All Logs",
-      "targets": [
-        {
-          "expr": "{job=~\".+\"}",
-          "refId": "A"
-        }
-      ],
-      "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      }
-    }{% if promtail_scrape_configs | length > 0 %},{% endif %}
-{% for job in promtail_scrape_configs %}
-    {
-      "type": "logs",
-      "title": "{{ job.name }} Logs",
+      "title": "{{ job.name }}",
       "targets": [
         {
           "expr": "{job=\"{{ job.name }}\"}",
@@ -34,7 +18,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": {{ 12 + (loop.index0 * 8) }}
+        "y": {{ 0 + (loop.index0 * 8) }}
       }
     }{% if not loop.last %},{% endif %}
 {% endfor %}
@@ -45,6 +29,6 @@
   "templating": {
     "list": []
   },
-  "title": "Loki Logs Overview",
+  "title": "Loki logs: separately",
   "version": 1
 }
