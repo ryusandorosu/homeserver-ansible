@@ -14,13 +14,17 @@
           "refId": "{{ loop.index }}"
         }
       ],
+      "options": {
+        "showTime": true
+      },
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
         "y": {{ 0 + (loop.index0 * 8) }}
       }
-    }{% if not loop.last %},{% endif %}
+    }{% if not loop.last %},
+{% endif %}
 {% endfor %}
   ],
   "schemaVersion": 39,
@@ -29,6 +33,6 @@
   "templating": {
     "list": []
   },
-  "title": "Loki logs: journalctl",
+  "title": "Loki: Systemd Journal Logs",
   "version": 1
 }
