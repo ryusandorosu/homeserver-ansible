@@ -18,7 +18,7 @@ services:
       - monitoring
 
   promtail:
-    image: grafana/promtail:latest-amd64
+    image: grafana/promtail:2.9.5
     container_name: {{ promtail_container }}
     restart: unless-stopped
     user: root
