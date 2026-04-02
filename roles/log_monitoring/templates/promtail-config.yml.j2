@@ -20,10 +20,17 @@ scrape_configs:
 {% if job.pipeline is defined and job.pipeline == 'nginx' %}
     pipeline_stages:
       - regex:
-          expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>.+)\] "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<agent>[^"]*)"'
+          expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>.+)\] "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<agent>[^"]*)" (?P<request_time>\S+)'
       - labels:
           status:
           method:
+      - metrics:
+          nginx_requests_total:
+            type: Counter
+            description: "Total nginx requests"
+            source: status
+      - output:
+          source: message
 {% endif %}
 {% endfor %}
   - job_name: systemd
