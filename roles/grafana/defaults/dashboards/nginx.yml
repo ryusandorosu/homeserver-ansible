@@ -20,7 +20,7 @@ nginx_dashboard:
   top_urls:
     title: Top URLs
     type: heatmap
-    expr: 'topk(10, count_over_time({job=\"{{ nginx_job }}\"} | pattern \"<ip> - - [<time>] \"<method> <uri> <proto>\" <status> <size> *\"[{{ period }}]))'
+    expr: 'topk(10, sum by(uri) (count_over_time({job=\"{{ nginx_job }}\"} |= \"GET\" | regexp \"GET (?P<uri>/[^ ?]+)\"[{{ period }}]) ) )'
   top_ips:
     title: Top IPs
     type: heatmap
@@ -56,32 +56,12 @@ nginx_dashboard:
   latency_p95:
     title: 95 percentile latency
     type: heatmap
-    expr: >
-      quantile_over_time(
-        0.95,
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
-        | unwrap request_time
-        [{{ period }}]
-      )
+    expr: 'quantile_over_time(0.95, {job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\d+\\.\\d+)$\" | unwrap request_time[{{ period }}])'
   latency_p99:
     title: 99 percentile latency
     type: heatmap
-    expr: >
-      quantile_over_time(
-        0.99,
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
-        | unwrap request_time
-        [{{ period }}]
-      )
+    expr: 'quantile_over_time(0.99, {job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\d+\\.\\d+)$\" | unwrap request_time[{{ period }}])'
   latency_avg:
     title: Average latency
     type: heatmap
-    expr: >
-      avg_over_time(
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
-        | unwrap request_time
-        [{{ period }}]
-      )
+    expr: 'avg_over_time({job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\d+\\.\\d+)$\" | unwrap request_time[{{ period }}])'
