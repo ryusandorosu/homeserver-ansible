@@ -31,7 +31,7 @@
     src: promtail-config.yml.j2
     dest: "{{ stack_config_dir }}/promtail.yml"
 
-- name: Run Loki stack
+- name: Run Loki and Promtail containers
   community.docker.docker_compose_v2:
     project_src: "{{ stack_base_dir }}"
     state: present
