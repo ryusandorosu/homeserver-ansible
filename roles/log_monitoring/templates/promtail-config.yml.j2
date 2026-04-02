@@ -24,13 +24,6 @@ scrape_configs:
       - labels:
           status:
           method:
-      - metrics:
-          nginx_requests_total:
-            type: Counter
-            description: "Total nginx requests"
-            source: status
-      - output:
-          source: message
 {% endif %}
 {% endfor %}
   - job_name: systemd
