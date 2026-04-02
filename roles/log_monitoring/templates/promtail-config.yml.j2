@@ -25,9 +25,11 @@ scrape_configs:
           status:
           method:
       - geoip:
-          db: "{{ container_geoip_plugin }}"
+          db: {{ container_geoip_plugin }}
           source: ip
           db_type: city
+      - output:
+          source: message
 {% endif %}
 {% endfor %}
   - job_name: systemd
