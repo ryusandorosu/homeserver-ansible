@@ -14,13 +14,19 @@
           "refId": "{{ loop.index }}"
         }
       ],
+{% if panel.type == "heatmap" %}
+      "options": {
+        "calculate": false
+      },
+{% endif %}
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
         "y": {{ 0 + (loop.index0 * 8) }}
       }
-    }{% if not loop.last %},{% endif %}
+    }{% if not loop.last %},
+{% endif %}
 {% endfor %}
   ],
   "schemaVersion": 39,
