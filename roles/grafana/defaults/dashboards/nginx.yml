@@ -20,7 +20,7 @@ nginx_dashboard:
   top_urls:
     title: Top URLs
     type: timeseries
-    expr: 'topk(10, count_over_time({job="{{ nginx_job }}"} | pattern "<ip> - - [<time>] "<method> <uri> <proto>" <status> <size> *"[{{ period }}]))'
+    expr: 'topk(10, count_over_time({job=\"{{ nginx_job }}\"} | pattern \"<ip> - - [<time>] \"<method> <uri> <proto>\" <status> <size> *\"[{{ period }}]))'
   top_ips:
     title: Top IPs
     type: timeseries
