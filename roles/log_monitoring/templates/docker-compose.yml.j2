@@ -21,6 +21,9 @@ services:
     image: grafana/promtail:latest
     container_name: {{ promtail_container }}
     restart: unless-stopped
+    user: root
+    group_add:
+      - systemd-journal
     command: -config.file=/etc/promtail/promtail.yml
     volumes:
       - "{{ stack_config_dir }}/promtail.yml:/etc/promtail/promtail.yml"
