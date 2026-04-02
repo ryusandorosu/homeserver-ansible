@@ -39,3 +39,11 @@ scrape_configs:
     relabel_configs:
       - source_labels: ['__journal__systemd_unit']
         target_label: unit
+    pipeline_stages:
+      - timestamp:
+          source: __journal__timestamp
+          format: RFC3339Nano
+      - labels:
+          unit:
+      - output:
+          source: message
