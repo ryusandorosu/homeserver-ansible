@@ -1,4 +1,5 @@
 nginx_job: "{{ promtail_logs.nginx_access.name }}"
+period: 2m
 nginx_dashboard:
   access:
     title: Access logs
@@ -19,37 +20,32 @@ nginx_dashboard:
   top_urls:
     title: Top URLs
     type: timeseries
-    expr: 'topk(10, sum by (uri) (rate({job=\"{{ nginx_job }}\"}[1m])))'
+    expr: 'topk(10, sum by (uri) (rate({job=\"{{ nginx_job }}\"}[{{ period }}])))'
   top_ips:
     title: Top IPs
     type: timeseries
-    expr: 'topk(10, sum by (ip) (rate({job=\"{{ nginx_job }}\"}[1m])))'
+    expr: 'topk(10, sum by (ip) (rate({job=\"{{ nginx_job }}\", ip!=\"\"}[{{ period }}])))'
   requests:
     title: Total requests
     type: stat
-    expr: 'count_over_time({job=\"{{ nginx_job }}\"}[1m])'
+    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   rps:
     title: Requests per second
     type: timeseries
-    expr: 'sum(rate({job=\"{{ nginx_job }}\"}[1m]))'
+    expr: 'sum(rate({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   5xx_sum:
     title: 5xx errors summary
     type: stat
-    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"5..\"}[1m]))'
+    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"5..\"}[{{ period }}]))'
   4xx_sum:
     title: 4xx errors summary
     type: stat
-    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"4..\"}[1m]))'
+    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"4..\"}[{{ period }}]))'
   5xx_rate:
     title: 5xx error rate %
     type: timeseries
-    expr: |
-      100 * (
-        sum(rate({job=\"{{ nginx_job }}\", status=~\"5..\"}[1m]))
-        /
-        sum(rate({job=\"{{ nginx_job }}\"}[1m]))
-      )
+    expr: '100 * (sum(rate({job=\"{{ nginx_job }}\", status=~\"5..\"}[{{ period }}])) / sum(rate({job=\"{{ nginx_job }}\"}[{{ period }}])) )'
   4xx_rate:
     title: 4xx error rate
     type: timeseries
-    expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"}[1m]))'
+    expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"}[{{ period }}]))'
