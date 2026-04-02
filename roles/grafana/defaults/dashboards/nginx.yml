@@ -53,3 +53,35 @@ nginx_dashboard:
     title: 4xx error rate
     type: heatmap
     expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"}[{{ period }}]))'
+  latency_p95:
+    title: 95 percentile latency
+    type: heatmap
+    expr: >
+      quantile_over_time(
+        0.95,
+        {job="{{ nginx_job }}"}
+        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        | unwrap request_time
+        [{{ period }}]
+      )
+  latency_p99:
+    title: 99 percentile latency
+    type: heatmap
+    expr: >
+      quantile_over_time(
+        0.99,
+        {job="{{ nginx_job }}"}
+        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        | unwrap request_time
+        [{{ period }}]
+      )
+  latency_avg:
+    title: Average latency
+    type: heatmap
+    expr: >
+      avg_over_time(
+        {job="{{ nginx_job }}"}
+        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        | unwrap request_time
+        [{{ period }}]
+      )
