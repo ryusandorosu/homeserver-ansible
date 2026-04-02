@@ -19,37 +19,37 @@ nginx_dashboard:
     expr: '{job=\"{{ nginx_job }}\", status=~\"4..\"}'
   top_urls:
     title: Top URLs
-    type: timeseries
+    type: heatmap
     expr: 'topk(10, count_over_time({job=\"{{ nginx_job }}\"} | pattern \"<ip> - - [<time>] \"<method> <uri> <proto>\" <status> <size> *\"[{{ period }}]))'
   top_ips:
     title: Top IPs
-    type: timeseries
+    type: heatmap
     expr: 'topk(10, sum by (ip) (rate({job=\"{{ nginx_job }}\", ip!=\"\"}[{{ period }}])))'
   top_countries:
     title: Top countries
-    type: stat
+    type: heatmap
     expr: 'sum by (geoip_country) (rate({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   requests:
     title: Total requests
-    type: stat
+    type: heatmap
     expr: 'sum(count_over_time({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   rps:
     title: Requests per second
-    type: timeseries
+    type: heatmap
     expr: 'sum(rate({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   5xx_sum:
     title: 5xx errors summary
-    type: stat
+    type: heatmap
     expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"5..\"}[{{ period }}]))'
   4xx_sum:
     title: 4xx errors summary
-    type: stat
+    type: heatmap
     expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"4..\"}[{{ period }}]))'
   5xx_rate:
     title: 5xx error rate %
-    type: timeseries
+    type: heatmap
     expr: '100 * (sum(rate({job=\"{{ nginx_job }}\", status=~\"5..\"}[{{ period }}])) / sum(rate({job=\"{{ nginx_job }}\"}[{{ period }}])) )'
   4xx_rate:
     title: 4xx error rate
-    type: timeseries
+    type: heatmap
     expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"}[{{ period }}]))'
