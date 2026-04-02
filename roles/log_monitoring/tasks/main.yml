@@ -1,7 +1,10 @@
-- name: Create common configs directory
+- name: Create common directories
   file:
-    path: "{{ stack_config_dir }}"
+    path: "{{ item }}"
     state: directory
+  loop:
+    - "{{ stack_config_dir }}"
+    - "{{ promtail_dir }}"
 
 - name: Create Loki directories
   file:
@@ -30,6 +33,12 @@
   template:
     src: promtail-config.yml.j2
     dest: "{{ stack_config_dir }}/promtail.yml"
+
+- name: Download MaxMind DB
+  get_url:
+    url: "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb"
+    dest: "{{ geoip_plugin }}"
+    mode: '0644'
 
 - name: Run Loki and Promtail containers
   community.docker.docker_compose_v2:

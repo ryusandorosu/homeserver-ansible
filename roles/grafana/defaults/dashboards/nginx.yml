@@ -25,6 +25,10 @@ nginx_dashboard:
     title: Top IPs
     type: timeseries
     expr: 'topk(10, sum by (ip) (rate({job=\"{{ nginx_job }}\", ip!=\"\"}[{{ period }}])))'
+  top_countries:
+    title: Top countries
+    type: stat
+    expr: 'sum by (geoip_country) (rate({job=\"{{ nginx_job }}\"}[{{ period }}]))'
   requests:
     title: Total requests
     type: stat
