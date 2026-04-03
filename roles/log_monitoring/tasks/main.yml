@@ -9,8 +9,11 @@
     - "{{ loki_dir }}"
     - "{{ loki_data_dir }}"
     - "{{ loki_data_dir }}/chunks"
+    - "{{ loki_data_dir }}/compactor"
     - "{{ loki_data_dir }}/index"
+    - "{{ loki_data_dir }}/tsdb-shipper-active"
     - "{{ loki_data_dir }}/tsdb-shipper-cache"
+    - "{{ loki_data_dir }}/wal"
 
 - name: Create Promtail directory
   file:
