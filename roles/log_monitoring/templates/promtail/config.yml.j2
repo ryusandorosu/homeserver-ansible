@@ -27,7 +27,7 @@ scrape_configs:
       - template:
           source: request_time
 {% raw %}
-          template: '{{ .Value | toFloat }}'
+          template: '{{ .Value }}'
 {% endraw %}
       - geoip:
           db: {{ container_geoip_plugin }}
