@@ -26,7 +26,9 @@ scrape_configs:
           method:
       - template:
           source: request_time
+{% raw %}
           template: '{{ .Value }}'
+{% endraw %}
       - geoip:
           db: {{ container_geoip_plugin }}
           source: ip
