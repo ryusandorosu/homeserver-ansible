@@ -25,6 +25,7 @@ scrape_configs:
           status:
           method:
           uri:
+          ip:
       - template:
           source: request_time
           template: {% raw %}'{{ .Value }}'
