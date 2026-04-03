@@ -40,11 +40,31 @@
     dest: "{{ geoip_plugin }}"
     mode: '0644'
 
+#- name: Run Loki and Promtail containers
+#  community.docker.docker_compose_v2:
+#    project_src: "{{ stack_base_dir }}"
+#    state: present
+#    recreate: always
 - name: Run Loki and Promtail containers
-  community.docker.docker_compose_v2:
-    project_src: "{{ stack_base_dir }}"
-    state: present
-    recreate: always
+  block:
+    - name: Start docker compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ stack_base_dir }}"
+        state: present
+        recreate: always
+  rescue:
+    - name: Restart docker
+      service:
+        name: docker
+        state: restarted
+    - name: Wait for docker
+      wait_for:
+        timeout: 10
+    - name: Retry docker compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ stack_base_dir }}"
+        state: present
+        recreate: always
 
 - name: Check Loki container running status
   uri:
