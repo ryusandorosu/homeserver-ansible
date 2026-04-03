@@ -54,11 +54,12 @@ nginx_dashboard:
 
   top_countries:
     title: Top countries
-    type: heatmap
+    type: timeseries
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
           {job="{{ nginx_job }}"}
+          != "{{ home_ip }}"
           [{{ period }}]
         )
       )
