@@ -30,16 +30,18 @@ promtail_logs:
     name: syslog
     path: /var/log/syslog
   nginx_access:
-    name: nginx sites
+    name: Nginx sites access logs
     path: /var/log/nginx/*access.log
     pipeline: nginx
   nginx_error:
-    name: nginx errors
+    name: Nginx errors
     path: /var/log/nginx/error.log
 
 promtail_systemd:
   ssh:
     name: SSH authentication
+  nftables:
+    name: nftables
   proxy-healthcheck:
     name: Proxy healthcheck
   android-watcher:
