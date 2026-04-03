@@ -24,10 +24,10 @@ scrape_configs:
       - labels:
           status:
           method:
+          uri:
       - template:
           source: request_time
-{% raw %}
-          template: '{{ .Value }}'
+          template: {% raw %}'{{ .Value }}'
 {% endraw %}
       - geoip:
           db: {{ container_geoip_plugin }}

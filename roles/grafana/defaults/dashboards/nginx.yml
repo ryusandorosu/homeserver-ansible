@@ -31,6 +31,7 @@ nginx_dashboard:
           count_over_time(
             {job="{{ nginx_job }}"}
             != "{{ home_ip }}"
+            | method = "GET"
             | regexp "GET (?P<uri>/[^ ?]+)"
             [{{ period }}]
           )
@@ -45,9 +46,9 @@ nginx_dashboard:
         sum by (ip) (
           count_over_time(
             {job="{{ nginx_job }}"}
-            |= "GET"
+            | method = "GET"
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [3s]
+            [2s]
           )
         )
       )
