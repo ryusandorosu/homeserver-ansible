@@ -2,6 +2,7 @@ networks:
   monitoring:
     external: true
 
+services:
   promtail:
     image: grafana/promtail:{{ promtail_version }}
     container_name: {{ promtail_container }}
