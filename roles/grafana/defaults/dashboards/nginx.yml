@@ -5,27 +5,26 @@ nginx_dashboard:
   access:
     title: Access logs
     type: logs
-    expr: '{job=\"{{ nginx_job }}\"}'
+    expr: '{job="{{ nginx_job }}"}'
 
   error_logs:
     title: Error logs
     type: logs
-    expr: '{job=\"{{ promtail_logs.nginx_error.name }}\"}'
+    expr: '{job="{{ promtail_logs.nginx_error.name }}"}'
 
   5xx_log:
     title: 5xx error logs
     type: logs
-    expr: '{job=\"{{ nginx_job }}\", status=~\"5..\"}'
+    expr: '{job="{{ nginx_job }}", status=~"5.."}'
 
   4xx_log:
     title: 4xx error logs
     type: logs
-    expr: '{job=\"{{ nginx_job }}\", status=~\"4..\"}'
+    expr: '{job="{{ nginx_job }}", status=~"4.."}'
 
   top_urls:
     title: Top URLs
     type: heatmap
-#    expr: 'topk(10, sum by (uri) (count_over_time({job=\"{{ nginx_job }}\"} |= \"GET\" | regexp \"GET (?P<uri>/[^/?]+)\" [{{ period }}])))'
     expr: >
       topk(10,
         sum by (uri) (
@@ -41,7 +40,6 @@ nginx_dashboard:
   top_ips:
     title: Top IPs
     type: heatmap
-#    expr: 'topk(10, sum by (ip) (count_over_time({job=\"{{ nginx_job }}\"} |= \"GET\" | regexp \"^(?P<ip>\\\\d+\\\\.\\\\d+\\\\.\\\\d+\\\\.\\\\d+)\" [{{ period }}])))'
     expr: >
       topk(10,
         sum by (ip) (
@@ -57,7 +55,6 @@ nginx_dashboard:
   top_countries:
     title: Top countries
     type: heatmap
-#    expr: 'sum by (geoip_country) (count_over_time({job=\"{{ nginx_job }}\"} [{{ period }}]))'
     expr: >
       sum by (geoip_country) (
         count_over_time(
@@ -69,7 +66,6 @@ nginx_dashboard:
   requests:
     title: Total requests
     type: heatmap
-#    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\"} [{{ period }}]))'
     expr: >
       sum(
         count_over_time(
@@ -81,7 +77,6 @@ nginx_dashboard:
   rps:
     title: Requests per second
     type: heatmap
-#    expr: 'sum(rate({job=\"{{ nginx_job }}\"} [{{ period }}]))'
     expr: >
       sum(
         rate(
@@ -93,7 +88,6 @@ nginx_dashboard:
   5xx_sum:
     title: 5xx errors summary
     type: heatmap
-#    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"5..\"} [{{ period }}]))'
     expr: >
       sum(
         count_over_time(
@@ -105,7 +99,6 @@ nginx_dashboard:
   4xx_sum:
     title: 4xx errors summary
     type: heatmap
-#    expr: 'sum(count_over_time({job=\"{{ nginx_job }}\", status=~\"4..\"} [{{ period }}]))'
     expr: >
       sum(
         count_over_time(
@@ -117,7 +110,6 @@ nginx_dashboard:
   5xx_rate:
     title: 5xx error rate %
     type: heatmap
-#    expr: '100 * (sum(rate({job=\"{{ nginx_job }}\", status=~\"5..\"}[{{ period }}])) / sum(rate({job=\"{{ nginx_job }}\"} [{{ period }}])) )'
     expr: >
       100 * (
         sum(
@@ -138,7 +130,6 @@ nginx_dashboard:
   4xx_rate:
     title: 4xx error rate
     type: heatmap
-#    expr: 'sum(rate({job=\"{{ nginx_job }}\", status=~\"4..\"} [{{ period }}]))'
     expr: >
       sum(
         rate(
@@ -150,7 +141,6 @@ nginx_dashboard:
   latency_p95:
     title: 95 percentile latency
     type: heatmap
-#    expr: 'quantile_over_time(0.95, {job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\\\d+\\\\.\\\\d+)$\" | unwrap request_time [{{ period }}])'
     expr: >
       quantile_over_time(0.95, 
         {job="{{ nginx_job }}"}
@@ -162,7 +152,6 @@ nginx_dashboard:
   latency_p99:
     title: 99 percentile latency
     type: heatmap
-#    expr: 'quantile_over_time(0.99, {job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\\\d+\\\\.\\\\d+)$\" | unwrap request_time [{{ period }}])'
     expr: >
       quantile_over_time(0.99,
         {job="{{ nginx_job }}"}
@@ -174,7 +163,6 @@ nginx_dashboard:
   latency_avg:
     title: Average latency
     type: heatmap
-#    expr: 'avg_over_time({job=\"{{ nginx_job }}\"} | regexp \" (?P<request_time>\\\\d+\\\\.\\\\d+)$\" | unwrap request_time [{{ period }}])'
     expr: >
       avg_over_time(
         {job="{{ nginx_job }}"}
