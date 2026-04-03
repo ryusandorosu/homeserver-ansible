@@ -2,21 +2,6 @@ networks:
   monitoring:
     external: true
 
-services:
-  loki:
-    image: grafana/loki:latest
-    container_name: {{ loki_container }}
-    restart: unless-stopped
-    user: "10001:10001"
-    command: -config.file=/etc/loki/loki.yml
-    volumes:
-      - "{{ stack_config_dir }}/loki.yml:/etc/loki/loki.yml"
-      - "{{ loki_data_dir }}:/loki"
-    ports:
-      - "{{ localhost }}:{{ loki_port }}:{{ loki_port }}"
-    networks:
-      - monitoring
-
   promtail:
     image: grafana/promtail:{{ promtail_version }}
     container_name: {{ promtail_container }}
@@ -24,7 +9,7 @@ services:
     user: root
     command: -config.file=/etc/promtail/promtail.yml
     volumes:
-      - "{{ stack_config_dir }}/promtail.yml:/etc/promtail/promtail.yml"
+      - "{{ promtail_dir }}/promtail.yml:/etc/promtail/promtail.yml"
       - /var/log:/var/log
       - /var/lib/docker/containers:/var/lib/docker/containers
       - /etc/machine-id:/etc/machine-id:ro

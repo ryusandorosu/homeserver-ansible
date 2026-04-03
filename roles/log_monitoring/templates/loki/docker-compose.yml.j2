@@ -1,0 +1,18 @@
+networks:
+  monitoring:
+    external: true
+
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: {{ loki_container }}
+    restart: unless-stopped
+    user: "10001:10001"
+    command: -config.file=/etc/loki/loki.yml
+    volumes:
+      - "{{ loki_dir }}/loki.yml:/etc/loki/loki.yml"
+      - "{{ loki_data_dir }}:/loki"
+    ports:
+      - "{{ localhost }}:{{ loki_port }}:{{ loki_port }}"
+    networks:
+      - monitoring
