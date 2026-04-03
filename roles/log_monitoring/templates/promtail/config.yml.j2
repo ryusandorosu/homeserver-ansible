@@ -24,12 +24,15 @@ scrape_configs:
       - labels:
           status:
           method:
+      - template:
+          source: request_time
+          template: '{{ .Value }}'
       - geoip:
           db: {{ container_geoip_plugin }}
           source: ip
           db_type: city
       - labels:
-          geoip_country:
+          geoip_country_name:
       - output:
           source: message
 {% endif %}
