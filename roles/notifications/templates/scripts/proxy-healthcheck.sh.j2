@@ -11,7 +11,7 @@ while true; do
   fi
   if [[ $fail_count -gt 0 ]]; then
     echo "Proxy check failed, restarting mihomo"
-    docker restart {{ mihomo_container }}
+    docker restart {{ docker.mihomo }}
   fi
   fail_count=0
   sleep 60

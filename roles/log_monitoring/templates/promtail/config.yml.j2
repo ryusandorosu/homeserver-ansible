@@ -5,7 +5,7 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
-  - url: http://{{ loki_container }}:{{ loki_port }}/loki/api/v1/push
+  - url: http://{{ docker.loki }}:{{ loki_port }}/loki/api/v1/push
 
 scrape_configs:
 {% for key, job in promtail_logs.items() %}
@@ -17,6 +17,19 @@ scrape_configs:
           job: {{ job.name }}
           host: {{ inventory_hostname }}
           __path__: {{ job.path }}
+{% if key == 'containers' %}
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        target_label: container
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: stream
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        target_label: service
+    pipeline_stages:
+      - docker: {}
+{% endif %}
 {% if job.pipeline is defined and job.pipeline == 'nginx' %}
     pipeline_stages:
       - regex:

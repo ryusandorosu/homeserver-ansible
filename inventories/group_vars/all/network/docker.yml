@@ -1,3 +1,5 @@
-loki_container: loki
-promtail_container: promtail
-mihomo_container: mihomo
+docker:
+  loki: loki
+  promtail: promtail
+  grafana: grafana
+  mihomo: mihomo

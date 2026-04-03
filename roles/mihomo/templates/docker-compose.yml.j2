@@ -1,7 +1,7 @@
 services:
   mihomo:
     image: metacubex/mihomo:latest
-    container_name: {{ mihomo_container }}
+    container_name: {{ docker.mihomo }}
     restart: unless-stopped
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"

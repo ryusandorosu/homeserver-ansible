@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+{% for key, value in docker.items() %}
+    {
+      "type": "logs",
+      "title": "{{ value }} logs",
+      "targets": [
+        {
+          "expr": "{job=\"{{ promtail_logs.containers.name }}\", container=\"{{ value }}\"}",
+          "refId": "{{ loop.index }}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 0 + (loop.index0 * 8) }}
+      }
+    }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+  ],
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["loki"],
+  "templating": {
+    "list": []
+  },
+  "title": "Loki: Docker Container Logs",
+  "version": 1
+}
