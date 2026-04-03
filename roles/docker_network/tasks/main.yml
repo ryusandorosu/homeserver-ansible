@@ -1,3 +1,15 @@
+- name: Check docker iptables chain
+  command: iptables -L DOCKER
+  register: docker_chain
+  ignore_errors: true
+  changed_when: false
+
+- name: Restart docker if chain is missing
+  service:
+    name: docker
+    state: restarted
+  when: docker_chain.rc != 0
+
 - name: Create monitoring network
   community.docker.docker_network:
     name: monitoring
