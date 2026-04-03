@@ -36,11 +36,11 @@
 
 - name: Ensure wireguard starts before nftables
   copy:
-    dest: "{{ systemd_services }}/nftables.service.d/unit-wireguard.conf"
+    dest: "{{ systemd_services }}/nftables.service.d/override.conf"
     content: |
       [Unit]
-      After=wg-quick@{{ wireguard_interface }}.service
-      Requires=wg-quick@{{ wireguard_interface }}.service
+      After=network-online.target wg-quick@{{ wireguard_interface }}.service
+      Requires=network-online.target wg-quick@{{ wireguard_interface }}.service
   notify:
     - daemon reload
 
