@@ -10,7 +10,7 @@
       "title": "{{ value }} logs",
       "targets": [
         {
-          "expr": "{job=\"{{ promtail_logs.containers.name }}\", container=\"{{ value }}\"}",
+          "expr": "{container=\"/{{ value }}\"}",
           "refId": "{{ loop.index }}"
         }
       ],
