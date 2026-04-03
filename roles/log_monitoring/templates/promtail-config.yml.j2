@@ -28,6 +28,8 @@ scrape_configs:
           db: {{ container_geoip_plugin }}
           source: ip
           db_type: city
+      - labels:
+          geoip_country:
       - output:
           source: message
 {% endif %}
