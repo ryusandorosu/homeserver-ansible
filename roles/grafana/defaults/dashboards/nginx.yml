@@ -47,7 +47,7 @@ nginx_dashboard:
             {job="{{ nginx_job }}"}
             |= "GET"
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [{{ period }}]
+            [3s]
           )
         )
       )
