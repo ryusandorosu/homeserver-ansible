@@ -2,9 +2,6 @@ promtail_logs:
   ssh:
     name: SSH authentication
     path: "{{ sshd_log }}"
-  containers:
-    name: Docker containers
-    path: /var/lib/docker/containers/*/*.log
   status:
     name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
@@ -36,6 +33,9 @@ promtail_logs:
   nginx_error:
     name: Nginx errors
     path: /var/log/nginx/error.log
+  containers:
+    name: Docker containers
+    path: /var/lib/docker/containers/*/*.log
 
 promtail_systemd:
   ssh:
