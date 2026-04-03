@@ -10,7 +10,7 @@
       "title": "{{ panel.title }}",
       "targets": [
         {
-          "expr": "{{ panel.expr }}",
+          "expr": "{{ panel.expr | to_json }}",
           "refId": "{{ loop.index }}"
         }
       ],
