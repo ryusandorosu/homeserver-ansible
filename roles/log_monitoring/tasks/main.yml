@@ -50,7 +50,6 @@
   community.docker.docker_compose_v2:
     project_src: "{{ loki_dir }}"
     state: present
-    recreate: always
 
 - name: Run Promtail container
   community.docker.docker_compose_v2:
