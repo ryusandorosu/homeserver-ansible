@@ -39,7 +39,23 @@
   "style": "dark",
   "tags": ["loki"],
   "templating": {
-    "list": []
+    "list": [
+{% for label in nginx_labels %}
+      {
+        "name": "{{ label }}",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "{{ loki_uid }}"
+        },
+        "includeAll": true,
+        "multi": true,
+        "query": "label_values({job=\"{{ nginx_job }}\"}, {{ label }})"
+      }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+    ]
   },
   "title": "Loki: Nginx Logs & Monitoring",
   "version": 1
