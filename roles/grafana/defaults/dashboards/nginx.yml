@@ -1,54 +1,104 @@
 nginx_job: "{{ promtail_logs.nginx_access.name }}"
-period: 2m
+long_period: 2m
+short_period: 10s
 nginx_dashboard:
 
   access:
     title: Access logs
     type: logs
-    expr: '{job="{{ nginx_job }}"}'
+    expr: '{job = "{{ nginx_job }}"}'
 
   error_logs:
     title: Error logs
     type: logs
-    expr: '{job="{{ promtail_logs.nginx_error.name }}"}'
+    expr: '{job = "{{ promtail_logs.nginx_error.name }}"}'
 
   5xx_log:
     title: 5xx error logs
     type: logs
-    expr: '{job="{{ nginx_job }}", status=~"5.."}'
+    expr: >
+      {
+        job = "{{ nginx_job }}",
+        status =~ "5.."
+      }
 
   4xx_log:
     title: 4xx error logs
     type: logs
-    expr: '{job="{{ nginx_job }}", status=~"4.."}'
+    expr: >
+      {
+        job = "{{ nginx_job }}",
+        status =~ "4.."
+      }
 
-  top_urls:
-    title: Top URLs
+  top_urls_get:
+    title: Top URLs (GET)
     type: heatmap
     expr: >
       topk(10,
         sum by (uri) (
           count_over_time(
-            {job="{{ nginx_job }}"}
-            != "{{ home_ip }}"
-            | method = "GET"
-            | regexp "GET (?P<uri>/[^ ?]+)"
-            [{{ period }}]
+            {
+              job = "{{ nginx_job }}",
+              ip != "{{ home_ip }}",
+              method = "GET",
+              uri != "",
+              uri !~ "^/(api|public|avatar|explore|d|apis)/.*"
+            }
+            [{{ long_period }}]
           )
         )
       )
 
-  top_ips:
-    title: Top IPs
+  top_urls_post:
+    title: Top URLs (POST)
+    type: heatmap
+    expr: >
+      topk(10,
+        sum by (uri) (
+          count_over_time(
+            {
+              job = "{{ nginx_job }}",
+              ip != "{{ home_ip }}",
+              method = "POST",
+              uri != "",
+              uri !~ "^/(api|public|avatar|explore|d|apis)/.*"
+            }
+            [{{ long_period }}]
+          )
+        )
+      )
+
+  top_ips_get:
+    title: Top IPs (GET)
     type: heatmap
     expr: >
       topk(10,
         sum by (ip) (
           count_over_time(
-            {job="{{ nginx_job }}"}
-            | method = "GET"
+            {
+              job = "{{ nginx_job }}",
+              method = "GET"
+            }
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [2s]
+            [{{ short_period }}]
+          )
+        )
+      )
+
+  top_ips_post:
+    title: Top IPs (POST)
+    type: heatmap
+    expr: >
+      topk(10,
+        sum by (ip) (
+          count_over_time(
+            {
+              job = "{{ nginx_job }}",
+              method = "POST"
+            }
+            | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
+            [{{ short_period }}]
           )
         )
       )
@@ -59,9 +109,9 @@ nginx_dashboard:
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
-          {job="{{ nginx_job }}"}
+          {job = "{{ nginx_job }}"}
           != "{{ home_ip }}"
-          [{{ period }}]
+          [{{ long_period }}]
         )
       )
 
@@ -71,8 +121,8 @@ nginx_dashboard:
     expr: >
       sum(
         count_over_time(
-          {job="{{ nginx_job }}"}
-          [{{ period }}]
+          {job = "{{ nginx_job }}"}
+          [{{ long_period }}]
         )
       )
 
@@ -82,8 +132,8 @@ nginx_dashboard:
     expr: >
       sum(
         rate(
-          {job="{{ nginx_job }}"}
-          [{{ period }}]
+          {job = "{{ nginx_job }}"}
+          [{{ long_period }}]
         )
       )
 
@@ -93,8 +143,11 @@ nginx_dashboard:
     expr: >
       sum(
         count_over_time(
-          {job="{{ nginx_job }}", status=~"5.."}
-          [{{ period }}]
+          {
+            job = "{{ nginx_job }}",
+            status =~ "5.."
+          }
+          [{{ long_period }}]
         )
       )
 
@@ -104,8 +157,11 @@ nginx_dashboard:
     expr: >
       sum(
         count_over_time(
-          {job="{{ nginx_job }}", status=~"4.."}
-          [{{ period }}]
+          {
+            job = "{{ nginx_job }}",
+            status =~ "4.."
+          }
+          [{{ long_period }}]
         )
       )
 
@@ -116,15 +172,18 @@ nginx_dashboard:
       100 * (
         sum(
           rate(
-            {job="{{ nginx_job }}", status=~"5.."}
-            [{{ period }}]
+            {
+              job = "{{ nginx_job }}",
+              status =~ "5.."
+            }
+            [{{ long_period }}]
           )
         )
         /
         sum(
           rate(
-            {job="{{ nginx_job }}"}
-            [{{ period }}]
+            {job = "{{ nginx_job }}"}
+            [{{ long_period }}]
           )
         )
       )
@@ -135,8 +194,11 @@ nginx_dashboard:
     expr: >
       sum(
         rate(
-          {job="{{ nginx_job }}", status=~"4.."}
-          [{{ period }}]
+          {
+            job = "{{ nginx_job }}",
+            status =~ "4.."
+          }
+          [{{ long_period }}]
         )
       )
 
@@ -145,10 +207,10 @@ nginx_dashboard:
     type: heatmap
     expr: >
       quantile_over_time(0.95, 
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        {job = "{{ nginx_job }}"}
+        | regexp " (?P<request_time>[0-9.]d+)$"
         | unwrap request_time
-        [{{ period }}]
+        [{{ short_period }}]
       )
 
   latency_p99:
@@ -156,10 +218,10 @@ nginx_dashboard:
     type: heatmap
     expr: >
       quantile_over_time(0.99,
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        {job = "{{ nginx_job }}"}
+        | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ period }}]
+        [{{ short_period }}]
       )
 
   latency_avg:
@@ -167,8 +229,8 @@ nginx_dashboard:
     type: heatmap
     expr: >
       avg_over_time(
-        {job="{{ nginx_job }}"}
-        | regexp " (?P<request_time>\\d+\\.\\d+)$"
+        {job = "{{ nginx_job }}"}
+        | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ period }}]
+        [{{ short_period }}]
       )
