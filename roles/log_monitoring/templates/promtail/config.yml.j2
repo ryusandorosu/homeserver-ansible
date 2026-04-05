@@ -27,6 +27,10 @@ scrape_configs:
           uri:
           ip:
       - template:
+          source: uri
+          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+{% endraw %}
+      - template:
           source: request_time
           template: {% raw %}'{{ .Value }}'
 {% endraw %}
