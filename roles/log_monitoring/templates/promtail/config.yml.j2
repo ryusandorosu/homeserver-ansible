@@ -34,10 +34,18 @@ scrape_configs:
           db: {{ container_geoip_plugin }}
           source: ip
           db_type: city
+      - labeldrop:
+          - geoip_city_name
+          - geoip_continent_code
+          - geoip_continent_name
+          - geoip_location_latitude
+          - geoip_location_longitude
+          - geoip_postal_code
+          - geoip_subdivision_code
+          - geoip_subdivision_name
+          - geoip_timezone
       - labels:
           geoip_country_name:
-      - output:
-          source: message
 {% endif %}
 
 {% endfor %}
