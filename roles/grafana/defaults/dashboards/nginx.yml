@@ -31,8 +31,8 @@ nginx_dashboard:
         status =~ "4.."
       }
 
-  top_urls_get:
-    title: Top URLs (GET)
+  top_urls:
+    title: Top URLs
     type: heatmap
     expr: >
       topk(10,
@@ -41,7 +41,6 @@ nginx_dashboard:
             {
               job = "{{ nginx_job }}",
               ip != "{{ home_ip }}",
-              method = "GET",
               uri != "",
               uri !~ "^/(api|public|avatar|explore|d|apis)/.*"
             }
@@ -50,53 +49,14 @@ nginx_dashboard:
         )
       )
 
-  top_urls_post:
-    title: Top URLs (POST)
-    type: heatmap
-    expr: >
-      topk(10,
-        sum by (uri) (
-          count_over_time(
-            {
-              job = "{{ nginx_job }}",
-              ip != "{{ home_ip }}",
-              method = "POST",
-              uri != "",
-              uri !~ "^/(api|public|avatar|explore|d|apis)/.*"
-            }
-            [{{ long_period }}]
-          )
-        )
-      )
-
-  top_ips_get:
-    title: Top IPs (GET)
+  top_ips:
+    title: Top IPs
     type: heatmap
     expr: >
       topk(10,
         sum by (ip) (
           count_over_time(
-            {
-              job = "{{ nginx_job }}",
-              method = "GET"
-            }
-            | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [{{ short_period }}]
-          )
-        )
-      )
-
-  top_ips_post:
-    title: Top IPs (POST)
-    type: heatmap
-    expr: >
-      topk(10,
-        sum by (ip) (
-          count_over_time(
-            {
-              job = "{{ nginx_job }}",
-              method = "POST"
-            }
+            {job = "{{ nginx_job }}"}
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
             [{{ short_period }}]
           )
