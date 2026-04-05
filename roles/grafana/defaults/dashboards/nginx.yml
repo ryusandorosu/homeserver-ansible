@@ -208,7 +208,7 @@ nginx_dashboard:
     expr: >
       quantile_over_time(0.95, 
         {job = "{{ nginx_job }}"}
-        | regexp " (?P<request_time>[0-9.]d+)$"
+        | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ short_period }}]
       )
