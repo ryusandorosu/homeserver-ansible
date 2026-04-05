@@ -20,8 +20,10 @@
         "x": 0,
         "y": {{ 0 + (loop.index0 * 8) }}
       }
-    }{% if not loop.last %},{% endif %}
+    }{% if not loop.last %},
+{% endif %}
 {% endfor %}
+
   ],
   "schemaVersion": 39,
   "style": "dark",
@@ -29,6 +31,6 @@
   "templating": {
     "list": []
   },
-  "title": "Loki logs: overview",
+  "title": "Loki: Logs Overview",
   "version": 1
 }
