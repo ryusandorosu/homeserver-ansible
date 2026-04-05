@@ -13,6 +13,8 @@ services=(
 post_and_log() {
   if [[ "$1" == "active" ]]; then
     {{ telegram_script }} "🟢 $(hostname) service $s status: $1" status "$0"
+  elif [[ "$1" == "activating" ]]; then
+    {{ telegram_script }} "🟡 $(hostname) service $s status: $1" status "$0"
   else
     {{ telegram_script }} "🔴 $(hostname) service $s status: $1" status "$0"
   fi
