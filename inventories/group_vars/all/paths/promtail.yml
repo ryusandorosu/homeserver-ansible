@@ -33,9 +33,6 @@ promtail_logs:
   nginx_error:
     name: Nginx errors
     path: /var/log/nginx/error.log
-  containers:
-    name: Docker containers
-    path: /var/lib/docker/containers/*/*.log
 
 promtail_systemd:
   ssh:
