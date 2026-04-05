@@ -14,7 +14,12 @@
           "refId": "{{ loop.index }}"
         }
       ],
-{% if panel.type == "heatmap" %}
+{% if panel.type == "logs" %}
+      "options": {
+        "fontSize": "small",
+        "showControls": true
+      },
+{% elif panel.type == "heatmap" %}
       "options": {
         "calculate": false
       },
