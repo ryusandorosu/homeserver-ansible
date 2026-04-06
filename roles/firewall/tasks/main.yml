@@ -34,15 +34,23 @@
     msg: "WireGuard service wg-quick@{{ wireguard_interface }} is not enabled"
   when: wg_service.status.UnitFileState != "enabled"
 
-- name: Ensure wireguard starts before nftables
-  copy:
+#original
+# - name: Ensure wireguard starts before nftables
+#   copy:
+#     dest: "{{ systemd_services }}/nftables.service.d/override.conf"
+#     content: |
+#       [Unit]
+#       After=wg-quick@{{ wireguard_interface }}.service
+#       Requires=wg-quick@{{ wireguard_interface }}.service
+#   notify: daemon reload
+
+#experiment
+#Ensure wireguard starts before nftables
+- name: Deploy nftables override
+  template:
+    src: override.conf.j2
     dest: "{{ systemd_services }}/nftables.service.d/override.conf"
-    content: |
-      [Unit]
-      After=network-online.target wg-quick@{{ wireguard_interface }}.service
-      Requires=network-online.target wg-quick@{{ wireguard_interface }}.service
-  notify:
-    - daemon reload
+  notify: daemon reload
 
 - name: Deploy nftables config
   template:
