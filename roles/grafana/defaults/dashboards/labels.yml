@@ -27,9 +27,7 @@ nginx_labels:
     value: not_equals
     default: "{{ home_ip }}"
 
-nginx_filters: >-
-  [
-  {% for name, cfg in nginx_labels.items() %}
-    "{{ name }} {{ logql_operators[cfg.value] }} \"${{ name }}\""{{ "," if not loop.last }}
-  {% endfor %}
-  ]
+nginx_filters:
+{% for name, cfg in nginx_labels.items() %}
+  - '{{ name }} {{ logql_operators[cfg.value] }} "${{ name }}"'
+{% endfor %}
