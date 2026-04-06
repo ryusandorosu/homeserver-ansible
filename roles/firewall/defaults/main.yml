@@ -1,3 +1,4 @@
+#Ensure wireguard starts before nftables
 unit_override:
   - network-online.target
   - wg-quick@{{ wireguard_interface }}.service
