@@ -40,7 +40,7 @@
   "tags": ["loki"],
   "templating": {
     "list": [
-{% for label in nginx_labels %}
+{% for label, cfg in nginx_labels.items() %}
       {
         "name": "{{ label }}",
         "type": "query",
@@ -48,9 +48,19 @@
           "type": "loki",
           "uid": "{{ loki_uid }}"
         },
+{% if cfg.default is defined %}
+        "current": {
+          "text": [
+            "{{ cfg.default }}"
+          ],
+          "value": [
+            "{{ cfg.default }}"
+          ]
+        },
+{% endif %}
         "includeAll": true,
         "multi": true,
-        "query": "label_values({job=\"{{ nginx_job }}\"}, {{ label }})"
+        "query": "label_values({job=\"{{ promtail_logs.nginx_access.name }}\"}, {{ label }})"
       }{% if not loop.last %},
 {% endif %}
 {% endfor %}

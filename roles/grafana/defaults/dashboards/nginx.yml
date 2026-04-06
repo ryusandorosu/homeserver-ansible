@@ -1,12 +1,19 @@
-nginx_job: "{{ promtail_logs.nginx_access.name }}"
+# nginx_expr: "{{ nginx_filters | join(', ') }}"
+nginx_expr: >-
+  {{
+    (['job = "' ~ promtail_logs.nginx_access.name ~ '"'] + nginx_filters)
+    | join(', ')
+  }}
+
 long_period: 2m
 short_period: 10s
+
 nginx_dashboard:
 
   access:
     title: Access logs
     type: logs
-    expr: '{job = "{{ nginx_job }}"}'
+    expr: '{ {{ nginx_expr }} }'
 
   error_logs:
     title: Error logs
@@ -18,7 +25,7 @@ nginx_dashboard:
     type: logs
     expr: >
       {
-        job = "{{ nginx_job }}",
+        {{ nginx_expr }},
         status =~ "5.."
       }
 
@@ -27,7 +34,7 @@ nginx_dashboard:
     type: logs
     expr: >
       {
-        job = "{{ nginx_job }}",
+        {{ nginx_expr }},
         status =~ "4.."
       }
 
@@ -39,10 +46,7 @@ nginx_dashboard:
         sum by (uri) (
           count_over_time(
             {
-              job = "{{ nginx_job }}",
-              ip != "{{ home_ip }}",
-              uri != "",
-              uri !~ "^/(api|public|avatar|explore|d|apis)/.*"
+              {{ nginx_expr }}
             }
             [{{ long_period }}]
           )
@@ -56,7 +60,9 @@ nginx_dashboard:
       topk(10,
         sum by (ip) (
           count_over_time(
-            {job = "{{ nginx_job }}"}
+            {
+              {{ nginx_expr }}
+            }
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
             [{{ short_period }}]
           )
@@ -69,8 +75,9 @@ nginx_dashboard:
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
-          {job = "{{ nginx_job }}"}
-          != "{{ home_ip }}"
+          {
+            {{ nginx_expr }}
+          }
           [{{ long_period }}]
         )
       )
@@ -81,7 +88,9 @@ nginx_dashboard:
     expr: >
       sum(
         count_over_time(
-          {job = "{{ nginx_job }}"}
+          {
+            {{ nginx_expr }}
+          }
           [{{ long_period }}]
         )
       )
@@ -92,7 +101,9 @@ nginx_dashboard:
     expr: >
       sum(
         rate(
-          {job = "{{ nginx_job }}"}
+          {
+            {{ nginx_expr }}
+          }
           [{{ long_period }}]
         )
       )
@@ -104,7 +115,7 @@ nginx_dashboard:
       sum(
         count_over_time(
           {
-            job = "{{ nginx_job }}",
+            {{ nginx_expr }},
             status =~ "5.."
           }
           [{{ long_period }}]
@@ -118,7 +129,7 @@ nginx_dashboard:
       sum(
         count_over_time(
           {
-            job = "{{ nginx_job }}",
+            {{ nginx_expr }},
             status =~ "4.."
           }
           [{{ long_period }}]
@@ -133,16 +144,16 @@ nginx_dashboard:
         sum(
           rate(
             {
-              job = "{{ nginx_job }}",
+              {{ nginx_expr }},
               status =~ "5.."
             }
             [{{ long_period }}]
           )
-        )
-        /
-        sum(
+        ) / sum(
           rate(
-            {job = "{{ nginx_job }}"}
+            {
+              {{ nginx_expr }}
+            }
             [{{ long_period }}]
           )
         )
@@ -155,7 +166,7 @@ nginx_dashboard:
       sum(
         rate(
           {
-            job = "{{ nginx_job }}",
+            {{ nginx_expr }},
             status =~ "4.."
           }
           [{{ long_period }}]
@@ -167,7 +178,9 @@ nginx_dashboard:
     type: heatmap
     expr: >
       quantile_over_time(0.95, 
-        {job = "{{ nginx_job }}"}
+        {
+          {{ nginx_expr }}
+        }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ short_period }}]
@@ -178,7 +191,9 @@ nginx_dashboard:
     type: heatmap
     expr: >
       quantile_over_time(0.99,
-        {job = "{{ nginx_job }}"}
+        {
+          {{ nginx_expr }}
+        }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ short_period }}]
@@ -189,7 +204,9 @@ nginx_dashboard:
     type: heatmap
     expr: >
       avg_over_time(
-        {job = "{{ nginx_job }}"}
+        {
+          {{ nginx_expr }}
+        }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ short_period }}]
