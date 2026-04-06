@@ -11,21 +11,21 @@ promtail_logs:
   telegram:
     name: Telegram notifications
     path: "{{ telegram_bot_logs }}/*.log"
+  syslog:
+    name: syslog
+    path: /var/log/syslog
   fail2ban:
     name: Fail2Ban
     path: "{{ f2b_log }}"
   crowdsec:
     name: CrowdSec
     path: /var/log/crowdsec*.log
-  auditd:
-    name: Auditd
-    path: /var/log/audit/audit.log
   user:
     name: userlog
     path: /var/log/user.log
-  syslog:
-    name: syslog
-    path: /var/log/syslog
+  auditd:
+    name: Auditd
+    path: /var/log/audit/audit.log
   nginx_access:
     name: Nginx sites access logs
     path: /var/log/nginx/*access.log
@@ -35,11 +35,11 @@ promtail_logs:
     path: /var/log/nginx/error.log
 
 promtail_systemd:
-  ssh:
-    name: SSH authentication
-  nftables:
-    name: nftables
   proxy-healthcheck:
     name: Proxy healthcheck
   android-watcher:
     name: Android SSHFS Auto Watcher
+  nftables:
+    name: nftables
+  ssh:
+    name: SSH authentication
