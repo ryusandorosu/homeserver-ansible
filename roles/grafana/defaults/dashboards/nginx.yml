@@ -1,9 +1,8 @@
-nginx_expr: >
+nginx_expr: >-
   job = "{{ promtail_logs.nginx_access.name }}",
   {{ nginx_filters | join('", ') + '"' }}
 
-long_period: 2m
-short_period: 10s
+expr_rate: 1m
 
 nginx_dashboard:
 
@@ -45,7 +44,7 @@ nginx_dashboard:
             {
               {{ nginx_expr }}
             }
-            [{{ long_period }}]
+            [{{ expr_rate }}]
           )
         )
       )
@@ -61,7 +60,7 @@ nginx_dashboard:
               {{ nginx_expr }}
             }
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [{{ short_period }}]
+            [{{ expr_rate }}]
           )
         )
       )
@@ -75,7 +74,7 @@ nginx_dashboard:
           {
             {{ nginx_expr }}
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -88,7 +87,7 @@ nginx_dashboard:
           {
             {{ nginx_expr }}
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -101,7 +100,7 @@ nginx_dashboard:
           {
             {{ nginx_expr }}
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -115,7 +114,7 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "5.."
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -129,7 +128,7 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "4.."
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -144,14 +143,14 @@ nginx_dashboard:
               {{ nginx_expr }},
               status =~ "5.."
             }
-            [{{ long_period }}]
+            [{{ expr_rate }}]
           )
         ) / sum(
           rate(
             {
               {{ nginx_expr }}
             }
-            [{{ long_period }}]
+            [{{ expr_rate }}]
           )
         )
       )
@@ -166,7 +165,7 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "4.."
           }
-          [{{ long_period }}]
+          [{{ expr_rate }}]
         )
       )
 
@@ -180,7 +179,7 @@ nginx_dashboard:
         }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ short_period }}]
+        [{{ expr_rate }}]
       )
 
   latency_p99:
@@ -193,7 +192,7 @@ nginx_dashboard:
         }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ short_period }}]
+        [{{ expr_rate }}]
       )
 
   latency_avg:
@@ -206,5 +205,5 @@ nginx_dashboard:
         }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ short_period }}]
+        [{{ expr_rate }}]
       )
