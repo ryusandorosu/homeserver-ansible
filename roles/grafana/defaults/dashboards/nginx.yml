@@ -1,9 +1,6 @@
-# nginx_expr: "{{ nginx_filters | join(', ') }}"
-nginx_expr: >-
-  {{
-    (['job = "' ~ promtail_logs.nginx_access.name ~ '"'] + nginx_filters)
-    | join(', ')
-  }}
+nginx_expr: >
+  job = "{{ promtail_logs.nginx_access.name }}",
+  {{ nginx_filters | join('", ') + '"' }}
 
 long_period: 2m
 short_period: 10s

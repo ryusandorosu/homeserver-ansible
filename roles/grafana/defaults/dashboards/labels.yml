@@ -1,33 +1,28 @@
-# nginx_labels:
-#   vhost: '=~ "$vhost"'
-#   method: '=~ "$method"'
-#   ip: '!~ "$ip"'
-
-# nginx_filters: >-
-#   {{
-#     ['job = "' ~ promtail_logs.nginx_access.name ~ '"'] +
-#     nginx_labels
-#       | dict2items
-#       | map(attribute='key')
-#       | zip(nginx_labels.values())
-#       | map('join', ' ')
-#       | list
-#   }}
-
-logql_operators:
-  equals: '=~'
-  not_equals: '!~'
-
 nginx_labels:
   vhost:
-    value: equals
+    operator: '=~'
   method:
-    value: equals
+    operator: '=~'
   ip:
-    value: not_equals
+    operator: '!~'
     default: "{{ home_ip }}"
 
-nginx_filters:
-{% for name, cfg in nginx_labels.items() %}
-  - '{{ name }} {{ logql_operators[cfg.value] }} "${{ name }}"'
-{% endfor %}
+nginx_filters: >-
+  {{
+    nginx_labels
+      | dict2items
+      | map(attribute='key')
+      | zip(
+          nginx_labels
+          | dict2items
+          | map(attribute='value.operator')
+        )
+      | map('join', ' ')
+      | zip(
+          nginx_labels
+          | dict2items
+          | map(attribute='key')
+        )
+      | map('join', ' "$')
+      | list
+  }}
