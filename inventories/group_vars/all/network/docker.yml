@@ -1,5 +1,5 @@
 docker:
-  loki: loki
-  promtail: promtail
-  grafana: grafana
   mihomo: mihomo
+  promtail: promtail
+  loki: loki
+  grafana: grafana
