@@ -4,14 +4,13 @@
   },
   "editable": true,
   "panels": [
-{% for key, unit in promtail_systemd.items() %}
     {
       "type": "logs",
-      "title": "{{ unit.name }} Log",
+      "title": "System Journal",
       "targets": [
         {
-          "expr": "{job=\"systemd\", unit=\"{{ key }}.service\"}",
-          "refId": "{{ loop.index }}"
+          "expr": "{job=\"systemd\"}",
+          "refId": "1"
         }
       ],
       "options": {
@@ -23,7 +22,29 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": 0
+      }
+    },
+{% for key, unit in promtail_systemd.items() %}
+    {
+      "type": "logs",
+      "title": "{{ unit.name }} Log",
+      "targets": [
+        {
+          "expr": "{job=\"systemd\", unit=\"{{ key }}.service\"}",
+          "refId": "{{ 1 + loop.index }}"
+        }
+      ],
+      "options": {
+        "fontSize": "small",
+        "showControls": true,
+        "showTime": true
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 8 + (loop.index0 * 8) }}
       }
     }{% if not loop.last %},
 {% endif %}
