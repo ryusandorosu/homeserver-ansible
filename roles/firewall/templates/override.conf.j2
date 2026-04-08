@@ -1,4 +1,3 @@
 [Unit]
 After={{ unit_override | join(' ') }}
-Wants={{ unit_override | first }}
-Requires={{ unit_override | last }}
+Requires={{ unit_override | join(' ') }}

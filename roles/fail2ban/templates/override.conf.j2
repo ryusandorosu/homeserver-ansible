@@ -1,6 +1,0 @@
-[Service]
-ExecStartPost=
-ExecStartPost=/bin/bash -c '{{ telegram_script }} "🟢 fail2ban service started" status "$0"'
-
-ExecStopPost=
-ExecStopPost=/bin/bash -c '{{ telegram_script }} "🔴 fail2ban service stopped" status "$0"'
