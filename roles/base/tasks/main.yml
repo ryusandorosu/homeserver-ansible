@@ -9,8 +9,11 @@
       - far2l
       - tcpdump
       - rsync
+      - gcc
+      - make
       - ca-certificates
       - unattended-upgrades
+      - build-essential
     state: present
     update_cache: yes
 

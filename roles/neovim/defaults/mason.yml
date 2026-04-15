@@ -1,0 +1,7 @@
+# :Mason {{ item }}-language-server i
+mason_lspconfig:
+  - bash
+  - yaml
+  - ansible
+  - awk
+  - nginx

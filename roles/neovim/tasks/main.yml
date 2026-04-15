@@ -1,0 +1,82 @@
+- name: Load variables
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
+- name: Install required packages
+  apt:
+    name:
+    - npm
+    - ripgrep
+    - fd-find
+    state: present
+
+- name: Install neovim from git repo
+  get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+    dest: /usr/local/bin/nvim
+    mode: '0777'
+
+- name: Install lazy.nvim plugin package manager
+  git:
+    repo: https://github.com/folke/lazy.nvim
+    dest: /home/{{ user }}/.local/share/nvim/lazy/lazy.nvim
+
+- name: Create config directories
+  file:
+    path: /home/{{ user }}/{{ item }}
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+  loop:
+    - .config/nvim/lua/config
+    - .config/nvim/lua/plugins
+
+- name: Deploy init.lua
+  copy:
+    src: init.lua
+    dest: /home/{{ user }}/.config/nvim
+    mode: '0755'
+
+- name: Deploy plugins.lua
+  copy:
+    src: lua/plugins.lua
+    dest: /home/{{ user }}/.config/nvim/lua
+    mode: '0755'
+
+- name: Deploy separate plugin luas
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/.config/nvim/lua/plugins"
+    mode: '0755'
+  with_fileglob:
+    - "templates/lua/plugins/*.lua"
+
+- name: Deploy lua configs
+  copy:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/.config/nvim/lua/config"
+    mode: '0755'
+  with_fileglob:
+    - "templates/lua/config/*.lua"
+
+- name: Deploy templated lua configs
+  template:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
+    mode: '0755'
+  with_fileglob:
+    - "templates/lua/config/*.lua.j2"
+
+- name: Synchronize lazy.nvim plugins
+  become_user: "{{ user }}"
+  command: nvim --headless "+Lazy! sync" +qa
+  environment:
+    HOME: "/home/{{ user }}"
+
+- name: Install Treesitter parsers
+  become_user: "{{ user }}"
+  command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
+  environment:
+    HOME: "/home/{{ user }}"

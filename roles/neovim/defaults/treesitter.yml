@@ -1,0 +1,7 @@
+treesitter:
+  - bash
+  - yaml
+  - jinja
+  - awk
+  - jq
+  - regex

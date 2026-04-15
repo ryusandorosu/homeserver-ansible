@@ -1,0 +1,11 @@
+require("mason-lspconfig").setup({
+  ensure_installed = {
+{% for language_server in mason_lspconfig %}
+    "{{ language_server }}ls",
+{% endfor %}
+  }
+})
+
+{% for language_server in mason_lspconfig %}
+vim.lsp.enable("{{ language_server }}ls")
+{% endfor %}
