@@ -14,9 +14,20 @@
     state: present
     update_cache: yes
 
+- name: Ensure bat config directory exists
+  file:
+    path: /{{ item }}/.config/bat/
+    state: directory
+  loop:
+    - home/{{ user }}
+    - root
+
 - name: Bat settings
   copy:
     content: |
       --style=plain
       --paging=never
-    dest: /home/{{ user }}/.config/bat/config
+    dest: /{{ item }}/.config/bat/config
+  loop:
+    - home/{{ user }}
+    - root
