@@ -11,6 +11,6 @@ return {
   { "airblade/vim-gitgutter" },
 
   { "nvim-treesitter/nvim-treesitter", build=":TSUpdate" },
- 
+
 }
  
