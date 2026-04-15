@@ -3,9 +3,15 @@ require("mason-lspconfig").setup({
 {% for language_server in mason_lspconfig %}
     "{{ language_server }}ls",
 {% endfor %}
+{% for language_server in mason_configs %}
+    "{{ language_server }}",
+{% endfor %}
   }
 })
 
 {% for language_server in mason_lspconfig %}
 vim.lsp.enable("{{ language_server }}ls")
+{% endfor %}
+{% for language_server in mason_configs %}
+vim.lsp.enable("{{ language_server }}")
 {% endfor %}

@@ -28,28 +28,28 @@
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: '0755'
+    mode: '0775'
   loop:
     - .config/nvim/lua/config
     - .config/nvim/lua/plugins
 
 - name: Deploy init.lua
   copy:
-    src: init.lua
+    src: templates/init.lua
     dest: /home/{{ user }}/.config/nvim
-    mode: '0755'
+    mode: '0664'
 
 - name: Deploy plugins.lua
   copy:
-    src: lua/plugins.lua
+    src: templates/lua/plugins.lua
     dest: /home/{{ user }}/.config/nvim/lua
-    mode: '0755'
+    mode: '0664'
 
 - name: Deploy separate plugin luas
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/plugins"
-    mode: '0755'
+    mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua"
 
@@ -57,7 +57,7 @@
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/config"
-    mode: '0755'
+    mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua"
 
@@ -65,7 +65,7 @@
   template:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
-    mode: '0755'
+    mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua.j2"
 
