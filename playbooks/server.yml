@@ -15,9 +15,6 @@
       vars:
         valid_tags: "{{ roles_list }}"
 
-  vars_files:
-    - group_vars/all/vault.yml
-
   vars:
     roles_list:
       - base
