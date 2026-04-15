@@ -5,6 +5,7 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.g.mapleader = " "
 require("config.clipboard")
+require("config.keybindings")
 require("config.lazy")
 require("config.lsp")
 require("config.cmp")
