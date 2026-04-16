@@ -1,0 +1,26 @@
+- name: Create prometheus directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: 65534
+    group: 65534
+    mode: "0755"
+  loop:
+    - "{{ prometheus_base_dir }}"
+    - "{{ prometheus_config_dir }}"
+    - "{{ prometheus_data_dir }}"
+
+- name: Deploy prometheus config
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ prometheus_base_dir }}/docker-compose.yml"
+
+- name: Run prometheus and node_exporter containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ prometheus_base_dir }}"
+    state: present

@@ -1,0 +1,6 @@
+prometheus_base_dir: /opt/prometheus
+prometheus_config_dir: "{{ prometheus_base_dir }}/config"
+prometheus_data_dir: "{{ prometheus_base_dir }}/data"
+
+prometheus_container_config_dir: /etc/prometheus
+prometheus_container_data_dir: /prometheus
