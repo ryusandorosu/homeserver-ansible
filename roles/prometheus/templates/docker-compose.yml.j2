@@ -23,6 +23,9 @@ services:
       - {{ prometheus_config_dir }}/prometheus.yml:{{ prometheus_container_config_dir }}/prometheus.yml
       - {{ prometheus_data_dir }}:{{ prometheus_container_data_dir }}
     ports:
-      - "{{ prometheus_port }}:9090"
+      - "{{ prometheus_port }}:{{ const_prometheus_port }}"
+    command:
+      - '--config.file={{ prometheus_container_config_dir }}/prometheus.yml'
+      - '--web.external-url=https://prometheus.{{ domain }}'
     networks:
       - monitoring

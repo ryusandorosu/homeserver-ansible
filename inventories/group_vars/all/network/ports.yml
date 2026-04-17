@@ -20,3 +20,6 @@ loki_port: 3100
 promtail_port: 9080
 node_exporter_port: 9100
 prometheus_port: 9091
+
+#services_internal
+const_prometheus_port: 9090

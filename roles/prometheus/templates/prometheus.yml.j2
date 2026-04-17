@@ -5,9 +5,8 @@ scrape_configs:
   - job_name: "node"
     static_configs:
       - targets:
-          - "localhost:{{ node_exporter_port }}"
           #- "host.docker.internal:{{ node_exporter_port }}"
-          #- "{{ docker.node_exporter }}:{{ node_exporter_port }}" #if node_exporter uses monitoring docker networkS
-          #- "{{ home_ip }}:{{ node_exporter_port }}"
+          #- "{{ docker.node_exporter }}:{{ node_exporter_port }}" #if node_exporter uses monitoring docker network
+          - "{{ home_ip }}:{{ node_exporter_port }}"
         labels:
           instance: "{{ inventory_hostname }}"
