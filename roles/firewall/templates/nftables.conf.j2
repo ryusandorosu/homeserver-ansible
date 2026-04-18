@@ -22,6 +22,7 @@ table inet filter {
         iif lo accept
 
         ip saddr @whitelist accept
+        ip saddr {{ docker_monitoring_network }} tcp dport {{ wireguard_exporter_port }} accept
 {% for set in inet_filter_sets if set.name != "whitelist" %}
         ip saddr @{{ set.name }} drop
 {% endfor %}

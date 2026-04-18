@@ -1,0 +1,32 @@
+networks:
+  monitoring:
+    external: true
+
+services:
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: {{ docker.node_exporter }}
+    restart: unless-stopped
+    volumes:
+      - /:/host:ro,rslave
+    command:
+      - '--path.rootfs=/host'
+    networks:
+      - monitoring
+
+  wireguard_exporter:
+    image: mindflavor/prometheus-wireguard-exporter:latest
+    container_name: {{ docker.wireguard_exporter }}
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    network_mode: host
+    privileged: true
+    pid: host
+    user: root
+    command:
+      - --prepend_sudo=false
+    environment:
+      - PROMETHEUS_WIREGUARD_EXPORTER_CONFIG_FILE=/etc/wireguard/{{ wireguard_interface }}.conf
+    volumes:
+      - /etc/wireguard:/etc/wireguard:ro

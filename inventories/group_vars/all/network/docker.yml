@@ -3,5 +3,6 @@ docker:
   promtail: promtail
   loki: loki
   grafana: grafana
-  node_exporter: node_exporter
   prometheus: prometheus
+  node_exporter: node_exporter
+  wireguard_exporter: wg_exporter

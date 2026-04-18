@@ -4,7 +4,7 @@
     dest: "{{ role_path }}/templates/1860_revlatest.json"
     mode: '0755'
 
-#https://grafana.com/grafana/dashboards/14900-nginx/
+#https://grafana.com/grafana/dashboards/17251-wireguard/
 
 - name: Deploy Grafana dashboards
   copy:

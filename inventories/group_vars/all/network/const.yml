@@ -1,1 +1,13 @@
 localhost: 127.0.0.1
+
+sshd_port: 22
+
+http_port: 80
+https_port: 443
+
+#samba
+smb_netbios_port: 139
+smb_port: 445
+
+#services_internal
+const_prometheus_port: 9090

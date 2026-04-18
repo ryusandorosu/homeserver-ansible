@@ -8,3 +8,7 @@ scrape_configs:
           - "{{ docker.node_exporter }}:{{ node_exporter_port }}"
         labels:
           instance: "{{ inventory_hostname }}"
+  - job_name: "wireguard"
+    static_configs:
+      - targets:
+          - "{{ server_lan_ip }}:{{ wireguard_exporter_port }}"

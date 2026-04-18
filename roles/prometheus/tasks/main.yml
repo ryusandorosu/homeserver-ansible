@@ -10,17 +10,34 @@
     - "{{ prometheus_config_dir }}"
     - "{{ prometheus_data_dir }}"
 
+- name: Create exporters directories
+  file:
+    path: "{{ exporters_dir }}"
+    state: directory
+    mode: "0755"
+
 - name: Deploy prometheus config
   template:
-    src: prometheus.yml.j2
+    src: prometheus/prometheus.yml.j2
     dest: "{{ prometheus_config_dir }}/prometheus.yml"
 
-- name: Deploy docker-compose
+- name: Deploy prometheus docker-compose
   template:
-    src: docker-compose.yml.j2
+    src: prometheus/docker-compose.yml.j2
     dest: "{{ prometheus_base_dir }}/docker-compose.yml"
 
-- name: Run prometheus and node_exporter containers
+- name: Deploy exporters docker-compose
+  template:
+    src: exporters/docker-compose.yml.j2
+    dest: "{{ exporters_dir }}/docker-compose.yml"
+
+- name: Run exporters containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ exporters_dir }}"
+    state: present
+
+- name: Run prometheus container
   community.docker.docker_compose_v2:
     project_src: "{{ prometheus_base_dir }}"
     state: present
+    recreate: always

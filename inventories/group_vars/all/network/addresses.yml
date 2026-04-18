@@ -1,6 +1,7 @@
 # Subnets
 wireguard_network: 10.10.0.0/24
 home_network: 192.168.0.0/24
+docker_monitoring_network: 172.18.0.0/16
 
 wireguard_server_ip: 10.10.0.1
 
@@ -22,3 +23,4 @@ wireguard_devices:
 home_ip: 87.117.169.26
 server_lan_ip: 192.168.0.107
 diskstation_lan_ip: 192.168.0.111
+docker_monitoring_ip: 172.18.0.1

@@ -3,17 +3,6 @@ networks:
     external: true
 
 services:
-  node_exporter:
-    image: prom/node-exporter:latest
-    container_name: {{ docker.node_exporter }}
-    restart: unless-stopped
-    volumes:
-      - /:/host:ro,rslave
-    command:
-      - '--path.rootfs=/host'
-    networks:
-      - monitoring
-
   prometheus:
     image: prom/prometheus:latest
     container_name: {{ docker.prometheus }}
