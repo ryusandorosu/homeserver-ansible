@@ -32,9 +32,7 @@ server {
 {% endif %}
 
     location / {
-
         limit_req zone=global burst=20 nodelay;
-
     }
 {% else %}
     allow {{ wireguard_network }};
@@ -72,4 +70,16 @@ server {
     }
 {% endif %}
 
+}
+
+server {
+    listen {{ http_port }};
+    server_name _;
+
+    location /nginx_status {
+        stub_status;
+        allow {{ localhost }};
+        allow {{ docker_monitoring_network }};
+        deny all;
+    }
 }
