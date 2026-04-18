@@ -3,6 +3,7 @@ prepend:
   - IP-CIDR,{{ home_network }},DIRECT
   - IP-CIDR,{{ wireguard_network }},DIRECT
   - 2,PROCESS-NAME,:System,DIRECT
+  - GEOIP,RU,DIRECT
 {% for domain in clash_domain_exclude %}
   - DOMAIN-SUFFIX,{{ domain }},DIRECT
 {% endfor %}

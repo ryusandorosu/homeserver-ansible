@@ -1,9 +1,6 @@
 clash_meta_client: koala-clash
 
 clash_domain_exclude:
-  - ryusandorosu.ru
-  - gosuslugi.ru
-  - tatenergosbyt.ru
   - vk-next.net
   - vknext.net
   - vk.com
