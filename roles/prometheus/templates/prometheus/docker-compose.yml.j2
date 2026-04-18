@@ -7,7 +7,7 @@ services:
     image: prom/prometheus:latest
     container_name: {{ docker.prometheus }}
     restart: unless-stopped
-    user: "65534:65534"
+    user: "{{ prometheus_user }}:{{ prometheus_user }}"
     volumes:
       - {{ prometheus_config_dir }}/prometheus.yml:{{ prometheus_container_config_dir }}/prometheus.yml
       - {{ prometheus_data_dir }}:{{ prometheus_container_data_dir }}

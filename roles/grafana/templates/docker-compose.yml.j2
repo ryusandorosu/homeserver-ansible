@@ -7,7 +7,7 @@ services:
     image: grafana/grafana:latest
     container_name: {{ docker.grafana }}
     restart: unless-stopped
-    user: "472:472"
+    user: "{{ grafana_user }}:{{ grafana_user }}"
     ports:
       - "{{ localhost }}:{{ grafana_port }}:{{ grafana_port }}"
     environment:

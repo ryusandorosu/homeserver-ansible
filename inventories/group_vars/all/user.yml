@@ -10,3 +10,8 @@ termux_key: android_termux
 # Windows
 win_asus_user: Булат Сибгатуллин
 win_honor_user: kutae
+
+# services
+grafana_user: 472
+loki_user: 10001
+prometheus_user: 65534
