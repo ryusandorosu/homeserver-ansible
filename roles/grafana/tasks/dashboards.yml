@@ -1,0 +1,14 @@
+- name: Update Node Exporter Full dashboard
+  get_url:
+    url: https://grafana.com/api/dashboards/1860/revisions/latest/download
+    dest: "{{ role_path }}/templates/1860_revlatest.json"
+    mode: '0755'
+
+#https://grafana.com/grafana/dashboards/14900-nginx/
+
+- name: Deploy Grafana dashboards
+  copy:
+    src: "{{ item }}"
+    dest: "{{ grafana_provisioning_dir }}/dashboards/{{ item | basename }}"
+  with_fileglob:
+    - "files/*.json"

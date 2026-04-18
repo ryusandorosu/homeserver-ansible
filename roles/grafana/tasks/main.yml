@@ -25,6 +25,9 @@
     src: dashboards.yml.j2
     dest: "{{ grafana_provisioning_dir }}/dashboards/dashboards.yml"
 
+- import_tasks: dashboards.yml
+  when: update_grafana_dashboards
+
 - name: Deploy dashboards
   template:
     src: "{{ item }}"
