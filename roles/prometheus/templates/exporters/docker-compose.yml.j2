@@ -30,3 +30,14 @@ services:
       - PROMETHEUS_WIREGUARD_EXPORTER_CONFIG_FILE=/etc/wireguard/{{ wireguard_interface }}.conf
     volumes:
       - /etc/wireguard:/etc/wireguard:ro
+
+  fail2ban_exporter:
+    image: registry.gitlab.com/hctrdev/fail2ban-prometheus-exporter:latest
+    container_name: {{ docker.fail2ban_exporter }}
+    restart: unless-stopped
+    volumes:
+      - /var/run/fail2ban/:/var/run/fail2ban:ro
+    ports:
+      - "{{ fail2ban_exporter_port }}:{{ fail2ban_exporter_port }}"
+    networks:
+      - monitoring

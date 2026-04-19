@@ -5,6 +5,7 @@
     mode: '0755'
 
 #https://grafana.com/grafana/dashboards/17251-wireguard/
+#https://grafana.com/grafana/dashboards/22197-suricata-logs-json/ #revision 1: fail2ban
 
 - name: Deploy Grafana dashboards
   copy:

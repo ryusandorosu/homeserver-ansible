@@ -12,3 +12,9 @@ scrape_configs:
     static_configs:
       - targets:
           - "{{ server_lan_ip }}:{{ wireguard_exporter_port }}"
+  - job_name: "fail2ban"
+    static_configs:
+      - targets:
+          - "{{ docker.fail2ban_exporter }}:{{ fail2ban_exporter_port }}"
+        labels:
+          instance: "{{ inventory_hostname }}"
