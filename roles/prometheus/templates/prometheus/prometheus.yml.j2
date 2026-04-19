@@ -12,3 +12,18 @@ scrape_configs:
           instance: "{{ inventory_hostname }}"
 {% endif %}
 {% endfor %}
+  - job_name: "snmp"
+    metrics_path: /snmp
+    params:
+      module: [synology]
+      auth: [public_v2]
+    static_configs:
+      - targets:
+          - {{ diskstation_lan_ip }}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{ server_lan_ip }}:{{ snmp_exporter_port }}

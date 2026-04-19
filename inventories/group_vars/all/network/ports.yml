@@ -13,6 +13,7 @@ cadvisor_port: 8080
 promtail_port: 9080
 prometheus_port: 9091
 node_exporter_port: 9100
+snmp_exporter_port: 9116
 fail2ban_exporter_port: 9191
 wireguard_exporter_port: 9586
 smartctl_exporter_port: 9633

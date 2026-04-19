@@ -8,6 +8,7 @@
 #https://grafana.com/grafana/dashboards/22197/ #revision 1: fail2ban
 #https://grafana.com/grafana/dashboards/19908-docker-container-monitoring-with-prometheus-and-cadvisor/
 #https://grafana.com/grafana/dashboards/24922-retn0-s-smartctl-exporter-dashboard/
+#https://grafana.com/grafana/dashboards/18643-synology-snmp/
 
 - name: Deploy Grafana dashboards
   copy:

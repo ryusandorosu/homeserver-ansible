@@ -9,3 +9,4 @@ docker:
   fail2ban_exporter: f2b_exporter
   cadvisor: cadvisor
   smartctl_exporter: smartctl_exporter
+  snmp_exporter: snmp_exporter

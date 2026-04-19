@@ -15445,7 +15445,8 @@
   "refresh": "1m",
   "schemaVersion": 41,
   "tags": [
-    "linux"
+    "prometheus",
+    "node_exporter"
   ],
   "templating": {
     "list": [
