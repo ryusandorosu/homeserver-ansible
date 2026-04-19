@@ -1,0 +1,16 @@
+firewall_tcp_ports:
+  - "{{ sshd_port }}"
+  - "{{ http_port }}"
+  - "{{ https_port }}"
+
+firewall_udp_ports:
+  - "{{ wireguard_port }}"
+
+firewall_lan_ports:
+  - "{{ smb_netbios_port }}"
+  - "{{ smb_port }}"
+  - "{{ cockpit_port }}"
+
+monitoring_exporter_ports:
+  - "{{ wireguard_exporter_port }}"
+  - "{{ snmp_exporter_port }}"

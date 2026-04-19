@@ -1,3 +1,8 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
 - name: Ensure required network vars defined
   assert:
     that:
@@ -6,7 +11,7 @@
       - wireguard_port is defined
     fail_msg: "Required WireGuard variables are not defined"
 
-- name: Ensure ssh port allowed in firewall
+- name: Ensure SSH port is allowed in firewall
   assert:
     that: sshd_port in firewall_tcp_ports
     fail_msg: "SSH port is not listed in firewall settings"

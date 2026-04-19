@@ -1,0 +1,17 @@
+inet_filter_sets:
+  - name: whitelist
+    type: ipv4_addr
+
+  - name: blacklist
+    type: ipv4_addr
+    flags:
+      - interval
+      - timeout
+
+  - name: blacklist_permanent
+    type: ipv4_addr
+    flags: interval
+
+  - name: asn_blacklist
+    type: ipv4_addr
+    flags: interval

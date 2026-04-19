@@ -22,9 +22,11 @@ table inet filter {
         iif lo accept
 
         ip saddr @whitelist accept
-        ip saddr {{ docker_monitoring_network }} tcp dport {{ wireguard_exporter_port }} accept
 {% for set in inet_filter_sets if set.name != "whitelist" %}
         ip saddr @{{ set.name }} drop
+{% endfor %}
+{% for port in monitoring_exporter_ports %}
+        ip saddr {{ docker_monitoring_network }} tcp dport {{ port }} accept
 {% endfor %}
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
@@ -37,7 +39,7 @@ table inet filter {
 {% endfor %}
 
         iif "{{ wireguard_interface }}" accept
-        iif "{{ lan_interface }}" tcp dport { {{ lan_ports | join(', ') }} } accept
+        iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_ports | join(', ') }} } accept
 
         limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
     }
