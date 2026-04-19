@@ -2,25 +2,13 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: "node"
+{% for key, job in prometheus_scrape_configs.items() %}
+  - job_name: "{{ key }}"
     static_configs:
       - targets:
-          - "{{ docker.node_exporter }}:{{ node_exporter_port }}"
+          - "{{ job.target_src }}:{{ job.target_port }}"
+{% if job.labels is defined and job.labels == 'instance' %}
         labels:
           instance: "{{ inventory_hostname }}"
-  - job_name: "wireguard"
-    static_configs:
-      - targets:
-          - "{{ server_lan_ip }}:{{ wireguard_exporter_port }}"
-  - job_name: "fail2ban"
-    static_configs:
-      - targets:
-          - "{{ docker.fail2ban_exporter }}:{{ fail2ban_exporter_port }}"
-        labels:
-          instance: "{{ inventory_hostname }}"
-  - job_name: "cadvisor"
-    static_configs:
-      - targets:
-          - "{{ docker.cadvisor }}:{{ cadvisor_port }}"
-        labels:
-          instance: "{{ inventory_hostname }}"
+{% endif %}
+{% endfor %}

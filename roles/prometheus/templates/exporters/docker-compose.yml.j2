@@ -56,3 +56,17 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
     networks:
       - monitoring
+
+  smartctl_exporter:
+    image: prometheuscommunity/smartctl-exporter:latest
+    container_name: {{ docker.smartctl_exporter }}
+    restart: unless-stopped
+    privileged: true
+    user: root
+    volumes:
+      - /dev:/dev
+    command:
+      - '--smartctl.path=/usr/sbin/smartctl'
+      - '--smartctl.device=/dev/sda'
+    networks:
+      - monitoring

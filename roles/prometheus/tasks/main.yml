@@ -1,3 +1,13 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
+- name: Install smartmontools
+  apt:
+    name: smartmontools
+    state: present
+
 - name: Create prometheus directories
   file:
     path: "{{ item }}"
