@@ -18,3 +18,9 @@ scrape_configs:
           - "{{ docker.fail2ban_exporter }}:{{ fail2ban_exporter_port }}"
         labels:
           instance: "{{ inventory_hostname }}"
+  - job_name: "cadvisor"
+    static_configs:
+      - targets:
+          - "{{ docker.cadvisor }}:{{ cadvisor_port }}"
+        labels:
+          instance: "{{ inventory_hostname }}"

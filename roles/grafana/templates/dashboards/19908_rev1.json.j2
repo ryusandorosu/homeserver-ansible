@@ -3,7 +3,7 @@
     {
       "name": "DS_PROMETHEUS",
       "label": "Prometheus",
-      "description": "",
+      "description": "Prometheus is used for data collection from cAdvisor",
       "type": "datasource",
       "pluginId": "prometheus",
       "pluginName": "Prometheus"
@@ -15,7 +15,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "9.1.8"
+      "version": "10.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": ""
     },
     {
       "type": "datasource",
@@ -25,8 +31,8 @@
     },
     {
       "type": "panel",
-      "id": "table",
-      "name": "Table",
+      "id": "stat",
+      "name": "Stat",
       "version": ""
     },
     {
@@ -41,45 +47,147 @@
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 2,
+  "graphTooltip": 0,
   "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "panels": [],
+      "title": "Basic",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "editorMode": "code",
+          "expr": "count(count(container_last_seen) by (name))",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Running Containers",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "{{ prometheus_uid }}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
-            "align": "auto",
-            "displayMode": "auto",
-            "inspect": false
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -90,182 +198,98 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "percent"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": ".*Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "s"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\".+\"}[10m])) by (name) * 100",
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 10
       },
-      "id": 206,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "9.1.8",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "f2b_config_jail_max_retries{instance=~\"$instance\"}",
-          "format": "table",
-          "instant": true,
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}}",
-{% endraw %}
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "f2b_config_jail_ban_time{instance=~\"$instance\"}",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}}",
-{% endraw %}
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "f2b_config_jail_find_time{instance=~\"$instance\"}",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}}",
-{% endraw %}
-          "refId": "C"
-        }
-      ],
-      "title": "F2B Config",
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "Value #A": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
-                "operation": "aggregate"
-              },
-              "Value #B": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
-                "operation": "aggregate"
-              },
-              "Value #C": {
-                "aggregations": [
-                  "lastNotNull"
-                ],
-                "operation": "aggregate"
-              },
-              "instance": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "jail": {
-                "aggregations": [],
-                "operation": "groupby"
-              }
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {},
-            "indexByName": {},
-            "renameByName": {
-              "Value #A (lastNotNull)": "Max Retries",
-              "Value #B (lastNotNull)": "Ban Time",
-              "Value #C (lastNotNull)": "Find Time",
-              "jail": "Jail"
-            }
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "table"
+      "id": 4,
+      "panels": [],
+      "title": "Memory",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -275,7 +299,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -285,32 +308,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "decbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
-        "y": 6
+        "y": 11
       },
-      "id": 190,
+      "id": 2,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -318,19 +343,14 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_jail_failed_total{instance=~\"$instance\"}",
-          "hide": false,
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}} ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_memory_usage_bytes{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Failures (Total)",
-      "transparent": true,
+      "title": "Memory Usage",
       "type": "timeseries"
     },
     {
@@ -338,34 +358,35 @@
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -375,7 +396,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -385,32 +405,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "decbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 12,
-        "y": 6
+        "y": 11
       },
-      "id": 191,
+      "id": 7,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -418,53 +440,66 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_jail_banned_total{instance=~\"$instance\"}",
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}} ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_memory_cache{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Bans (Total)",
-      "transparent": true,
+      "title": "Memory Cached",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 12,
+      "panels": [],
+      "title": "I/O",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -474,7 +509,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -484,32 +518,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "binBps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 21
       },
-      "id": 208,
+      "id": 13,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -517,18 +553,14 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_jail_failed_current{instance=~\"$instance\"}",
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}} ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_fs_reads_bytes_total{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Failures (Current)",
-      "transparent": true,
+      "title": "Reads",
       "type": "timeseries"
     },
     {
@@ -536,34 +568,38 @@
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -573,7 +609,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -583,32 +618,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "binBps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 9,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 21
       },
-      "id": 209,
+      "id": 14,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -616,53 +653,66 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_jail_banned_current{instance=~\"$instance\"}",
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{jail}} ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_fs_writes_bytes_total{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Bans (Current)",
-      "transparent": true,
+      "title": "Writes",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 6,
+      "panels": [],
+      "title": "Network",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -672,8 +722,6 @@
             }
           },
           "mappings": [],
-          "max": 1,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -683,32 +731,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "binBps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 9,
         "w": 12,
         "x": 0,
-        "y": 22
+        "y": 31
       },
-      "id": 203,
+      "id": 5,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -716,18 +766,14 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_up{instance=~\"$instance\"}",
-          "interval": "",
-{% raw %}
-          "legendFormat": "Up ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Up",
-      "transparent": true,
+      "title": "Received Network Traffic",
       "type": "timeseries"
     },
     {
@@ -735,34 +781,38 @@
         "type": "prometheus",
         "uid": "{{ prometheus_uid }}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -772,8 +822,6 @@
             }
           },
           "mappings": [],
-          "max": 1,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -783,32 +831,34 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "binBps"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 9,
         "w": 12,
         "x": 12,
-        "y": 22
+        "y": 31
       },
-      "id": 204,
+      "id": 8,
       "options": {
         "legend": {
           "calcs": [
-            "lastNotNull"
+            "max",
+            "mean"
           ],
           "displayMode": "table",
           "placement": "right",
-          "showLegend": true
+          "showLegend": true,
+          "sortBy": "Mean",
+          "sortDesc": true
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "8.2.1",
       "targets": [
         {
           "datasource": {
@@ -816,81 +866,118 @@
             "uid": "{{ prometheus_uid }}"
           },
           "editorMode": "code",
-          "exemplar": true,
-          "expr": "f2b_errors{instance=~\"$instance\"}",
-          "interval": "",
-{% raw %}
-          "legendFormat": "{{type}} ({{instance}})",
-{% endraw %}
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\".+\"}[10m])) by (name)",
+          "instant": false,
+          "legendFormat": "__auto",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Fail2Ban Exporter Errors",
-      "transparent": true,
+      "title": "Sent Network Traffic",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "id": 11,
+      "panels": [],
+      "title": "Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "{{ prometheus_uid }}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "fieldMinMax": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 10,
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-red",
+          "mode": "opacity",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "PuRd",
+          "steps": 30
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto",
+          "value": "Restarts"
+        },
+        "tooltip": {
+          "show": true,
+          "yHistogram": true
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false
+        }
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "editorMode": "code",
+          "expr": "count by(name) (count_over_time(container_last_seen{name=~\".+\"}[$__range]))",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Container Restarts",
+      "type": "heatmap"
     }
   ],
-  "refresh": "30s",
-  "schemaVersion": 37,
-  "style": "dark",
+  "refresh": "10s",
+  "schemaVersion": 38,
   "tags": [
     "prometheus",
-    "fail2ban"
+    "docker"
   ],
   "templating": {
-    "list": [
-      {
-        "current": {
-          "selected": false,
-          "text": "Prometheus",
-          "value": "Prometheus"
-        },
-        "hide": 0,
-        "includeAll": false,
-        "label": "Data Source",
-        "multi": false,
-        "name": "DataSource",
-        "options": [],
-        "query": "prometheus",
-        "queryValue": "",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "type": "datasource"
-      },
-      {
-        "current": {
-          "text": [
-            "{{ inventory_hostname }}"
-          ],
-          "value": [
-            "{{ inventory_hostname }}"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "{{ prometheus_uid }}"
-        },
-        "definition": "f2b_up",
-        "description": "Select which instance(s) to show",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Instance",
-        "multi": true,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "query": "f2b_up",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "/.*instance=\"([^\"]+)\"/",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-6h",
@@ -898,10 +985,10 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Prometheus: Fail2ban",
-  "uid": "cTkH9AT7z",
-  "version": 3,
+  "title": "Prometheus: Docker Insights via cAdvisor",
+  "uid": "ae3c41d7-cea5-4cca-a918-5708706b4d1a",
+  "version": 14,
   "weekStart": "",
-  "gnetId": 22197,
-  "description": "Fail2Ban Exporter Prometheus"
+  "gnetId": 19908,
+  "description": "This Grafana dashboard offers a basic overview of key performance metrics for Docker containers in your system."
 }

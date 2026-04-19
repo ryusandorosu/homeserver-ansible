@@ -6,6 +6,7 @@
 
 #https://grafana.com/grafana/dashboards/17251-wireguard/
 #https://grafana.com/grafana/dashboards/22197-suricata-logs-json/ #revision 1: fail2ban
+#https://grafana.com/grafana/dashboards/19908-docker-container-monitoring-with-prometheus-and-cadvisor/
 
 - name: Deploy Grafana dashboards
   copy:

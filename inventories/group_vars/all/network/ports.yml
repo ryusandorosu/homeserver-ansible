@@ -9,6 +9,7 @@ clash_web_port: 9092
 cockpit_port: 9090
 grafana_port: 3000
 loki_port: 3100
+cadvisor_port: 8080
 promtail_port: 9080
 prometheus_port: 9091
 node_exporter_port: 9100

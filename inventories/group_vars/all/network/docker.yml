@@ -7,3 +7,4 @@ docker:
   node_exporter: node_exporter
   wireguard_exporter: wg_exporter
   fail2ban_exporter: f2b_exporter
+  cadvisor: cadvisor

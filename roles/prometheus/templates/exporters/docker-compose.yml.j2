@@ -41,3 +41,18 @@ services:
       - "{{ fail2ban_exporter_port }}:{{ fail2ban_exporter_port }}"
     networks:
       - monitoring
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: {{ docker.cadvisor }}
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    networks:
+      - monitoring
