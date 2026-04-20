@@ -9,6 +9,7 @@ clash_web_port: 9092
 cockpit_port: 9090
 grafana_port: 3000
 loki_port: 3100
+synology_dsm_port: 5001
 cadvisor_port: 8080
 promtail_port: 9080
 prometheus_port: 9091

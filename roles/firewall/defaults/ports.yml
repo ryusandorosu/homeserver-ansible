@@ -10,6 +10,7 @@ firewall_lan_ports:
   - "{{ smb_netbios_port }}"
   - "{{ smb_port }}"
   - "{{ cockpit_port }}"
+  - "{{ synology_dsm_port }}"
 
 monitoring_exporter_ports:
   - "{{ wireguard_exporter_port }}"
