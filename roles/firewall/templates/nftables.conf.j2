@@ -2,9 +2,9 @@ flush ruleset
 
 table inet filter {
 
-{% for set in inet_filter_sets %}
-    set {{ set.name }} {
-{% for key, value in set.items() if key not in ['name'] %}
+{% for key, set in inet_filter_sets.items() %}
+    set {{ key }} {
+{% for key, value in set.items() %}
 {% if value is string %}
         {{ key }} {{ value }}
 {% else %}
@@ -22,8 +22,8 @@ table inet filter {
         iif lo accept
 
         ip saddr @whitelist accept
-{% for set in inet_filter_sets if set.name != "whitelist" %}
-        ip saddr @{{ set.name }} drop
+{% for key, set in inet_filter_sets.items() if key != "whitelist" %}
+        ip saddr @{{ key }} drop
 {% endfor %}
 {% for port in monitoring_exporter_ports %}
         ip saddr {{ docker_monitoring_network }} tcp dport {{ port }} accept
