@@ -1,1 +1,6 @@
-nfs_mounts: []
+mount_opts:
+  - vers=3
+  - _netdev #wait for network
+  - x-systemd.automount #mount at first request
+  - noatime #turns off atime use
+  - nofail #do not interrupt boot

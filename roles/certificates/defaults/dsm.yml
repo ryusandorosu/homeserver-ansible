@@ -10,6 +10,6 @@ dsm_cn: nuc-server
 
 dsm_san:
   - "DNS:diskstationsbr"
-  - "IP:{{ diskstation_lan_ip }}"
+  - "IP:{{ lan_ip.diskstation }}"
   - "IP:{{ home_ip }}"
   - "DNS:dsm.{{ domain }}"

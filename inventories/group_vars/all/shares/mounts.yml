@@ -1,3 +1,5 @@
 shared_dir: /srv/share
-diskstation_mount_point: /mnt/ds209
-android_mount_point: /mnt/redmi
+mount_point:
+  diskstation: /mnt/ds209
+  android: /mnt/redmi
+  win_asus: /mnt/k95vb

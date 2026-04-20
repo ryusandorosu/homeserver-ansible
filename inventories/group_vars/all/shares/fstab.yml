@@ -1,5 +1,17 @@
 nfs_mounts:
-  - path: "{{ diskstation_mount_point }}/pub"
-    src: "{{ diskstation_lan_ip }}:/volume1/PUB"
-  - path: "{{ diskstation_mount_point }}/web"
-    src: "{{ diskstation_lan_ip }}:/volume1/web"
+  - path: "{{ mount_point.diskstation }}/pub"
+    src: "{{ lan_ip.diskstation }}:/volume1/PUB"
+  - path: "{{ mount_point.diskstation }}/web"
+    src: "{{ lan_ip.diskstation }}:/volume1/web"
+
+cifs_creds:
+  asus:
+    path: /root/.smb_asus_credentials
+    user: "{{ win_asus_user }}"
+    pass: "{{ vault_windows_asus_password }}"
+
+cifs_mounts:
+  - path: "{{ mount_point.win_asus }}"
+    src: "//{{ lan_ip.large_laptop }}/d"
+    opts:
+      - "credentials={{ cifs_creds.asus.path }}"

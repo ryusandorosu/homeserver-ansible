@@ -9,6 +9,6 @@ cockpit_cn: nuc-server
 
 cockpit_san:
   - "DNS:nuc-server"
-  - "IP:{{ server_lan_ip }}"
+  - "IP:{{ lan_ip.server }}"
   - "IP:{{ wireguard_server_ip }}"
   - "IP:{{ localhost }}"

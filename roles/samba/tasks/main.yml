@@ -1,6 +1,8 @@
 - name: Install Samba
   apt:
-    name: samba
+    name:
+      - samba
+      - smbclient
     state: present
 
 - name: Deploy smb.conf

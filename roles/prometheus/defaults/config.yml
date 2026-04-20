@@ -4,7 +4,7 @@ prometheus_scrape_configs:
     target_port: "{{ node_exporter_port }}"
     labels: instance
   wireguard:
-    target_src: "{{ server_lan_ip }}"
+    target_src: "{{ lan_ip.server }}"
     target_port: "{{ wireguard_exporter_port }}"
   fail2ban:
     target_src: "{{ docker.fail2ban_exporter }}"

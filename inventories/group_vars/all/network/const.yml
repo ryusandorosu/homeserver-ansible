@@ -5,7 +5,9 @@ http_port: 80
 https_port: 443
 
 #samba
-smb_netbios_port: 139
+smb_netbios_udp_ns_port: 137
+smb_netbios_udp_dg_port: 138
+smb_netbios_tcp_port: 139
 smb_port: 445
 
 #services_internal

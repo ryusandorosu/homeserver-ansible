@@ -39,7 +39,8 @@ table inet filter {
 {% endfor %}
 
         iif "{{ wireguard_interface }}" accept
-        iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_ports | join(', ') }} } accept
+        iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_tcp_ports | join(', ') }} } accept
+        iif "{{ lan_interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept
 
         limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
     }

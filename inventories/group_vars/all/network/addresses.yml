@@ -4,7 +4,6 @@ home_network: 192.168.0.0/24
 docker_monitoring_network: 172.18.0.0/16
 
 wireguard_server_ip: 10.10.0.1
-
 wireguard_devices:
   large_laptop:
     ip: 10.10.0.2
@@ -20,8 +19,12 @@ wireguard_devices:
     name: Honor MagicBook X 14
 
 # Home Network
-lan_interface: wlp2s0
 home_ip: 87.117.169.26
-server_lan_ip: 192.168.0.107
-diskstation_lan_ip: 192.168.0.111
+lan_interface: wlp2s0
+lan_ip:
+  large_laptop: 192.168.0.101
+  server: 192.168.0.107
+  diskstation: 192.168.0.111
+
+# not used
 docker_monitoring_ip: 172.18.0.1

@@ -1,17 +1,38 @@
+- name: Install CIFS
+  apt:
+    name: cifs-utils
+    state: present
+
 - name: Ensure mount directories exist
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.value }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
-  loop: "{{ nfs_mounts }}"
+  loop: "{{ mount_point | dict2items }}"
 
 - name: Mount NFS shares
   mount:
     path: "{{ item.path }}"
     src: "{{ item.src }}"
     fstype: nfs
-    opts: vers=3
+    opts: "{{ mount_opts | join(',') }}"
     state: present
   loop: "{{ nfs_mounts }}"
+
+- name: Deploy Samba credential secrets for CIFS shares connections
+  template:
+    src: smb_credentials.j2
+    dest: "{{ item.value.path }}"
+    mode: '0600'
+  loop: "{{ cifs_creds | dict2items }}"
+
+- name: Mount CIFS shares
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.src }}"
+    fstype: cifs
+    opts: "{{ item.opts | join(',') }},{{ mount_opts | join(',') }}"
+    state: present
+  loop: "{{ cifs_mounts }}"

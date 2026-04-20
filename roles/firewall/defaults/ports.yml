@@ -6,11 +6,15 @@ firewall_tcp_ports:
 firewall_udp_ports:
   - "{{ wireguard_port }}"
 
-firewall_lan_ports:
-  - "{{ smb_netbios_port }}"
+firewall_lan_tcp_ports:
+  - "{{ smb_netbios_tcp_port }}"
   - "{{ smb_port }}"
   - "{{ cockpit_port }}"
   - "{{ synology_dsm_port }}"
+
+firewall_lan_udp_ports:
+  - "{{ smb_netbios_udp_ns_port }}"
+  - "{{ smb_netbios_udp_dg_port }}"
 
 monitoring_exporter_ports:
   - "{{ wireguard_exporter_port }}"
