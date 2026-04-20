@@ -1,0 +1,11 @@
+server {
+    listen {{ http_port }};
+    server_name _;
+
+    location /nginx_status {
+        stub_status;
+        allow {{ localhost }};
+        allow {{ docker_monitoring_network }};
+        deny all;
+    }
+}

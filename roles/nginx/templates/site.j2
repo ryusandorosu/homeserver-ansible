@@ -35,9 +35,9 @@ server {
         limit_req zone=global burst=20 nodelay;
     }
 {% else %}
-    allow {{ wireguard_network }};
-    allow {{ home_network }};
-    allow {{ home_ip }};
+{% for port in nginx_allowed %}
+    allow {{ port }};
+{% endfor %}
     allow {{ localhost }};
     deny all;
 
@@ -70,16 +70,4 @@ server {
     }
 {% endif %}
 
-}
-
-server {
-    listen {{ http_port }};
-    server_name _;
-
-    location /nginx_status {
-        stub_status;
-        allow {{ localhost }};
-        allow {{ docker_monitoring_network }};
-        deny all;
-    }
 }

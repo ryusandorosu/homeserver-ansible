@@ -1,6 +1,13 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
 - name: Install nginx
   apt:
-    name: nginx
+    name:
+      - nginx
+      - libnginx-mod-stream
     state: present
     update_cache: yes
 
@@ -31,6 +38,18 @@
     dest: "/etc/nginx/sites-enabled/{{ item.server_name }}"
     state: link
   loop: "{{ nginx_sites }}"
+
+- name: Deploy status page config
+  template:
+    src: status.conf.j2
+    dest: /etc/nginx/sites-available/status.conf
+  notify: validate and reload nginx
+
+- name: Enable status page
+  file:
+    src: /etc/nginx/sites-available/status.conf
+    dest: /etc/nginx/sites-enabled/status.conf
+    state: link
 
 - name: Replace cockpit motd
   copy:

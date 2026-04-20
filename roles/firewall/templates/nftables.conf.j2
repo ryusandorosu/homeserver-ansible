@@ -55,6 +55,16 @@ table inet filter {
 
         iif "{{ wireguard_interface }}" oif "{{ lan_interface }}" accept
         iif "{{ wireguard_interface }}" oif "{{ wireguard_interface }}" accept
+
+{% for allowed in nginx_allowed %}
+{% for site in nginx_sni %}
+        ip daddr {{ site.host }} tcp dport {{ site.port }} ip saddr {{ allowed }} accept
+{% endfor %}
+{% endfor %}
+{% for site in nginx_sni %}
+        ip daddr {{ site.host }} tcp dport {{ site.port }} drop
+{% endfor %}
+
     }
 
     chain output {

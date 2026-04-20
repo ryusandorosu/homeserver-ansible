@@ -1,0 +1,15 @@
+dsm_cert_dir: /mnt/ds209/pub/ssl.crt
+dsm_pki_dir: "{{ dsm_cert_dir }}/pki"
+dsm_cert_name: server
+
+dsm_country: RU
+dsm_state: Tatarstan
+dsm_locality: Kazan
+dsm_org: Home
+dsm_cn: nuc-server
+
+dsm_san:
+  - "DNS:diskstationsbr"
+  - "IP:{{ diskstation_lan_ip }}"
+  - "IP:{{ home_ip }}"
+  - "DNS:dsm.{{ domain }}"

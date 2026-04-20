@@ -18,9 +18,6 @@
     - daemon reload
     - restart cockpit socket
 
-- import_tasks: cert.yml
-  when: cockpit_generate_cert
-
 - name: Enable cockpit
   systemd:
     name: cockpit

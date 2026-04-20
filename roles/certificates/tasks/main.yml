@@ -1,0 +1,9 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
+- import_tasks: cockpit.yml
+  when: cockpit_generate_cert
+- import_tasks: dsm.yml
+  when: dsm_generate_cert

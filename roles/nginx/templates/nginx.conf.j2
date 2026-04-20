@@ -106,7 +106,6 @@ http {
         include /etc/nginx/sites-enabled/*;
 }
 
-
 #mail {
 #       # See sample authentication script at:
 #       # http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
@@ -126,4 +125,26 @@ http {
 #               protocol   imap;
 #               proxy      on;
 #       }
+#}
+
+#stream {
+#        log_format stream_log '$remote_addr [$time_local] '
+#                              '$protocol $status $bytes_sent $bytes_received '
+#                              '$session_time '
+#                              '"$ssl_preread_server_name"';
+#
+#        access_log /var/log/nginx/stream.log stream_log;
+#
+#        map $ssl_preread_server_name $backend {
+#{% for site in nginx_sni %}
+#                {{ site.name }} {{ site.host }}:{{ site.port }};
+#{% endfor %}
+#                default             {{ localhost }}:{{ nginx_https_port }};
+#        }
+#
+#        server {
+#                listen {{ https_port }};
+#                proxy_pass $backend;
+#                ssl_preread on;
+#        }
 #}

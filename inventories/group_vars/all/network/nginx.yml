@@ -22,3 +22,10 @@ nginx_sites:
     proto: http
 
 letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"
+
+nginx_sni: []
+
+nginx_allowed:
+  - "{{ wireguard_network }}"
+  - "{{ home_network }}"
+  - "{{ home_ip }}"
