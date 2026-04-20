@@ -54,6 +54,9 @@ services:
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
+    command:
+      - '--docker_only=true'
+      - '--store_container_labels=false'
     networks:
       - monitoring
 
