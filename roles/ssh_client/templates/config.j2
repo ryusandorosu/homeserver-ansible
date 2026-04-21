@@ -6,5 +6,10 @@ Host {{ host.name }}
 {% if host.port is defined %}
     Port {{ host.port }}
 {% endif %}
+{% if host.options is defined %}
+{% for item in host.options %}
+    {{ item }}
+{% endfor %}
+{% endif %}
 
 {% endfor %}

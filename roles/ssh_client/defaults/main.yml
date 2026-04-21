@@ -9,3 +9,11 @@ ssh_hosts:
     port: "{{ termux_port }}"
     user: "{{ termux_user }}"
     identity: "{{ termux_key }}"
+
+  - name: ds209
+    hostname: "{{ lan_ip.diskstation }}"
+    user: admin
+    identity: ds209
+    options:
+      - PubkeyAcceptedAlgorithms +ssh-rsa
+      - HostKeyAlgorithms +ssh-rsa
