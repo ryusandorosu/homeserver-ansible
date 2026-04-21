@@ -1,0 +1,14 @@
+#https://docs.wgdashboard.dev/install/Docker.html
+services:
+  wgdashboard:
+    image: ghcr.io/wgdashboard/wgdashboard:latest
+    restart: unless-stopped
+    container_name: {{ docker.wireguard_dashboard }}
+    ports:
+      - {{ wireguard_dashboard_port }}:{{ wireguard_dashboard_port }}/tcp
+      - {{ wireguard_port }}:{{ wireguard_port }}/udp
+    volumes:
+      - /etc/wireguard:/etc/wireguard
+    cap_add:
+      - NET_ADMIN
+    network_mode: host

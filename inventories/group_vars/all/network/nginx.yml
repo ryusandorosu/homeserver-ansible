@@ -20,6 +20,11 @@ nginx_sites:
     basic_auth: true
     port: "{{ prometheus_port }}"
     proto: http
+  - server_name: "wg.{{ domain }}"
+    public: false
+    basic_auth: false
+    port: "{{ wireguard_dashboard_port }}"
+    proto: http
 
 letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"
 

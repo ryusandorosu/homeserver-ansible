@@ -45,6 +45,7 @@
       - docker
       - docker_network
       - log_monitoring
+      - wgdashboard
       - prometheus
       - grafana
 
