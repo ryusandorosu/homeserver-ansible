@@ -18,6 +18,8 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
     port="${ENDPOINT#*:}"
     vpn_ip="${ALLOWED%%/*}"
     device_name="${vpn_peer_names[$PUBKEY]}"
+      init_ip_info="$(get_ip_geo $ip)"
+      geo_parse_ip_info "$init_ip_info"
     logline="$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\""
 
     common_message_init VPN "$PUBKEY" "$device_name"
