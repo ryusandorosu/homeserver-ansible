@@ -1,0 +1,4 @@
+- name: reload oauth2-proxy
+  service:
+    name: oauth2-proxy
+    state: reloaded

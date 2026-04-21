@@ -1,0 +1,39 @@
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ authelia_base_dir }}"
+    - "{{ authelia_config_dir }}"
+    - "{{ authelia_data_dir }}"
+
+- name: Deploy configuration
+  template:
+    src: authelia/configuration.yml.j2
+    dest: "{{ authelia_config_dir }}/configuration.yml"
+
+- name: Deploy users database
+  template:
+    src: authelia/users.yml.j2
+    dest: "{{ authelia_config_dir }}/users.yml"
+
+- name: Deploy docker-compose
+  template:
+    src: authelia/docker-compose.yml.j2
+    dest: "{{ authelia_base_dir }}/docker-compose.yml"
+
+- name: Run Authelia container
+  community.docker.docker_compose_v2:
+    project_src: "{{ authelia_base_dir }}"
+    state: present
+    #recreate: always
+
+- name: Check Authelia container running status
+  uri:
+    url: "http://{{ localhost }}:{{ authelia_port }}"
+    status_code: 200
+  register: result
+  retries: 5
+  delay: 3
+  until: result.status == 200

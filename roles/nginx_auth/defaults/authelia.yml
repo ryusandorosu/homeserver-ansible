@@ -1,0 +1,10 @@
+authelia_base_dir: /opt/authelia
+authelia_config_dir: "{{ authelia_base_dir }}/config"
+authelia_data_dir: "{{ authelia_base_dir }}/data"
+
+authelia_users:
+  - username: "{{ user }}"
+    displayname: "{{ user }}"
+    password: "{{ vault_nginx_authelia_digest }}"
+    email: "{{ vault_mail }}"
+    groups: admins

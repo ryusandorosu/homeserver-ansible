@@ -43,6 +43,7 @@
       - zsh
       - neovim
       - docker
+      - nginx_auth
       - docker_network
       - log_monitoring
       - wgdashboard

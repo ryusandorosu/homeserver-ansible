@@ -1,0 +1,11 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/*.yml
+
+- import_tasks: basic_auth.yml
+  when: nginx_authentication == 'basic_auth'
+- import_tasks: oauth/docker.yml
+  when: nginx_authentication == 'oauth'
+- import_tasks: authelia.yml
+  when: nginx_authentication == 'authelia'

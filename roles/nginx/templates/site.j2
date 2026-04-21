@@ -41,11 +41,59 @@ server {
     allow {{ localhost }};
     deny all;
 
+{% if nginx_authentication == 'oauth' %}
+    #verification endpoint for auth_request
+    location = /oauth2/auth {
+        internal;
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Uri $request_uri;
+    }
+{% if item.server_name == 'auth.' ~ domain %}
+    #authentication ui
+    location /oauth2/ {
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+    }
+{% endif %}
+{% elif nginx_authentication == 'authelia' %}
+    #verification endpoint for auth_request
+    location = /api/verify {
+        internal;
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
+        proxy_set_header Host $host;
+        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+{% if item.server_name == 'auth.' ~ domain %}
+    #authentication ui
+    location / {
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ authelia_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+{% endif %}
+
+{% endif %}
+{% if item.server_name != 'auth.' ~ domain %}
     location / {
 
-{% if item.basic_auth %}
+{% if item.authentication %}
+{% if nginx_authentication == 'basic_auth' %}
         auth_basic "Restricted";
         auth_basic_user_file {{ nginx_basic_auth_path }};
+{% elif nginx_authentication == 'oauth' %}
+        auth_request /oauth2/auth;
+        error_page 401 = https://auth.{{ domain }}/oauth2/sign_in;
+{% elif nginx_authentication == 'authelia' %}
+        auth_request /api/verify;
+        #error_page 401 =302 https://auth.{{ domain }}/?rd=$request_uri;
+        error_page 401 =302 https://auth.{{ domain }}/?rd=$scheme://$http_host$request_uri;
+{% endif %}
 
 {% endif %}
         proxy_pass {{ item.proto }}://{{ localhost }}:{{ item.port }};
@@ -68,6 +116,7 @@ server {
         proxy_ssl_verify off;
 
     }
+{% endif %}
 {% endif %}
 
 }

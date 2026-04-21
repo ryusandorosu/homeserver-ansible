@@ -1,0 +1,9 @@
+services:
+  authelia:
+    image: authelia/authelia:latest
+    container_name: {{ docker.authelia }}
+    restart: unless-stopped
+    volumes:
+      - {{ authelia_config_dir }}:/config
+      - {{ authelia_data_dir }}:/data
+    network_mode: host

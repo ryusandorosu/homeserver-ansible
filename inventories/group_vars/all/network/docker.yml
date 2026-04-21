@@ -11,4 +11,5 @@ docker:
   cadvisor: cadvisor
   smartctl_exporter: smartctl_exporter
   snmp_exporter: snmp_exporter
-  
+  oauth2proxy: oauth2-proxy
+  authelia: authelia

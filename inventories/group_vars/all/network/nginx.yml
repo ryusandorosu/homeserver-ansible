@@ -1,28 +1,35 @@
 domain: ryusandorosu.ru
 
+# nginx_authentication: oauth
+nginx_authentication: authelia
 nginx_sites:
   - server_name: "{{ domain }}"
     public: true
   - server_name: "www.{{ domain }}"
     public: true
+  - server_name: "auth.{{ domain }}"
+    public: false
+    authentication: false
+    port: "{{ oauthproxy_port }}"
+    proto: http
   - server_name: "cockpit.{{ domain }}"
     public: false
-    basic_auth: false
+    authentication: false
     port: "{{ cockpit_port }}"
     proto: https
   - server_name: "grafana.{{ domain }}"
     public: false
-    basic_auth: true
+    authentication: true
     port: "{{ grafana_port }}"
     proto: http
   - server_name: "prometheus.{{ domain }}"
     public: false
-    basic_auth: true
+    authentication: true
     port: "{{ prometheus_port }}"
     proto: http
   - server_name: "wg.{{ domain }}"
     public: false
-    basic_auth: false
+    authentication: false
     port: "{{ wireguard_dashboard_port }}"
     proto: http
 

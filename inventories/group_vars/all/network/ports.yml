@@ -7,18 +7,23 @@ clash_web_port: 9092
 
 #services
 cockpit_port: 9090
+synology_dsm_port: 5001
+wireguard_dashboard_port: 10086
+#authentication
+oauthproxy_port: 4180
+authelia_port: 9095 #9091
+#monitoring
 grafana_port: 3000
 loki_port: 3100
-synology_dsm_port: 5001
-cadvisor_port: 8080
 promtail_port: 9080
-prometheus_port: 9091
+prometheus_port: 9091 #9090
+#prometheus exporters
+cadvisor_port: 8080
 node_exporter_port: 9100
 snmp_exporter_port: 9116
 fail2ban_exporter_port: 9191
 wireguard_exporter_port: 9586
 smartctl_exporter_port: 9633
-wireguard_dashboard_port: 10086
 
 #discarded
 nginx_https_port: 8443
