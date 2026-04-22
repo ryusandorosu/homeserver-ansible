@@ -26,6 +26,7 @@ lan_ip:
   large_laptop: 192.168.0.101
   server: 192.168.0.107
   diskstation: 192.168.0.111
+  icl_srv: 192.168.0.109
 
 # not used
 docker_monitoring_ip: 172.18.0.1

@@ -17,3 +17,8 @@ ssh_hosts:
     options:
       - PubkeyAcceptedAlgorithms +ssh-rsa
       - HostKeyAlgorithms +ssh-rsa
+
+  - name: icl
+    hostname: "{{ lan_ip.icl_srv }}"
+    user: "{{ user }}"
+    identity: icl_srv
