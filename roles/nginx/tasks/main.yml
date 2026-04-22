@@ -32,17 +32,21 @@
     state: link
   loop: "{{ nginx_sites }}"
 
-- name: Deploy status page config
+- name: Deploy localhost sites
   template:
-    src: status.conf.j2
-    dest: /etc/nginx/sites-available/status.conf
+    src: "{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - templates/localsites/*.j2
   notify: validate and reload nginx
 
-- name: Enable status page
+- name: Enable localhost sites
   file:
-    src: /etc/nginx/sites-available/status.conf
-    dest: /etc/nginx/sites-enabled/status.conf
+    src: "/etc/nginx/sites-available/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "/etc/nginx/sites-enabled/{{ item | basename | regex_replace('.j2','') }}"
     state: link
+  with_fileglob:
+    - templates/localsites/*.j2
 
 - name: Replace cockpit motd
   copy:

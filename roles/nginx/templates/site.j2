@@ -35,8 +35,8 @@ server {
         limit_req zone=global burst=20 nodelay;
     }
 {% else %}
-{% for port in nginx_allowed %}
-    allow {{ port }};
+{% for address in nginx_allowed %}
+    allow {{ address }};
 {% endfor %}
     allow {{ localhost }};
     deny all;
@@ -81,9 +81,9 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 {% endif %}
-
 {% endif %}
 {% if item.server_name != 'auth.' ~ domain %}
+
     location / {
 
 {% if item.authentication %}

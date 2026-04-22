@@ -1,0 +1,12 @@
+server {
+    listen {{ localhost }}:{{ router_port }};
+
+    location / {
+        proxy_pass http://{{ lan_ip.router }};
+        proxy_set_header Host {{ lan_ip.router }};
+        proxy_set_header Origin http://{{ lan_ip.router }};
+        proxy_set_header Referer http://{{ lan_ip.router }}/;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}

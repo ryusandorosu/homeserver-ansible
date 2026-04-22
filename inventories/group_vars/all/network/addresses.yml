@@ -23,6 +23,7 @@ wireguard_devices:
 home_ip: 87.117.169.26
 lan_interface: wlp2s0
 lan_ip:
+  router: 192.168.0.1
   large_laptop: 192.168.0.101
   server: 192.168.0.107
   diskstation: 192.168.0.111
