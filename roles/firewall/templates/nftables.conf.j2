@@ -51,8 +51,10 @@ table inet filter {
 
         ct state established,related accept
 
-        iifname "docker*" accept
-        oifname "docker*" accept
+{% for interface in docker_interfaces %}
+        iifname "{{ interface }}" accept
+        oifname "{{ interface }}" accept
+{% endfor %}
 
         iif "{{ wireguard_interface }}" oif "{{ lan_interface }}" accept
         iif "{{ wireguard_interface }}" oif "{{ wireguard_interface }}" accept
@@ -78,5 +80,6 @@ table ip nat {
     chain postrouting {
         type nat hook postrouting priority 100;
         oifname "{{ lan_interface }}" ip saddr {{ wireguard_network }} masquerade
+        oifname "{{ lan_interface }}" ip saddr {{ docker_network }} masquerade
     }
 }
