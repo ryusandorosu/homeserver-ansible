@@ -18,23 +18,13 @@
   community.docker.docker_compose_v2:
     project_src: "{{ oauth_compose }}"
     state: present
-    #recreate: always
+    recreate: always
 
-# - name: Check oauth2-proxy container running status
-#   uri:
-#     url: "http://{{ localhost }}:{{ oauthproxy_port }}/ping"
-#     status_code: 200
-#   register: result
-#   retries: 5
-#   delay: 3
-#   until: result.status == 200
-
-- name: Get oauth2-proxy container info
-  community.docker.docker_container_info:
-    name: "{{ docker.oauth2proxy }}"
-  register: container_info
-
-- name: Fail if oauth2-proxy is not running
-  fail:
-    msg: "oauth2-proxy container is not running"
-  when: not container_info.container.State.Running
+- name: Check oauth2-proxy container running status
+  uri:
+    url: "http://{{ localhost }}:{{ oauthproxy_port }}/ping"
+    status_code: 200
+  register: result
+  retries: 5
+  delay: 3
+  until: result.status == 200
