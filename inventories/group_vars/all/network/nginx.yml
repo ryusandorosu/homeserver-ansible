@@ -1,7 +1,7 @@
 domain: ryusandorosu.ru
 
-# nginx_authentication: oauth
-nginx_authentication: authelia
+nginx_authentication: oauth
+# nginx_authentication: authelia
 nginx_sites:
   - server_name: "{{ domain }}"
     public: true

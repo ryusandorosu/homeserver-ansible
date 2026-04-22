@@ -1,0 +1,24 @@
+- name: Get latest oauth-proxy release URL
+  shell: >
+    curl -s {{ oauth_repo }}
+    | jq '.assets[].browser_download_url'
+    | grep {{ oauth_build }}.tar.gz\"
+  register: oauth_download_url
+
+- name: Download oauth-proxy
+  get_url:
+    url: "{{ oauth_download_url.stdout }}"
+    dest: /tmp/oauth2-proxy.tar.gz
+
+- name: Extract the archive
+  unarchive:
+    src: /tmp/oauth2-proxy.tar.gz
+    dest: /tmp/oauth2-proxy
+    remote_src: yes
+
+- name: Install binary
+  copy:
+    src: /tmp/oauth2-proxy/oauth2-proxy
+    dest: /usr/local/bin/oauth2-proxy
+    remote_src: yes
+    mode: '0755'

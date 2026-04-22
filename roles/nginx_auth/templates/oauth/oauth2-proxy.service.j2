@@ -1,0 +1,10 @@
+[Unit]
+Description=OAuth2 Proxy
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/oauth2-proxy --config {{ oauth_config }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

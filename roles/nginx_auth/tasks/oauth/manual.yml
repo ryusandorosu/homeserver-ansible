@@ -1,0 +1,35 @@
+- name: Check oauth-proxy version
+  shell: >
+    oauth-proxy -v | head -n1 | awk '{print $3}'
+  register: oauth_installed_version
+  args:
+    creates: /usr/local/bin/oauth2-proxy
+
+- name: Get latest oauth-proxy release version
+  shell: >
+    curl -s {{ oauth_repo }}
+    | jq '.assets[].browser_download_url'
+    | grep {{ oauth_build }}.tar.gz\"
+    | cut -d '/' -f 8
+  register: oauth_release_version
+
+- import_tasks: install.yml
+  when: oauth_release_version.stdout != oauth_installed_version.stdout
+
+- name: Create systemd service
+  template:
+    src: oauth/oauth2-proxy.service.j2
+    dest: "{{ systemd_services }}/oauth2-proxy.service"
+
+- name: Deploy config
+  template:
+    src: oauth/oauth2-proxy.cfg.j2
+    dest: "{{ oauth_config }}"
+  notify: reload oauth2-proxy
+
+- name: Enable and start oauth2-proxy
+  systemd:
+    name: oauth2-proxy
+    enabled: yes
+    state: started
+    daemon_reload: yes

@@ -45,17 +45,21 @@ server {
     #verification endpoint for auth_request
     location = /oauth2/auth {
         internal;
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Uri $request_uri;
     }
 {% if item.server_name == 'auth.' ~ domain %}
     #authentication ui
-    location /oauth2/ {
+    location / {
         proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto https;
     }
 {% endif %}
 {% elif nginx_authentication == 'authelia' %}
