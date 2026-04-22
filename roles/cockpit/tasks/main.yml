@@ -23,3 +23,8 @@
     name: cockpit
     enabled: yes
     state: started
+
+- name: Remove cockpit motd
+  file:
+    path: /etc/issue.d/cockpit.issue
+    state: absent

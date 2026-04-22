@@ -47,8 +47,3 @@
     state: link
   with_fileglob:
     - templates/localsites/*.j2
-
-- name: Replace cockpit motd
-  copy:
-    content: "Web console: https://{{ 'cockpit.' ~ domain }}"
-    dest: "/run/cockpit/active.issue"
