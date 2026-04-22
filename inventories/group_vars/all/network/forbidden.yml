@@ -78,5 +78,8 @@ tarpit:
   - HNAP1
   - MGLNDD
   - LEAKIX
+  - ReportServer
+  - developmentserver
+  - metadatauploader
 
 tarpit_regex: "{{ tarpit | join('|') }}"

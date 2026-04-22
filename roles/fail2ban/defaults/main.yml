@@ -7,13 +7,13 @@ fail2ban_ignoreip:
 
 fail2ban_bantime: 3h
 fail2ban_bantime_increment: true
-fail2ban_bantime_factor: 2
+fail2ban_bantime_factor: 3
 fail2ban_bantime_max: 1week
-fail2ban_findtime: 10m
-fail2ban_maxretry: 1
+fail2ban_findtime: 30m
+fail2ban_maxretry: 2
 fail2ban_backend: auto
 fail2ban_usedns: warn
-fail2ban_dbpurgeage: 1month
+fail2ban_dbpurgeage: 3month
 fail2ban_actionstart_on_demand: true
 fail2ban_action:
   - nftables-tempoban
@@ -45,14 +45,14 @@ fail2ban_jails:
   - name: nginx-404-scan
     enabled: true
     logpath: /var/log/nginx/*access.log
-    maxretry: 10
-    findtime: 1m
+    maxretry: 3
+    findtime: 10m
     bantime: 1h
 
   - name: nginx-limit-req
     enabled: true
     logpath: /var/log/nginx/error.log
-    maxretry: 10
+    maxretry: 3
     findtime: 10m
     bantime: 1h
 
@@ -62,7 +62,7 @@ fail2ban_jails:
     backend: auto
     bantime: -1
     findtime: 1w
-    maxretry: 1
+    maxretry: 3
     action:
       - nftables-permaban
       - telegram
