@@ -17,6 +17,23 @@
     state: present
     update_cache: yes
 
+- name: Remove mail from motd
+  file:
+    path: "/var/mail/{{ user }}"
+    state: absent
+
+- name: Print motd to check updates
+  copy:
+    src: update-motd.d/updates.sh
+    dest: /etc/update-motd.d/93-updates
+    mode: '0755'
+
+- name: Enable apt unattended-upgrades
+  copy:
+    src: apt.conf.d/auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: '0644'
+
 - name: Ensure bat config directory exists
   file:
     path: /{{ item }}/.config/bat/

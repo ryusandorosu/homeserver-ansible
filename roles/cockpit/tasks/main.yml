@@ -4,13 +4,13 @@
     state: present
     update_cache: yes
 
-- name: Create override dir
+- name: Create override dirs
   file:
     path: "{{ systemd_services }}/cockpit.socket.d"
     state: directory
     mode: '0755'
 
-- name: Deploy override
+- name: Deploy socket override
   template:
     src: override.conf.j2
     dest: "{{ systemd_services }}/cockpit.socket.d/override.conf"
@@ -28,3 +28,10 @@
   file:
     path: /etc/issue.d/cockpit.issue
     state: absent
+
+- name: Disable cockpit issue
+  file:
+    src: /dev/null
+    dest: /run/cockpit/issue
+    state: link
+    force: yes
