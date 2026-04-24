@@ -5,7 +5,7 @@ networks:
 services:
   node_exporter:
     image: prom/node-exporter:latest
-    container_name: {{ docker.node_exporter }}
+    container_name: {{ docker.metric_exporters.node }}
     restart: unless-stopped
     volumes:
       - /:/host:ro,rslave
@@ -16,7 +16,7 @@ services:
 
   wireguard_exporter:
     image: mindflavor/prometheus-wireguard-exporter:latest
-    container_name: {{ docker.wireguard_exporter }}
+    container_name: {{ docker.metric_exporters.wireguard }}
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -33,7 +33,7 @@ services:
 
   fail2ban_exporter:
     image: registry.gitlab.com/hctrdev/fail2ban-prometheus-exporter:latest
-    container_name: {{ docker.fail2ban_exporter }}
+    container_name: {{ docker.metric_exporters.fail2ban }}
     restart: unless-stopped
     volumes:
       - /var/run/fail2ban/:/var/run/fail2ban:ro
@@ -44,7 +44,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
-    container_name: {{ docker.cadvisor }}
+    container_name: {{ docker.metric_exporters.cadvisor }}
     restart: unless-stopped
     privileged: true
     devices:
@@ -62,7 +62,7 @@ services:
 
   smartctl_exporter:
     image: prometheuscommunity/smartctl-exporter:latest
-    container_name: {{ docker.smartctl_exporter }}
+    container_name: {{ docker.metric_exporters.smartctl }}
     restart: unless-stopped
     privileged: true
     user: root
@@ -77,8 +77,29 @@ services:
 
   snmp_exporter:
     image: prom/snmp-exporter:latest
-    container_name: {{ docker.snmp_exporter }}
+    container_name: {{ docker.metric_exporters.snmp }}
     restart: unless-stopped
     volumes:
       - "{{ exporters_dir }}/snmp.yml:/etc/snmp_exporter/snmp.yml"
     network_mode: host
+
+  blackbox_exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: {{ docker.metric_exporters.blackbox }}
+    restart: unless-stopped
+    ports:
+      - "{{ blackbox_port }}:{{ blackbox_port }}"
+    volumes:
+      - "{{ exporters_dir }}/blackbox.yml:/etc/blackbox_exporter/config.yml"
+    networks:
+      - monitoring
+
+  {# clash_exporter:
+    image: haishanh/clash-exporter
+    container_name: {{ docker.metric_exporters.clash }}
+    restart: unless-stopped
+    ports:
+      - "{{ clash_exporter_port }}:{{ const_clash_exporter_port }}"
+    environment:
+      - CLASH_URL=http://{{ localhost }}:{{ clash_web_port }}
+    network_mode: bridge #host #}

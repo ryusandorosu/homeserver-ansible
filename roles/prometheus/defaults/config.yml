@@ -1,20 +1,23 @@
 prometheus_scrape_configs:
   node:
-    target_src: "{{ docker.node_exporter }}"
+    target_src: "{{ docker.metric_exporters.node }}"
     target_port: "{{ node_exporter_port }}"
     labels: instance
   wireguard:
     target_src: "{{ lan_ip.server }}"
     target_port: "{{ wireguard_exporter_port }}"
   fail2ban:
-    target_src: "{{ docker.fail2ban_exporter }}"
+    target_src: "{{ docker.metric_exporters.fail2ban }}"
     target_port: "{{ fail2ban_exporter_port }}"
     labels: instance
   cadvisor:
-    target_src: "{{ docker.cadvisor }}"
+    target_src: "{{ docker.metric_exporters.cadvisor }}"
     target_port: "{{ cadvisor_port }}"
     labels: instance
   smartctl:
-    target_src: "{{ docker.smartctl_exporter }}"
+    target_src: "{{ docker.metric_exporters.smartctl }}"
     target_port: "{{ smartctl_exporter_port }}"
     labels: instance
+  # clash:
+  #   target_src: "{{ lan_ip.server }}"
+  #   target_port: "{{ clash_exporter_port }}"

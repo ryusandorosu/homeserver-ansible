@@ -36,10 +36,12 @@
     src: prometheus/docker-compose.yml.j2
     dest: "{{ prometheus_base_dir }}/docker-compose.yml"
 
-- name: Deploy SNMP config
-  template:
-    src: exporters/snmp.yml
-    dest: "{{ exporters_dir }}/snmp.yml"
+- name: Deploy exporters configs
+  copy:
+    src: "{{ item }}"
+    dest: "{{ exporters_dir }}/{{ item | basename }}"
+  with_fileglob:
+    - templates/exporters/*.yml
 
 - name: Deploy exporters docker-compose
   template:
