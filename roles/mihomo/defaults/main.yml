@@ -8,7 +8,7 @@ clash_tunnel_enable: false
 clash_dns_enabled: false
 clash_subscription_use: true
 
-clash_connection_type: url-test
+clash_connection_type: fallback
 #clash_connection_type: select, fallback, url-test
 clash_connection_interval: 30
 clash_connection_tolerance: 100

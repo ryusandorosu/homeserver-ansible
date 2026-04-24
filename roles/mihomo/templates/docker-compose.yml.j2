@@ -12,3 +12,17 @@ services:
       retries: 5
     network_mode: host
     stop_grace_period: 30s
+
+  yacd:
+    image: haishanh/yacd
+    container_name: {{ docker.mihomo_dashboard.yacd }}
+    restart: unless-stopped
+    ports:
+      - "{{ yacd_port }}:{{ http_port }}"
+
+  metacubexd:
+    image: ghcr.io/metacubex/metacubexd:latest
+    container_name: {{ docker.mihomo_dashboard.metacubexd }}
+    restart: unless-stopped
+    ports:
+      - "{{ metacubexd_port }}:{{ http_port }}"

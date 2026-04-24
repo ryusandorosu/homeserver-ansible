@@ -1,4 +1,4 @@
 clash_subscription_url: "{{ vault_clash_subscription_url }}"
 clash_subscription_update_interval: 3600
-clash_healthcheck_url: https://www.gstatic.com/generate_204
+clash_healthcheck_url: https://api.telegram.org #https://www.gstatic.com/generate_204
 clash_healthcheck_interval: 300

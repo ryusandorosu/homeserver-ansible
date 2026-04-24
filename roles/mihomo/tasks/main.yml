@@ -20,7 +20,7 @@
 - import_tasks: compose.yml
 
 - name: Check proxy
-  shell: curl --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://api.ipify.org
+  shell: curl --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://www.gstatic.com/generate_204 #https://api.ipify.org
   register: proxy_check
   retries: 5
   delay: 5

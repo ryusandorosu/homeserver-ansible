@@ -3,7 +3,8 @@
 fail_count=0
 
 while true; do
-  if ! curl -s --max-time 5 --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://api.ipify.org; then
+  #if ! curl -s --max-time 5 --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://api.ipify.org; then
+  if ! curl -sI --max-time 5 --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://www.gstatic.com/generate_204 | head -n1; then
     ((fail_count++))
   fi
   if ! curl -sI --max-time 5 --proxy socks5h://{{ localhost }}:{{ socks5_port }} https://api.telegram.org | head -n1; then
@@ -11,7 +12,7 @@ while true; do
   fi
   if [[ $fail_count -gt 0 ]]; then
     echo "Proxy check failed, restarting mihomo"
-    docker restart {{ docker.mihomo }}
+    #docker restart {{ docker.mihomo }}
   fi
   fail_count=0
   sleep 60

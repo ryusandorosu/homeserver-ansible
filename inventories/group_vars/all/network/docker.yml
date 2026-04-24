@@ -1,15 +1,21 @@
 docker:
   mihomo: mihomo
+  mihomo_dashboard:
+    yacd: yacd
+    metacubexd: metacubexd
   promtail: promtail
   loki: loki
   grafana: grafana
   prometheus: prometheus
-  node_exporter: node_exporter
-  wireguard_exporter: wg_exporter
+  metric_exporters:
+    node: node_exporter
+    wireguard: wg_exporter
+    fail2ban: f2b_exporter
+    cadvisor: cadvisor
+    smartctl: smartctl_exporter
+    snmp: snmp_exporter
+    blackbox: blackbox_exporter
+    clash: clash_exporter
   wireguard_dashboard: wg_dashboard
-  fail2ban_exporter: f2b_exporter
-  cadvisor: cadvisor
-  smartctl_exporter: smartctl_exporter
-  snmp_exporter: snmp_exporter
   oauth2proxy: oauth2-proxy
   authelia: authelia
