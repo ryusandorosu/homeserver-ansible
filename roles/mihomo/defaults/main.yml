@@ -1,15 +1,15 @@
 clash_config_dir: /opt/clash
 
+clash_web_interface: metacubexd
+
 clash_mixed_port: 7890
-clash_proxy_mode: rule
-#clash_proxy_mode: rule, global, direct
+clash_proxy_mode: rule #rule, global, direct
 
 clash_tunnel_enable: false
 clash_dns_enabled: false
 clash_subscription_use: true
 
-clash_connection_type: fallback
-#clash_connection_type: select, fallback, url-test
+clash_connection_type: fallback #select, fallback, url-test
 clash_connection_interval: 30
 clash_connection_tolerance: 100
 

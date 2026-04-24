@@ -13,20 +13,22 @@ services:
     network_mode: host
     stop_grace_period: 30s
 
+{% if clash_web_interface == 'yacd' %}
   yacd:
     image: haishanh/yacd
-    container_name: {{ docker.mihomo_dashboard.yacd }}
+    container_name: {{ docker.mihomo_dashboard }}
     restart: unless-stopped
     ports:
       - "{{ yacd_port }}:{{ http_port }}"
     environment:
       - BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
-
+{% elif clash_web_interface == 'metacubexd' %}
   metacubexd:
     image: ghcr.io/metacubex/metacubexd:latest
-    container_name: {{ docker.mihomo_dashboard.metacubexd }}
+    container_name: {{ docker.mihomo_dashboard }}
     restart: unless-stopped
     ports:
       - "{{ metacubexd_port }}:{{ http_port }}"
     environment:
-      - META_CUBEXD_DEFAULT_BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
+      - DEFAULT_BACKEND_URL=http://{{ lan_ip.server }}:{{ clash_web_port }}
+{% endif %}

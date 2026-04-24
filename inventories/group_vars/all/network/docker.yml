@@ -1,8 +1,6 @@
 docker:
   mihomo: mihomo
-  mihomo_dashboard:
-    yacd: yacd
-    metacubexd: metacubexd
+  mihomo_dashboard: "{{ clash_web_interface }}"
   promtail: promtail
   loki: loki
   grafana: grafana
