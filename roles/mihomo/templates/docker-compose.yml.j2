@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     ports:
       - "{{ yacd_port }}:{{ http_port }}"
+    environment:
+      - BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
 
   metacubexd:
     image: ghcr.io/metacubex/metacubexd:latest
@@ -26,3 +28,5 @@ services:
     restart: unless-stopped
     ports:
       - "{{ metacubexd_port }}:{{ http_port }}"
+    environment:
+      - META_CUBEXD_DEFAULT_BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
