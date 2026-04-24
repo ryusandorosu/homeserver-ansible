@@ -28,6 +28,7 @@ table inet filter {
 {% for port in monitoring_exporter_ports %}
         ip saddr {{ docker_monitoring_network }} tcp dport {{ port }} accept
 {% endfor %}
+        ip saddr {{ docker_network }} ip daddr {{ home_network }} accept
 
         tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
 {% for port in firewall_tcp_ports %}{% if port != sshd_port %}

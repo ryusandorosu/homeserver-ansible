@@ -17,9 +17,25 @@
   set_fact:
     rendered_rules: "{{ lookup('template', 'templates/rules.yaml.j2') }}"
 
-- name: Show unified rules diff
-  debug:
-    msg: "{{ before_rules.content | b64decode | community.general.unified_diff(rendered_rules) }}"
+# - name: Show unified rules diff
+#   debug:
+#     msg: "{{ before_rules.content | b64decode | community.general.unified_diff(rendered_rules) }}"
+
+- name: Show unified rules diff 
+  delegate_to: localhost
+  vars:
+    before: "{{ before_rules.content | b64decode }}"
+    after: "{{ rendered_rules }}"
+  shell: |
+    python3 - << 'EOF'
+    import difflib
+
+    before = """{{ before | replace('"', '\\"') }}""".splitlines()
+    after = """{{ after | replace('"', '\\"') }}""".splitlines()
+
+    for line in difflib.unified_diff(before, after, lineterm=''):
+        print(line)
+    EOF
 
 - name: Deploy clash custom rules
   win_template:
@@ -36,9 +52,25 @@
   set_fact:
     rendered_config: "{{ lookup('template', 'templates/mihomo.yaml.j2') }}"
 
+# - name: Show unified config diff
+#   debug:
+#     msg: "{{ before_config.content | b64decode | community.general.unified_diff(rendered_config) }}"
+
 - name: Show unified config diff
-  debug:
-    msg: "{{ before_config.content | b64decode | community.general.unified_diff(rendered_config) }}"
+  delegate_to: localhost
+  vars:
+    before: "{{ before_config.content | b64decode }}"
+    after: "{{ rendered_config }}"
+  shell: |
+    python3 - << 'EOF'
+    import difflib
+
+    before = """{{ before | replace('"', '\\"') }}""".splitlines()
+    after = """{{ after | replace('"', '\\"') }}""".splitlines()
+
+    for line in difflib.unified_diff(before, after, lineterm=''):
+        print(line)
+    EOF
 
 - name: Deploy mihomo config
   win_template:
