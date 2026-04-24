@@ -17,9 +17,30 @@
   set_fact:
     rendered_rules: "{{ lookup('template', 'templates/rules.yaml.j2') }}"
 
-# - name: Show unified rules diff
-#   debug:
-#     msg: "{{ before_rules.content | b64decode | community.general.unified_diff(rendered_rules) }}"
+# - name: Show clean unified rules diff
+#   delegate_to: localhost
+#   changed_when: false
+#   when: before_rules is defined and before_rules.content is defined
+#   vars:
+#     before: "{{ before_rules.content | b64decode | from_yaml | to_nice_json }}"
+#     after: "{{ rendered_rules | from_yaml | to_nice_json }}"
+#   shell: |
+#     python3 - << 'EOF'
+#     import difflib
+#
+#     before = """{{ before | replace('"', '\\"') }}""".splitlines()
+#     after = """{{ after | replace('"', '\\"') }}""".splitlines()
+#
+#     diff = list(difflib.unified_diff(
+#         before, after,
+#         fromfile='before',
+#         tofile='after',
+#         lineterm=''
+#     ))
+#
+#     if diff:
+#         print('\n'.join(diff))
+#     EOF
 
 - name: Show unified rules diff 
   delegate_to: localhost
@@ -44,7 +65,7 @@
 
 - name: Read remote config before deploy
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\mihomo.yaml"
   register: before_config
   ignore_errors: true
 
@@ -52,9 +73,30 @@
   set_fact:
     rendered_config: "{{ lookup('template', 'templates/mihomo.yaml.j2') }}"
 
-# - name: Show unified config diff
-#   debug:
-#     msg: "{{ before_config.content | b64decode | community.general.unified_diff(rendered_config) }}"
+# - name: Show clean unified config diff
+#   delegate_to: localhost
+#   changed_when: false
+#   when: before_config is defined and before_config.content is defined
+#   vars:
+#     before: "{{ before_config.content | b64decode | from_yaml | to_nice_json }}"
+#     after: "{{ rendered_config | from_yaml | to_nice_json }}"
+#   shell: |
+#     python3 - << 'EOF'
+#     import difflib
+#
+#     before = """{{ before | replace('"', '\\"') }}""".splitlines()
+#     after = """{{ after | replace('"', '\\"') }}""".splitlines()
+#
+#     diff = list(difflib.unified_diff(
+#         before, after,
+#         fromfile='before',
+#         tofile='after',
+#         lineterm=''
+#     ))
+#
+#     if diff:
+#         print('\n'.join(diff))
+#     EOF
 
 - name: Show unified config diff
   delegate_to: localhost
