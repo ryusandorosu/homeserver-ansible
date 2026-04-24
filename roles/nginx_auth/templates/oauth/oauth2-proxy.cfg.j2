@@ -1,26 +1,27 @@
 provider = "github"
-
 client_id = "{{ vault_nginx_oauth_client_id }}"
 client_secret = "{{ vault_nginx_oauth_client_secret }}"
 
 cookie_secret = "{{ vault_nginx_oauth_cookie_secret }}"
 cookie_secure = true
 cookie_domains = [".{{ domain }}"]
+cookie_refresh = "1h"
+cookie_expire = "168h"
 
 whitelist_domains = [".{{ domain }}"]
-#trusted_ips = ["{{ localhost }}"]
+trusted_ips = ["{{ localhost }}"] #seems like works too
 #trusted_ips = ["{{ docker_network }}"]
-trusted_ips = ["0.0.0.0/0"]
+#trusted_ips = ["0.0.0.0/0"] #works
 email_domains = ["*"]
 
 upstreams = ["static://200"]
-#upstreams = ["http://{{ localhost }}:{{ oauthproxy_port }}"]
 http_address = "0.0.0.0:{{ oauthproxy_port }}"
 
 redirect_url = "https://auth.{{ domain }}/oauth2/callback"
 reverse_proxy = true
 set_xauthrequest = true
 skip_provider_button = true
+skip_auth_preflight = true #not deployed yet
 set_authorization_header = true
 pass_access_token = true
 
