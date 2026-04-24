@@ -1,0 +1,15 @@
+apiVersion: 1
+
+contactPoints:
+  - name: "{{ contact_points.tg_status_bot }}"
+    receivers:
+      - uid: telegram_bot_status
+        type: telegram
+        settings:
+          botToken: "{{ vault_telegram_status_bot_token }}"
+          chatId: "{{ vault_telegram_user_chat_id }}"
+
+policies:
+  - orgId: 1
+    receiver: "{{ contact_points.tg_status_bot }}"
+    group_by: ['alertname']

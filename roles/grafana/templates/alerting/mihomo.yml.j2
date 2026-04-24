@@ -1,0 +1,49 @@
+apiVersion: 1
+
+{# groups:
+  - name: {{ docker.mihomo }}
+    folder: {{ docker.mihomo }}
+    interval: {{ interval }}
+    rules:
+{% for key, rule in mihomo_alert.items() %}
+      - uid: {{ key }}
+        title: {{ rule.title }}
+        condition: C
+        data:
+          - refId: A
+{% if rule.datasource == 'loki' %}
+            datasourceUid: {{ loki_uid }}
+{% elif rule.datasource == 'prometheus' %}
+            datasourceUid: {{ prometheus_uid }}
+{% endif %}
+            model:
+{% if rule.query.type == 'count' %}
+              expr: >
+                count_over_time(
+                  {container="/{{ docker.mihomo }}"}
+                  |{% if rule.query.mode == 'exact' %}={% elif rule.query.mode == 'regex' %}~{% endif %} "{{ rule.query.match }}"
+                  [{{ seek_period }}]
+                )
+{% endif %}
+              range: true
+              intervalMs: 1000
+              maxDataPoints: 43200
+              relativeTimeRange:
+                from: 300
+                to: 0
+            type: query
+{% if rule.condition is defined %}
+          - refId: B
+            type: reduce
+            expression: A
+            reducer: sum #last
+          - refId: C
+            type: threshold
+            expression: B {{ rule.condition.operator }} {{ rule.condition.value }}
+{% endif %}
+        for: {{ pending_period }}
+        annotations:
+          description: "{{ rule.description }}"
+        labels:
+          severity: {{ rule.severity }}
+{% endfor %} #}

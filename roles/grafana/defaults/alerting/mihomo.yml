@@ -1,0 +1,39 @@
+interval: 1m
+seek_period: 5m
+pending_period: 1m
+
+mihomo_alert:
+  proxy_healthcheck_fails:
+    title: Proxy health degradation
+    description: Too many failed health checks
+    severity: warning
+    datasource: loki
+    query:
+      match: "alive: false"
+      type: count
+      mode: exact
+    condition:
+      operator: ">"
+      value: 5
+  proxy_dead_nodes:
+    title: Proxy unavailable
+    description: No alive nodes
+    severity: error
+    datasource: loki
+    query:
+      match: "alive: true"
+      type: count
+      mode: exact
+    condition:
+      operator: "=="
+      value: 0
+  proxy_healthcheck_latency:
+    title: Large latency
+    description: Increased duration of healthchecks
+    severity: warning
+    datasource: loki
+    query:
+      # match: "delay: [5-9][0-9]{3,} ms" #5000ms
+      match: "delay: ([5-9][0-9]{3}|[1-9][0-9]{4,}) ms"
+      type: count
+      mode: regex

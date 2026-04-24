@@ -2,6 +2,7 @@
   include_vars: "{{ item }}"
   with_fileglob:
     - defaults/dashboards/*.yml
+    - defaults/alerting/*.yml
 
 - name: Create grafana directory
   file:
@@ -14,6 +15,8 @@
     - "{{ grafana_base_dir }}"
     - "{{ grafana_provisioning_dir }}/datasources"
     - "{{ grafana_provisioning_dir }}/dashboards"
+    - "{{ grafana_provisioning_dir }}/alerting"
+    - "{{ grafana_provisioning_dir }}/plugins"
 
 - name: Deploy datasource config
   template:
@@ -34,6 +37,13 @@
     dest: "{{ grafana_provisioning_dir }}/dashboards/{{ item | basename | regex_replace('.j2','') }}"
   with_fileglob:
     - "templates/dashboards/*.j2"
+
+- name: Deploy alerts
+  template:
+    src: "{{ item }}"
+    dest: "{{ grafana_provisioning_dir }}/alerting/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - "templates/alerting/*.j2"
 
 - name: Deploy docker-compose
   template:
