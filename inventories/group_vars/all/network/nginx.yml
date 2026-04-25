@@ -32,6 +32,11 @@ nginx_sites:
     authentication: false
     port: "{{ wireguard_dashboard_port }}"
     proto: http
+  - server_name: "clash.{{ domain }}"
+    public: false
+    authentication: true
+    port: "{{ metacubexd_port }}"
+    proto: http
 
 letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"
 
