@@ -1,7 +1,5 @@
 clash_config_dir: /opt/clash
 
-clash_web_interface: metacubexd
-
 clash_mixed_port: 7890
 clash_proxy_mode: rule #rule, global, direct
 

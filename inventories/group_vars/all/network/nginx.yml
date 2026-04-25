@@ -1,7 +1,8 @@
 domain: ryusandorosu.ru
 
-nginx_authentication: oauth
-# nginx_authentication: authelia
+mihomo_web_interface: metacubexd #yacd, metacubexd
+nginx_authentication: oauth #oauth, authelia
+
 nginx_sites:
   - server_name: "{{ domain }}"
     public: true
@@ -35,7 +36,7 @@ nginx_sites:
   - server_name: "clash.{{ domain }}"
     public: false
     authentication: true
-    port: "{{ metacubexd_port }}"
+    port: "{{ clash_web_port }}"
     proto: http
 
 letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"

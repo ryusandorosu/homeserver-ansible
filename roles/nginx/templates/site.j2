@@ -83,6 +83,12 @@ server {
 {% endif %}
 {% endif %}
 {% if item.server_name != 'auth.' ~ domain %}
+{% if item.server_name == 'clash.' ~ domain %}
+    location /ui/ {
+        proxy_pass {{ item.proto }}://{{ localhost }}:{% if mihomo_web_interface == 'metacubexd' %}{{ metacubexd_port }}{% elif mihomo_web_interface == 'yacd' %}{{ yacd_port }}{% endif %}/;
+        proxy_set_header Host $host;
+    }
+{% endif %}
 
     location / {
 
