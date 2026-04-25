@@ -8,16 +8,14 @@ groups:
 {% for key, rule in mihomo_alert.items() %}
       - uid: {{ key }}
         title: {{ rule.title }}
-        condition: B
         data:
           - refId: A
-            datasourceUid: {% if rule.datasource == 'loki' %}{{ loki_uid }}
-{% elif rule.datasource == 'prometheus' %}{{ prometheus_uid }}
-{% endif %}
-            type: query
             relativeTimeRange:
               from: {{ seek_period | regex_replace('m', '') | int * 60 }}
               to: 0
+            datasourceUid: {% if rule.datasource == 'loki' %}{{ loki_uid }}
+{% elif rule.datasource == 'prometheus' %}{{ prometheus_uid }}
+{% endif %}
             model:
 {% if rule.query.type == 'count' %}
               expr: >
@@ -25,27 +23,20 @@ groups:
                   {container="/{{ docker.mihomo }}"}
                   |{% if rule.query.mode == 'exact' %}={% elif rule.query.mode == 'regex' %}~{% endif %} "{{ rule.query.match }}"
                   [{{ seek_period }}]
-                )
+                ) {{ rule.condition.operator }} {{ rule.condition.value }}
 {% endif %}
-              range: true
+              instant: true
               intervalMs: 1000
-          - refId: B
-            datasourceUid: __expr__
-            relativeTimeRange:
-              from: {{ seek_period | regex_replace('m', '') | int * 60 }}
-              to: 0
-            model:
-              datasource:
-                type: __expr__
-                uid: __expr__
-              type: reduce
-              expression: A
-              reducer: sum
-            intervalMs: 1000
-            maxDataPoints: 43200
+              maxDataPoints: 43200
+              queryType: instant
+              refId: A
         for: {{ pending_period }}
         annotations:
           description: "{{ rule.description }}"
         labels:
           severity: {{ rule.severity }}
+        record:
+          metric: {{ key }}
+          from: A
+          targetDatasourceUid: {{ prometheus_uid }}
 {% endfor %}

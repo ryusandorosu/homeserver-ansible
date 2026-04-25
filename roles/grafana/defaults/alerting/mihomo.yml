@@ -33,7 +33,9 @@ mihomo_alert:
     severity: warning
     datasource: loki
     query:
-      # match: "delay: [5-9][0-9]{3,} ms" #5000ms
       match: "delay: ([5-9][0-9]{3}|[1-9][0-9]{4,}) ms"
       type: count
       mode: regex
+    condition:
+      operator: ">"
+      value: 1
