@@ -36,6 +36,7 @@ groups:
           description: "{{ rule.description }}"
           threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
         labels:
+          alert_uid: {{ key }}
           severity: {{ rule.severity }}
         noDataState: OK
         execErrState: Error

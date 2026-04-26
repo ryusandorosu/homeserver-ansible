@@ -45,12 +45,12 @@
   with_fileglob:
     - "templates/alerting/*.j2"
 
-- name: Deploy telegram notification template
-  copy:
-    src: "{{ item }}"
-    dest: "{{ grafana_provisioning_dir }}/alerting/{{ item | basename }}"
-  with_fileglob:
-    - "templates/alerting/*.gotemplate"
+# - name: Deploy telegram notification template
+#   copy:
+#     src: "{{ item }}"
+#     dest: "{{ grafana_provisioning_dir }}/alerting/{{ item | basename }}"
+#   with_fileglob:
+#     - "templates/alerting/*.gotemplate"
 
 - name: Deploy docker-compose
   template:

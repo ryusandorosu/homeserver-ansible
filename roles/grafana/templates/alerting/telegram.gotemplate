@@ -1,4 +1,4 @@
-{{ if eq .Status "firing" }}🔴 {{ else if eq .Status "resolved" }}🟢 {{ end }}{{ with .CommonLabels.host }}{{ . }}{{ else }}n/a{{ end }} grafana alert: {{ .Status }} {{ if eq .CommonLabels.severity "error" }}🔴{{ else if eq .CommonLabels.severity "warning" }}🟡{{ end }}
+{{ if eq .Status "firing" }}🔴 {{ else if eq .Status "resolved" }}🟢 {{ end }}nuc-server grafana alert: {{ .Status }} {{ if eq .CommonLabels.severity "error" }}🔴{{ else if eq .CommonLabels.severity "warning" }}🟡{{ end }}
 
 Alert: {{ .CommonLabels.alertname }}
 Description: {{ with .CommonAnnotations.description }}{{ . }}{{ else }}n/a{{ end }}
@@ -6,7 +6,4 @@ Description: {{ with .CommonAnnotations.description }}{{ . }}{{ else }}n/a{{ end
 Threshold: {{ with .CommonAnnotations.threshold }}{{ . }}{{ else }}n/a{{ end }}
 
 Severity: {{ with .CommonLabels.severity }}{{ . }}{{ else }}n/a{{ end }}
-Instance: {{ with .CommonLabels.instance }}{{ . }}{{ else }}n/a{{ end }}
-{{ if .CommonLabels.__alert_rule_uid__ }}
-🔗 {{ .ExternalURL }}/alerting/grafana/{{ .CommonLabels.__alert_rule_uid__ }}/view
-{{ end }}
+{{ .ExternalURL }}alerting/grafana/{{ .CommonLabels.alert_uid }}/view
