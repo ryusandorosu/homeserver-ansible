@@ -18,6 +18,3 @@ prometheus_scrape_configs:
     target_src: "{{ docker.metric_exporters.smartctl }}"
     target_port: "{{ smartctl_exporter_port }}"
     labels: instance
-  # clash:
-  #   target_src: "{{ lan_ip.server }}"
-  #   target_port: "{{ clash_exporter_port }}"

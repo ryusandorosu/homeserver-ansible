@@ -93,13 +93,3 @@ services:
       - "{{ exporters_dir }}/blackbox.yml:/etc/blackbox_exporter/config.yml"
     networks:
       - monitoring
-
-  {# clash_exporter:
-    image: haishanh/clash-exporter
-    container_name: {{ docker.metric_exporters.clash }}
-    restart: unless-stopped
-    ports:
-      - "{{ clash_exporter_port }}:{{ const_clash_exporter_port }}"
-    environment:
-      - CLASH_URL=http://{{ localhost }}:{{ clash_web_port }}
-    network_mode: bridge #host #}

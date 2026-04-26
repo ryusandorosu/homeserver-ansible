@@ -12,4 +12,3 @@ smb_port: 445
 
 #services_internal
 const_prometheus_port: 9090
-const_clash_exporter_port: 9090
