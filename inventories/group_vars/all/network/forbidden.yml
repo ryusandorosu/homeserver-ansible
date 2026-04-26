@@ -82,5 +82,7 @@ tarpit:
   - developmentserver
   - metadatauploader
   - onvif
+  - ssdpcgi
+  - ignition
 
 tarpit_regex: "{{ tarpit | join('|') }}"
