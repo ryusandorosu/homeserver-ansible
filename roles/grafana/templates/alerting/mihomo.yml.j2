@@ -30,13 +30,12 @@ groups:
               maxDataPoints: 43200
               queryType: instant
               refId: A
+        condition: A
         for: {{ pending_period }}
         annotations:
           description: "{{ rule.description }}"
         labels:
           severity: {{ rule.severity }}
-        record:
-          metric: {{ key }}
-          from: A
-          targetDatasourceUid: {{ prometheus_uid }}
+        noDataState: OK
+        execErrState: Error
 {% endfor %}
