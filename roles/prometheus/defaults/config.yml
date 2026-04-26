@@ -18,3 +18,25 @@ prometheus_scrape_configs:
     target_src: "{{ docker.metric_exporters.smartctl }}"
     target_port: "{{ smartctl_exporter_port }}"
     labels: instance
+
+prometheus_scrape_configs_extended:
+  snmp:
+    path: /snmp
+    replacement:
+      src: "{{ lan_ip.server }}"
+      port: "{{ snmp_exporter_port }}"
+    params:
+      module: synology
+      auth: public_v2
+    targets:
+      - "{{ lan_ip.diskstation }}"
+  blackbox:
+    path: /probe
+    replacement:
+      src: "{{ docker.metric_exporters.blackbox }}"
+      port: "{{ blackbox_port }}"
+    params:
+      module: http_2xx
+    targets:
+      - https://api.telegram.org
+      - https://www.gstatic.com/generate_204

@@ -12,34 +12,23 @@ scrape_configs:
           instance: "{{ inventory_hostname }}"
 {% endif %}
 {% endfor %}
-  - job_name: "snmp"
-    metrics_path: /snmp
+{% for key, job in prometheus_scrape_configs_extended.items() %}
+  - job_name: "{{ key }}"
+    metrics_path: {{ job.path }}
     params:
-      module: [synology]
-      auth: [public_v2]
+{% for param, value in job.params.items() %}
+      {{ param }}: [{{ value }}]
+{% endfor %}
     static_configs:
       - targets:
-          - {{ lan_ip.diskstation }}
+{% for target in job.targets %}
+          - {{ target }}
+{% endfor %}
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: {{ lan_ip.server }}:{{ snmp_exporter_port }}
-
-  - job_name: "blackbox"
-    metrics_path: /probe
-    params:
-      module: [http_2xx]
-    static_configs:
-      - targets:
-          - https://api.telegram.org
-          - https://www.gstatic.com/generate_204
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: {{ docker.metric_exporters.blackbox }}:{{ blackbox_port }}
+        replacement: {{ job.replacement.src }}:{{ job.replacement.port }}
+{% endfor %}
