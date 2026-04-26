@@ -1,0 +1,22 @@
+bad_bot:
+  - sqlmap
+  - nikto
+  - acunetix
+  - dirbuster
+  - gobuster
+  - feroxbuster
+  - masscan
+  - nmap
+  - zmap
+  - zgrab
+  - ffuf
+  - dirsearch
+  - wpscan
+  - nvdorz
+  - Scanner
+  - DomainChecker
+  - l9explore
+  - Go-http-client
+  - l9scan
+  - leakix
+  - Shodan-Pull

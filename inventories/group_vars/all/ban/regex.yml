@@ -1,0 +1,2 @@
+bad_bot_regex: "{{ bad_bot | join('|') }}"
+tarpit_regex: "{{ tarpit | join('|') }}"
