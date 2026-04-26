@@ -1,0 +1,11 @@
+{{ if eq .Status "firing" }}🔴 {{ else if eq .Status "resolved" }}🟢 {{ end }}{{ with .CommonLabels.host }}{{ . }}{{ else }}n/a{{ end }} grafana alert: {{ .Status }} {{ if eq .CommonLabels.severity "error" }}🔴{{ else if eq .CommonLabels.severity "warning" }}🟡{{ end }}
+
+Alert: {{ .CommonLabels.alertname }}
+Description: {{ with .CommonAnnotations.description }}{{ . }}{{ else }}n/a{{ end }}
+
+Value: {{ with .CommonValues.A }}{{ . }}{{ else }}n/a{{ end }}
+Threshold: {{ with .CommonAnnotations.threshold }}{{ . }}{{ else }}n/a{{ end }}
+
+Severity: {{ with .CommonLabels.severity }}{{ . }}{{ else }}n/a{{ end }}
+Instance: {{ with .CommonLabels.instance }}{{ . }}{{ else }}n/a{{ end }}
+🔗 {{ .ExternalURL }}/alerting/grafana/{{ .CommonLabels.__alert_rule_uid__ }}/view

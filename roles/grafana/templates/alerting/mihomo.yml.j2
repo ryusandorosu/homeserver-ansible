@@ -34,6 +34,7 @@ groups:
         for: {{ pending_period }}
         annotations:
           description: "{{ rule.description }}"
+          threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
         labels:
           severity: {{ rule.severity }}
         noDataState: OK
