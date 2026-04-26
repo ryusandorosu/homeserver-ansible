@@ -1,7 +1,7 @@
 apiVersion: 1
 
 contactPoints:
-  - name: "{{ contact_points.tg_status_bot }}"
+  - name: "{{ contact_points.tg_status_bot.name }}"
     receivers:
       - uid: telegram_bot_status
         type: telegram
@@ -11,5 +11,9 @@ contactPoints:
 
 policies:
   - orgId: 1
-    receiver: "{{ contact_points.tg_status_bot }}"
-    group_by: ['alertname']
+    receiver: "{{ contact_points.tg_status_bot.name }}"
+    routes:
+      - receiver: "{{ contact_points.tg_status_bot.name }}"
+        group_by: ['{{ contact_points.tg_status_bot.group_by }}']
+        matchers:
+          - severity=~".+"
