@@ -1,6 +1,7 @@
 docker:
   mihomo: mihomo
-  mihomo_dashboard: "{{ clash_web_interface }}"
+  mihomo_dashboard: "{{ mihomo_web_interface }}"
+  privoxy: privoxy
   promtail: promtail
   loki: loki
   grafana: grafana

@@ -14,8 +14,20 @@ services:
       - GF_SERVER_ROOT_URL=https://grafana.{{ domain }}
       - GF_SERVER_SERVE_FROM_SUB_PATH=false
       - GF_SERVER_PROTOCOL=http
+      - HTTP_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
+      - HTTPS_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
     volumes:
       - {{ grafana_data_dir }}:{{ grafana_container_data_dir }}
       - {{ grafana_provisioning_dir }}:{{ grafana_container_provisioning_dir }}
+    networks:
+      - monitoring
+
+  privoxy:
+    image: vimagick/privoxy
+    container_name: {{ docker.privoxy }}
+    ports:
+      - "{{ http_proxy_port }}:{{ http_proxy_port }}"
+    volumes:
+      - "{{ grafana_base_dir }}/privoxy.config:/etc/privoxy/config"
     networks:
       - monitoring

@@ -50,6 +50,13 @@
     src: docker-compose.yml.j2
     dest: "{{ grafana_base_dir }}/docker-compose.yml"
 
+- name: Deploy privoxy config
+  copy:
+    content: |
+      listen-address  0.0.0.0:{{ http_proxy_port }}
+      forward-socks5 / {{ lan_ip.server }}:{{ socks5_port }} .
+    dest: "{{ grafana_base_dir }}/privoxy.config"
+
 - name: Run Grafana container
   community.docker.docker_compose_v2:
     project_src: "{{ grafana_base_dir }}"

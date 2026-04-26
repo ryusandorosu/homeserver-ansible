@@ -4,6 +4,7 @@ termux_port: 8022
 wireguard_port: 51820
 router_port: 8081
 socks5_port: 7891
+http_proxy_port: 8118
 clash_web_port: 9092
 yacd_port: 9088
 metacubexd_port: 9094
@@ -22,7 +23,6 @@ promtail_port: 9080
 prometheus_port: 9091 #9090
 #prometheus exporters
 cadvisor_port: 8080
-clash_exporter_port: 9093
 node_exporter_port: 9100
 blackbox_port: 9115
 snmp_exporter_port: 9116
