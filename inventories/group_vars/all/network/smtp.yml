@@ -1,0 +1,7 @@
+smtp_account: "{{ smtp.gmail.account }}"
+smtp_host: "{{ smtp.gmail.host }}"
+
+smtp:
+  gmail:
+    account: gmail
+    host: smtp.gmail.com

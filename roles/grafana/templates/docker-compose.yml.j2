@@ -17,6 +17,12 @@ services:
       - HTTP_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
       - HTTPS_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
       - NO_PROXY={{ docker.loki }},{{ docker.prometheus }},{{ localhost }},localhost
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST={{ smtp_host }}:{{ smtp_port }}
+      - GF_SMTP_USER={{ vault_msmtp_user }}
+      - GF_SMTP_PASSWORD={{ vault_msmtp_password }}
+      - GF_SMTP_FROM_ADDRESS={{ vault_msmtp_user }}
+      - GF_SMTP_FROM_NAME=Grafana
     volumes:
       - {{ grafana_data_dir }}:{{ grafana_container_data_dir }}
       - {{ grafana_provisioning_dir }}:{{ grafana_container_provisioning_dir }}

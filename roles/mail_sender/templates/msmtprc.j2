@@ -5,11 +5,11 @@ tls_starttls   on
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
 syslog         on
 
-account {{ msmtp_account }}
-host {{ msmtp_host }}
-port {{ msmtp_port }}
+account {{ smtp_account }}
+host {{ smtp_host }}
+port {{ smtp_port }}
 from {{ vault_msmtp_user }}
 user {{ vault_msmtp_user }}
 password {{ vault_msmtp_password }}
 
-account default : {{ msmtp_account }}
+account default : {{ smtp_account }}

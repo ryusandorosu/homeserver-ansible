@@ -12,6 +12,21 @@ contactPoints:
           message: |
             {{ lookup('file', 'telegram.gotemplate') | indent(12) }}
 
+  - name: "{{ contact_points.email.name }}"
+    receivers:
+      - uid: email_critical
+        type: email
+        settings:
+          addresses: "{{ vault_mail }}"
+
+#alertmanager_config:
+#  route:
+#    receiver: "{{ contact_points.tg_status_bot.name }}"
+#    routes:
+#      - matchers:
+#          - severity="error"
+#        receiver: "{{ contact_points.email.name }}"
+
 policies:
   - orgId: 1
     receiver: "{{ contact_points.tg_status_bot.name }}"
@@ -20,3 +35,8 @@ policies:
         group_by: ['{{ contact_points.tg_status_bot.group_by }}']
         matchers:
           - severity=~".+"
+      - receiver: "{{ contact_points.email.name }}"
+        routes:
+          - receiver: "{{ contact_points.email.name }}"
+            matchers:
+              - severity="error"

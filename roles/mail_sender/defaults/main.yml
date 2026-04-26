@@ -1,3 +1,0 @@
-msmtp_account: gmail
-msmtp_host: smtp.gmail.com
-msmtp_port: 587
