@@ -16,6 +16,7 @@ services:
       - GF_SERVER_PROTOCOL=http
       - HTTP_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
       - HTTPS_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
+      - NO_PROXY={{ docker.loki }},{{ docker.prometheus }},{{ localhost }},localhost
     volumes:
       - {{ grafana_data_dir }}:{{ grafana_container_data_dir }}
       - {{ grafana_provisioning_dir }}:{{ grafana_container_provisioning_dir }}
