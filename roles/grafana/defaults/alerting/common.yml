@@ -4,4 +4,3 @@ contact_points:
     group_by: alertname
   email:
     name: "Critical: email"
-    group_by: alertname
