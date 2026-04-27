@@ -1,6 +1,9 @@
 contact_points:
   tg_status_bot:
     name: "NUC Server: status"
-    group_by: alertname
+    group_by:
+      - alertname
+      - container
+      - severity
   email:
     name: "Critical: email"

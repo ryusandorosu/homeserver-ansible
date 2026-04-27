@@ -21,7 +21,7 @@ contactPoints:
 policies:
   - orgId: 1
     receiver: "{{ contact_points.tg_status_bot.name }}"
-    group_by: ['{{ contact_points.tg_status_bot.group_by }}']
+    group_by: ['{{ contact_points.tg_status_bot.group_by | join("', '") }}']
     routes:
       - receiver: "{{ contact_points.email.name }}"
         matchers:
