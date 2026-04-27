@@ -35,8 +35,6 @@ promtail_logs:
     path: /var/log/nginx/error.log
 
 promtail_systemd:
-  proxy-healthcheck:
-    name: Proxy healthcheck
   android-watcher:
     name: Android SSHFS Auto Watcher
   ssh:
