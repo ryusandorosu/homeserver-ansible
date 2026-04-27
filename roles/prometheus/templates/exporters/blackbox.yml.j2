@@ -4,7 +4,6 @@ modules:
     timeout: 5s
     http:
       preferred_ip_protocol: "ip4"
-      #proxy_url: http://{{ docker.privoxy }}:{{ http_proxy_port }}
       proxy_url: socks5h://{{ docker.mihomo }}:{{ socks5_port }}
       valid_status_codes: []
       method: GET
