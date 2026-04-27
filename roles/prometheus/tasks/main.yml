@@ -50,11 +50,6 @@
   with_fileglob:
     - templates/exporters/*.j2
 
-- name: Deploy exporters docker-compose
-  template:
-    src: exporters/docker-compose.yml.j2
-    dest: "{{ exporters_dir }}/docker-compose.yml"
-
 - name: Run exporters containers
   community.docker.docker_compose_v2:
     project_src: "{{ exporters_dir }}"
