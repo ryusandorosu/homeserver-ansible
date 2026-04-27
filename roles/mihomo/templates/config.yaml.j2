@@ -86,6 +86,8 @@ proxy-groups:
 {% endif %}
 {% endif %}
 rules:
-{% for rule in clash_rules.split %}
+{% for key, value in clash_rules.items() if key in clash_rules_mode %}
+{% for rule in value %}
   - {{ rule }}
+{% endfor %}
 {% endfor %}
