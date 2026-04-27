@@ -5,37 +5,40 @@ pending_period: 1m
 mihomo_alert:
   proxy_healthcheck_fails:
     title: Mihomo proxy health degradation
-    description: Too many failed health checks
+    description: Count of nodes which health checks have been failed
     severity: warning
     datasource: loki
     query:
       match: "alive: false"
-      type: count
+      type: range
+      method: count
       mode: exact
     condition:
       operator: ">"
       value: 5
   proxy_dead_nodes:
-    title: Mihomo proxy nodes unavailable
-    description: No alive nodes
+    title: Mihomo proxy is unavailable
+    description: All proxy server nodes do not respond
     severity: error
     datasource: loki
     query:
       match: "alive: true"
-      type: count
+      type: range
+      method: count
       mode: exact
     condition:
       operator: "=="
       value: 0
   proxy_healthcheck_latency:
     title: Mihomo proxy increased latency
-    description: Long duration of healthchecks (>5000ms)
+    description: Count of nodes having long duration of healthchecks (>5000ms)
     severity: warning
     datasource: loki
     query:
       match: "delay: ([5-9][0-9]{3}|[1-9][0-9]{4,}) ms"
-      type: count
+      type: range
+      method: count
       mode: regex
     condition:
       operator: ">"
-      value: 1
+      value: 5
