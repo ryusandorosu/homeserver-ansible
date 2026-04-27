@@ -9,6 +9,8 @@
 #https://grafana.com/grafana/dashboards/19908-docker-container-monitoring-with-prometheus-and-cadvisor/
 #https://grafana.com/grafana/dashboards/24922-retn0-s-smartctl-exporter-dashboard/
 #https://grafana.com/grafana/dashboards/18643-synology-snmp/
+#https://grafana.com/grafana/dashboards/13659-blackbox-exporter-http-prober/
+#https://grafana.com/grafana/dashboards/14523-blackbox-exporter-node/ #also good one
 
 - name: Deploy Grafana dashboards
   copy:
