@@ -8,7 +8,6 @@ contactPoints:
         settings:
           botToken: "{{ vault_telegram_status_bot_token }}"
           chatId: "{{ vault_telegram_user_chat_id }}"
-          parseMode: HTML
           message: |
             {{ lookup('file', 'telegram.gotemplate') | indent(12) }}
 

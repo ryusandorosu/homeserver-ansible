@@ -1,9 +1,7 @@
-{{ if eq .Status "firing" }}🔴 {{ else if eq .Status "resolved" }}🟢 {{ end }}nuc-server grafana alert: {{ .Status }} {{ if eq .CommonLabels.severity "error" }}🔴{{ else if eq .CommonLabels.severity "warning" }}🟡{{ end }}
-
-Alert: {{ .CommonLabels.alertname }}
-Description: {{ with .CommonAnnotations.description }}{{ . }}{{ else }}n/a{{ end }}
-{{ range .Alerts }}Value: {{ with .Values.A }}{{ . }}{{ else }}{{ .Values }}{{ end }}{{ end }}
-Threshold: {{ with .CommonAnnotations.threshold }}{{ . }}{{ else }}n/a{{ end }}
-
-Severity: {{ with .CommonLabels.severity }}{{ . }}{{ else }}n/a{{ end }}
+{{ if eq .Status "firing" }}🔴 {{ else if eq .Status "resolved" }}🟢 {{ end }}nuc-server grafana alert: {{ .Status }} {{ if eq .CommonLabels.severity "error" }}🔴 {{ else if eq .CommonLabels.severity "warning" }}🟡 {{ end }}{{ with .CommonLabels.severity }}{{ . }}{{ else }}n/a{{ end }}
+Alert: <code>{{ .CommonLabels.alertname }}</code>
+{{ range .Alerts }}Value: <code>{{ with .Values.A }}{{ . }}{{ else }}{{ .Values }}{{ end }}</code>{{ end }}
+Threshold: <code>{{ with .CommonAnnotations.threshold }}{{ . }}{{ else }}n/a{{ end }}</code>
+Description:
+<i>{{ with .CommonAnnotations.description }}{{ . }}{{ else }}n/a{{ end }}</i>
 {{ .ExternalURL }}alerting/grafana/{{ .CommonLabels.alert_uid }}/view
