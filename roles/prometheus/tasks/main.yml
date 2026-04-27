@@ -43,6 +43,13 @@
   with_fileglob:
     - templates/exporters/*.yml
 
+- name: Deploy templated exporters configs
+  template:
+    src: "{{ item }}"
+    dest: "{{ exporters_dir }}/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - templates/exporters/*.j2
+
 - name: Deploy exporters docker-compose
   template:
     src: exporters/docker-compose.yml.j2
