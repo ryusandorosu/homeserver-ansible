@@ -1,6 +1,8 @@
 mihomo_dashboard_link:
   uid: le_mihomo_dashboard
-  panel_id: 1
+  panel_id:
+    normal: 1
+    relative: 2
 
 mihomo_metrics:
   proxy_up_nodes:
@@ -38,25 +40,25 @@ mihomo_metrics:
       datasource: loki
     condition:
       operator: ">"
-      value: 5
+      value: 12
   proxy_healthcheck_latency:
     draw:
       ref: C
-      name: ">5000ms"
-      color: "#FADE2A"
+      name: ">1000ms"
+      color: dark-yellow
     query:
-      match: "delay: ([5-9][0-9]{3}|[1-9][0-9]{4,}) ms"
+      match: "delay: ([1-9][0-9]{3}|[1-9][0-9]{4,}) ms"
       type: range
       method: count
       mode: regex
     alert:
       title: Mihomo proxy increased latency
-      description: Count of nodes having long duration of healthchecks (>5000ms)
+      description: Count of nodes having long duration of healthchecks (>1000ms)
       severity: warning
       datasource: loki
     condition:
       operator: ">"
-      value: 5
+      value: 10
 
 mihomo_alerts:
   ref:

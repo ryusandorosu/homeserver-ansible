@@ -64,7 +64,11 @@ groups:
                           - {{ rule.condition.value }}
                           - 0
                       type: {% if rule.condition.operator == '>' %}gt
+{% elif rule.condition.operator == '<' %}lt
 {% elif rule.condition.operator == '==' %}eq
+{% elif rule.condition.operator == '!=' %}ne
+{% elif rule.condition.operator == '>=' %}gte
+{% elif rule.condition.operator == '<=' %}lte
 {% endif %}
                     operator:
                       type: and
@@ -89,12 +93,12 @@ groups:
 {% endif %}
         for: {{ mihomo_alerts.pending_period }}
         dashboardUid: {{ mihomo_dashboard_link.uid }}
-        panelId: "{{ mihomo_dashboard_link.panel_id }}"
+        panelId: "{{ mihomo_dashboard_link.panel_id.normal }}"
         annotations:
           description: "{{ rule.alert.description }}"
           threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
           __dashboardUid__: {{ mihomo_dashboard_link.uid }}
-          __panelId__: "{{ mihomo_dashboard_link.panel_id }}"
+          __panelId__: "{{ mihomo_dashboard_link.panel_id.normal }}"
           __alertUid__: {{ key }}
         labels:
           severity: {{ rule.alert.severity }}
