@@ -1,10 +1,10 @@
 promtail_logs:
-  syslog:
-    name: System
-    path: /var/log/syslog
   status:
     name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
+  kernel:
+    name: System Kernel
+    path: /var/log/kern.log
   wireguard:
     name: Wireguard connections
     path: "{{ custom_logs.wireguard }}"
@@ -26,6 +26,9 @@ promtail_logs:
   auditd:
     name: Auditd
     path: /var/log/audit/audit.log
+  syslog:
+    name: System
+    path: /var/log/syslog
   nginx_access:
     name: Nginx sites access logs
     path: /var/log/nginx/*access.log
@@ -35,9 +38,17 @@ promtail_logs:
     path: /var/log/nginx/error.log
 
 promtail_systemd:
+  NetworkManager:
+    name: Network Manager
+  docker:
+    name: Docker service
   android-watcher:
     name: Android SSHFS Auto Watcher
-  ssh:
-    name: SSH authentication
   nftables:
     name: nftables
+  nginx:
+    name: nginx
+  ssh:
+    name: SSH authentication
+  systemd-logind:
+    name: User login management
