@@ -13,10 +13,11 @@
     mode: "0755"
   loop:
     - "{{ grafana_base_dir }}"
+    - "{{ grafana_data_dir }}"
+    - "{{ grafana_data_dir }}/plugins"
     - "{{ grafana_provisioning_dir }}/datasources"
     - "{{ grafana_provisioning_dir }}/dashboards"
     - "{{ grafana_provisioning_dir }}/alerting"
-    - "{{ grafana_provisioning_dir }}/plugins"
 
 - name: Deploy datasource config
   template:
