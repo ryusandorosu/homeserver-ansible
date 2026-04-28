@@ -1,16 +1,26 @@
+{% set containers = [] %}
+{% for key, value in docker.items() %}
+  {% if value is mapping %}
+    {% for subkey, subvalue in value.items() %}
+      {% set _ = containers.append(subvalue) %}
+    {% endfor %}
+  {% else %}
+    {% set _ = containers.append(value) %}
+  {% endif %}
+{% endfor %}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
-{% for key, value in docker.items() %}
+{% for container in containers %}
     {
       "type": "logs",
-      "title": "{{ value }} logs",
+      "title": "{{ container }} logs",
       "targets": [
         {
-          "expr": "{container=\"/{{ value }}\"}",
+          "expr": "{container=\"/{{ container }}\"}",
           "refId": "{{ loop.index }}"
         }
       ],
@@ -32,7 +42,10 @@
   "refresh": "30s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": ["loki", "docker"],
+  "tags": [
+    "loki",
+    "docker"
+  ],
   "templating": {
     "list": []
   },

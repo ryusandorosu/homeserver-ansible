@@ -1,7 +1,6 @@
 docker:
   mihomo: mihomo
-  mihomo_dashboard: "{{ mihomo_web_interface }}"
-  privoxy: privoxy
+  nginx_auth: "{{ nginx_authentication }}"
   promtail: promtail
   loki: loki
   grafana: grafana
@@ -14,7 +13,6 @@ docker:
     smartctl: smartctl_exporter
     snmp: snmp_exporter
     blackbox: blackbox_exporter
-    clash: clash_exporter
+  privoxy: privoxy
   wireguard_dashboard: wg_dashboard
-  oauth2proxy: oauth2-proxy
-  authelia: authelia
+  mihomo_dashboard: "{{ mihomo_web_interface }}"

@@ -1,7 +1,7 @@
 services:
   authelia:
     image: authelia/authelia:latest
-    container_name: {{ docker.authelia }}
+    container_name: {{ docker.nginx_auth }}
     restart: unless-stopped
     volumes:
       - {{ authelia_config_dir }}:/config
