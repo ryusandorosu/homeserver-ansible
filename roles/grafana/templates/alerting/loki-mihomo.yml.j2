@@ -1,29 +1,24 @@
+{% import "macros/mihomo.j2" as imported %}
 apiVersion: 1
 
 groups:
   - name: {{ docker.mihomo }}
     folder: alerts
-    interval: {{ interval }}
+    interval: {{ mihomo_alerts.interval }}
     rules:
-{% for key, rule in mihomo_alert.items() %}
+{% for key, rule in mihomo_metrics.items() %}
       - uid: {{ key }}
-        title: {{ rule.title }}
+        title: {{ rule.alert.title }}
         data:
-          - refId: A
+          - refId: {{ rule.draw.ref }}
             relativeTimeRange:
-              from: {{ seek_period | regex_replace('m', '') | int * 60 }}
+              from: {{ mihomo_alerts.seek_period | regex_replace('m', '') | int * 60 }}
               to: 0
-            datasourceUid: {% if rule.datasource == 'loki' %}{{ loki_uid }}
-{% elif rule.datasource == 'prometheus' %}{{ prometheus_uid }}
-{% endif %}
+            datasourceUid: {{ loki_uid }}
             model:
 {% if rule.query.method == 'count' %}
               expr: >
-                count_over_time(
-                  {container="/{{ docker.mihomo }}"}
-                  |{% if rule.query.mode == 'exact' %}={% elif rule.query.mode == 'regex' %}~{% endif %} "{{ rule.query.match }}"
-                  [{{ seek_period }}]
-                ){% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
+                {{ imported.mihomo_loki_query(rule, docker.mihomo, mihomo_alerts.seek_period) | indent(16) }}{% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
 {% endif %}
 
 {% endif %}
@@ -31,9 +26,9 @@ groups:
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: {{ rule.query.type }}
-              refId: A
+              refId: {{ rule.draw.ref }}
 {% if rule.query.type == 'range' %}
-          - refId: B
+          - refId: {{ mihomo_alerts.ref.reduce }}
             datasourceUid: __expr__
             model:
               conditions:
@@ -54,13 +49,13 @@ groups:
                   name: Expression
                   type: __expr__
                   uid: __expr__
-              expression: A
+              expression: {{ rule.draw.ref }}
               intervalMs: 1000
               maxDataPoints: 43200
               reducer: last
-              refId: B
+              refId: {{ mihomo_alerts.ref.reduce }}
               type: reduce
-          - refId: C
+          - refId: {{ mihomo_alerts.ref.condition }}
             datasourceUid: __expr__
             model:
               conditions:
@@ -83,22 +78,26 @@ groups:
                   name: Expression
                   type: __expr__
                   uid: __expr__
-              expression: B
+              expression: {{ mihomo_alerts.ref.reduce }}
               intervalMs: 1000
               maxDataPoints: 43200
-              refId: C
+              refId: {{ mihomo_alerts.ref.condition }}
               type: threshold
 {% endif %}
-        condition: {% if rule.query.type == 'instant' %}A
-{% elif rule.query.type == 'range' %}C
+        condition: {% if rule.query.type == 'instant' %}{{ rule.draw.ref }}
+{% elif rule.query.type == 'range' %}{{ mihomo_alerts.ref.condition }}
 {% endif %}
-        for: {{ pending_period }}
+        for: {{ mihomo_alerts.pending_period }}
+        dashboardUid: {{ mihomo_dashboard_link.uid }}
+        panelId: "{{ mihomo_dashboard_link.panel_id }}"
         annotations:
-          description: "{{ rule.description }}"
+          description: "{{ rule.alert.description }}"
           threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
+          __dashboardUid__: {{ mihomo_dashboard_link.uid }}
+          __panelId__: "{{ mihomo_dashboard_link.panel_id }}"
+          __alertUid__: {{ key }}
         labels:
-          alert_uid: {{ key }}
-          severity: {{ rule.severity }}
+          severity: {{ rule.alert.severity }}
 {% if rule.query.type == 'instant' %}
         noDataState: OK
         execErrState: Error

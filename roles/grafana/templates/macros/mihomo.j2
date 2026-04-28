@@ -1,0 +1,7 @@
+{% macro mihomo_loki_query(label, container, period) -%}
+count_over_time(
+  {container="/{{ container }}"}
+  |{% if label.query.mode == 'exact' %}={% elif label.query.mode == 'regex' %}~{% endif %} "{{ label.query.match }}"
+  [{{ period }}]
+)
+{%- endmacro %}

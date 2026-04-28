@@ -1,0 +1,75 @@
+{% import "macros/mihomo.j2" as imported %}
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Mihomo proxy health",
+      "description": "Count of successful and failed health checks of proxy nodes",
+      "targets": [
+{% for key, value in mihomo_metrics.items() %}
+        {
+          "expr": {{ imported.mihomo_loki_query(value, docker.mihomo, mihomo_alerts.seek_period) | to_json }},
+          "legendFormat": "{{ value.draw.name }}",
+          "refId": "{{ value.draw.ref }}"
+        }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "bars"
+          }
+        },
+        "overrides": [
+{% for key, value in mihomo_metrics.items() %}
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "{{ value.draw.name }}"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "{{ value.draw.color }}",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": {{ mihomo_dashboard_link.panel_id }}
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "loki",
+    "network",
+    "mihomo"
+  ],
+  "templating": {
+    "list": []
+  },
+  "timezone": "browser",
+  "title": "Loki: Mihomo",
+  "uid": "{{ mihomo_dashboard_link.uid }}",
+  "version": 1
+}

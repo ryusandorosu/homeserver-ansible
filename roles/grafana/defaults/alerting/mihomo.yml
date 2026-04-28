@@ -1,44 +1,67 @@
-interval: 1m
-seek_period: 10m
-pending_period: 1m
+mihomo_dashboard_link:
+  uid: le_mihomo_dashboard
+  panel_id: 1
 
-mihomo_alert:
-  proxy_healthcheck_fails:
-    title: Mihomo proxy health degradation
-    description: Count of nodes which health checks have been failed
-    severity: warning
-    datasource: loki
-    query:
-      match: "alive: false"
-      type: range
-      method: count
-      mode: exact
-    condition:
-      operator: ">"
-      value: 5
-  proxy_dead_nodes:
-    title: Mihomo proxy is unavailable
-    description: All proxy server nodes do not respond
-    severity: error
-    datasource: loki
+mihomo_metrics:
+  proxy_up_nodes:
+    draw:
+      ref: A
+      name: up
+      color: semi-dark-green
     query:
       match: "alive: true"
       type: range
       method: count
       mode: exact
+    alert:
+      title: Mihomo proxy is unavailable
+      description: All proxy server nodes do not respond
+      severity: error
+      datasource: loki
     condition:
       operator: "=="
       value: 0
+  proxy_down_nodes:
+    draw:
+      ref: B
+      name: down
+      color: dark-red
+    query:
+      match: "alive: false"
+      type: range
+      method: count
+      mode: exact
+    alert:
+      title: Mihomo proxy health degradation
+      description: Count of nodes which health checks have been failed
+      severity: warning
+      datasource: loki
+    condition:
+      operator: ">"
+      value: 5
   proxy_healthcheck_latency:
-    title: Mihomo proxy increased latency
-    description: Count of nodes having long duration of healthchecks (>5000ms)
-    severity: warning
-    datasource: loki
+    draw:
+      ref: C
+      name: ">5000ms"
+      color: "#FADE2A"
     query:
       match: "delay: ([5-9][0-9]{3}|[1-9][0-9]{4,}) ms"
       type: range
       method: count
       mode: regex
+    alert:
+      title: Mihomo proxy increased latency
+      description: Count of nodes having long duration of healthchecks (>5000ms)
+      severity: warning
+      datasource: loki
     condition:
       operator: ">"
       value: 5
+
+mihomo_alerts:
+  ref:
+    reduce: D
+    condition: E
+  interval: 1m
+  seek_period: 10m
+  pending_period: 1m
