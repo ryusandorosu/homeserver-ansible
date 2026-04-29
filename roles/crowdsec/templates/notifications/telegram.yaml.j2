@@ -6,43 +6,17 @@ log_level: info
 
 #possibly put range meta inside of range events
 format: |
- {
-  "chat_id": "{{ vault_telegram_user_chat_id }}",
-{% raw %}
-  "text": "
-  [CrowdSec]
-  {{range . -}}
-  {{$alert := . -}}
+  {
+    "chat_id": "{{ vault_telegram_user_chat_id }}",
+    "text": "
+    {{ lookup('file', 'message.go') | indent(4) }}
+    ",
 
-  {{range .Decisions -}}
-  Scenario: {{.Scenario}}
-  Decision: {{.Type}}
-  IP: {{.Value}}
-  Duration: {{.Duration}}
-  {{end -}}
-
-  {{end -}}
-  ",
-
-  "reply_markup": {
-  "inline_keyboard": [
-   {{ $arrLength := len . -}}
-   {{ range $i, $value := . -}}
-   {{ $V := $value.Source.Value -}}
-   [
-    {
-     "text": "Check IP: shodan.io",
-     "url": "https://www.shodan.io/host/{{ $V -}}"
-    },
-    {
-     "text": "Check IP: crowdsec.net",
-     "url": "https://app.crowdsec.net/cti/{{ $V -}}"
-    }
-   ]{{if lt $i ( sub $arrLength 1) }},{{end }}
-   {{end -}}
-  ]
- }
-{% endraw %}
+    "reply_markup": {
+    "inline_keyboard": [
+    {{ lookup('file', 'links.go') | indent(4) }}
+    ]
+  }
 
 url: https://api.telegram.org/bot{{ vault_telegram_alert_bot_token }}/sendMessage
 
