@@ -46,6 +46,15 @@
     | jq -r '.[] | select(.isValidated == false) | .machineId' \
     | xargs -r -n1 cscli machines validate
 
+- name: Create whitelist
+  command: cscli allowlists create le_whitelist -d "home network allowed ips"
+  changed_when: false
+  failed_when: false
+- name: Whitelist self
+  command: cscli allowlists add le_whitelist {{ home_ip }}
+  changed_when: false
+  failed_when: false
+
 - name: Ensure acquisitions directory exists
   file:
     path: /etc/crowdsec/acquis.d
@@ -60,7 +69,7 @@
     - "templates/acquis.d/*.j2"
   notify: restart crowdsec
 
-- name: Deploy telegram notifications config
+- name: Deploy Telegram notifications config
   template:
     src: notifications/telegram.yaml.j2
     dest: /etc/crowdsec/notifications/telegram.yaml
