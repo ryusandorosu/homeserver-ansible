@@ -75,6 +75,20 @@
     dest: /etc/crowdsec/notifications/telegram.yaml
   notify: restart crowdsec
 
+- name: Create override dirs
+  file:
+    path: "{{ systemd_services }}/crowdsec.service.d"
+    state: directory
+    mode: '0755'
+
+- name: Create systemd override for CrowdSec proxy
+  template:
+    src: override/proxy.conf.j2
+    dest: "{{ systemd_services }}/crowdsec.service.d/proxy.conf"
+  notify:
+    - daemon reload
+    - restart crowdsec
+
 - name: Deploy crowdsec profiles config
   template:
     src: profiles.yaml.j2
