@@ -1,11 +1,4 @@
 [Service]
-{# Environment="HTTP_PROXY=http://{{ localhost }}:{{ http_proxy_port }}"
-Environment="HTTPS_PROXY=http://{{ localhost }}:{{ http_proxy_port }}" #}
-{# Environment="HTTP_PROXY=socks5h://{{ localhost }}:{{ socks5_port }}"
-Environment="HTTPS_PROXY=socks5h://{{ localhost }}:{{ socks5_port }}" #}
 Environment="HTTP_PROXY=socks5://{{ localhost }}:{{ socks5_port }}"
 Environment="HTTPS_PROXY=socks5://{{ localhost }}:{{ socks5_port }}"
-{# Environment="HTTP_PROXY=socks5://{{ localhost }}:{{ clash_mixed_port }}"
-Environment="HTTPS_PROXY=socks5://{{ localhost }}:{{ clash_mixed_port }}" #}
-{# Environment="ALL_PROXY=socks5h://{{ localhost }}:{{ socks5_port }}" #}
 Environment="NO_PROXY={{ localhost }},localhost,{{ lan_ip.server }}"
