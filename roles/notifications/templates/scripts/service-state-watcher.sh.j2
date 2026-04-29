@@ -21,9 +21,18 @@ post_and_log() {
   echo "$(date --rfc-3339=seconds) service $s $1" >> {{ custom_logs.services }}
 }
 
+wake_up() {
+  if [[ "$1" == "inactive" ]]; then
+    sleep 5
+    systemctl start "$s"
+    echo "$(date --rfc-3339=seconds) service $s starting" >> {{ custom_logs.services }}
+  fi
+}
+
 for s in "${services[@]}"; do
   state=$(systemctl is-active "$s")
   post_and_log "$state"
+  wake_up "$state"
   last_state[$s]="$state"
 done
 
