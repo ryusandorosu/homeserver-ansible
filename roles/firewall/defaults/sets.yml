@@ -12,3 +12,6 @@ inet_filter_sets:
   asn_blacklist:
     type: ipv4_addr
     flags: interval
+
+firewall_ip_whitelist:
+  - "{{ home_ip }}"

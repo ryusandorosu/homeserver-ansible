@@ -11,6 +11,9 @@ table inet filter {
         {{ key }} {{ value | join(',') }}
 {% endif %}
 {% endfor %}
+{% if key == 'whitelist' %}
+        elements = { {{ firewall_ip_whitelist | join(', ') }} }
+{% endif %}
     }
 {% endfor %}
 
@@ -68,7 +71,7 @@ table inet filter {
 {% for site in nginx_sni %}
         ip daddr {{ site.host }} tcp dport {{ site.port }} drop
 {% endfor %}
-
+        limit rate 5/minute log prefix "nft-forward-drop: " flags all counter drop
     }
 
     chain output {
