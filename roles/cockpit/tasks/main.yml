@@ -18,20 +18,37 @@
     - daemon reload
     - restart cockpit socket
 
+# - name: Deploy socket replacement
+#   template:
+#     src: cockpit.socket.j2
+#     dest: /usr/lib/systemd/system/cockpit.socket
+#   notify:
+#     - daemon reload
+#     - restart cockpit socket
+
 - name: Enable cockpit
   systemd:
     name: cockpit
     enabled: yes
     state: started
 
-- name: Remove cockpit motd
-  file:
-    path: /etc/issue.d/cockpit.issue
-    state: absent
-
 - name: Disable cockpit issue
+  systemd:
+    name: cockpit-issue
+    enabled: no
+    state: stopped
+  failed_when: false
+
+- name: Remove cockpit motd and its creating services
   file:
-    src: /dev/null
-    dest: /run/cockpit/issue
-    state: link
-    force: yes
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/issue.d/cockpit.issue
+    - /run/cockpit/issue
+    - /run/cockpit/active.issue
+    - /run/cockpit/inactive.issue
+    - /usr/lib/systemd/system/cockpit-issue.service
+    - /usr/share/cockpit/issue/inactive.issue
+    - /usr/lib/tmpfiles.d/cockpit-ws.conf
+    # - /usr/share/cockpit/issue/update-issue #final boss
