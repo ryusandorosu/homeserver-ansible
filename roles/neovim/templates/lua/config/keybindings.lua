@@ -5,6 +5,9 @@ vim.keymap.set('i', '<C-Up>', "<Esc>:m .-2<CR>==gi", { desc = "Move line up" })
 vim.keymap.set('i', '<C-Down>', "<Esc>:m .+1<CR>==gi", { desc = "Move line down" })
 vim.keymap.set('v', '<C-Up>', ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 vim.keymap.set('v', '<C-Down>', ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+-- indentation
+vim.keymap.set('v', '<Tab>', '>gv')
+vim.keymap.set('v', '<S-Tab>', '<gv')
 
 -- line duplication
 -- NORMAL
