@@ -32,6 +32,7 @@ services:
   privoxy:
     image: vimagick/privoxy
     container_name: {{ docker.privoxy }}
+    restart: unless-stopped
     ports:
       - "{{ http_proxy_port }}:{{ http_proxy_port }}"
     volumes:
