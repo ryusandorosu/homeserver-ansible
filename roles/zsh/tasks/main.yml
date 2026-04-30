@@ -35,3 +35,10 @@
     src: "/home/{{ user }}/{{ zsh_repo_dir }}/.zshrc"
     dest: "/home/{{ user }}/.zshrc"
     state: link
+
+- name: Symlink custom theme - passion
+  become_user: "{{ user }}"
+  file:
+    src: "/home/{{ user }}/{{ zsh_repo_dir }}/passion.zsh-theme"
+    dest: "/home/{{ user }}/.oh-my-zsh/themes/passion.zsh-theme"
+    state: link
