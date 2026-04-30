@@ -1,6 +1,8 @@
 - name: Install zsh
   apt:
-    name: zsh
+    name:
+      - zsh
+      - bc
     state: present
 
 - name: Clone oh-my-zsh
