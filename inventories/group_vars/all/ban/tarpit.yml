@@ -2,6 +2,7 @@ tarpit:
   - \.php
   - \.env
   - \.git
+  - \.gitconfig
   - \.sql
   - \.bak
   - \.old
@@ -13,14 +14,36 @@ tarpit:
   - \.htaccess
   - \.DS_Store
   - \.go
+  - \.yml
+  - \.yaml
+  - \.xml
+  - \.toml
+  - \.json
+  - \.tfstate
+  - \.tfvars
+  - \.tfrc
+  - \.pgpass
+  - \.netrc
+  - \.key
+  - \.local
+  - \.s3cfg
+  - \.ini
+  - \.zip
+  - \.tar
+  - \.pypirc
   - \.well-known/(?!acme-challenge)
   - wp-admin
   - wp-login
   - wp-config
   - wordpress
   - xmlrpc
+  - aws_credentials
   - phpmyadmin
   - phpunit
+  - phpinfo
+  - docker
+  - docker-compose
+  - backup
   - id_rsa
   - login
   - vendor
@@ -65,3 +88,10 @@ tarpit:
   - contact
   - about
   - txets
+  - terraform
+  - firebase
+  - sendgrid
+  - heapdump
+  - configprops
+  - credentials
+  - appsettings
