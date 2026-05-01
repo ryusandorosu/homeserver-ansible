@@ -24,6 +24,7 @@ table inet filter {
         ct state established,related accept
         iif lo accept
 
+        ip saddr @whitelist log prefix "nft-whitelist-accept: " accept
         ip saddr @whitelist accept
 {% for key, set in inet_filter_sets.items() if key != "whitelist" %}
         ip saddr @{{ key }} drop

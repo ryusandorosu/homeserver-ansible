@@ -1,6 +1,9 @@
 inet_filter_sets:
   whitelist:
     type: ipv4_addr
+    flags:
+      - interval
+      - timeout
   blacklist:
     type: ipv4_addr
     flags:
