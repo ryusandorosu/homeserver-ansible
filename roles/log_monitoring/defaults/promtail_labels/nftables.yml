@@ -1,0 +1,22 @@
+nftlog_prefix:
+  - chain
+  - action
+
+nftlog_labels:
+  - SRC
+  - DST
+  - PROTO
+  - SPT
+  - DPT
+  - MAC
+  - MACSRC
+  - MACDST
+  - MACPROTO
+
+nftlog_relabels:
+  interface_in:
+    regex: IN
+    label: iif
+  interface_out:
+    regex: OUT
+    label: oif

@@ -1,4 +1,4 @@
 docker_interfaces:
   - docker*
   - br-*
-  # - veth*
+  - veth*

@@ -1,4 +1,4 @@
 [Definition]
 
 failregex = ^<HOST> .*"(GET|POST).*({{ tarpit_regex }}).*"
-ignoreregex = .*Let's Encrypt.*
+ignoreregex = .*({{ script_ignoreregex }}).*

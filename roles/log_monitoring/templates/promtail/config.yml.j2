@@ -32,6 +32,7 @@ scrape_configs:
           method:
           uri:
           ip:
+          agent:
 
       - template:
           source: uri
@@ -48,15 +49,9 @@ scrape_configs:
           source: ip
           db_type: city
       - labeldrop:
-          - geoip_city_name
-          - geoip_continent_code
-          - geoip_continent_name
-          - geoip_location_latitude
-          - geoip_location_longitude
-          - geoip_postal_code
-          - geoip_subdivision_code
-          - geoip_subdivision_name
-          - geoip_timezone
+{% for label in geoip_labeldrop %}
+          - {{ label }}
+{% endfor %}
       - labels:
           geoip_country_name:
 {% endif %}
@@ -67,12 +62,10 @@ scrape_configs:
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
     relabel_configs:
-      - source_labels: ['__meta_docker_container_name']
-        target_label: container
-      - source_labels: ['__meta_docker_container_log_stream']
-        target_label: stream
-      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
-        target_label: service
+{% for key, value in docker_relabel.items() %}
+      - source_labels: ['{{ value.source }}']
+        target_label: {{ value.target }}
+{% endfor %}
     pipeline_stages:
       - docker: {}
 
@@ -85,3 +78,45 @@ scrape_configs:
     relabel_configs:
       - source_labels: ['__journal__systemd_unit']
         target_label: unit
+
+  - job_name: nftables
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nftables
+          __path__: {{ nftlog }}
+    pipeline_stages:
+      - match:
+          selector: '{job="nftables"}'
+          stages:
+            - regex:
+                expression: '{% for label in nftlog_prefix %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
+{% for label in nftlog_labels %}
+            - regex:
+                expression: '{{ label }}=(?P<{{ label | lower }}>\S+)'
+{% endfor %}
+{% for key, value in nftlog_relabels.items() %}
+            - regex:
+                expression: '{{ value.regex }}=(?P<{{ value.label }}>\S+)'
+{% endfor %}
+            - labels:
+{% for label in nftlog_prefix %}
+                {{ label }}:
+{% endfor %}
+{% for label in nftlog_labels %}
+                {{ label | lower }}:
+{% endfor %}
+{% for key, value in nftlog_relabels.items() %}
+                {{ value.label }}:
+{% endfor %}
+            - geoip:
+                db: {{ container_geoip_plugin }}
+                source: src
+                db_type: city
+            - labeldrop:
+{% for label in geoip_labeldrop %}
+                - {{ label }}
+{% endfor %}
+            - labels:
+                geoip_country_name:

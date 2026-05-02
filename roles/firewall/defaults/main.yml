@@ -2,3 +2,4 @@
 unit_override:
   - network-online.target
   - wg-quick@{{ wireguard_interface }}.service
+log_prefix: "nft "

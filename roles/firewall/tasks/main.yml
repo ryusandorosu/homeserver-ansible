@@ -45,6 +45,12 @@
     dest: "{{ systemd_services }}/nftables.service.d/override.conf"
   notify: daemon reload
 
+- name: Deploy rsyslog config to log separately from kernel logs
+  template:
+    src: rsyslog.conf.j2
+    dest: /etc/rsyslog.d/10-nftables.conf
+  notify: restart rsyslog
+
 - name: Deploy nftables config
   template:
     src: nftables.conf.j2

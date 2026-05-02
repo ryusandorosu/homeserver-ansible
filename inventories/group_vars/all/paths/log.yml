@@ -7,3 +7,5 @@ custom_logs:
   wireguard: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
+
+nftlog: /var/log/nftables.log

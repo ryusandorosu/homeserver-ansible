@@ -1,3 +1,8 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/promtail_labels/*.yml
+
 - name: Create Loki directories
   file:
     path: "{{ item }}"

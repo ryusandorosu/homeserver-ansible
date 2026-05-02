@@ -24,7 +24,7 @@ table inet filter {
         ct state established,related accept
         iif lo accept
 
-        ip saddr @whitelist log prefix "nft-whitelist-accept: " accept
+        ip saddr @whitelist log prefix "{{ log_prefix }}chain=input action=accept: " accept
         ip saddr @whitelist accept
 {% for key, set in inet_filter_sets.items() if key != "whitelist" %}
         ip saddr @{{ key }} drop
@@ -34,7 +34,8 @@ table inet filter {
 {% endfor %}
         ip saddr {{ docker_network }} ip daddr {{ home_network }} accept
 
-        tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept
+        {# tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept #}
+        iif "{{ wireguard_interface }}" tcp dport {{ sshd_port }} ct state new accept
 {% for port in firewall_tcp_ports %}{% if port != sshd_port %}
         tcp dport {{ port }} accept
 {% endif %}{% endfor %}
@@ -47,7 +48,7 @@ table inet filter {
         iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_tcp_ports | join(', ') }} } accept
         iif "{{ lan_interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept
 
-        limit rate 5/minute log prefix "nft-input-drop: " flags all counter drop
+        limit rate 5/minute log prefix "{{ log_prefix }}chain=input action=drop: " flags all counter drop
     }
 
     chain forward {
@@ -72,7 +73,7 @@ table inet filter {
 {% for site in nginx_sni %}
         ip daddr {{ site.host }} tcp dport {{ site.port }} drop
 {% endfor %}
-        limit rate 5/minute log prefix "nft-forward-drop: " flags all counter drop
+        limit rate 5/minute log prefix "{{ log_prefix }}chain=forward action=drop: " flags all counter drop
     }
 
     chain output {

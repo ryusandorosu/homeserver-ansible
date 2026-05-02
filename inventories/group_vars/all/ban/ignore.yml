@@ -1,0 +1,10 @@
+script_ignorelist:
+  - Let's Encrypt
+  - Hello from Palo Alto Networks
+
+fail2ban_ignoreip:
+  - "{{ home_ip }}"
+  - "{{ home_network }}"
+  - "{{ wireguard_network }}"
+  - "{{ localhost }}"
+  - ::1
