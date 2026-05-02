@@ -1,0 +1,82 @@
+nftables_expr: >-
+  job = "nftables",
+  {{ nftables_filters | join('|^$", ') + '"' }}
+# |^$ - empty label value fallback
+
+expr_rate: 1m
+nftables_dashboard:
+  logs:
+    title: Firewall logs
+    type: logs
+    expr: '{ {{ nftables_expr }} }'
+
+  dropped:
+    title: Dropped packets
+    type: heatmap
+    expr: >
+      sum(
+        count_over_time(
+          {
+            {{ nftables_expr }},
+            action="drop"
+          }
+          [{{ expr_rate }}]
+        )
+      )
+
+  allowed:
+    title: Allowed packets
+    type: heatmap
+    expr: >
+      sum(
+        count_over_time(
+          {
+            {{ nftables_expr }},
+            action="accept"
+          }
+          [{{ expr_rate }}]
+        )
+      )
+
+  top_src:
+    title: Top source IPs
+    type: heatmap
+    expr: >
+      topk(10,
+        sum by (src) (
+          count_over_time(
+            {
+              {{ nftables_expr }}
+            }
+            [{{ expr_rate }}]
+          )
+        )
+      )
+
+  top_dst_ports:
+    title: Top destination ports
+    type: heatmap
+    expr: >
+      topk(10,
+        sum by (dpt) (
+          count_over_time(
+            {
+              {{ nftables_expr }}
+            }
+            [{{ expr_rate }}]
+          )
+        )
+      )
+
+  countries:
+    title: Traffic by country
+    type: timeseries
+    expr: >
+      sum by (geoip_country_name) (
+        count_over_time(
+          {
+            {{ nftables_expr }}
+          }
+          [{{ expr_rate }}]
+        )
+      )

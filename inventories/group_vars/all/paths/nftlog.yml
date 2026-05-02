@@ -1,4 +1,6 @@
-nftlog_prefix:
+nft_log_prefix: "nft "
+
+nftlog_prefix_labels:
   - chain
   - action
 

@@ -1,8 +1,20 @@
-- name: Load dashboards values
-  include_vars: "{{ item }}"
-  with_fileglob:
-    - defaults/dashboards/*.yml
-    - defaults/alerting/*.yml
+# - name: Load dashboards values
+#   include_vars: "{{ item }}"
+#   with_fileglob:
+#     - defaults/dashboards/*.yml
+#     - defaults/alerting/*.yml
+#     - defaults/dashboards/labels/*.yml
+#     - defaults/dashboards/panels/*.yml
+- name: Load all defaults recursively
+  include_vars:
+    dir: "{{ role_path }}/defaults"
+    extensions: ["yml"]
+# - name: Load all defaults recursively
+#   include_vars:
+#     dir: "{{ role_path }}/defaults"
+#     extensions:
+#       - yml
+#     ignore_unknown_extensions: true
 
 - name: Create grafana directory
   file:

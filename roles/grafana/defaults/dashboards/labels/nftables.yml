@@ -1,0 +1,22 @@
+nftables_labels: >-
+  {{
+    (
+      nftlog_prefix_labels + nftlog_labels +
+      (
+        nftlog_relabels.values()
+        | map(attribute='label'
+      )
+      | list)
+    )
+    | map('lower')
+  }}
+
+nftables_filters: >-
+  {{
+    nftables_labels
+    | zip(
+        nftables_labels
+      )
+    | map('join', ' =~ "$')
+    | list
+  }}

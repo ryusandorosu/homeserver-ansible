@@ -1,0 +1,66 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+{% for key, panel in nftables_dashboard.items() %}
+    {
+      "type": "{{ panel.type }}",
+      "title": "{{ panel.title }}",
+      "targets": [
+        {
+          "expr": {{ panel.expr | to_json }},
+          "refId": "{{ loop.index }}"
+        }
+      ],
+{% if panel.type == "logs" %}
+      "options": {
+        "fontSize": "small",
+        "showControls": true
+      },
+{% elif panel.type == "heatmap" %}
+      "options": {
+        "calculate": false
+      },
+{% endif %}
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 0 + (loop.index0 * 8) }}
+      }
+    }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "loki",
+    "nftables"
+  ],
+  "templating": {
+    "list": [
+{% for label in nftables_labels %}
+      {
+        "name": "{{ label }}",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "{{ loki_uid }}"
+        },
+        "includeAll": true,
+        "multi": true,
+        "query": "label_values({job=\"nftables\"}, {{ label }})"
+      }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+    ]
+  },
+  "title": "Loki: NFTables Logs & Monitoring",
+  "version": 1
+}

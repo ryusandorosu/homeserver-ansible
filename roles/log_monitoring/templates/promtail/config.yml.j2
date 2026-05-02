@@ -91,7 +91,7 @@ scrape_configs:
           selector: '{job="nftables"}'
           stages:
             - regex:
-                expression: '{% for label in nftlog_prefix %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
+                expression: '{% for label in nftlog_prefix_labels %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
 {% for label in nftlog_labels %}
             - regex:
                 expression: '{{ label }}=(?P<{{ label | lower }}>\S+)'
@@ -101,7 +101,7 @@ scrape_configs:
                 expression: '{{ value.regex }}=(?P<{{ value.label }}>\S+)'
 {% endfor %}
             - labels:
-{% for label in nftlog_prefix %}
+{% for label in nftlog_prefix_labels %}
                 {{ label }}:
 {% endfor %}
 {% for label in nftlog_labels %}
