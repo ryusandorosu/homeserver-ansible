@@ -22,3 +22,7 @@ nftlog_relabels:
   interface_out:
     regex: OUT
     label: oif
+  exclude_source_ip:
+    regex: SRC
+    label: exclude_src
+    default: "{{ home_ip }}"

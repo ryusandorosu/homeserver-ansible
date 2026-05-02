@@ -19,4 +19,5 @@ nftables_filters: >-
       )
     | map('join', ' =~ "$')
     | list
+    | regex_replace('exclude_src =~','exclude_src !~')
   }}
