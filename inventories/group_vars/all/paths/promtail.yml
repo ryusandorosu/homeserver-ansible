@@ -8,6 +8,9 @@ promtail_logs:
   telegram:
     name: Telegram notifications
     path: "{{ telegram_bot_logs }}/*.log"
+  nftables:
+    name: nftables actions
+    path: "{{ nftlog }}"
   ssh:
     name: SSH authentication
     path: "{{ sshd_log }}"
