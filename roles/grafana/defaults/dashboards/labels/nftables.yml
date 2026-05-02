@@ -4,9 +4,9 @@ nftables_labels: >-
       nftlog_prefix_labels + nftlog_labels +
       (
         nftlog_relabels.values()
-        | map(attribute='label'
+        | map(attribute='label')
+        | list
       )
-      | list)
     )
     | map('lower')
   }}
@@ -14,9 +14,7 @@ nftables_labels: >-
 nftables_filters: >-
   {{
     nftables_labels
-    | zip(
-        nftables_labels
-      )
+    | zip(nftables_labels)
     | map('join', ' =~ "$')
     | list
     | regex_replace('exclude_src =~','exclude_src !~')

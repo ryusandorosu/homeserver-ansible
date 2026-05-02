@@ -1,6 +1,10 @@
 nftables_expr: >-
   job = "nftables",
-  {{ nftables_filters | join('|^$", ') + '"' }}
+  {{
+    nftables_filters
+    | join('|^$", ')
+    + '"'
+  }}
 # |^$ - empty label value fallback
 
 expr_rate: 1m
