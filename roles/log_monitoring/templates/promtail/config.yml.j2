@@ -94,11 +94,11 @@ scrape_configs:
                 expression: '{% for label in nftlog_prefix_labels %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
 {% for label in nftlog_labels %}
             - regex:
-                expression: '{{ label }}=(?P<{{ label | lower }}>\S+)'
+                expression: ' {{ label }}=(?P<{{ label | lower }}>\S+)'
 {% endfor %}
 {% for key, value in nftlog_relabels.items() %}
             - regex:
-                expression: '{{ value.regex }}=(?P<{{ value.label }}>\S+)'
+                expression: ' {{ value.regex }}=(?P<{{ value.label }}>\S+)'
 {% endfor %}
             - labels:
 {% for label in nftlog_prefix_labels %}
