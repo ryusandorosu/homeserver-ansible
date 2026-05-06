@@ -33,6 +33,10 @@ table inet filter {
         ip saddr {{ docker_monitoring_network }} tcp dport {{ port }} accept
 {% endfor %}
         ip saddr {{ docker_network }} ip daddr {{ home_network }} accept
+        ip saddr {{ lan_ip.router }} ip daddr 224.0.0.1 accept
+{# ip saddr fe80:0000:0000:0000:da0d:17ff:fedf:d182 ip daddr ff02:0000:0000:0000:0000:0000:0000:0001 accept #}
+{# icmpv6 type { 133, 134, 135, 136 } accept #}
+        icmpv6 type { 130, 134 } accept
 
 {# tcp dport {{ sshd_port }} ct state new limit rate 10/minute burst 20 packets accept #}
         iif "{{ wireguard_interface }}" tcp dport {{ sshd_port }} ct state new accept
@@ -45,9 +49,15 @@ table inet filter {
 {% endfor %}
 
         iif "{{ wireguard_interface }}" accept
+        {# iif "{{ wireguard_interface }}" tcp dport { {{ firewall_lan_tcp_ports | join(', ') }} } accept
+        iif "{{ wireguard_interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept #}
         iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_tcp_ports | join(', ') }} } accept
         iif "{{ lan_interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept
+{% for interface in docker_interfaces %}
+        iifname "{{ interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept
+{% endfor %}
 
+        {# tcp dport { 137, 138, 139, 445 } log prefix "{{ nft_log_prefix }}chain=input action=SMB_DEBUG: " #}
         limit rate 5/minute log prefix "{{ nft_log_prefix }}chain=input action=drop: " flags all counter drop
     }
 
@@ -55,6 +65,8 @@ table inet filter {
         type filter hook forward priority 0;
         policy drop;
 
+{# tcp flags syn tcp option maxseg size set rt mtu #}
+        {# tcp flags syn tcp option maxseg size set 1360 #}
         ct state established,related accept
 
 {% for interface in docker_interfaces %}
