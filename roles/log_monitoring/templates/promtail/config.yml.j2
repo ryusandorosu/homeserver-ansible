@@ -33,6 +33,10 @@ scrape_configs:
           uri:
           ip:
           agent:
+      - regex:
+          expression: '^(?P<exclude_ip>\S+)'
+      - labels:
+          exclude_ip:
 
       - template:
           source: uri

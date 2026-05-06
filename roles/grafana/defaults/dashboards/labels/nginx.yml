@@ -4,6 +4,8 @@ nginx_labels:
   method:
     operator: '=~'
   ip:
+    operator: '=~'
+  exclude_ip:
     operator: '!~'
     default: "{{ home_ip }}"
 
