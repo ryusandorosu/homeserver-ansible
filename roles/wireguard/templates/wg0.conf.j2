@@ -2,6 +2,7 @@
 PrivateKey = {{ vault_wireguard_private_key }}
 Address = {{ wireguard_server_ip }}/24
 ListenPort = {{ wireguard_port }}
+MTU = {{ wireguard_mtu }}
 
 {% for peer in wireguard_peers %}
 # {{ wireguard_devices[peer.device].name }}
