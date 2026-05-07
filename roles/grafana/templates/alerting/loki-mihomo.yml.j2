@@ -7,10 +7,12 @@ groups:
     interval: {{ mihomo_alerts.interval }}
     rules:
 {% for key, rule in mihomo_metrics.items() %}
+{% set reduce_refid = key + '_value' %}
+{% set condition_refid = key + '_condition' %}
       - uid: {{ key }}
         title: {{ rule.alert.title }}
         data:
-          - refId: {{ rule.draw.ref }}
+          - refId: {{ key }}
             relativeTimeRange:
               from: {{ mihomo_alerts.seek_period | regex_replace('m', '') | int * 60 }}
               to: 0
@@ -26,9 +28,9 @@ groups:
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: {{ rule.query.type }}
-              refId: {{ rule.draw.ref }}
+              refId: {{ key }}
 {% if rule.query.type == 'range' %}
-          - refId: {{ mihomo_alerts.ref.reduce }}
+          - refId: {{ reduce_refid }}
             datasourceUid: __expr__
             model:
               conditions:
@@ -49,13 +51,13 @@ groups:
                   name: Expression
                   type: __expr__
                   uid: __expr__
-              expression: {{ rule.draw.ref }}
+              expression: {{ key }}
               intervalMs: 1000
               maxDataPoints: 43200
               reducer: last
-              refId: {{ mihomo_alerts.ref.reduce }}
+              refId: {{ reduce_refid }}
               type: reduce
-          - refId: {{ mihomo_alerts.ref.condition }}
+          - refId: {{ condition_refid }}
             datasourceUid: __expr__
             model:
               conditions:
@@ -82,14 +84,14 @@ groups:
                   name: Expression
                   type: __expr__
                   uid: __expr__
-              expression: {{ mihomo_alerts.ref.reduce }}
+              expression: {{ reduce_refid }}
               intervalMs: 1000
               maxDataPoints: 43200
-              refId: {{ mihomo_alerts.ref.condition }}
+              refId: {{ condition_refid }}
               type: threshold
 {% endif %}
-        condition: {% if rule.query.type == 'instant' %}{{ rule.draw.ref }}
-{% elif rule.query.type == 'range' %}{{ mihomo_alerts.ref.condition }}
+        condition: {% if rule.query.type == 'instant' %}{{ key }}
+{% elif rule.query.type == 'range' %}{{ condition_refid }}
 {% endif %}
         for: {{ mihomo_alerts.pending_period }}
         dashboardUid: {{ mihomo_dashboard_link.uid }}
@@ -97,6 +99,7 @@ groups:
         annotations:
           description: "{{ rule.alert.description }}"
           threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
+          alertname: "{{ rule.alert.title }}"
           __dashboardUid__: {{ mihomo_dashboard_link.uid }}
           __panelId__: "{{ mihomo_dashboard_link.panel_id.normal }}"
           __alertUid__: {{ key }}

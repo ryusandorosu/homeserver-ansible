@@ -20,7 +20,7 @@
         {
           "expr": {{ imported.mihomo_loki_query(value, docker.mihomo, mihomo_alerts.seek_period) | to_json }},
           "legendFormat": "{{ value.draw.name }}",
-          "refId": "{{ value.draw.ref }}"
+          "refId": "{{ key }}"
         }{% if not loop.last %},
 {% endif %}
 {% endfor %}

@@ -7,7 +7,6 @@ mihomo_dashboard_link:
 mihomo_metrics:
   proxy_up_nodes:
     draw:
-      ref: A
       name: up
       color: semi-dark-green
     query:
@@ -25,7 +24,6 @@ mihomo_metrics:
       value: 0
   proxy_down_nodes:
     draw:
-      ref: B
       name: down
       color: dark-red
     query:
@@ -43,7 +41,6 @@ mihomo_metrics:
       value: 12
   proxy_healthcheck_latency:
     draw:
-      ref: C
       name: ">1000ms"
       color: dark-yellow
     query:
@@ -61,9 +58,6 @@ mihomo_metrics:
       value: 10
 
 mihomo_alerts:
-  ref:
-    reduce: D
-    condition: E
   interval: 1m
   seek_period: 10m
   pending_period: 1m
