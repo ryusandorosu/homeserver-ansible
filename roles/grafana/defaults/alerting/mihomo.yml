@@ -18,7 +18,6 @@ mihomo_metrics:
       title: Mihomo proxy is unavailable
       description: All proxy server nodes do not respond
       severity: error
-      datasource: loki
     condition:
       operator: "=="
       value: 0
@@ -35,7 +34,6 @@ mihomo_metrics:
       title: Mihomo proxy health degradation
       description: Count of nodes which health checks have been failed
       severity: warning
-      datasource: loki
     condition:
       operator: ">"
       value: 12
@@ -52,7 +50,6 @@ mihomo_metrics:
       title: Mihomo proxy increased latency
       description: Count of nodes having long duration of healthchecks (>1000ms)
       severity: warning
-      datasource: loki
     condition:
       operator: ">"
       value: 10
