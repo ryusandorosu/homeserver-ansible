@@ -44,7 +44,7 @@ nftables_dashboard:
 
   top_src:
     title: Top source IPs
-    type: heatmap
+    type: timeseries
     expr: >
       topk(10,
         sum by (src) (

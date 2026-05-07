@@ -36,7 +36,7 @@ nginx_dashboard:
 
   top_urls:
     title: Top URLs
-    type: heatmap
+    type: timeseries
     expr: >
       topk(10,
         sum by (uri) (
@@ -51,7 +51,7 @@ nginx_dashboard:
 
   top_ips:
     title: Top IPs
-    type: heatmap
+    type: timeseries
     expr: >
       topk(10,
         sum by (ip) (
@@ -171,7 +171,7 @@ nginx_dashboard:
 
   latency_p95:
     title: 95 percentile latency
-    type: heatmap
+    type: timeseries
     expr: >
       quantile_over_time(0.95, 
         {
@@ -184,7 +184,7 @@ nginx_dashboard:
 
   latency_p99:
     title: 99 percentile latency
-    type: heatmap
+    type: timeseries
     expr: >
       quantile_over_time(0.99,
         {
@@ -197,7 +197,7 @@ nginx_dashboard:
 
   latency_avg:
     title: Average latency
-    type: heatmap
+    type: timeseries
     expr: >
       avg_over_time(
         {
