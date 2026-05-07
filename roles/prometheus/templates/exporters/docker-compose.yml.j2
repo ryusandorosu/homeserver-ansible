@@ -11,6 +11,8 @@ services:
       - /:/host:ro,rslave
     command:
       - '--path.rootfs=/host'
+    ports:
+      - "{{ localhost }}:{{ node_exporter_port }}:{{ node_exporter_port }}"
     networks:
       - monitoring
 

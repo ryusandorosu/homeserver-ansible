@@ -17,5 +17,7 @@ services:
       - /etc/machine-id:/etc/machine-id:ro
       - /run/systemd/journal:/run/systemd/journal:ro
       - "{{ geoip_plugin }}:{{ container_geoip_plugin }}"
+    ports:
+      - "{{ localhost }}:{{ promtail_port }}:{{ promtail_port }}"
     networks:
       - monitoring
