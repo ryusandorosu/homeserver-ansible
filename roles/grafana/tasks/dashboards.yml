@@ -11,6 +11,9 @@
 #https://grafana.com/grafana/dashboards/18643-synology-snmp/
 #https://grafana.com/grafana/dashboards/13659-blackbox-exporter-http-prober/
 #https://grafana.com/grafana/dashboards/14523-blackbox-exporter-node/ #also good one
+#https://grafana.com/grafana/dashboards/7171-zabbix-infrastructure-problems/
+#https://grafana.com/grafana/dashboards/11209-zabbix-with-template-linux-servers-share/
+#https://grafana.com/grafana/dashboards/5363-zabbix-full-server-status/
 
 - name: Deploy Grafana dashboards
   copy:

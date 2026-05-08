@@ -1,0 +1,29 @@
+f2b_event_labels:
+  timestamp:
+    bash: (date --iso-8601=seconds)
+  jail:
+    bash: jail_name
+    label: true
+  ip:
+    bash: banned_ip
+    label: true
+  hostname:
+    bash: (hostname)
+    label: true
+  bantime:
+    bash: BANTIME
+  failures:
+    bash: failures
+  ipfailures:
+    bash: ipfailures
+  jailfailures:
+    bash: ipjailfailures
+  logpath:
+    bash: logpath
+  logtext:
+    bash: logtext
+  country:
+    bash: country
+    label: true
+
+f2b_event_dashboard_uid: fail2ban_events

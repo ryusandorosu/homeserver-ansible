@@ -1,0 +1,16 @@
+f2b_labels: >-
+  {{
+    f2b_event_labels
+    | dict2items
+    | selectattr('value.label', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+f2b_filters: >-
+  {{
+    f2b_labels
+    | zip(f2b_labels)
+    | map('join', ' =~ "$')
+    | list
+  }}

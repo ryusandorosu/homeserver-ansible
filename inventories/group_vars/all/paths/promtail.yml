@@ -14,7 +14,7 @@ promtail_logs:
   ssh:
     name: SSH authentication
     path: "{{ sshd_log }}"
-  fail2ban:
+  fail2ban_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
   crowdsec:
@@ -39,6 +39,10 @@ promtail_logs:
   nginx_error:
     name: Nginx errors
     path: /var/log/nginx/error.log
+  fail2ban_events:
+    name: Fail2Ban Events
+    path: "{{ custom_logs.fail2ban }}"
+    pipeline: fail2ban
 
 promtail_systemd:
   NetworkManager:

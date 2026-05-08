@@ -17,7 +17,8 @@ scrape_configs:
           job: {{ job.name }}
           host: {{ inventory_hostname }}
           __path__: {{ job.path }}
-{% if job.pipeline is defined and job.pipeline == 'nginx' %}
+{% if job.pipeline is defined %}
+{% if job.pipeline == 'nginx' %}
     pipeline_stages:
       - regex:
           source: filename
@@ -33,6 +34,7 @@ scrape_configs:
           uri:
           ip:
           agent:
+
       - regex:
           expression: '^(?P<exclude_ip>\S+)'
       - labels:
@@ -58,6 +60,20 @@ scrape_configs:
 {% endfor %}
       - labels:
           geoip_country_name:
+{% elif job.pipeline == 'fail2ban' %}
+    pipeline_stages:
+      - json:
+          expressions:
+{% for json, value in f2b_event_labels.items() %}
+            {{ json }}:
+{% endfor %}
+      - labels:
+{% for json, value in f2b_event_labels.items() %}
+{% if value.label is defined %}
+          {{ json }}:
+{% endif %}
+{% endfor %}
+{% endif %}
 {% endif %}
 
 {% endfor %}
