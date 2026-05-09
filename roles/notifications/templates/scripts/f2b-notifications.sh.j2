@@ -36,10 +36,28 @@ EVENT=$(jq -nc \
 [[ -z "{{ custom_logs.fail2ban }}" ]] && touch {{ custom_logs.fail2ban }}
 echo "$EVENT" >> {{ custom_logs.fail2ban }}
 
+urlencode() { jq -nr --arg v "$1" '$v|@uri'; }
+GRAFANA+="https://grafana.{{ domain }}/"
+GRAFANA+="d/{{ f2b_event_dashboard.uid }}/"
+GRAFANA+="{{
+  f2b_event_dashboard.title
+  | lower
+  | regex_replace(':','3a')
+  | regex_replace('&','and')
+  | regex_replace(' ','-')
+  | regex_replace('---','-')
+}}"
+GRAFANA+="?orgId=1&from=now-6h&to=now&timezone=browser"
+{% for label, value in f2b_event_labels.items() if value.label is defined %}
+GRAFANA+="&var-{{ label }}=${{ value.bash }}"
+{% endfor %}
+GRAFANA+="&refresh=30s"
+GRAFANA="$(urlencode "$GRAFANA")"
+
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures
-<pre>$(echo $geojson | jq)</pre>
-logpath: <code>$logpath</code>"
+<pre>$(echo "$geojson" | jq)</pre>
+look for matching logs in grafana: <a href=\"$GRAFANA\">dashboard</a>"
 
 {{ telegram_script }} "$MESSAGE" alert "$0" &
 disown
