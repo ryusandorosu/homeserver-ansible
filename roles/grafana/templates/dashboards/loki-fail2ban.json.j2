@@ -17,7 +17,13 @@
 {% if panel.type == "logs" %}
       "options": {
         "fontSize": "small",
-        "showControls": true
+        "showControls": true{% if panel.json is defined %},
+        "wrapLogMessage": true,
+        "prettifyLogMessage": true,
+        "enableLogDetails": true,
+        "showLabels": true,
+        "showTime": true,
+        "syntaxHighlighting": true{% endif %}
       },
 {% elif panel.type == "heatmap" %}
       "options": {
@@ -69,7 +75,7 @@
 
     ]
   },
-  "title": "Loki: Fail2Ban Ban Events - Logs & Monitoring",
-  "uid": "{{ f2b_event_dashboard_uid }}",
+  "title": "{{ f2b_event_dashboard.title }}",
+  "uid": "{{ f2b_event_dashboard.uid }}",
   "version": 1
 }

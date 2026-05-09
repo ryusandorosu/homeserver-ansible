@@ -68,10 +68,8 @@ scrape_configs:
             {{ json }}:
 {% endfor %}
       - labels:
-{% for json, value in f2b_event_labels.items() %}
-{% if value.label is defined %}
+{% for json, value in f2b_event_labels.items() if value.label is defined %}
           {{ json }}:
-{% endif %}
 {% endfor %}
 {% endif %}
 {% endif %}

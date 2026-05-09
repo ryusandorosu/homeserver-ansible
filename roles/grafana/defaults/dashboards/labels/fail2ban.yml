@@ -14,3 +14,11 @@ f2b_filters: >-
     | map('join', ' =~ "$')
     | list
   }}
+
+f2b_matchlog_filters: >-
+  {{
+    f2b_labels
+    | zip(f2b_labels)
+    | map('join', '={{ .')
+    | list
+  }}

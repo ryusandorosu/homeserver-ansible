@@ -26,4 +26,6 @@ f2b_event_labels:
     bash: country
     label: true
 
-f2b_event_dashboard_uid: fail2ban_events
+f2b_event_dashboard:
+  uid: fail2ban_events
+  title: "Loki: Fail2Ban Ban Events - Logs & Monitoring"
