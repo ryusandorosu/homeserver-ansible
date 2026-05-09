@@ -6,11 +6,11 @@ datasources:
     access: proxy
     url: http://{{ docker.loki }}:{{ loki_port }}
     isDefault: true
-#    jsonData:
-#      derivedFields:
-#        - matcherRegex: '"ip":"([^"]+)"'
-#          name: ip
-#          url: 'https://ipinfo.io/$${__value.raw}'
+    jsonData:
+      derivedFields:
+        - matcherRegex: '([0-9]{1,3}(?:\.[0-9]{1,3}){3})'
+          name: IP Info
+          url: 'https://ipinfo.io/$${__value.raw}'
   - name: Prometheus
     type: prometheus
     access: proxy
