@@ -9,8 +9,12 @@ nuc-server grafana alert: {{ .Status }}:{{ " " }}
 {{ with .Labels.severity -}}{{ . }}{{ else -}}n/a{{ end }}
 Alert: <code>{{ with .Annotations.alertname }}{{ . }}{{ else with .Labels.alertname }}{{ . }}{{ else }}n/a{{ end }}</code>
 Value: <code>
-{{- if .ValueString -}}
-{{ reReplaceAll "(?s).*var='[^']*_value'.*?value=([0-9.]+).*" "$1" .ValueString }}
+{{- if .Values -}}
+{{- range $$k, $$v := .Values -}}
+{{- if match ".*_value" $$k -}}
+{{ $$v }}
+{{- end -}}
+{{- end -}}
 {{- else -}}
 n/a
 {{- end -}}

@@ -99,8 +99,6 @@ groups:
         annotations:
           description: "{{ rule.alert.description }}"
           threshold: "{{ rule.condition.operator }} {{ rule.condition.value }}"
-{# possibly not needed: #}
-          alertname: "{{ rule.alert.title }}"
           __dashboardUid__: {{ mihomo_dashboard_link.uid }}
           __panelId__: "{{ mihomo_dashboard_link.panel_id.normal }}"
           __alertUid__: {{ key }}
