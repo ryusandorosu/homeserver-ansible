@@ -8,13 +8,8 @@
 {% for key, value in mihomo_dashboard_link.panel_id.items() %}
     {
       "type": "timeseries",
-{% if key == 'normal' %}
-      "title": "Mihomo proxy health",
-      "description": "Count of successful and failed health checks of proxy nodes",
-{% elif key == 'relative' %}
-      "title": "Mihomo proxy health in percents",
-      "description": "Relation of successful and failed health checks of proxy nodes",
-{% endif %}
+      "title": "{% if key == 'normal' %}Mihomo proxy health{% elif key == 'relative' %}Mihomo proxy health in percents{% endif %}",
+      "description": "{% if key == 'normal' %}Count of successful and failed health checks of proxy nodes{% elif key == 'relative' %}Relation of successful and failed health checks of proxy nodes{% endif %}",
       "targets": [
 {% for key, value in mihomo_metrics.items() %}
         {
@@ -30,20 +25,11 @@
         "defaults": {
           "custom": {
             "drawStyle": "line",
-{% if key == 'normal' %}
-            "fillOpacity": 50,
-            "gradientMode": "hue",
-{% elif key == 'relative' %}
-            "fillOpacity": 100,
-            "gradientMode": "none",
-{% endif %}
+            "fillOpacity": {% if key == 'normal' %}50{% elif key == 'relative' %}100{% endif %},
+            "gradientMode": "{% if key == 'normal' %}hue{% elif key == 'relative' %}none{% endif %}",
             "lineWidth": 3,
             "stacking": {
-{% if key == 'normal' %}
-              "mode": "none"
-{% elif key == 'relative' %}
-              "mode": "percent"
-{% endif %}
+              "mode": "{% if key == 'normal' %}none{% elif key == 'relative' %}percent{% endif %}"
             }
           }
         },

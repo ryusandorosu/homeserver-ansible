@@ -51,7 +51,7 @@ nginx_dashboard:
 
   top_ips:
     title: Top IPs
-    type: timeseries
+    type: barchart
     expr: >
       topk(10,
         sum by (ip) (
@@ -67,7 +67,7 @@ nginx_dashboard:
 
   top_countries:
     title: Top countries
-    type: timeseries
+    type: barchart
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
@@ -171,7 +171,7 @@ nginx_dashboard:
 
   latency_p95:
     title: 95 percentile latency
-    type: timeseries
+    type: barchart
     expr: >
       quantile_over_time(0.95, 
         {
@@ -184,7 +184,7 @@ nginx_dashboard:
 
   latency_p99:
     title: 99 percentile latency
-    type: timeseries
+    type: barchart
     expr: >
       quantile_over_time(0.99,
         {
@@ -197,7 +197,7 @@ nginx_dashboard:
 
   latency_avg:
     title: Average latency
-    type: timeseries
+    type: barchart
     expr: >
       avg_over_time(
         {

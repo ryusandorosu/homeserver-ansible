@@ -28,8 +28,18 @@
         "defaults": {
           "custom": {
             "drawStyle": "bars"
+          },
+          "stacking": {
+            "mode": "normal"
           }
         }
+      },
+{% elif panel.type == "barchart" %}
+      "options": {
+        "barWidth": 1,
+        "groupWidth": 1,
+        "fullHighlight": false,
+        "xTickLabelSpacing": 100
       },
 {% endif %}
       "gridPos": {
