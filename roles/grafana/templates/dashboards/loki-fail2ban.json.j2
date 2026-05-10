@@ -21,22 +21,17 @@
         "wrapLogMessage": true,
         "prettifyLogMessage": true,
         "enableLogDetails": true,
-        "showLabels": true,
+        "showLabels": false,
         "showTime": true,
         "syntaxHighlighting": true
 {% endif %}
       },
-{% elif panel.type == "heatmap" %}
+{% elif panel.type == "barchart" %}
       "options": {
-        "calculate": false
-      },
-{% elif panel.type == "timeseries" %}
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars"
-          }
-        }
+        "barWidth": 1,
+        "groupWidth": 1,
+        "fullHighlight": false,
+        "xTickLabelSpacing": 100
       },
 {% endif %}
       "gridPos": {
@@ -76,7 +71,11 @@
 
     ]
   },
-  "title": "{{ f2b_event_dashboard.title }}",
+  "time": {
+    "from": "now-{{ f2b_event_dashboard.showtime }}",
+    "to": "now"
+  },
+  "title": "Loki: Fail2Ban Ban Events - Logs & Monitoring",
   "uid": "{{ f2b_event_dashboard.uid }}",
   "version": 1
 }

@@ -20,7 +20,7 @@ f2b_dashboard:
 
   top_src:
     title: Top banned IPs
-    type: timeseries
+    type: barchart
     expr: >
       topk(10,
         sum by (ip) (
@@ -33,7 +33,7 @@ f2b_dashboard:
 
   jails:
     title: Ban count by jails
-    type: timeseries
+    type: barchart
     expr: >
       sum by (jail) (
         count_over_time(
@@ -44,7 +44,7 @@ f2b_dashboard:
 
   countries:
     title: Ban count by countries
-    type: timeseries
+    type: barchart
     expr: >
       sum by (country) (
         count_over_time(

@@ -28,4 +28,4 @@ f2b_event_labels:
 
 f2b_event_dashboard:
   uid: fail2ban_events
-  title: "Loki: Fail2Ban Ban Events - Logs & Monitoring"
+  showtime: 24h
