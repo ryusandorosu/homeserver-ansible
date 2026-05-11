@@ -1,8 +1,8 @@
 telegram_bot_logs: /var/log/telegram
 custom_logs:
   telegram:
-    error: "{{ telegram_bot_logs }}/message_error.log"
-    success: "{{ telegram_bot_logs }}/message_success.log"
+    error: "{{ telegram_bot_logs }}/message_error.log.json"
+    success: "{{ telegram_bot_logs }}/message_success.log.json"
     cache: "{{ telegram_bot_logs }}/geo_cache"
   wireguard: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"

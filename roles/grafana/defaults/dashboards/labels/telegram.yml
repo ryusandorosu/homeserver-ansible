@@ -1,0 +1,24 @@
+tg_labels: >-
+  {{
+    tg_message_labels
+    | dict2items
+    | selectattr('value.label', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+tg_filters: >-
+  {{
+    tg_labels
+    | zip(tg_labels)
+    | map('join', ' =~ "$')
+    | list
+  }}
+
+tg_matchlog_filters: >-
+  {{
+    tg_labels
+    | zip(tg_labels)
+    | map('join', '={{ .')
+    | list
+  }}

@@ -1,0 +1,27 @@
+tg_message_labels:
+  timestamp:
+    bash: (date --rfc-3339=seconds)
+  sent_by:
+    bash: CALLER
+    label: true
+  which_bot:
+    bash: TYPE
+    label: true
+  length:
+    bash: (echo -n "${MESSAGE}" | wc -m)
+  try:
+    bash: i
+  response_ok:
+    bash: response_ok
+    label: true
+  response_code:
+    bash: '(echo "$response" | jq -r .error_code // "200")'
+    label: true
+  message:
+    bash: MESSAGE
+  response:
+    bash: response
+
+tg_dashboard:
+  uid: telegram_messages
+  showtime: 24h

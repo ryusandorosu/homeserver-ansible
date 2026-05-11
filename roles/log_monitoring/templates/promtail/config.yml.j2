@@ -71,6 +71,23 @@ scrape_configs:
 {% for json, value in f2b_event_labels.items() if value.label is defined %}
           {{ json }}:
 {% endfor %}
+{% elif job.pipeline == 'telegram' %}
+    pipeline_stages:
+      - json:
+          expressions:
+{% for json, value in tg_message_labels.items() %}
+            {{ json }}:
+{% endfor %}
+      - labels:
+{% for json, value in tg_message_labels.items() if value.label is defined %}
+          {{ json }}:
+{% endfor %}
+{#      - regex:
+          source: filename
+          expression: '{{ telegram_bot_logs }}/message_(?P<status>[^_]+).log.json'
+      - labels:
+          status:
+#}
 {% endif %}
 {% endif %}
 

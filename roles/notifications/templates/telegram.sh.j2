@@ -44,8 +44,18 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     -d parse_mode="$PARSE_MODE"
   )
 
-  logline="$(date --rfc-3339=seconds) $CALLER $TYPE $(echo -n "${MESSAGE}" | wc -m) $i $response"
-  response_ok=$(echo $response | jq .ok)
+  response_ok=$(echo $response | jq -r .ok)
+  logline=$(jq -nc \
+  {% for jq, value in tg_message_labels.items() %}
+    --arg {{ jq }} "${{ value.bash }}" \
+  {% endfor %}
+  '{
+  {% for json, value in tg_message_labels.items() %}
+    {{ json }}:${{ json }}{% if not loop.last %},
+  {% endif %}
+  {% endfor %}
+
+  }')
 
   if [[ $response_ok = true ]]; then
     addline "$logline" {{ custom_logs.telegram.success }}
@@ -53,7 +63,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   fi
 
   echo "$response"
-  addline "$logline {\"$MESSAGE\"}" {{ custom_logs.telegram.error }}
+  addline "$logline" {{ custom_logs.telegram.error }}
 
   sleep $RETRY_DELAY
 done

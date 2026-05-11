@@ -1,0 +1,83 @@
+tg_expr: >-
+  job = "{{ promtail_logs.telegram.name }}",
+  {{
+    tg_filters
+    | join('", ')
+    + '|^$"'
+  }}
+# |^$ - empty label value fallback
+
+expr_rate: 1m
+tg_dashboard_panels:
+  logs:
+    title: "Messages plain log"
+    type: logs
+    expr: '{ {{ tg_expr }} }'
+
+  messages:
+    title: "Message content"
+    type: logs
+    json: true
+    expr: >
+      { {{ tg_expr }} }
+      | json
+      | line_format "{{ tg_matchlog_filters | join(' }} ') }} }} \n {% raw %}{{.message}}{% endraw %}"
+
+  responses:
+    title: "Telegram API responses"
+    type: logs
+    json: true
+    expr: >
+      { {{ tg_expr }} }
+      | json
+      | line_format "{% raw %}ok={{.response_ok}} code={{.response_code}} \n {{.response}}{% endraw %}"
+
+  top_src:
+    title: Top message senders
+    type: barchart
+    label: sent_by
+    expr: >
+      topk(10,
+        sum by (sent_by) (
+          count_over_time(
+            { {{ tg_expr }} }
+            | json sent_by="sent_by"
+            [{{ expr_rate }}]
+          )
+        )
+      )
+
+  response_ok:
+    title: Message delivery status ratio
+    type: barchart
+    label: response_ok
+    expr: >
+      sum by (response_ok) (
+        count_over_time(
+          { {{ tg_expr }} }
+          [{{ expr_rate }}]
+        )
+      )
+
+  response_code:
+    title: Telegram API error codes
+    type: barchart
+    label: response_code
+    expr: >
+      count_over_time(
+        { {{ tg_expr }} }
+        | json response_code="response_code"
+        | response_code != ""
+        [{{ expr_rate }}]
+      )
+
+  length:
+    title: Messages length
+    type: barchart
+    label: length
+    expr: >
+      count_over_time(
+        { {{ tg_expr }} }
+        | json length="length"
+        [{{ expr_rate }}]
+      )
