@@ -7,9 +7,19 @@
 - name: Deploy logrotate configs
   copy:
     src: "{{ item }}"
-    dest: "/etc/logrotate.d/{{ item }}"
+    dest: "/etc/logrotate.d/{{ item | basename }}"
     owner: root
     group: root
     mode: '0644'
   with_fileglob:
     - files/*
+
+- name: Deploy templated logrotate configs
+  template:
+    src: "{{ item }}"
+    dest: "/etc/logrotate.d/{{ item | basename | regex_replace('j2','') }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_fileglob:
+    - templates/*

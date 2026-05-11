@@ -1,0 +1,18 @@
+{{ custom_logs.telegram.success }} {
+
+    daily
+    rotate 3
+
+    size 5M
+
+    compress
+    delaycompress
+
+    missingok
+    notifempty
+
+    copytruncate
+
+    create 0640 root adm
+
+}
