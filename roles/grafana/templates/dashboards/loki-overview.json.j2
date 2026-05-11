@@ -1,16 +1,30 @@
+{% set main_logs = promtail_logs | dict2items | rejectattr('value.pipeline', 'defined') | list %}
+{% set pipeline_logs = promtail_logs | dict2items | selectattr('value.pipeline', 'defined') | list %}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
-{% for key, job in promtail_logs.items() %}
+    {
+      "type": "row",
+      "title": "Main",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+{% for job in main_logs %}
     {
       "type": "logs",
-      "title": "{{ job.name }}",
+      "title": "{{ job.value.name }}",
       "targets": [
         {
-          "expr": "{job=\"{{ job.name }}\"}",
+          "expr": "{job=\"{{ job.value.name }}\"}",
           "refId": "{{ loop.index }}"
         }
       ],
@@ -22,17 +36,55 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": {{ 1 + (loop.index0 * 8) }}
       }
-    }{% if not loop.last %},
+    },
+{% endfor %}
+    {
+      "type": "row",
+      "title": "Has its own dashboard",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": {{ 1 + (main_logs | length * 8) }}
+      },
+      "panels": [
+{% for job in pipeline_logs %}
+        {
+          "type": "logs",
+          "title": "{{ job.value.name }}",
+          "targets": [
+            {
+              "expr": "{job=\"{{ job.value.name }}\"}",
+              "refId": "{{ loop.index + (main_logs | length) }}"
+            }
+          ],
+          "options": {
+            "fontSize": "small",
+            "showControls": true
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": {{ 2 + (main_logs | length * 8) + (loop.index0 * 8) }}
+          }
+        }{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
+      ]
+    }
   ],
   "refresh": "15s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": ["loki", "logs"],
+  "tags": [
+    "loki",
+    "logs"
+  ],
   "templating": {
     "list": []
   },
