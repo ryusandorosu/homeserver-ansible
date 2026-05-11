@@ -46,14 +46,14 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   response_ok=$(echo $response | jq -r .ok)
   logline=$(jq -nc \
-  {% for jq, value in tg_message_labels.items() %}
-    --arg {{ jq }} "${{ value.bash }}" \
-  {% endfor %}
+{% for jq, value in tg_message_labels.items() %}
+    {% if jq == 'response' %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
+{% endfor %}
   '{
-  {% for json, value in tg_message_labels.items() %}
+{% for json, value in tg_message_labels.items() %}
     {{ json }}:${{ json }}{% if not loop.last %},
-  {% endif %}
-  {% endfor %}
+{% endif %}
+{% endfor %}
 
   }')
 

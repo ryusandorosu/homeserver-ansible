@@ -29,8 +29,8 @@ tg_dashboard_panels:
     json: true
     expr: >
       { {{ tg_expr }} }
-      | json
-      | line_format "{% raw %}ok={{.response_ok}} code={{.response_code}} \n {{.response}}{% endraw %}"
+      | json response="response"
+      | line_format "{% raw %}{{.response}}{% endraw %}"
 
   top_src:
     title: Top message senders

@@ -82,12 +82,6 @@ scrape_configs:
 {% for json, value in tg_message_labels.items() if value.label is defined %}
           {{ json }}:
 {% endfor %}
-{#      - regex:
-          source: filename
-          expression: '{{ telegram_bot_logs }}/message_(?P<status>[^_]+).log.json'
-      - labels:
-          status:
-#}
 {% endif %}
 {% endif %}
 
