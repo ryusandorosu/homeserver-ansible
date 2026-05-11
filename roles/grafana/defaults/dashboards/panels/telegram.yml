@@ -76,8 +76,10 @@ tg_dashboard_panels:
     type: barchart
     label: length
     expr: >
-      count_over_time(
-        { {{ tg_expr }} }
-        | json length="length"
-        [{{ expr_rate }}]
+      sum by (length) (
+        count_over_time(
+          { {{ tg_expr }} }
+          | json length="length"
+          [{{ expr_rate }}]
+        )
       )
