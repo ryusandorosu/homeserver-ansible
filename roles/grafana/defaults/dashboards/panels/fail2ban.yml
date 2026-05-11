@@ -12,15 +12,16 @@ f2b_dashboard:
   details:
     title: "Ban events matching logs"
     type: logs
+    json: true
     expr: >
       { {{ f2b_expr }} }
       | json
       | line_format "{{ f2b_matchlog_filters | join(' }} ') }} }} \n {% raw %}{{.logtext}}{% endraw %}"
-    json: true
 
   top_src:
     title: Top banned IPs
     type: barchart
+    label: ip
     expr: >
       topk(10,
         sum by (ip) (
@@ -34,6 +35,7 @@ f2b_dashboard:
   jails:
     title: Ban count by jails
     type: barchart
+    label: jail
     expr: >
       sum by (jail) (
         count_over_time(
@@ -45,6 +47,7 @@ f2b_dashboard:
   countries:
     title: Ban count by countries
     type: barchart
+    label: country
     expr: >
       sum by (country) (
         count_over_time(

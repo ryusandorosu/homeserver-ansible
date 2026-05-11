@@ -45,13 +45,12 @@ nftables_dashboard:
   top_src:
     title: Top source IPs
     type: timeseries
+    label: src
     expr: >
       topk(10,
         sum by (src) (
           count_over_time(
-            {
-              {{ nftables_expr }}
-            }
+            { {{ nftables_expr }} }
             [{{ expr_rate }}]
           )
         )
@@ -60,13 +59,12 @@ nftables_dashboard:
   top_dst_ports:
     title: Top destination ports
     type: heatmap
+    label: dpt
     expr: >
       topk(10,
         sum by (dpt) (
           count_over_time(
-            {
-              {{ nftables_expr }}
-            }
+            { {{ nftables_expr }} }
             [{{ expr_rate }}]
           )
         )
@@ -75,12 +73,11 @@ nftables_dashboard:
   countries:
     title: Traffic by country
     type: timeseries
+    label: geoip_country_name
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
-          {
-            {{ nftables_expr }}
-          }
+          { {{ nftables_expr }} }
           [{{ expr_rate }}]
         )
       )

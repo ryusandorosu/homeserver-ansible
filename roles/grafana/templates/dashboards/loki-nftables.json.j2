@@ -11,6 +11,9 @@
       "targets": [
         {
           "expr": {{ panel.expr | to_json }},
+{% if panel.label is defined %}
+          "legendFormat": "{% raw %}{{ {% endraw %}{{ panel.label }} }}",
+{% endif %}
           "refId": "{{ loop.index }}"
         }
       ],
@@ -43,7 +46,7 @@
 {% endfor %}
 
   ],
-  "refresh": "30s",
+  "refresh": "{{ refresh_time }}",
   "schemaVersion": 39,
   "style": "dark",
   "tags": [

@@ -12,7 +12,7 @@
         {
           "expr": {{ panel.expr | to_json }},
 {% if panel.label is defined %}
-          "legendFormat": "{% raw %} {{ {% endraw %} {{ panel.label }} }}",
+          "legendFormat": "{% raw %}{{ {% endraw %}{{ panel.label }} }}",
 {% endif %}
           "refId": "{{ loop.index }}"
         }
