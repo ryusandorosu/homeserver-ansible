@@ -1,3 +1,9 @@
+- name: Configure apt proxy
+  template:
+    src: apt.conf.d/mihomo-proxy.j2
+    dest: /etc/apt/apt.conf.d/99-mihomo-proxy
+    mode: '0644'
+
 - name: Install base packages
   apt:
     name:
@@ -16,17 +22,6 @@
       - build-essential
     state: present
     update_cache: yes
-
-- name: Remove mail from motd
-  file:
-    path: "/var/mail/{{ user }}"
-    state: absent
-
-- name: Print motd to check updates
-  copy:
-    src: update-motd.d/updates.sh
-    dest: /etc/update-motd.d/93-updates
-    mode: '0755'
 
 - name: Enable apt unattended-upgrades
   copy:
@@ -51,3 +46,14 @@
   loop:
     - home/{{ user }}
     - root
+
+- name: Remove mail from motd
+  file:
+    path: "/var/mail/{{ user }}"
+    state: absent
+
+- name: Print motd to check updates
+  copy:
+    src: update-motd.d/updates.sh
+    dest: /etc/update-motd.d/93-updates
+    mode: '0755'

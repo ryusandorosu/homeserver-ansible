@@ -1,0 +1,4 @@
+{# Acquire::http::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}";
+Acquire::https::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}"; #}
+Acquire::http::Proxy::{{ localhost }} "DIRECT";
+Acquire::http::Proxy::localhost "DIRECT";
