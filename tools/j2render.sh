@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
 
-# set -euo pipefail
-
 template="$1"
 [[ "$template" != */templates/* ]] && echo "error: only paths to template directories are allowed" && exit 1
 [[ ! -f "$template" ]] && echo "error: template file does not exist" && exit 1
-roles_root="$(cut -d'/' -f1 <<< "$template")"
+[[ ! -f ansible.cfg ]] && echo "error: the script must be run in a repo with ansible project" && exit 1
 
 repo_root="$(git rev-parse --show-toplevel)"
 relative_template="$(realpath --relative-to="$repo_root" "$template")"
+roles_root="$(awk -F/ -v r=$repo_root '/r/ {print $1}' <<< "$relative_template")"
 role="$(awk -F/ -v r=$roles_root '/r/ {print $2}' <<< "$relative_template")"
-# outfile="/tmp/$(basename "${template%.j2}")"
 outfile="$repo_root/${relative_template%.j2}"
 
-# ANSIBLE_BECOME=False \
 ANSIBLE_BECOME_ASK_PASS=False \
 ansible-playbook \
   "$repo_root/tools/render_template.yml" \
@@ -23,5 +20,9 @@ ansible-playbook \
   -e output_path="$outfile"
 
 OS_ID=$(grep '^ID=' /etc/os-release | cut -d= -f2)
-[[ "$OS_ID" == debian ]] && batcat "$outfile" && rm "$outfile"
-[[ "$OS_ID" == ubuntu ]] && code "$outfile"
+if [[ "$OS_ID" == debian ]]; then
+  batcat "$outfile"
+  rm "$outfile"
+elif [[ "$OS_ID" == ubuntu ]]; then
+  code "$outfile"
+fi
