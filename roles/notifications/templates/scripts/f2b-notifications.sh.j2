@@ -53,7 +53,7 @@ MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hos
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 country: <code>$country</code> | city: <code>$city</code>
 "
-[[ -n "$asn" ]] && MESSAGE+="asn: <code>$as</code>
+[[ -n "$as" ]] && MESSAGE+="asn: <code>$as</code>
 "
 if ! echo "$asn" | grep -q "$org"; then
 [[ -n "$org" ]] && MESSAGE+="org: <code>$org</code>
