@@ -23,5 +23,5 @@ ansible-playbook \
   -e output_path="$outfile"
 
 OS_ID=$(grep '^ID=' /etc/os-release | cut -d= -f2)
-[[ "$OS_ID" == debian ]] && batcat "$outfile"
+[[ "$OS_ID" == debian ]] && batcat "$outfile" && rm "$outfile"
 [[ "$OS_ID" == ubuntu ]] && code "$outfile"
