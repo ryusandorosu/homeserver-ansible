@@ -18,19 +18,33 @@
     dest: /etc/nginx/nginx.conf
   notify: validate and reload nginx
 
-- name: Deploy nginx sites
+- name: Deploy public nginx sites
   template:
-    src: site.j2
-    dest: "/etc/nginx/sites-available/{{ item.server_name }}"
-  loop: "{{ nginx_sites }}"
+    src: public.j2
+    dest: "/etc/nginx/sites-available/{{ item }}"
+  loop: "{{ nginx_public_sites }}"
   notify: validate and reload nginx
 
-- name: Enable sites
+- name: Enable public sites
   file:
-    src: "/etc/nginx/sites-available/{{ item.server_name }}"
-    dest: "/etc/nginx/sites-enabled/{{ item.server_name }}"
+    src: "/etc/nginx/sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-enabled/{{ item }}"
     state: link
-  loop: "{{ nginx_sites }}"
+  loop: "{{ nginx_public_sites }}"
+
+- name: Deploy private nginx sites
+  template:
+    src: private.j2
+    dest: "/etc/nginx/sites-available/{{ item.key }}.{{ domain }}"
+  loop: "{{ nginx_private_sites | dict2items }}"
+  notify: validate and reload nginx
+
+- name: Enable private sites
+  file:
+    src: "/etc/nginx/sites-available/{{ item.key }}.{{ domain }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.key }}.{{ domain }}"
+    state: link
+  loop: "{{ nginx_private_sites | dict2items }}"
 
 - name: Deploy localhost sites
   template:

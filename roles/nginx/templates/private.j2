@@ -2,7 +2,7 @@ server {
 
     listen {{ https_port }} ssl;
 
-    server_name {{ item.server_name }};
+    server_name {{ item.key }}.{{ domain }};
 
     if ($bad_bot) {
         return 444;
@@ -21,22 +21,10 @@ server {
     ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
 
-    access_log /var/log/nginx/{{ item.server_name }}_access.log main;
+    access_log /var/log/nginx/{{ item.key }}.{{ domain }}_access.log main;
 
-{% if item.public %}
-    root {{ item.root | default('/var/www/html') }};
-{% if item.root | default('/var/www/html') == '/var/www/html' %}
-    index index.nginx-debian.html;
-{% else %}
-    index {{ item.index }};
-{% endif %}
-
-    location / {
-        limit_req zone=global burst=20 nodelay;
-    }
-{% else %}
-{% for address in nginx_allowed %}
-    allow {{ address }};
+{% for ip in nginx_allowed %}
+    allow {{ ip }};
 {% endfor %}
     allow {{ localhost }};
     deny all;
@@ -45,17 +33,17 @@ server {
     #verification endpoint for auth_request
     location = /oauth2/auth {
         internal;
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
     }
-{% if item.server_name == 'auth.' ~ domain %}
+{% if item.key == 'auth' %}
     #authentication ui
     location / {
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }};
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Host $host;
@@ -68,54 +56,54 @@ server {
     #verification endpoint for auth_request
     location = /api/verify {
         internal;
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
         proxy_set_header Host $host;
         proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
-{% if item.server_name == 'auth.' ~ domain %}
+{% if item.key == 'auth' %}
     #authentication ui
     location / {
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ authelia_port }};
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }};
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 {% endif %}
 {% endif %}
-{% if item.server_name != 'auth.' ~ domain %}
-{% if item.server_name == 'clash.' ~ domain %}
+{% if item.key != 'auth' %}
+{% if item.key == 'clash' %}
     location /ui/ {
-        proxy_pass {{ item.proto }}://{{ localhost }}:{% if mihomo_web_interface == 'metacubexd' %}{{ metacubexd_port }}{% elif mihomo_web_interface == 'yacd' %}{{ yacd_port }}{% endif %}/;
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{% if mihomo_web_interface == 'metacubexd' %}{{ metacubexd_port }}{% elif mihomo_web_interface == 'yacd' %}{{ yacd_port }}{% endif %}/;
         proxy_set_header Host $host;
     }
 {% endif %}
 
     location / {
 
-{% if item.authentication %}
+{% if item.value.authentication %}
 {% if nginx_authentication == 'basic_auth' %}
         auth_basic "Restricted";
         auth_basic_user_file {{ nginx_basic_auth_path }};
 {% elif nginx_authentication == 'oauth' %}
         auth_request /oauth2/auth;
-        error_page 401 =302 https://auth.{{ domain }}/oauth2/sign_in?rd=$scheme://$http_host$request_uri;
+        error_page 401 =302 {{ nginx_hosts.auth }}/oauth2/sign_in?rd=$scheme://$http_host$request_uri;
 {% elif nginx_authentication == 'authelia' %}
         auth_request /api/verify;
-        #error_page 401 =302 https://auth.{{ domain }}/?rd=$request_uri;
-        error_page 401 =302 https://auth.{{ domain }}/?rd=$scheme://$http_host$request_uri;
+        #error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$request_uri;
+        error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$scheme://$http_host$request_uri;
 {% endif %}
 
 {% endif %}
-        proxy_pass {{ item.proto }}://{{ localhost }}:{{ item.port }};
+        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ item.value.port }};
 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-{% if item.server_name == 'cockpit.' ~ domain %}
+{% if item.key == 'cockpit' %}
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
-{% elif item.proto == 'http' %}
+{% elif item.value.proto == 'http' %}
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
 
@@ -128,7 +116,6 @@ server {
         proxy_ssl_verify off;
 
     }
-{% endif %}
 {% endif %}
 
 }

@@ -41,7 +41,7 @@ EVENT=$(jq -nc \
 echo "$EVENT" >> {{ custom_logs.fail2ban }}
 
 urlencode() { jq -nr --arg v "$1" '$v|@uri'; }
-GRAFANA+="https://grafana.{{ domain }}/"
+GRAFANA+="{{ nginx_hosts.grafana }}/"
 GRAFANA+="d/{{ f2b_event_dashboard.uid }}/"
 GRAFANA+="?orgId=1&from=now-{{ f2b_event_dashboard.showtime }}&to=now&timezone=browser"
 {% for label, value in f2b_event_labels.items() if value.label is defined %}

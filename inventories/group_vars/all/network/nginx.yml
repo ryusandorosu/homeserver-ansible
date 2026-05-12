@@ -3,43 +3,57 @@ domain: ryusandorosu.ru
 mihomo_web_interface: metacubexd #yacd, metacubexd
 nginx_authentication: oauth #oauth, authelia
 
-nginx_sites:
-  - server_name: "{{ domain }}"
-    public: true
-  - server_name: "www.{{ domain }}"
-    public: true
-  - server_name: "auth.{{ domain }}"
-    public: false
+nginx_public_sites:
+  - "{{ domain }}"
+  - "www.{{ domain }}"
+
+nginx_private_sites:
+  auth:
     authentication: false
     port: "{{ oauthproxy_port }}"
     proto: http
-  - server_name: "cockpit.{{ domain }}"
-    public: false
+  cockpit:
     authentication: false
     port: "{{ cockpit_port }}"
     proto: https
-  - server_name: "grafana.{{ domain }}"
-    public: false
+  grafana:
     authentication: true
     port: "{{ grafana_port }}"
     proto: http
-  - server_name: "prometheus.{{ domain }}"
-    public: false
+  prometheus:
     authentication: true
     port: "{{ prometheus_port }}"
     proto: http
-  - server_name: "wg.{{ domain }}"
-    public: false
+  wg:
     authentication: false
     port: "{{ wireguard_dashboard_port }}"
     proto: http
-  - server_name: "clash.{{ domain }}"
-    public: false
+  clash:
     authentication: true
     port: "{{ clash_web_port }}"
     proto: http
 
-letsencrypt_domains: "{{ nginx_sites | map(attribute='server_name') | list }}"
+letsencrypt_domains: >-
+  {{
+    nginx_public_sites
+    +
+    (
+      nginx_private_sites.keys()
+      | map('regex_replace', '^(.*)$', '\1.' ~ domain)
+      | list
+    )
+  }}
+
+nginx_hosts: >-
+  {{
+    dict(
+      nginx_private_sites.keys()
+      | zip(
+          nginx_private_sites.keys()
+          | map('regex_replace', '^(.*)$', 'https://\1.' ~ domain)
+        )
+    )
+  }}
 
 nginx_sni: []
 

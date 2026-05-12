@@ -11,7 +11,7 @@ services:
     ports:
       - "{{ localhost }}:{{ grafana_port }}:{{ grafana_port }}"
     environment:
-      - GF_SERVER_ROOT_URL=https://grafana.{{ domain }}
+      - GF_SERVER_ROOT_URL={{ nginx_hosts.grafana }}
       - GF_SERVER_SERVE_FROM_SUB_PATH=false
       - GF_SERVER_PROTOCOL=http
       - HTTP_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}

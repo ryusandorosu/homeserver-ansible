@@ -15,6 +15,6 @@ services:
       - "{{ prometheus_port }}:{{ const_prometheus_port }}"
     command:
       - '--config.file={{ prometheus_container_config_dir }}/prometheus.yml'
-      - '--web.external-url=https://prometheus.{{ domain }}'
+      - '--web.external-url={{ nginx_hosts.prometheus }}'
     networks:
       - monitoring

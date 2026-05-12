@@ -22,7 +22,7 @@ services:
       - "{{ yacd_port }}:{{ http_port }}"
     environment:
       #- BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
-      - BACKEND=https://clash.{{ domain }}
+      - BACKEND={{ nginx_hosts.clash }}
 {% elif mihomo_web_interface == 'metacubexd' %}
   metacubexd:
     image: ghcr.io/metacubex/metacubexd:latest
@@ -32,5 +32,5 @@ services:
       - "{{ metacubexd_port }}:{{ http_port }}"
     environment:
       #- DEFAULT_BACKEND_URL=http://{{ lan_ip.server }}:{{ clash_web_port }}
-      - DEFAULT_BACKEND_URL=https://clash.{{ domain }}
+      - DEFAULT_BACKEND_URL={{ nginx_hosts.clash }}
 {% endif %}

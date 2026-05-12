@@ -1,0 +1,37 @@
+server {
+
+    listen {{ https_port }} ssl;
+
+    server_name {{ item }};
+
+    if ($bad_bot) {
+        return 444;
+    }
+
+    if ($block_request) {
+        return 444;
+    }
+
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+
+    ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+
+    access_log /var/log/nginx/{{ item }}_access.log main;
+
+    root {{ item.root | default('/var/www/html') }};
+{% if item.root | default('/var/www/html') == '/var/www/html' %}
+    index index.nginx-debian.html;
+{% else %}
+    index {{ item.index }};
+{% endif %}
+
+    location / {
+        limit_req zone=global burst=20 nodelay;
+    }
+
+}

@@ -17,7 +17,7 @@ email_domains = ["*"]
 upstreams = ["static://200"]
 http_address = "0.0.0.0:{{ oauthproxy_port }}"
 
-redirect_url = "https://auth.{{ domain }}/oauth2/callback"
+redirect_url = "{{ nginx_hosts.auth }}/oauth2/callback"
 reverse_proxy = true
 set_xauthrequest = true
 skip_provider_button = true
