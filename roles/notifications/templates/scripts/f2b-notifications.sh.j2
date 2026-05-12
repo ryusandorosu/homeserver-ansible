@@ -55,7 +55,7 @@ country: <code>$country</code> | city: <code>$city</code>
 "
 [[ -n "$as" ]] && MESSAGE+="asn: <code>$as</code>
 "
-if ! echo "$asn" | grep -q "$org"; then
+if ! echo "$as" | grep -q "$org"; then
 [[ -n "$org" ]] && MESSAGE+="org: <code>$org</code>
 "; fi
 MESSAGE+="full: <a href=\"$GRAFANA\">grafana dashboard</a>"
