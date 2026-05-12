@@ -19,11 +19,15 @@ BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 
 geojson="$(get_ip_geo $banned_ip)"
 country="$(echo "$geojson" | jq -r .country)"
+city="$(echo "$geojson" | jq -r .city)"
+as="$(echo "$geojson" | jq -r .as)"
+org="$(echo "$geojson" | jq -r .org)"
+
 logtext="$(grep -m $loglines -awF $banned_ip $logpath | tail -n $loglines)"
 
 EVENT=$(jq -nc \
 {% for jq, value in f2b_event_labels.items() %}
-  --arg {{ jq }} "${{ value.bash }}" \
+  {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
 {% endfor %}
 '{
 {% for json, value in f2b_event_labels.items() %}
@@ -46,9 +50,15 @@ GRAFANA+="&var-{{ label }}=${{ value.bash }}"
 GRAFANA="$(urlencode "$GRAFANA")"
 
 MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
-failures: $failures | ipfailures: $ipfailures
-<pre>$(echo "$geojson" | jq)</pre>
-matching logs: <a href=\"$GRAFANA\">grafana dashboard</a>"
+failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
+country: <code>$country</code> | city: <code>$city</code>
+"
+[[ -n "$asn" ]] && MESSAGE+="asn: <code>$as</code>
+"
+if ! echo "$asn" | grep -q "$org"; then
+[[ -n "$org" ]] && MESSAGE+="org: <code>$org</code>
+"; fi
+MESSAGE+="full: <a href=\"$GRAFANA\">grafana dashboard</a>"
 
 {{ telegram_script }} "$MESSAGE" alert "$0" &
 disown

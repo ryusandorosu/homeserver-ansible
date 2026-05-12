@@ -18,6 +18,15 @@ f2b_dashboard:
       | json
       | line_format "{{ f2b_matchlog_filters | join(' }} ') }} }} \n {% raw %}{{.logtext}}{% endraw %}"
 
+  geoinfo:
+    title: "Banned IPs geo info"
+    type: logs
+    json: true
+    expr: >
+      { {{ f2b_expr }} }
+      | json geoip="geoip"
+      | line_format "{% raw %}{{.geoip}}{% endraw %}"
+
   top_src:
     title: Top banned IPs
     type: barchart
