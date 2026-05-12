@@ -1,0 +1,14 @@
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: Load all defaults recursively
+      include_vars:
+        dir: "{{ playbook_dir + '/../roles/' + role_name }}/defaults"
+        extensions: ["yml"]
+    - name: Render template
+      copy:
+        content: "{{ lookup('template', playbook_dir + '/../' + template_path) }}"
+        dest: "{{ output_path }}"
