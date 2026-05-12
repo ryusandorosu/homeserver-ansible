@@ -1,6 +1,12 @@
 tg_message_labels:
   timestamp:
     bash: (date --rfc-3339=seconds)
+  response_ok:
+    bash: response_ok
+    label: true
+  response_code:
+    bash: '(echo "$response" | jq -r .error_code // "200")'
+    label: true
   sent_by:
     bash: CALLER
     label: true
@@ -9,14 +15,9 @@ tg_message_labels:
     label: true
   length:
     bash: (echo -n "${MESSAGE}" | wc -m)
+    label: true
   try:
     bash: i
-  response_ok:
-    bash: response_ok
-    label: true
-  response_code:
-    bash: '(echo "$response" | jq -r .error_code // "200")'
-    label: true
   message:
     bash: MESSAGE
   response:
