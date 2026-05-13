@@ -1,9 +1,31 @@
+{% set panelHeight = 6 %}
+{% set loopPanelHeight = 8 %}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
+    {
+      "type": "logs",
+      "title": "{{ promtail_logs.fail2ban_logs.path }}",
+      "targets": [
+        {
+          "expr": "{job=\"{{ promtail_logs.fail2ban_logs.name }}\"}",
+          "refId": "mainlog"
+        }
+      ],
+      "options": {
+        "fontSize": "small",
+        "showControls": true
+      },
+      "gridPos": {
+        "h": {{ panelHeight }},
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
+    },
 {% for key, panel in f2b_dashboard.items() %}
     {
       "type": "{{ panel.type }}",
@@ -38,10 +60,10 @@
       },
 {% endif %}
       "gridPos": {
-        "h": 8,
+        "h": {{ loopPanelHeight }},
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": {{ panelHeight + (loop.index0 * loopPanelHeight) }}
       }
     }{% if not loop.last %},
 {% endif %}

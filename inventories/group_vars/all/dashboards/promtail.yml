@@ -12,12 +12,14 @@ promtail_logs:
   nftables:
     name: nftables actions
     path: "{{ nftlog }}"
+    pipeline: false
   ssh:
     name: SSH authentication
     path: "{{ sshd_log }}"
   fail2ban_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
+    pipeline: false
   crowdsec:
     name: CrowdSec
     path: /var/log/crowdsec*.log
