@@ -1,5 +1,3 @@
 samba_workgroup: WORKGROUP
 samba_server_string: NUC Server
 samba_netbios_name: NUC
-
-samba_shares: []
