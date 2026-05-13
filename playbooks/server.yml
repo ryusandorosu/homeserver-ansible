@@ -32,7 +32,7 @@
       - letsencrypt
       - logrotate
       - samba
-      - mount_diskstation
+      - mounts
       - mount_android
       - certificates
       - mail_sender

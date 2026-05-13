@@ -1,0 +1,60 @@
+shares:
+  shared:
+    mount: /srv/share
+    samba:
+      name: NUC
+
+  android:
+    mount: /mnt/redmi
+    samba:
+      name: REDMI
+
+  diskstation:
+    mount: /mnt/ds209
+    nfs:
+      pub:
+        src: "{{ lan_ip.diskstation }}:/volume1/PUB"
+      web:
+        src: "{{ lan_ip.diskstation }}:/volume1/web"
+    samba:
+      name: DS209
+
+  win_asus:
+    mount: /mnt/k95vb
+    cifs:
+      src: "//{{ lan_ip.large_laptop }}/d"
+      credentials:
+        path: /root/.smb_asus_credentials
+        user: "{{ win_asus_user }}"
+        pass: "{{ vault_windows_asus_password }}"
+    # samba:
+    #   name: ASUS
+
+nfs_mounts: >-
+  {%- set mounts = [] -%}
+  {%- for share_name, share in shares.items() -%}
+    {%- if share.nfs is defined -%}
+      {%- for name, nfs in share.nfs.items() -%}
+        {%- set _ = mounts.append({
+          'path': share.mount ~ '/' ~ name,
+          'src': nfs.src
+        }) -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {{ mounts }}
+
+cifs_mounts: >-
+  {%- set mounts = [] -%}
+  {%- for name, share in shares.items() -%}
+    {%- if share.cifs is defined -%}
+      {%- set _ = mounts.append({
+        'path': share.mount,
+        'src': share.cifs.src,
+        'opts': [
+          'credentials=' ~ share.cifs.credentials.path
+        ]
+      }) -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {{ mounts }}

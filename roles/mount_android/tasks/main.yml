@@ -11,7 +11,7 @@
 
 - name: Ensure android mount dir exists
   file:
-    path: "{{ mount_point.android }}"
+    path: "{{ shares.android.mount }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"

@@ -5,12 +5,18 @@
 
 - name: Ensure mount directories exist
   file:
-    path: "{{ item.value }}"
+    path: "{{ item.value.mount }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
-  loop: "{{ mount_point | dict2items }}"
+  loop: >-
+    {{
+      shares
+      | dict2items
+      | rejectattr('key', 'equalto', 'shared')
+      | list
+    }}
 
 - name: Mount NFS shares
   mount:
@@ -24,9 +30,15 @@
 - name: Deploy Samba credential secrets for CIFS shares connections
   template:
     src: smb_credentials.j2
-    dest: "{{ item.value.path }}"
+    dest: "{{ item.value.cifs.credentials.path }}"
     mode: '0600'
-  loop: "{{ cifs_creds | dict2items }}"
+  loop: >-
+    {{
+      shares
+      | dict2items
+      | selectattr('value.cifs', 'defined')
+      | list
+    }}
 
 - name: Mount CIFS shares
   mount:
