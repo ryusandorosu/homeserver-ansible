@@ -4,10 +4,10 @@ Address = {{ wireguard_server_ip }}/24
 ListenPort = {{ wireguard_port }}
 MTU = {{ wireguard_mtu }}
 
-{% for peer in wireguard_peers %}
-# {{ wireguard_devices[peer.device].name }}
+{% for device, data in wireguard_devices.items() %}
+# {{ data.name }}
 [Peer]
-PublicKey = {{ peer.public_key }}
-AllowedIPs = {{ wireguard_devices[peer.device].ip }}/32
+PublicKey = {{ data.public_key }}
+AllowedIPs = {{ data.ip }}/32
 
 {% endfor %}

@@ -1,0 +1,9 @@
+lan_interface: wlp2s0
+home_ip: 87.117.169.26
+home_network: 192.168.0.0/24
+lan_ip:
+  router: 192.168.0.1
+  large_laptop: 192.168.0.101
+  server: 192.168.0.107
+  diskstation: 192.168.0.111
+  icl_srv: 192.168.0.109

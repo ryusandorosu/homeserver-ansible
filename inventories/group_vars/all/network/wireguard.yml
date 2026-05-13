@@ -1,12 +1,23 @@
 # WireGuard core
 wireguard_interface: wg0
 wireguard_mtu: 1360
-wireguard_peers:
-  - device: large_laptop
+wireguard_network: 10.10.0.0/24
+wireguard_server_ip: 10.10.0.1
+
+wireguard_devices:
+  large_laptop:
+    ip: 10.10.0.2
+    name: Asus K95VB
     public_key: "pjZYrTpbiOeQM0oeIDonvowhswh/cFIlAhPwFRvVpik="
-  - device: phone
+  phone:
+    ip: 10.10.0.3
+    name: Redmi 14C
     public_key: "KI9NnUCB2uKZOZTYvfa/D7nXRMRjKAWSZlGKqDjB61U="
-  - device: pad
+  pad:
+    ip: 10.10.0.4
+    name: Samsung Galaxy Tab A6
     public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
-  - device: laptop
+  laptop:
+    ip: 10.10.0.5
+    name: Honor MagicBook X 14
     public_key: "DjgmmaaCgusEhn+PY1SjwvmMdqPfDMoGUmUGaCyFAQo="
