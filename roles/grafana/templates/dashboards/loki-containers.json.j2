@@ -1,26 +1,29 @@
-{% set containers = [] %}
-{% for key, value in docker.items() %}
-  {% if value is mapping %}
-    {% for subkey, subvalue in value.items() %}
-      {% set _ = containers.append(subvalue) %}
-    {% endfor %}
-  {% else %}
-    {% set _ = containers.append(value) %}
-  {% endif %}
-{% endfor %}
+{% set main_logs = docker | dict2items | rejectattr('key', 'equalto', 'metric_exporters') | list %}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
-{% for container in containers %}
+    {
+      "type": "row",
+      "title": "Main",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+{% for key, value in docker.items() if key not in ['metric_exporters'] %}
     {
       "type": "logs",
-      "title": "{{ container }} logs",
+      "title": "{{ value }} logs",
       "targets": [
         {
-          "expr": "{container=\"/{{ container }}\"}",
+          "expr": "{container=\"/{{ value }}\"}",
           "refId": "{{ loop.index }}"
         }
       ],
@@ -32,12 +35,47 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": {{ 1 + (loop.index0 * 8) }}
       }
-    }{% if not loop.last %},
+    },
+{% endfor %}
+    {
+      "type": "row",
+      "title": "Prometheus metric exporters",
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": {{ 1 + (main_logs | length * 8) }}
+      },
+      "panels": [
+{% for key, value in docker.metric_exporters.items() %}
+        {
+          "type": "logs",
+          "title": "{{ value }} logs",
+          "targets": [
+            {
+              "expr": "{container=\"/{{ value }}\"}",
+              "refId": "{{ loop.index }}"
+            }
+          ],
+          "options": {
+            "fontSize": "small",
+            "showControls": true
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": {{ 2 + (main_logs | length * 8) + (loop.index0 * 8) }}
+          }
+        }{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
+      ]
+    }
   ],
   "refresh": "30s",
   "schemaVersion": 39,
