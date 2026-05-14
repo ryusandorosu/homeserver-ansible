@@ -1,4 +1,6 @@
-{# Acquire::http::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}";
-Acquire::https::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}"; #}
+{% if clash_rules_mode == 'global' %}
+Acquire::http::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}";
+Acquire::https::Proxy "http://{{ localhost }}:{{ clash_mixed_port }}";
+{% endif %}
 Acquire::http::Proxy::{{ localhost }} "DIRECT";
 Acquire::http::Proxy::localhost "DIRECT";
