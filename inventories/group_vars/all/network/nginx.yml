@@ -30,6 +30,10 @@ nginx_private_sites:
     proto: http
   clash:
     authentication: true
+    port: "{{ metacubexd_port }}"
+    proto: http
+  mihomo:
+    authentication: false
     port: "{{ clash_web_port }}"
     proto: http
 

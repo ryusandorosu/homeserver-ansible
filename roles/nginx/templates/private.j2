@@ -73,12 +73,6 @@ server {
 {% endif %}
 {% endif %}
 {% if item.key != 'auth' %}
-{% if item.key == 'clash' %}
-    location /ui/ {
-        proxy_pass {{ item.value.proto }}://{{ localhost }}:{% if mihomo_web_interface == 'metacubexd' %}{{ metacubexd_port }}{% elif mihomo_web_interface == 'yacd' %}{{ yacd_port }}{% endif %}/;
-        proxy_set_header Host $host;
-    }
-{% endif %}
 
     location / {
 
