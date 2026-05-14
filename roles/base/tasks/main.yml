@@ -20,6 +20,7 @@
       - ca-certificates
       - unattended-upgrades
       - build-essential
+      - bind9-dnsutils
     state: present
     update_cache: yes
 
