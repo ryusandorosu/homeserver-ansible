@@ -3,7 +3,9 @@
     name:
       - zsh
       - bc
+      - command-not-found
     state: present
+    update_cache: yes
 
 - name: Clone oh-my-zsh
   become_user: "{{ user }}"
@@ -44,3 +46,6 @@
     src: "/home/{{ user }}/{{ zsh_repo_dir }}/passion.zsh-theme"
     dest: "/home/{{ user }}/.oh-my-zsh/themes/passion.zsh-theme"
     state: link
+
+- name: Enable command-not-found for zsh
+  command: update-command-not-found
