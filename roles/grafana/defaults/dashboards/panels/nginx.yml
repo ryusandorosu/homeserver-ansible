@@ -34,17 +34,31 @@ nginx_dashboard:
         status =~ "4.."
       }
 
+  top_hosts:
+    title: Most attacked hosts
+    type: timeseries
+    label: vhost
+    expr: >
+      topk(10,
+        sum by (vhost) (
+          count_over_time(
+            { {{ nginx_expr }} }
+            [{{ expr_rate }}]
+          )
+        )
+      )
+
   top_urls:
     title: Top URLs
     type: timeseries
-    label: uri
+    label:
+      - vhost
+      - uri
     expr: >
-      topk(10,
-        sum by (uri) (
+      topk(20,
+        sum by (vhost, uri) (
           count_over_time(
-            {
-              {{ nginx_expr }}
-            }
+            { {{ nginx_expr }} }
             [{{ expr_rate }}]
           )
         )
@@ -58,9 +72,7 @@ nginx_dashboard:
       topk(10,
         sum by (ip) (
           count_over_time(
-            {
-              {{ nginx_expr }}
-            }
+            { {{ nginx_expr }} }
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
             [{{ expr_rate }}]
           )
@@ -74,9 +86,7 @@ nginx_dashboard:
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
-          {
-            {{ nginx_expr }}
-          }
+          { {{ nginx_expr }} }
           [{{ expr_rate }}]
         )
       )
@@ -87,9 +97,7 @@ nginx_dashboard:
     expr: >
       sum(
         count_over_time(
-          {
-            {{ nginx_expr }}
-          }
+          { {{ nginx_expr }} }
           [{{ expr_rate }}]
         )
       )
@@ -100,9 +108,7 @@ nginx_dashboard:
     expr: >
       sum(
         rate(
-          {
-            {{ nginx_expr }}
-          }
+          { {{ nginx_expr }} }
           [{{ expr_rate }}]
         )
       )
@@ -150,9 +156,7 @@ nginx_dashboard:
           )
         ) / sum(
           rate(
-            {
-              {{ nginx_expr }}
-            }
+            { {{ nginx_expr }} }
             [{{ expr_rate }}]
           )
         )
@@ -177,9 +181,7 @@ nginx_dashboard:
     type: barchart
     expr: >
       quantile_over_time(0.95, 
-        {
-          {{ nginx_expr }}
-        }
+        { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ expr_rate }}]
@@ -190,9 +192,7 @@ nginx_dashboard:
     type: barchart
     expr: >
       quantile_over_time(0.99,
-        {
-          {{ nginx_expr }}
-        }
+        { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ expr_rate }}]
@@ -203,9 +203,7 @@ nginx_dashboard:
     type: barchart
     expr: >
       avg_over_time(
-        {
-          {{ nginx_expr }}
-        }
+        { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
         [{{ expr_rate }}]
