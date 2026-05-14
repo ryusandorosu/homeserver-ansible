@@ -4,7 +4,22 @@
   },
   "editable": true,
   "panels": [
-{% for key, panel in nginx_dashboard.items() %}
+{% set ns = namespace(y = 0, first = true) %}
+{% for row_name, row_cfg in nginx_rows.items() %}
+    {
+      "type": "row",
+      "title": "{{ row_cfg.title }}",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": {{ ns.y }}
+      },
+      "panels": []
+    },
+{% set ns.y = ns.y + 1 %}
+{% for key, panel in nginx_dashboard.items() if panel.row == row_name %}
     {
       "type": "{{ panel.type }}",
       "title": "{{ panel.title }}",
@@ -12,7 +27,7 @@
         {
           "expr": {{ panel.expr | to_json }},
 {% if panel.label is defined %}
-          "legendFormat": "{% raw %}{{ {% endraw %}{% if panel.label is string %}{{ panel.label }}{% else %}{{ panel.label | join(' }}{{ ') }}{% endif %} }}",
+          "legendFormat": "{% raw %}{{ {% endraw %}{% if panel.label is string %}{{ panel.label }}{% else %}{{ panel.label | join(' }} {{ ') }}{% endif %} }}",
 {% endif %}
           "refId": "{{ loop.index }}"
         }
@@ -49,9 +64,13 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": {{ ns.y }}
       }
     }{% if not loop.last %},
+{% endif %}
+{% set ns.y = ns.y + 8 %}
+{% endfor %}
+{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
@@ -59,7 +78,10 @@
   "refresh": "{{ refresh_time }}",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": ["loki", "nginx"],
+  "tags": [
+    "loki",
+    "nginx"
+  ],
   "templating": {
     "list": [
 {% for label, cfg in nginx_labels.items() %}
