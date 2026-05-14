@@ -37,6 +37,7 @@ nginx_dashboard:
   top_urls:
     title: Top URLs
     type: timeseries
+    label: uri
     expr: >
       topk(10,
         sum by (uri) (
@@ -52,6 +53,7 @@ nginx_dashboard:
   top_ips:
     title: Top IPs
     type: barchart
+    label: ip
     expr: >
       topk(10,
         sum by (ip) (
@@ -68,6 +70,7 @@ nginx_dashboard:
   top_countries:
     title: Top countries
     type: barchart
+    label: geoip_country_name
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
