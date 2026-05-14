@@ -125,10 +125,11 @@ nginx_dashboard:
 
   4xx_sum:
     title: 4xx errors summary
-    type: heatmap
+    type: barchart
     row: error4
+    label: status
     expr: >
-      sum(
+      sum by (status) (
         count_over_time(
           {
             {{ nginx_expr }},
@@ -140,10 +141,11 @@ nginx_dashboard:
 
   5xx_sum:
     title: 5xx errors summary
-    type: heatmap
+    type: barchart
     row: error5
+    label: status
     expr: >
-      sum(
+      sum by (status) (
         count_over_time(
           {
             {{ nginx_expr }},
@@ -155,10 +157,11 @@ nginx_dashboard:
 
   4xx_rate:
     title: 4xx error rate
-    type: heatmap
+    type: barchart
     row: error4
+    label: status
     expr: >
-      sum(
+      sum by (status) (
         rate(
           {
             {{ nginx_expr }},
@@ -170,11 +173,12 @@ nginx_dashboard:
 
   5xx_rate:
     title: 5xx error rate %
-    type: heatmap
+    type: barchart
     row: error5
+    label: status
     expr: >
       100 * (
-        sum(
+        sum by (status) (
           rate(
             {
               {{ nginx_expr }},

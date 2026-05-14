@@ -3,6 +3,8 @@ nginx_labels:
     operator: '=~'
   method:
     operator: '=~'
+  status:
+    operator: '=~'
   ip:
     operator: '=~'
   exclude_ip:
