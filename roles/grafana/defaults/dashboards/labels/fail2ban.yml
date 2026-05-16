@@ -1,6 +1,6 @@
 f2b_labels: >-
   {{
-    f2b_event_labels
+    f2b_action_labels
     | dict2items
     | selectattr('value.label', 'defined')
     | map(attribute='key')

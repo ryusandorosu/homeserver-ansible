@@ -7,7 +7,10 @@ nftables_expr: >-
   }}
 # |^$ - empty label value fallback
 
-expr_rate: 1m
+nftables_dashboard_period:
+  showtime: 6h
+  expr_rate: 1m
+
 nftables_dashboard:
   logs:
     title: Firewall logs
@@ -24,7 +27,7 @@ nftables_dashboard:
             {{ nftables_expr }},
             action="drop"
           }
-          [{{ expr_rate }}]
+          [{{ nftables_dashboard_period.expr_rate }}]
         )
       )
 
@@ -38,7 +41,7 @@ nftables_dashboard:
             {{ nftables_expr }},
             action="accept"
           }
-          [{{ expr_rate }}]
+          [{{ nftables_dashboard_period.expr_rate }}]
         )
       )
 
@@ -51,7 +54,7 @@ nftables_dashboard:
         sum by (src) (
           count_over_time(
             { {{ nftables_expr }} }
-            [{{ expr_rate }}]
+            [{{ nftables_dashboard_period.showtime }}]
           )
         )
       )
@@ -65,7 +68,7 @@ nftables_dashboard:
         sum by (dpt) (
           count_over_time(
             { {{ nftables_expr }} }
-            [{{ expr_rate }}]
+            [{{ nftables_dashboard_period.expr_rate }}]
           )
         )
       )
@@ -78,6 +81,6 @@ nftables_dashboard:
       sum by (geoip_country_name) (
         count_over_time(
           { {{ nftables_expr }} }
-          [{{ expr_rate }}]
+          [{{ nftables_dashboard_period.showtime }}]
         )
       )

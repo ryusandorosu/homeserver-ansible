@@ -1,16 +1,15 @@
 f2b_expr: >-
-  job = "{{ promtail_logs.fail2ban_events.name }}",
+  job = "{{ promtail_logs.fail2ban_actions.name }}",
   {{ f2b_filters | join('", ') + '"' }}
 
-expr_rate: 1m
 f2b_dashboard:
   logs:
-    title: "Ban events log"
+    title: "Ban actions log"
     type: logs
     expr: '{ {{ f2b_expr }} }'
 
   details:
-    title: "Ban events matching logs"
+    title: "Ban actions matching logs"
     type: logs
     json: true
     expr: >
@@ -29,50 +28,50 @@ f2b_dashboard:
 
   top_src:
     title: Top banned IPs
-    type: barchart
+    type: timeseries
     label: ip
     expr: >
       topk(10,
         sum by (ip) (
           count_over_time(
             { {{ f2b_expr }} }
-            [{{ expr_rate }}]
+            [{{ f2b_action_dashboard.showtime }}]
           )
         )
       )
 
   jails:
     title: Ban count by jails
-    type: barchart
+    type: timeseries
     label: jail
     expr: >
       sum by (jail) (
         count_over_time(
           { {{ f2b_expr }} }
-          [{{ expr_rate }}]
+          [{{ f2b_action_dashboard.showtime }}]
         )
       )
 
   countries:
     title: Ban count by countries
-    type: barchart
+    type: timeseries
     label: country
     expr: >
       sum by (country) (
         count_over_time(
           { {{ f2b_expr }} }
-          [{{ expr_rate }}]
+          [{{ f2b_action_dashboard.showtime }}]
         )
       )
 
   vhosts:
     title: Bans by vhost
-    type: barchart
+    type: timeseries
     label: vhost
     expr: >
       sum by (vhost) (
         count_over_time(
           { {{ f2b_expr }} }
-          [{{ expr_rate }}]
+          [{{ f2b_action_dashboard.showtime }}]
         )
       )

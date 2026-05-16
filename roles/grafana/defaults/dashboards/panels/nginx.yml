@@ -2,7 +2,9 @@ nginx_expr: >-
   job = "{{ promtail_logs.nginx_access.name }}",
   {{ nginx_filters | join('", ') + '"' }}
 
-expr_rate: 1m
+nginx_dashboard_period:
+  showtime: 6h
+  expr_rate: 1m
 
 nginx_dashboard:
 
@@ -28,7 +30,7 @@ nginx_dashboard:
         sum by (vhost) (
           count_over_time(
             { {{ nginx_expr }} }
-            [{{ expr_rate }}]
+            [{{ nginx_dashboard_period.showtime }}]
           )
         )
       )
@@ -45,14 +47,14 @@ nginx_dashboard:
         sum by (vhost, uri) (
           count_over_time(
             { {{ nginx_expr }} }
-            [{{ expr_rate }}]
+            [{{ nginx_dashboard_period.showtime }}]
           )
         )
       )
 
   top_ips:
     title: Top IPs
-    type: barchart
+    type: timeseries
     row: top_stat
     label: ip
     expr: >
@@ -61,21 +63,36 @@ nginx_dashboard:
           count_over_time(
             { {{ nginx_expr }} }
             | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
-            [{{ expr_rate }}]
+            [{{ nginx_dashboard_period.showtime }}]
           )
         )
       )
 
   top_countries:
     title: Top countries
-    type: barchart
+    type: timeseries
     row: top_stat
     label: geoip_country_name
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
           { {{ nginx_expr }} }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.showtime }}]
+        )
+      )
+
+  top_agents:
+    title: Top agents
+    type: timeseries
+    row: top_stat
+    label: agent
+    expr: >
+      topk(10,
+        sum by (agent) (
+          count_over_time(
+            { {{ nginx_expr }} }
+            [{{ nginx_dashboard_period.showtime }}]
+          )
         )
       )
 
@@ -87,7 +104,7 @@ nginx_dashboard:
       sum(
         count_over_time(
           { {{ nginx_expr }} }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.expr_rate }}]
         )
       )
 
@@ -99,7 +116,7 @@ nginx_dashboard:
       sum(
         rate(
           { {{ nginx_expr }} }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.expr_rate }}]
         )
       )
 
@@ -125,7 +142,7 @@ nginx_dashboard:
 
   4xx_sum:
     title: 4xx errors summary
-    type: barchart
+    type: timeseries
     row: error4
     label: status
     expr: >
@@ -135,13 +152,13 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "4.."
           }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.showtime }}]
         )
       )
 
   5xx_sum:
     title: 5xx errors summary
-    type: barchart
+    type: timeseries
     row: error5
     label: status
     expr: >
@@ -151,13 +168,13 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "5.."
           }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.showtime }}]
         )
       )
 
   4xx_rate:
     title: 4xx error rate
-    type: barchart
+    type: timeseries
     row: error4
     label: status
     expr: >
@@ -167,13 +184,13 @@ nginx_dashboard:
             {{ nginx_expr }},
             status =~ "4.."
           }
-          [{{ expr_rate }}]
+          [{{ nginx_dashboard_period.showtime }}]
         )
       )
 
   5xx_rate:
     title: 5xx error rate %
-    type: barchart
+    type: timeseries
     row: error5
     label: status
     expr: >
@@ -184,50 +201,50 @@ nginx_dashboard:
               {{ nginx_expr }},
               status =~ "5.."
             }
-            [{{ expr_rate }}]
+            [{{ nginx_dashboard_period.showtime }}]
           )
         ) / sum(
           rate(
             { {{ nginx_expr }} }
-            [{{ expr_rate }}]
+            [{{ nginx_dashboard_period.showtime }}]
           )
         )
       )
 
   latency_p95:
     title: 95 percentile latency
-    type: barchart
+    type: timeseries
     row: latency
     expr: >
       quantile_over_time(0.95, 
         { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ expr_rate }}]
+        [{{ nginx_dashboard_period.showtime }}]
       )
 
   latency_p99:
     title: 99 percentile latency
-    type: barchart
+    type: timeseries
     row: latency
     expr: >
       quantile_over_time(0.99,
         { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ expr_rate }}]
+        [{{ nginx_dashboard_period.showtime }}]
       )
 
   latency_avg:
     title: Average latency
-    type: barchart
+    type: timeseries
     row: latency
     expr: >
       avg_over_time(
         { {{ nginx_expr }} }
         | regexp " (?P<request_time>[0-9.]+)$"
         | unwrap request_time
-        [{{ expr_rate }}]
+        [{{ nginx_dashboard_period.showtime }}]
       )
 
 nginx_rows:

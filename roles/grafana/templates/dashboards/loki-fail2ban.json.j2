@@ -51,6 +51,19 @@
         "syntaxHighlighting": true
 {% endif %}
       },
+{% elif panel.type == "timeseries" %}
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 3,
+            "fillOpacity": 15
+          },
+          "stacking": {
+            "mode": "none"
+          }
+        }
+      },
 {% elif panel.type == "barchart" %}
       "options": {
         "barWidth": 1,
@@ -75,7 +88,9 @@
   "style": "dark",
   "tags": [
     "loki",
-    "fail2ban"
+    "fail2ban",
+    "logs",
+    "logstatistics"
   ],
   "templating": {
     "list": [
@@ -89,7 +104,7 @@
         },
         "includeAll": true,
         "multi": true,
-        "query": "label_values({job=\"{{ promtail_logs.fail2ban_events.name }}\"}, {{ label }})"
+        "query": "label_values({job=\"{{ promtail_logs.fail2ban_actions.name }}\"}, {{ label }})"
       }{% if not loop.last %},
 {% endif %}
 {% endfor %}
@@ -97,10 +112,10 @@
     ]
   },
   "time": {
-    "from": "now-{{ f2b_event_dashboard.showtime }}",
+    "from": "now-{{ f2b_action_dashboard.showtime }}",
     "to": "now"
   },
-  "title": "Loki: Fail2Ban Ban Events - Logs & Monitoring",
-  "uid": "{{ f2b_event_dashboard.uid }}",
+  "title": "Loki: Fail2Ban Actions",
+  "uid": "{{ f2b_action_dashboard.uid }}",
   "version": 1
 }

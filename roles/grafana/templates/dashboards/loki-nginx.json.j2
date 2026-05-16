@@ -45,10 +45,12 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "drawStyle": "bars"
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 15
           },
           "stacking": {
-            "mode": "normal"
+            "mode": "none"
           }
         }
       },
@@ -80,7 +82,9 @@
   "style": "dark",
   "tags": [
     "loki",
-    "nginx"
+    "nginx",
+    "logs",
+    "logstatistics"
   ],
   "templating": {
     "list": [
@@ -111,6 +115,10 @@
 
     ]
   },
-  "title": "Loki: Nginx Logs & Monitoring",
+  "time": {
+    "from": "now-{{ nginx_dashboard_period.showtime }}",
+    "to": "now"
+  },
+  "title": "Loki: Nginx",
   "version": 1
 }

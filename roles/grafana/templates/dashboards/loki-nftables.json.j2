@@ -30,7 +30,12 @@
       "fieldConfig": {
         "defaults": {
           "custom": {
-            "drawStyle": "bars"
+            "drawStyle": "line",
+            "lineWidth": 3,
+            "fillOpacity": 15
+          },
+          "stacking": {
+            "mode": "none"
           }
         }
       },
@@ -51,7 +56,9 @@
   "style": "dark",
   "tags": [
     "loki",
-    "nftables"
+    "nftables",
+    "logs",
+    "logstatistics"
   ],
   "templating": {
     "list": [
@@ -82,6 +89,10 @@
 
     ]
   },
-  "title": "Loki: NFTables Logs & Monitoring",
+  "time": {
+    "from": "now-{{ nftables_dashboard_period.showtime }}",
+    "to": "now"
+  },
+  "title": "Loki: NFTables Actions",
   "version": 1
 }

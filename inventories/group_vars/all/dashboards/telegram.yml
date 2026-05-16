@@ -23,7 +23,3 @@ tg_message_labels:
   response:
     bash: response
     json: true
-
-tg_dashboard:
-  uid: telegram_messages
-  showtime: 24h

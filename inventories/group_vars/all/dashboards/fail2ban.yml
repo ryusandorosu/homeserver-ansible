@@ -1,4 +1,4 @@
-f2b_event_labels:
+f2b_action_labels:
   timestamp:
     bash: (date --iso-8601=seconds)
   jail:
@@ -32,6 +32,6 @@ f2b_event_labels:
     bash: country
     label: true
 
-f2b_event_dashboard:
-  uid: fail2ban_events
+f2b_action_dashboard:
+  uid: fail2ban_actions
   showtime: 24h

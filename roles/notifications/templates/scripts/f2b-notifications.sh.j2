@@ -50,12 +50,12 @@ else
   vhost=""
 fi
 
-EVENT=$(jq -nc \
-{% for jq, value in f2b_event_labels.items() %}
+ACTION=$(jq -nc \
+{% for jq, value in f2b_action_labels.items() %}
   {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
 {% endfor %}
 '{
-{% for json, value in f2b_event_labels.items() %}
+{% for json, value in f2b_action_labels.items() %}
   {{ json }}:${{ json }}{% if not loop.last %},
 {% endif %}
 {% endfor %}
@@ -63,13 +63,13 @@ EVENT=$(jq -nc \
 }')
 
 [[ -z "{{ custom_logs.fail2ban }}" ]] && touch {{ custom_logs.fail2ban }}
-echo "$EVENT" >> {{ custom_logs.fail2ban }}
+echo "$ACTION" >> {{ custom_logs.fail2ban }}
 
 urlencode() { jq -nr --arg v "$1" '$v|@uri'; }
 GRAFANA+="{{ nginx_hosts.grafana }}/"
-GRAFANA+="d/{{ f2b_event_dashboard.uid }}/"
-GRAFANA+="?orgId=1&from=now-{{ f2b_event_dashboard.showtime }}&to=now&timezone=browser"
-{% for label, value in f2b_event_labels.items() if value.label is defined %}
+GRAFANA+="d/{{ f2b_action_dashboard.uid }}/"
+GRAFANA+="?orgId=1&from=now-{{ f2b_action_dashboard.showtime }}&to=now&timezone=browser"
+{% for label, value in f2b_action_labels.items() if value.label is defined %}
 GRAFANA+="&var-{{ label }}=${{ value.bash }}"
 {% endfor %}
 GRAFANA="$(urlencode "$GRAFANA")"

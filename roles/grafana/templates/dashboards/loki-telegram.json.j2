@@ -36,6 +36,19 @@
         "fullHighlight": false,
         "xTickLabelSpacing": 100
       },
+{% elif panel.type == "timeseries" %}
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "stacking": {
+            "mode": "none"
+          }
+        }
+      },
 {% endif %}
       "gridPos": {
         "h": 8,
@@ -53,7 +66,9 @@
   "style": "dark",
   "tags": [
     "loki",
-    "telegram"
+    "telegram",
+    "logs",
+    "logstatistics"
   ],
   "templating": {
     "list": [
@@ -78,7 +93,7 @@
     "from": "now-{{ tg_dashboard.showtime }}",
     "to": "now"
   },
-  "title": "Loki: Telegram Messages Logs",
+  "title": "Loki: Telegram Messages",
   "uid": "{{ tg_dashboard.uid }}",
   "version": 1
 }

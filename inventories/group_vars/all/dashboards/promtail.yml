@@ -42,8 +42,8 @@ promtail_logs:
   nginx_error:
     name: Nginx errors
     path: /var/log/nginx/error.log
-  fail2ban_events:
-    name: Fail2Ban Events
+  fail2ban_actions:
+    name: Fail2Ban Actions
     path: "{{ custom_logs.fail2ban }}"
     pipeline: fail2ban
 
