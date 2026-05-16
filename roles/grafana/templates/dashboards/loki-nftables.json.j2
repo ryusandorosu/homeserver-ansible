@@ -73,10 +73,18 @@
 {% if label == 'exclude_src' %}
         "current": {
           "text": [
-            "{{ nftlog_relabels.exclude_source_ip.default }}"
+{% for value in nftlog_relabels.exclude_source_ip.default %}
+            "{{ value }}"{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
           ],
           "value": [
-            "{{ nftlog_relabels.exclude_source_ip.default }}"
+{% for value in nftlog_relabels.exclude_source_ip.default %}
+            "{{ value }}"{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
           ]
         },
 {% endif %}
