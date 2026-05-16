@@ -1585,7 +1585,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1593,359 +1593,360 @@
         "y": 41
       },
       "id": 300,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "displayName": "${__field.labels.device}",
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": 0
+                  },
+                  {
+                    "color": "dark-yellow",
+                    "value": 10
+                  },
+                  {
+                    "color": "dark-green",
+                    "value": 20
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 42
+          },
+          "id": 310,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "expr": "max by (instance, device, model_name) (smartctl_device_available_spare{instance=~\"$node\",device=~\"$disk\"} * on(instance, device) group_left(model_name) smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"})",
+              "instant": true,
+{% raw %}
+              "legendFormat": "{{device}}",
+{% endraw %}
+              "range": false,
+              "refId": "A",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "{{ prometheus_uid }}"
+              }
+            }
+          ],
+          "title": "Available Spare",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "displayName": "${__field.labels.device}",
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "text",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 42
+          },
+          "id": 311,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": false,
+            "sizing": "auto"
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "expr": "max by (instance, device, model_name) (smartctl_device_available_spare_threshold{instance=~\"$node\",device=~\"$disk\"} * on(instance, device) group_left(model_name) smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"})",
+              "instant": true,
+{% raw %}
+              "legendFormat": "{{device}}",
+{% endraw %}
+              "range": false,
+              "refId": "A",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "{{ prometheus_uid }}"
+              }
+            }
+          ],
+          "title": "Available Spare Threshold",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 8,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 50
+          },
+          "id": 312,
+          "interval": "1m",
+          "maxDataPoints": 1000,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "min",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "asc"
+            }
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "expr": "max by (instance, device, protocol, model_name, firmware_version, serial_number) ((max by (instance, device) (smartctl_device_critical_warning{instance=~\"$node\",device=~\"$disk\"})) * on(instance, device) group_left(protocol, model_name, firmware_version, serial_number) (smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"}))",
+              "interval": "1m",
+{% raw %}
+              "legendFormat": "{{instance}} {{device}} {{model_name}}",
+{% endraw %}
+              "refId": "A",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "{{ prometheus_uid }}"
+              }
+            }
+          ],
+          "title": "Critical Warnings Trend",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "{{ prometheus_uid }}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 8,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "short"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 50
+          },
+          "id": 313,
+          "interval": "1m",
+          "maxDataPoints": 1000,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull",
+                "min",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "asc"
+            }
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "expr": "max by (instance, device, protocol, model_name, firmware_version, serial_number) ((max by (instance, device) (smartctl_device_media_errors{instance=~\"$node\",device=~\"$disk\"})) * on(instance, device) group_left(protocol, model_name, firmware_version, serial_number) (smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"}))",
+              "interval": "1m",
+{% raw %}
+              "legendFormat": "{{instance}} {{device}} {{model_name}}",
+{% endraw %}
+              "refId": "A",
+              "datasource": {
+                "type": "prometheus",
+                "uid": "{{ prometheus_uid }}"
+              }
+            }
+          ],
+          "title": "Media Errors Trend",
+          "type": "timeseries"
+        }
+      ],
       "title": "NVMe Details",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "{{ prometheus_uid }}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "${__field.labels.device}",
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 10
-              },
-              {
-                "color": "dark-green",
-                "value": 20
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 42
-      },
-      "id": 310,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "12.3.3",
-      "targets": [
-        {
-          "expr": "max by (instance, device, model_name) (smartctl_device_available_spare{instance=~\"$node\",device=~\"$disk\"} * on(instance, device) group_left(model_name) smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"})",
-          "instant": true,
-{% raw %}
-          "legendFormat": "{{device}}",
-{% endraw %}
-          "range": false,
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          }
-        }
-      ],
-      "title": "Available Spare",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "{{ prometheus_uid }}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "${__field.labels.device}",
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "text",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 42
-      },
-      "id": 311,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "sizing": "auto"
-      },
-      "pluginVersion": "12.3.3",
-      "targets": [
-        {
-          "expr": "max by (instance, device, model_name) (smartctl_device_available_spare_threshold{instance=~\"$node\",device=~\"$disk\"} * on(instance, device) group_left(model_name) smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"})",
-          "instant": true,
-{% raw %}
-          "legendFormat": "{{device}}",
-{% endraw %}
-          "range": false,
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          }
-        }
-      ],
-      "title": "Available Spare Threshold",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "{{ prometheus_uid }}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 50
-      },
-      "id": 312,
-      "interval": "1m",
-      "maxDataPoints": 1000,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "min",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "asc"
-        }
-      },
-      "pluginVersion": "12.3.3",
-      "targets": [
-        {
-          "expr": "max by (instance, device, protocol, model_name, firmware_version, serial_number) ((max by (instance, device) (smartctl_device_critical_warning{instance=~\"$node\",device=~\"$disk\"})) * on(instance, device) group_left(protocol, model_name, firmware_version, serial_number) (smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"}))",
-          "interval": "1m",
-{% raw %}
-          "legendFormat": "{{instance}} {{device}} {{model_name}}",
-{% endraw %}
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          }
-        }
-      ],
-      "title": "Critical Warnings Trend",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "{{ prometheus_uid }}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 8,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 50
-      },
-      "id": 313,
-      "interval": "1m",
-      "maxDataPoints": 1000,
-      "options": {
-        "legend": {
-          "calcs": [
-            "lastNotNull",
-            "min",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "asc"
-        }
-      },
-      "pluginVersion": "12.3.3",
-      "targets": [
-        {
-          "expr": "max by (instance, device, protocol, model_name, firmware_version, serial_number) ((max by (instance, device) (smartctl_device_media_errors{instance=~\"$node\",device=~\"$disk\"})) * on(instance, device) group_left(protocol, model_name, firmware_version, serial_number) (smartctl_device{interface=~\"$type\",interface=~\"nvme\",serial_number=~\"$serial_number\",model_name=~\"$device_model\"}))",
-          "interval": "1m",
-{% raw %}
-          "legendFormat": "{{instance}} {{device}} {{model_name}}",
-{% endraw %}
-          "refId": "A",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "{{ prometheus_uid }}"
-          }
-        }
-      ],
-      "title": "Media Errors Trend",
-      "type": "timeseries"
     },
     {
       "collapsed": false,
@@ -2250,7 +2251,7 @@
     }
   ],
   "preload": false,
-  "refresh": "2m",
+  "refresh": "{{ refresh_time.normal }}",
   "schemaVersion": 42,
   "tags": [
     "prometheus",
