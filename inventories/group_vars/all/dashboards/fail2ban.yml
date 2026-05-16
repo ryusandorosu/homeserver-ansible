@@ -22,6 +22,9 @@ f2b_event_labels:
     bash: logpath
   logtext:
     bash: logtext
+  vhost:
+    bash: vhost
+    label: true
   geoip:
     bash: geojson
     json: true

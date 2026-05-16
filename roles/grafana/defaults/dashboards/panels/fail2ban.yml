@@ -64,3 +64,15 @@ f2b_dashboard:
           [{{ expr_rate }}]
         )
       )
+
+  vhosts:
+    title: Bans by vhost
+    type: barchart
+    label: vhost
+    expr: >
+      sum by (vhost) (
+        count_over_time(
+          { {{ f2b_expr }} }
+          [{{ expr_rate }}]
+        )
+      )

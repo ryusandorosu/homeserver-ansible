@@ -11,11 +11,11 @@ ipjailfailures="$7"
 loglines=20
 if grep -m $loglines -awF $banned_ip {{ f2b_log }} | grep -aE "Restore Ban|already banned"; then exit 0; fi
 
-BANTIME=" $(date -d@$bantime -u +%_H | sed 's/\ //') hours"
-(( $bantime >= 86400 )) && BANTIME=" $(date -d@$bantime -u +%_d | sed 's/\ //') days"
-(( $bantime >= 2678400 )) && BANTIME=" $(date -d@$bantime -u +%_d | sed 's/\ //') months"
-[[ "$BANTIME" =~ ^\ 1\ (hours|days|months)$ ]] && BANTIME=${BANTIME%s}
-(( $bantime == -1 )) && BANTIME="ever"
+BANTIME="$(date -d@$bantime -u +%_H | sed 's/\ //') hours"
+(( $bantime >= 86400 )) && BANTIME="$(date -d@$bantime -u +%_d | sed 's/\ //') days"
+(( $bantime >= 2678400 )) && BANTIME="$(date -d@$bantime -u +%_d | sed 's/\ //') months"
+[[ "$BANTIME" =~ ^1\ (hours|days|months)$ ]] && BANTIME=${BANTIME%s}
+(( $bantime == -1 )) && BANTIME="permanent"
 
 geojson="$(get_ip_geo $banned_ip)"
 country="$(echo "$geojson" | jq -r .country)"
@@ -24,6 +24,31 @@ as="$(echo "$geojson" | jq -r .as)"
 org="$(echo "$geojson" | jq -r .org)"
 
 logtext="$(grep -m $loglines -awF $banned_ip $logpath | tail -n $loglines)"
+if [[ "$jail_name" == nginx* ]]; then
+  # case: /var/log/nginx/site_access.log
+  if [[ "$logpath" != *\*access.log ]]; then
+    vhost=$(basename "$logpath" | sed 's/_access\.log$//')
+  # case: wildcard /var/log/nginx/*access.log
+  else
+    vhost=$(
+      echo "$logtext" \
+      | sed -n 's#^/var/log/nginx/\([^:]*\)_access\.log:.*#\1#p' \
+      | sort -u \
+      | paste -sd ',' -
+    )
+  fi
+  # fallback: extract host from nginx error log
+  if [[ -z "$vhost" ]]; then
+    vhost=$(
+      echo "$(grep -m $loglines -awF $banned_ip /var/log/nginx/error.log | tail -n $loglines)" \
+      | sed -n 's/.*host: "\([^"]*\)".*/\1/p' \
+      | sort -u \
+      | paste -sd ',' -
+    )
+  fi
+else
+  vhost=""
+fi
 
 EVENT=$(jq -nc \
 {% for jq, value in f2b_event_labels.items() %}
@@ -49,7 +74,8 @@ GRAFANA+="&var-{{ label }}=${{ value.bash }}"
 {% endfor %}
 GRAFANA="$(urlencode "$GRAFANA")"
 
-MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from $(hostname) for<b>$BANTIME</b>
+MESSAGE="[Fail2Ban] <b>$jail_name</b>: banned <code>$banned_ip</code> from <b>$(hostname)</b>
+duration: <b>$BANTIME</b>
 failures: $failures | ipfailures: $ipfailures | ipjailfailures: $ipjailfailures
 country: <code>$country</code> | city: <code>$city</code>
 "
@@ -58,6 +84,13 @@ country: <code>$country</code> | city: <code>$city</code>
 if ! echo "$as" | grep -q "$org"; then
 [[ -n "$org" ]] && MESSAGE+="org: <code>$org</code>
 "; fi
+if [[ "$jail_name" == nginx* ]]; then
+if [[ -n "$vhost" ]]; then
+  MESSAGE+="vhost: <code>$vhost</code>
+"; else
+  MESSAGE+="logpath: <code>/var/log/nginx/access.log</code>
+"; fi
+fi
 MESSAGE+="full: <a href=\"$GRAFANA\">grafana dashboard</a>"
 
 {{ telegram_script }} "$MESSAGE" alert "$0" &
