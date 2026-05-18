@@ -38,7 +38,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header X-Auth-Request-Redirect $scheme://$http_host$request_uri;
+        proxy_set_header X-Auth-Request-Redirect $scheme://$host$request_uri;
     }
 {% if item.key == 'auth' %}
     #authentication ui
@@ -58,7 +58,7 @@ server {
         internal;
         proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
         proxy_set_header Host $host;
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+        proxy_set_header X-Original-URL $scheme://$host$request_uri;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
@@ -82,11 +82,11 @@ server {
         auth_basic_user_file {{ nginx_basic_auth_path }};
 {% elif nginx_authentication == 'oauth' %}
         auth_request /oauth2/auth;
-        error_page 401 =302 {{ nginx_hosts.auth }}/oauth2/sign_in?rd=$scheme://$http_host$request_uri;
+        error_page 401 =302 {{ nginx_hosts.auth }}/oauth2/sign_in?rd=$scheme://$host$request_uri;
 {% elif nginx_authentication == 'authelia' %}
         auth_request /api/verify;
         #error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$request_uri;
-        error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$scheme://$http_host$request_uri;
+        error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$scheme://$host$request_uri;
 {% endif %}
 
 {% endif %}
