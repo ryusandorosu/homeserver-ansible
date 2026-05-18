@@ -25,3 +25,7 @@ bad_bot:
   - entelijan
   - whois-registry-bot
   - ELinks
+  - SiteCrawler
+  - xfirm\.ru
+  - python-requests
+  - visionheight\.com/scan
