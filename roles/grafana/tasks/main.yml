@@ -58,8 +58,15 @@
 - name: Run Grafana container
   community.docker.docker_compose_v2:
     project_src: "{{ grafana_base_dir }}"
+    services: grafana
     state: present
     recreate: always
+
+- name: Run Privoxy container
+  community.docker.docker_compose_v2:
+    project_src: "{{ grafana_base_dir }}"
+    services: privoxy
+    state: present
 
 - name: Check Grafana container running status
   uri:
