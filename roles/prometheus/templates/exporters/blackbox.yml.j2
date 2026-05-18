@@ -4,6 +4,6 @@ modules:
     timeout: 5s
     http:
       preferred_ip_protocol: "ip4"
-      proxy_url: socks5h://{{ docker.mihomo }}:{{ socks5_port }}
+      proxy_url: socks5h://{{ lan_ip.server }}:{{ socks5_port }}
       valid_status_codes: []
       method: GET
