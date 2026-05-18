@@ -52,7 +52,7 @@ mihomo_metrics:
       severity: warning
     condition:
       operator: ">"
-      value: 10
+      value: 16
 
 mihomo_alerts:
   interval: 1m
