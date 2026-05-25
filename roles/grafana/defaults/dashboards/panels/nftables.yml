@@ -61,14 +61,14 @@ nftables_dashboard:
 
   top_dst_ports:
     title: Top destination ports
-    type: heatmap
+    type: timeseries
     label: dpt
     expr: >
       topk(10,
         sum by (dpt) (
           count_over_time(
             { {{ nftables_expr }} }
-            [{{ nftables_dashboard_period.expr_rate }}]
+            [{{ nftables_dashboard_period.showtime }}]
           )
         )
       )
