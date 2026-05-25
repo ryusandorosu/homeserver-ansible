@@ -22,3 +22,8 @@ ssh_hosts:
     hostname: "{{ lan_ip.icl_srv }}"
     user: "{{ user }}"
     identity: icl_srv
+
+  - name: router
+    hostname: "{{ lan_ip.router }}"
+    user: ubnt
+    identity: router
