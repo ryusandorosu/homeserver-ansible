@@ -48,14 +48,16 @@ promtail_logs:
     pipeline: fail2ban
 
 promtail_systemd:
-  NetworkManager:
-    name: Network Manager
   docker:
     name: Docker service
   android-watcher:
     name: Android SSHFS Auto Watcher
+  wg-quick@wg0:
+    name: Wireguard interface
   nginx:
     name: nginx
+  NetworkManager:
+    name: Network Manager
   ssh:
     name: SSH authentication
   systemd-logind:
