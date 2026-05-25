@@ -36,9 +36,11 @@ table inet filter {
 {% endfor %}
         ip saddr {{ docker_network }} ip daddr {{ home_network }} accept
 
-        ip saddr {{ lan_ip.router }} ip daddr 224.0.0.1 accept
         icmpv6 type { 130, 134, 135 } accept
+        iif "{{ lan_interface }}" ip saddr {{ lan_ip.router }} ip daddr 255.255.255.255 accept
+        iif "{{ lan_interface }}" ip saddr {{ lan_ip.wifi }} ip daddr 224.0.0.1 accept
         iif "{{ lan_interface }}" udp sport 68 udp dport 67 accept
+        iif "{{ lan_interface }}" udp sport 67 udp dport 68 accept
 
         iif "{{ wireguard_interface }}" tcp dport {{ sshd_port }} ct state new accept
 {% for port in firewall_tcp_ports %}{% if port != sshd_port %}
