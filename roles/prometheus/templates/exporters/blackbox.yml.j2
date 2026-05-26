@@ -7,3 +7,12 @@ modules:
       proxy_url: socks5h://{{ lan_ip.server }}:{{ socks5_port }}
       valid_status_codes: []
       method: GET
+  http_2xx_insecure:
+    prober: http
+    timeout: 5s
+    http:
+      valid_http_versions:
+        - "HTTP/1.1"
+      method: GET
+      tls_config:
+        insecure_skip_verify: true

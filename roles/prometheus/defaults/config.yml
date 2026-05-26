@@ -20,7 +20,7 @@ prometheus_scrape_configs:
     labels: instance
 
 prometheus_scrape_configs_extended:
-  snmp:
+  snmp_diskstation:
     path: /snmp
     replacement:
       src: "{{ lan_ip.server }}"
@@ -30,6 +30,16 @@ prometheus_scrape_configs_extended:
       auth: public_v2
     targets:
       - "{{ lan_ip.diskstation }}"
+  snmp_edgerouter:
+    path: /snmp
+    replacement:
+      src: "{{ lan_ip.server }}"
+      port: "{{ snmp_exporter_port }}"
+    params:
+      module: if_mib
+      auth: public_v2
+    targets:
+      - "{{ lan_ip.router }}"
   blackbox:
     path: /probe
     replacement:
@@ -40,3 +50,12 @@ prometheus_scrape_configs_extended:
     targets:
       - https://api.telegram.org
       - https://www.gstatic.com/generate_204
+  blackbox_edgerouter:
+    path: /probe
+    replacement:
+      src: "{{ docker.metric_exporters.blackbox }}"
+      port: "{{ blackbox_port }}"
+    params:
+      module: http_2xx_insecure
+    targets:
+      - "https://{{ lan_ip.router }}"
