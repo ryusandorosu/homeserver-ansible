@@ -1,4 +1,5 @@
 - hosts: windows
+  become: false
 
   pre_tasks:
     - name: Check OS family

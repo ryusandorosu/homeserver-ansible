@@ -6,5 +6,6 @@ lan_ip:
   wifi: 192.168.0.2
   server: 192.168.0.100
   large_laptop: 192.168.0.101
+  small_laptop: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
