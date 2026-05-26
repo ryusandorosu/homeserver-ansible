@@ -4,7 +4,7 @@
     state: present
     update_cache: yes
 
-- name: Deploy rsyslog config to log separately from kernel logs
+- name: Deploy nftables config to log separately from kernel logs
   template:
     src: nftables.conf.j2
     dest: /etc/rsyslog.d/10-nftables.conf
