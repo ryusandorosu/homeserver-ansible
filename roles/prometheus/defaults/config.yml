@@ -36,7 +36,9 @@ prometheus_scrape_configs_extended:
       src: "{{ lan_ip.server }}"
       port: "{{ snmp_exporter_port }}"
     params:
-      module: if_mib
+      module:
+        - system
+        - if_mib
       auth: public_v2
     targets:
       - "{{ lan_ip.router }}"

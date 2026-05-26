@@ -27,7 +27,13 @@ scrape_configs:
     metrics_path: {{ job.path }}
     params:
 {% for param, value in job.params.items() %}
-      {{ param }}: [{{ value }}]
+      {{ param }}: {% if value is string %}[{{ value }}]
+{% else %}
+
+{% for item in value %}
+        - {{ item }}
+{% endfor %}
+{% endif %}
 {% endfor %}
     static_configs:
       - targets:
