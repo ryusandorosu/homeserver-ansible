@@ -1,0 +1,18 @@
+{{ erlog }} {
+
+    daily
+    rotate 14
+
+    size 10M
+
+    compress
+    delaycompress
+
+    missingok
+    notifempty
+
+    copytruncate
+
+    create 0640 root adm
+
+}
