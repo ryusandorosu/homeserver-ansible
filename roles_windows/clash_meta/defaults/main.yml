@@ -1,11 +1,19 @@
 clash_meta_client: koala-clash
 
 clash_domain_exclude:
+  - github.com
+  - ryusandorosu.ru
+  - home.arpa
+  - gosuslugi.ru
+  - tatenergosbyt.ru
   - vk-next.net
   - vknext.net
   - vk.com
-  - github.com
+  - vk.ru
+  - vkuserphoto.ru
 
 clash_dns_exclude:
   - vk.com
   - github.com
+  - ryusandorosu.ru
+  - home.arpa

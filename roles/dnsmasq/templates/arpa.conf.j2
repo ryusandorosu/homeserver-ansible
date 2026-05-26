@@ -1,0 +1,10 @@
+local=/{{ arpa_domain }}/
+domain={{ arpa_domain }}
+expand-hosts
+
+{% for key, value in arpa_sites.items() %}
+address=/{{ key }}.{{ arpa_domain }}/{{ value.address }}
+{% endfor %}
+
+server=1.1.1.1
+server=8.8.8.8

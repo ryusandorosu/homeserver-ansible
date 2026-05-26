@@ -1,0 +1,4 @@
+arpa_domain: home.arpa
+arpa_sites:
+  router:
+    address: "{{ lan_ip.router }}"

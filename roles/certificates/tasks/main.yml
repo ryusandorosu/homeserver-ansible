@@ -7,3 +7,5 @@
   when: cockpit_generate_cert
 - import_tasks: dsm.yml
   when: dsm_generate_cert
+- import_tasks: ubnt.yml
+  when: ubnt_generate_cert

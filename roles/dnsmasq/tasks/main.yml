@@ -4,8 +4,10 @@
     state: present
     update_cache: yes
 
-- name: Deploy dnsmasq config
+- name: Deploy dnsmasq configs
   template:
-    src: lan_split.conf.j2
-    dest: "/etc/dnsmasq.d/lan_split.conf"
+    src: "{{ item }}"
+    dest: "/etc/dnsmasq.d/{{ item | basename | regex_replace('.j2','') }}"
+  with_fileglob:
+    - templates/*.conf.j2
   notify: reload dnsmasq

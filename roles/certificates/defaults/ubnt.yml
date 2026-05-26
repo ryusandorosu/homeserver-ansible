@@ -1,0 +1,17 @@
+ubnt_cert_dir: /srv/share/appdata/edgerouter/ssl.crt
+ubnt_pki_dir: "{{ ubnt_cert_dir }}/pki"
+ubnt_cert_name: UbiquitiRouterUI
+# ubnt_cert_name: "{{ router_domain }}"
+ubnt_cert_destination: /config/auth/server.pem
+
+ubnt_country: US
+ubnt_state: New York
+ubnt_locality: New York
+ubnt_org: Ubiquiti Inc.
+ubnt_cn: UbiquitiRouterUI
+
+ubnt_san:
+  - "IP:{{ lan_ip.router }}"
+  - "DNS:{{ router_domain }}"
+
+router_domain: "router.{{ arpa_domain }}"

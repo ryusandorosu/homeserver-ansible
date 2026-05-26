@@ -1,2 +1,3 @@
 cockpit_generate_cert: false
 dsm_generate_cert: false
+ubnt_generate_cert: true
