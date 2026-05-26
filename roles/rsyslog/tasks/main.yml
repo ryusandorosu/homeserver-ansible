@@ -4,6 +4,12 @@
     state: present
     update_cache: yes
 
+- name: Deploy rsyslog config to log separately from kernel logs
+  template:
+    src: nftables.conf.j2
+    dest: /etc/rsyslog.d/10-nftables.conf
+  notify: restart rsyslog
+
 - name: Enable remote logging for edgerouter
   template:
     src: remote.conf.j2
