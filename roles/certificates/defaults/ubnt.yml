@@ -1,7 +1,6 @@
 ubnt_cert_dir: /srv/share/appdata/edgerouter/ssl.crt
 ubnt_pki_dir: "{{ ubnt_cert_dir }}/pki"
 ubnt_cert_name: UbiquitiRouterUI
-# ubnt_cert_name: "{{ router_domain }}"
 ubnt_cert_destination: /config/auth/server.pem
 
 ubnt_country: US

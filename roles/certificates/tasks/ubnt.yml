@@ -65,8 +65,6 @@
     {{ ubnt_cert_dir }}/{{ ubnt_cert_name }}.cert \
     {{ ubnt_pki_dir }}/rootCA.crt \
     | tee {{ ubnt_cert_dir }}/{{ ubnt_cert_name }}.pem
-  # args:
-  #   creates: "{{ ubnt_cert_dir }}/{{ ubnt_cert_name }}.pem"
 
 - name: Upload PEM to router
   shell: |
