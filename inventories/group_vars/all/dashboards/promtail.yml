@@ -1,7 +1,28 @@
 promtail_logs:
+  edgerouter:
+    name: EdgeRouter
+    path: "{{ erlog }}"
   status:
     name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
+  kernel:
+    name: System Kernel
+    path: "{{ kernel_log }}"
+  syslog:
+    name: System
+    path: /var/log/syslog
+  ssh:
+    name: SSH authentication
+    path: "{{ sshd_log }}"
+  user:
+    name: userlog
+    path: /var/log/user.log
+  auditd:
+    name: Auditd
+    path: /var/log/audit/audit.log
+  crowdsec:
+    name: CrowdSec
+    path: /var/log/crowdsec*.log
   wireguard:
     name: Wireguard connections
     path: "{{ custom_logs.wireguard }}"
@@ -13,31 +34,10 @@ promtail_logs:
     name: nftables actions
     path: "{{ nftlog }}"
     pipeline: false
-  ssh:
-    name: SSH authentication
-    path: "{{ sshd_log }}"
   fail2ban_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
     pipeline: false
-  edgerouter:
-    name: EdgeRouter
-    path: "{{ erlog }}"
-  crowdsec:
-    name: CrowdSec
-    path: /var/log/crowdsec*.log
-  kernel:
-    name: System Kernel
-    path: "{{ kernel_log }}"
-  syslog:
-    name: System
-    path: /var/log/syslog
-  user:
-    name: userlog
-    path: /var/log/user.log
-  auditd:
-    name: Auditd
-    path: /var/log/audit/audit.log
   nginx_access:
     name: Nginx sites access logs
     path: /var/log/nginx/*access.log
