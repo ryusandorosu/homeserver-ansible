@@ -1,4 +1,4 @@
-update_grafana_dashboards: true
+update_grafana_dashboards: false
 refresh_time:
   auto: auto
   quick: 10s
