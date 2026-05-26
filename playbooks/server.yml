@@ -29,6 +29,7 @@
       - fail2ban
       - crowdsec
       - dnsmasq
+      - rsyslog
       - letsencrypt
       - logrotate
       - samba

@@ -20,6 +20,9 @@ promtail_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
     pipeline: false
+  edgerouter:
+    name: EdgeRouter
+    path: "{{ erlog }}"
   crowdsec:
     name: CrowdSec
     path: /var/log/crowdsec*.log

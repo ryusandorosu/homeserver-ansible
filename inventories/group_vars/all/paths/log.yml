@@ -10,3 +10,4 @@ custom_logs:
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions.json"
 
 nftlog: /var/log/nftables.log
+erlog: /var/log/edgerouter.log

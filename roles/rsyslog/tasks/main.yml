@@ -1,0 +1,17 @@
+- name: Install rsyslog
+  apt:
+    name: rsyslog
+    state: present
+    update_cache: yes
+
+- name: Enable remote logging for edgerouter
+  template:
+    src: remote.conf.j2
+    dest: /etc/rsyslog.d/10-remote.conf
+  notify: restart rsyslog
+
+- name: Deploy edgerouter config to log separately from kernel logs
+  template:
+    src: edgerouter.conf.j2
+    dest: /etc/rsyslog.d/10-edgerouter.conf
+  notify: restart rsyslog

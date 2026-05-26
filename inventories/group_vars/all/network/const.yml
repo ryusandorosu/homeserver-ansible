@@ -3,6 +3,7 @@ localhost: 127.0.0.1
 sshd_port: 22
 http_port: 80
 https_port: 443
+syslog_port: 514
 smtp_port: 587
 
 #samba

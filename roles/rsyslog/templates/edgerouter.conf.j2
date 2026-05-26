@@ -1,0 +1,6 @@
+$template EdgeRouterLogs,"{{ erlog }}"
+
+if $fromhost-ip == '{{ lan_ip.router }}' then {
+    action(type="omfile" file="{{ erlog }}")
+    stop
+}

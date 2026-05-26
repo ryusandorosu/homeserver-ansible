@@ -39,6 +39,8 @@ table inet filter {
         icmpv6 type { 130, 134, 135 } accept
         iif "{{ lan_interface }}" ip saddr {{ lan_ip.router }} ip daddr 255.255.255.255 accept
         iif "{{ lan_interface }}" ip saddr {{ lan_ip.wifi }} ip daddr 224.0.0.1 accept
+        iif "{{ lan_interface }}" ip saddr {{ lan_ip.router }} udp dport {{ syslog_port }} accept
+        iif "{{ lan_interface }}" ip saddr {{ lan_ip.router }} tcp dport {{ syslog_port }} accept
         iif "{{ lan_interface }}" udp sport 68 udp dport 67 accept
         iif "{{ lan_interface }}" udp sport 67 udp dport 68 accept
 
