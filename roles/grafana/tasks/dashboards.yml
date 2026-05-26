@@ -11,9 +11,14 @@
 #https://grafana.com/grafana/dashboards/18643-synology-snmp/
 #https://grafana.com/grafana/dashboards/13659-blackbox-exporter-http-prober/
 #https://grafana.com/grafana/dashboards/14523-blackbox-exporter-node/ #also good one
+
 #https://grafana.com/grafana/dashboards/7171-zabbix-infrastructure-problems/
 #https://grafana.com/grafana/dashboards/11209-zabbix-with-template-linux-servers-share/
 #https://grafana.com/grafana/dashboards/5363-zabbix-full-server-status/
+
+#https://grafana.com/grafana/dashboards/11169-snmp-stats/
+#https://grafana.com/grafana/dashboards/21962-snmp-exporter/ #newer version of 11169
+#https://grafana.com/grafana/dashboards/12504-er-4/ #requires influxdb
 
 - name: Deploy Grafana dashboards
   copy:
