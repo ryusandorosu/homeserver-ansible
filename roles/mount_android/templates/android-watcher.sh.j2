@@ -5,9 +5,9 @@ get_id() {
 }
 
 PHONE_IP={{ wireguard_devices.phone.ip }}
-SSH_KEY=/home/{{ user }}/.ssh/{{ termux_key }}
+SSH_KEY=/home/{{ user }}/.ssh/{{ termux.redmi.key }}
 SSH_COMMAND="ssh -i $SSH_KEY -p {{ termux_port }}"
-SSH_HOST={{ termux_user }}@$PHONE_IP
+SSH_HOST={{ termux.redmi.user }}@$PHONE_IP
 SSH_PATH=/data/data/com.termux/files/home/storage/shared/
 SSH_TARGET=$SSH_HOST:$SSH_PATH
 

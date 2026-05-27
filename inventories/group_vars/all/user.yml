@@ -3,9 +3,17 @@ user: ryusandorosu
 sshd_allow_users:
   - "{{ user }}"
 
-# Termux
-termux_user: u0_a497
-termux_key: android_termux
+# SSHFS
+termux:
+  redmi:
+    user: u0_a497
+    key: android_termux
+  # samsung:
+  #   user: u0_a515
+  #   key: android_samsung
+  smarttv:
+    user: u0_a87
+    key: android_smarttv
 
 # Windows
 win_asus_user: Булат Сибгатуллин

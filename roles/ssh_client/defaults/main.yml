@@ -7,8 +7,8 @@ ssh_hosts:
   - name: redmi
     hostname: "{{ wireguard_devices.phone.ip }}"
     port: "{{ termux_port }}"
-    user: "{{ termux_user }}"
-    identity: "{{ termux_key }}"
+    user: "{{ termux.redmi.user }}"
+    identity: "{{ termux.redmi.key }}"
 
   - name: ds209
     hostname: "{{ lan_ip.diskstation }}"
@@ -27,3 +27,15 @@ ssh_hosts:
     hostname: "{{ lan_ip.router }}"
     user: ubnt
     identity: router
+
+  # - name: samsung
+  #   hostname: "{{ wireguard_devices.pad.ip }}"
+  #   port: "{{ termux_port }}"
+  #   user: "{{ termux.samsung.user }}"
+  #   identity: "{{ termux.samsung.key }}"
+
+  - name: smarttv
+    hostname: "{{ lan_ip.smarttv }}" #"{{ wireguard_devices.smarttv.ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux.smarttv.user }}"
+    identity: "{{ termux.smarttv.key }}"

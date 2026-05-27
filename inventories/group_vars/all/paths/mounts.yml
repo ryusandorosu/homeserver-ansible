@@ -9,6 +9,16 @@ shares:
     samba:
       name: REDMI
 
+  # pad:
+  #   mount: /mnt/samsung
+  #   samba:
+  #     name: SAMSUNG
+
+  smarttv:
+    mount: /mnt/x96q
+    samba:
+      name: SMARTTV
+
   diskstation:
     mount: /mnt/ds209
     nfs:

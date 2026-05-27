@@ -9,3 +9,4 @@ lan_ip:
   small_laptop: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
+  smarttv: 192.168.0.96
