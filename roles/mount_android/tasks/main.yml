@@ -9,13 +9,19 @@
     regexp: '^#?user_allow_other'
     line: 'user_allow_other'
 
-- name: Ensure android mount dir exists
+- name: Import ssh_client role default variables
+  include_vars:
+    file: "{{ role_path + '/..' }}/ssh_client/defaults/main.yml"
+- name: Ensure android mount dirs exist
   file:
-    path: "{{ shares.android.mount }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0755'
+  loop: "{{ android_sshfs_devices | map(attribute='mount') }}"
+    # - "{{ shares.android.mount }}"
+    # - "{{ shares.smarttv.mount }}"
 
 - name: Ensure scripts directory exists
   file:

@@ -1,0 +1,37 @@
+# android_sshfs_devices:
+#   - name: redmi
+#     ip: "{{ ssh_hosts.redmi.hostname }}"
+#     user: "{{ ssh_hosts.redmi.user }}"
+#     key: "{{ ssh_hosts.redmi.identity }}"
+#     mount: "{{ shares.redmi.mount }}"
+
+#   - name: samsung
+#     ip: "{{ ssh_hosts.samsung.hostname }}"
+#     user: "{{ ssh_hosts.samsung.user }}"
+#     key: "{{ ssh_hosts.samsung.identity }}"
+#     mount: "{{ shares.samsung.mount }}"
+
+#   - name: smarttv
+#     ip: "{{ ssh_hosts.smarttv.hostname }}"
+#     user: "{{ ssh_hosts.smarttv.user }}"
+#     key: "{{ ssh_hosts.smarttv.identity }}"
+#     mount: "{{ shares.smarttv.mount }}"
+
+android_sshfs_devices: |
+  {%- set devices = [] -%}
+
+  {%- for name, host in ssh_hosts.items() -%}
+    {%- if host.port is defined and (host.port | string) == (termux_port | string) -%}
+
+      {%- set _ = devices.append({
+        'name': name,
+        'ip': host.hostname,
+        'user': host.user,
+        'key': host.identity,
+        'mount': shares[name].mount
+      }) -%}
+
+    {%- endif -%}
+  {%- endfor -%}
+
+  {{ devices }}

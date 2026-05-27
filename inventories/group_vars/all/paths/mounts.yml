@@ -4,12 +4,12 @@ shares:
     samba:
       name: NUC
 
-  android:
+  redmi:
     mount: /mnt/redmi
     samba:
       name: REDMI
 
-  # pad:
+  # samsung:
   #   mount: /mnt/samsung
   #   samba:
   #     name: SAMSUNG
