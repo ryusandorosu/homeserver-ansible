@@ -1,13 +1,13 @@
-{% for host in ssh_hosts %}
-Host {{ host.name }}
-    HostName {{ host.hostname }}
-    User {{ host.user }}
-    IdentityFile ~/.ssh/{{ host.identity }}
-{% if host.port is defined %}
-    Port {{ host.port }}
+{% for key, value in ssh_hosts.items() %}
+Host {{ key }}
+    HostName {{ value.hostname }}
+    User {{ value.user }}
+    IdentityFile ~/.ssh/{{ value.identity }}
+{% if value.port is defined %}
+    Port {{ value.port }}
 {% endif %}
-{% if host.options is defined %}
-{% for item in host.options %}
+{% if value.options is defined %}
+{% for item in value.options %}
     {{ item }}
 {% endfor %}
 {% endif %}

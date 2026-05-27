@@ -1,16 +1,16 @@
 ssh_hosts:
-  - name: github.com
+  github.com:
     hostname: github.com
     user: git
     identity: github
 
-  - name: redmi
+  redmi:
     hostname: "{{ wireguard_devices.phone.ip }}"
     port: "{{ termux_port }}"
     user: "{{ termux.redmi.user }}"
     identity: "{{ termux.redmi.key }}"
 
-  - name: ds209
+  ds209:
     hostname: "{{ lan_ip.diskstation }}"
     user: admin
     identity: ds209
@@ -18,23 +18,23 @@ ssh_hosts:
       - PubkeyAcceptedAlgorithms +ssh-rsa
       - HostKeyAlgorithms +ssh-rsa
 
-  - name: icl
+  icl:
     hostname: "{{ lan_ip.icl_srv }}"
     user: "{{ user }}"
     identity: icl_srv
 
-  - name: router
+  router:
     hostname: "{{ lan_ip.router }}"
     user: ubnt
     identity: router
 
-  # - name: samsung
+  # samsung:
   #   hostname: "{{ wireguard_devices.pad.ip }}"
   #   port: "{{ termux_port }}"
   #   user: "{{ termux.samsung.user }}"
   #   identity: "{{ termux.samsung.key }}"
 
-  - name: smarttv
+  smarttv:
     hostname: "{{ lan_ip.smarttv }}" #"{{ wireguard_devices.smarttv.ip }}"
     port: "{{ termux_port }}"
     user: "{{ termux.smarttv.user }}"
