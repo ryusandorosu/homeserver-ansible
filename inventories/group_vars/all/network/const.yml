@@ -2,6 +2,7 @@ localhost: 127.0.0.1
 
 sshd_port: 22
 dns_port: 53
+dns_tls_port: 853
 dhcp_request_port: 67
 dhcp_resolve_port: 68
 http_port: 80
