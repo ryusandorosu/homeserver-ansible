@@ -9,10 +9,10 @@ shares:
     samba:
       name: REDMI
 
-  # samsung:
-  #   mount: /mnt/samsung
-  #   samba:
-  #     name: SAMSUNG
+  samsung:
+    mount: /mnt/samsung
+    samba:
+      name: SAMSUNG
 
   smarttv:
     mount: /mnt/x96q

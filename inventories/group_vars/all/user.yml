@@ -8,9 +8,9 @@ termux:
   redmi:
     user: u0_a497
     key: android_termux
-  # samsung:
-  #   user: u0_a515
-  #   key: android_samsung
+  samsung:
+    user: u0_a145
+    key: android_samsung
   smarttv:
     user: u0_a87
     key: android_smarttv

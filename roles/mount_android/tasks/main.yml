@@ -20,8 +20,6 @@
     group: "{{ user }}"
     mode: '0755'
   loop: "{{ android_sshfs_devices | map(attribute='mount') }}"
-    # - "{{ shares.android.mount }}"
-    # - "{{ shares.smarttv.mount }}"
 
 - name: Ensure scripts directory exists
   file:

@@ -28,11 +28,11 @@ ssh_hosts:
     user: ubnt
     identity: router
 
-  # samsung:
-  #   hostname: "{{ wireguard_devices.pad.ip }}"
-  #   port: "{{ termux_port }}"
-  #   user: "{{ termux.samsung.user }}"
-  #   identity: "{{ termux.samsung.key }}"
+  samsung:
+    hostname: "{{ wireguard_devices.pad.ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux.samsung.user }}"
+    identity: "{{ termux.samsung.key }}"
 
   smarttv:
     hostname: "{{ lan_ip.smarttv }}" #"{{ wireguard_devices.smarttv.ip }}"
