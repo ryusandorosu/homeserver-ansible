@@ -22,8 +22,11 @@
 
 - name: Create Promtail directory
   file:
-    path: "{{ promtail_dir }}"
+    path: "{{ item }}"
     state: directory
+  loop:
+    - "{{ promtail_dir }}"
+    - "{{ promtail_dir }}/data"
 
 - name: Deploy Loki docker-compose
   template:

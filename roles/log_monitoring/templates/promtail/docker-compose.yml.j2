@@ -11,6 +11,7 @@ services:
     command: -config.file=/etc/promtail/promtail.yml
     volumes:
       - "{{ promtail_dir }}/promtail.yml:/etc/promtail/promtail.yml"
+      - "{{ promtail_dir }}/data:/var/lib/promtail"
       - /var/log:/var/log
       - /var/lib/docker/containers:/var/lib/docker/containers
       - /var/run/docker.sock:/var/run/docker.sock

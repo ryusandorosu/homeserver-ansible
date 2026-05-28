@@ -2,7 +2,7 @@ server:
   http_listen_port: {{ promtail_port }}
 
 positions:
-  filename: /tmp/positions.yaml
+  filename: /var/lib/promtail/positions.yaml
 
 clients:
   - url: http://{{ docker.loki }}:{{ loki_port }}/loki/api/v1/push
@@ -31,19 +31,19 @@ scrape_configs:
       - labels:
           status:
           method:
-          uri:
-          ip:
-          agent:
+#          uri:
+#          ip:
+#          agent:
 
-      - regex:
-          expression: '^(?P<exclude_ip>\S+)'
-      - labels:
-          exclude_ip:
+#      - regex:
+#          expression: '^(?P<exclude_ip>\S+)'
+#      - labels:
+#          exclude_ip:
 
-      - template:
-          source: uri
-          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
-{% endraw %}
+#      - template:
+#          source: uri
+#          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+#{% endraw %}
 
       - template:
           source: request_time
