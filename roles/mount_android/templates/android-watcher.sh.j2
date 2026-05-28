@@ -33,7 +33,7 @@ mount_android() {
   else
     if mountpoint -q "$MOUNTPOINT"; then
       echo "[$NAME] lost. Unmounting."
-      fusermount -u "$MOUNTPOINT"
+      fusermount -uz "$MOUNTPOINT"
     fi
   fi
 }
