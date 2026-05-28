@@ -4,27 +4,32 @@ nftlog_prefix_labels:
   - chain
   - action
 
-nftlog_labels:
-  - SRC
+nftlog_selector_labels:
   - DST
   - PROTO
-  - SPT
-  - DPT
   - MAC
+  - DPT
   - MACSRC
   - MACDST
   - MACPROTO
 
-nftlog_relabels:
+nftlog_line_labels:
+  - SRC
+  - SPT
+
+nftlog_selector_relabels:
   interface_in:
     regex: IN
     label: iif
   interface_out:
     regex: OUT
     label: oif
+
+nftlog_line_relabels:
   exclude_source_ip:
     regex: SRC
     label: exclude_src
+    operator: "!~"
     default:
       - "{{ home_ip }}"
       - "{{ lan_ip.router }}"

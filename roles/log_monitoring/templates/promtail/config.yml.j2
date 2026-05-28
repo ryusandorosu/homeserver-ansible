@@ -31,19 +31,19 @@ scrape_configs:
       - labels:
           status:
           method:
-#          uri:
-#          ip:
-#          agent:
+          uri:
+          ip:
+          agent:
 
-#      - regex:
-#          expression: '^(?P<exclude_ip>\S+)'
-#      - labels:
-#          exclude_ip:
+      - regex:
+          expression: '^(?P<exclude_ip>\S+)'
+      - labels:
+          exclude_ip:
 
-#      - template:
-#          source: uri
-#          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
-#{% endraw %}
+      - template:
+          source: uri
+          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+{% endraw %}
 
       - template:
           source: request_time
@@ -121,11 +121,11 @@ scrape_configs:
           stages:
             - regex:
                 expression: '{% for label in nftlog_prefix_labels %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
-{% for label in nftlog_labels %}
+{% for label in nftlog_selector_labels %}
             - regex:
                 expression: ' {{ label }}=(?P<{{ label | lower }}>\S+)'
 {% endfor %}
-{% for key, value in nftlog_relabels.items() %}
+{% for key, value in nftlog_selector_relabels.items() %}
             - regex:
                 expression: ' {{ value.regex }}=(?P<{{ value.label }}>\S+)'
 {% endfor %}
@@ -133,10 +133,10 @@ scrape_configs:
 {% for label in nftlog_prefix_labels %}
                 {{ label }}:
 {% endfor %}
-{% for label in nftlog_labels %}
+{% for label in nftlog_selector_labels %}
                 {{ label | lower }}:
 {% endfor %}
-{% for key, value in nftlog_relabels.items() %}
+{% for key, value in nftlog_selector_relabels.items() %}
                 {{ value.label }}:
 {% endfor %}
             - geoip:

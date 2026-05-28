@@ -1,9 +1,9 @@
-nftables_labels: >-
+nftables_selectors: >-
   {{
     (
-      nftlog_prefix_labels + nftlog_labels +
+      nftlog_prefix_labels + nftlog_selector_labels +
       (
-        nftlog_relabels.values()
+        nftlog_selector_relabels.values()
         | map(attribute='label')
         | list
       )
@@ -11,11 +11,47 @@ nftables_labels: >-
     | map('lower')
   }}
 
-nftables_filters: >-
+nftables_label_selectors: >-
   {{
-    nftables_labels
-    | zip(nftables_labels)
+    nftables_selectors
+    | zip(nftables_selectors)
     | map('join', ' =~ "$')
     | list
-    | regex_replace('exclude_src =~','exclude_src !~')
   }}
+
+nftables_filters_regex: >-
+  {{
+    (
+      nftlog_line_labels +
+      (
+        nftlog_line_relabels.values()
+        | map(attribute='label')
+        | list
+      )
+    )
+  }}
+
+nftables_line_filters: >-
+  {{
+    (
+      nftlog_line_labels +
+      (
+        nftlog_line_relabels.values()
+        | map(attribute='label')
+        | list
+      )
+    )
+    | map('lower')
+  }}
+
+nftables_filter_expr: >-
+  {{
+    nftables_filters_regex
+    | zip(nftables_line_filters)
+    | map('join', '=$')
+    | list
+  }}
+
+nftables_label_filter: >-
+  {% for filter in nftables_filter_expr | reject('contains', 'exclude') %}|~ " {{ filter }}" {% endfor %}
+  {% for filter in nftables_filter_expr | select('contains', 'exclude') %}!~ " {{ filter }}" {% endfor %}

@@ -1,11 +1,10 @@
 nftables_expr: >-
   job = "nftables",
   {{
-    nftables_filters
+    nftables_label_selectors
     | join('|^$", ')
     + '"'
   }}
-# |^$ - empty label value fallback
 
 nftables_dashboard_period:
   showtime: 6h
@@ -15,7 +14,7 @@ nftables_dashboard:
   logs:
     title: Firewall logs
     type: logs
-    expr: '{ {{ nftables_expr }} }'
+    expr: '{ {{ nftables_expr }} } {{ nftables_label_filter }}'
 
   dropped:
     title: Dropped packets
@@ -26,7 +25,7 @@ nftables_dashboard:
           {
             {{ nftables_expr }},
             action="drop"
-          }
+          } {{ nftables_label_filter }}
           [{{ nftables_dashboard_period.expr_rate }}]
         )
       )
@@ -40,7 +39,7 @@ nftables_dashboard:
           {
             {{ nftables_expr }},
             action="accept"
-          }
+          } {{ nftables_label_filter }}
           [{{ nftables_dashboard_period.expr_rate }}]
         )
       )
@@ -53,7 +52,7 @@ nftables_dashboard:
       topk(10,
         sum by (src) (
           count_over_time(
-            { {{ nftables_expr }} }
+            { {{ nftables_expr }} } {{ nftables_label_filter }}
             [{{ nftables_dashboard_period.showtime }}]
           )
         )
@@ -67,7 +66,7 @@ nftables_dashboard:
       topk(10,
         sum by (dpt) (
           count_over_time(
-            { {{ nftables_expr }} }
+            { {{ nftables_expr }} } {{ nftables_label_filter }}
             [{{ nftables_dashboard_period.showtime }}]
           )
         )
@@ -80,7 +79,7 @@ nftables_dashboard:
     expr: >
       sum by (geoip_country_name) (
         count_over_time(
-          { {{ nftables_expr }} }
+          { {{ nftables_expr }} } {{ nftables_label_filter }}
           [{{ nftables_dashboard_period.showtime }}]
         )
       )

@@ -1,3 +1,13 @@
+{% set all_labels = [] %}
+{%- for label in nftables_selectors -%}
+  {% set _ = all_labels.append(label ) %}
+{%- endfor -%}
+{%- for label in nftlog_line_labels -%}
+  {% set _ = all_labels.append(label | lower ) %}
+{%- endfor -%}
+{%- for label, value in nftlog_line_relabels.items() -%}
+  {% set _ = all_labels.append(value.label) %}
+{%- endfor -%}
 {
   "annotations": {
     "list": []
@@ -62,7 +72,7 @@
   ],
   "templating": {
     "list": [
-{% for label in nftables_labels %}
+{% for label in all_labels %}
       {
         "name": "{{ label }}",
         "type": "query",
@@ -73,14 +83,14 @@
 {% if label == 'exclude_src' %}
         "current": {
           "text": [
-{% for value in nftlog_relabels.exclude_source_ip.default %}
+{% for value in nftlog_line_relabels.exclude_source_ip.default %}
             "{{ value }}"{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
           ],
           "value": [
-{% for value in nftlog_relabels.exclude_source_ip.default %}
+{% for value in nftlog_line_relabels.exclude_source_ip.default %}
             "{{ value }}"{% if not loop.last %},
 {% endif %}
 {% endfor %}
