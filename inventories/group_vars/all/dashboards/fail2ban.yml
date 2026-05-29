@@ -4,9 +4,11 @@ f2b_action_labels:
   jail:
     bash: jail_name
     label: true
+    loglabel: true
   ip:
     bash: banned_ip
     label: true
+    loglabel: true
   hostname:
     bash: (hostname)
     label: true

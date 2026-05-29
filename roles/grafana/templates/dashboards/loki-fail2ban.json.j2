@@ -11,7 +11,7 @@
       "title": "{{ promtail_logs.fail2ban_logs.path }}",
       "targets": [
         {
-          "expr": "{job=\"{{ promtail_logs.fail2ban_logs.name }}\"}",
+          "expr": "{job=\"{{ promtail_logs.fail2ban_logs.name }}\", {{ f2b_logfilters }}}",
           "refId": "mainlog"
         }
       ],

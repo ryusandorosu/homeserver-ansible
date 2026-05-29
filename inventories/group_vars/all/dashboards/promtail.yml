@@ -37,7 +37,7 @@ promtail_logs:
   fail2ban_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
-    pipeline: false
+    pipeline: fail2ban_log
   nginx_access:
     name: Nginx sites access logs
     path: /var/log/nginx/*access.log
@@ -48,7 +48,7 @@ promtail_logs:
   fail2ban_actions:
     name: Fail2Ban Actions
     path: "{{ custom_logs.fail2ban }}"
-    pipeline: fail2ban
+    pipeline: fail2ban_action
 
 promtail_systemd:
   docker:

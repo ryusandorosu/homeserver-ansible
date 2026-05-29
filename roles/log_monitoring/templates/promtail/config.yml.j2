@@ -25,7 +25,7 @@ scrape_configs:
           expression: '/var/log/nginx/(?P<vhost>[^_]+)_access.log'
       - labels:
           vhost:
-
+      # combined log format parsing
       - regex:
           expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>.+)\] "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<agent>[^"]*)" (?P<request_time>\S+)'
       - labels:
@@ -34,22 +34,22 @@ scrape_configs:
           uri:
           ip:
           agent:
-
+      # separate label to exclude
       - regex:
           expression: '^(?P<exclude_ip>\S+)'
       - labels:
           exclude_ip:
-
+      # trimming requests from uri
       - template:
           source: uri
           template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
 {% endraw %}
-
+      # custom metric to observe latency
       - template:
           source: request_time
           template: {% raw %}'{{ .Value }}'
 {% endraw %}
-
+      # to get info about ip location
       - geoip:
           db: {{ container_geoip_plugin }}
           source: ip
@@ -60,7 +60,7 @@ scrape_configs:
 {% endfor %}
       - labels:
           geoip_country_name:
-{% elif job.pipeline == 'fail2ban' %}
+{% elif job.pipeline == 'fail2ban_action' %}
     pipeline_stages:
       - json:
           expressions:
@@ -70,6 +70,18 @@ scrape_configs:
       - labels:
 {% for json, value in f2b_action_labels.items() if value.label is defined %}
           {{ json }}:
+{% endfor %}
+#      - template:
+#          source: vhost
+#          template: {% raw %}'{{ какое выражение здесь нужно }}'
+#{% endraw %}
+{% elif job.pipeline == 'fail2ban_log' %}
+    pipeline_stages:
+      - regex:
+          expression: '^(?P<date>\d+\-\d+\-\d+) (?P<time>\d+:\d+:\d+,\d+) (?P<module>fail2ban\.\w+)\s+\[(?P<session>\d+)\]: (?P<loglevel>[A-Z]+)\s+\[(?P<jail>\S+)\] (?P<action>\w+) (?P<ip>\d+\.\d+\.\d+\.\d+)'
+      - labels:
+{% for label, value in f2b_action_labels.items() if value.loglabel is defined %}
+          {{ label }}:
 {% endfor %}
 {% elif job.pipeline == 'telegram' %}
     pipeline_stages:

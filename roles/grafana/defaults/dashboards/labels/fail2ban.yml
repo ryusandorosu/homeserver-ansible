@@ -12,3 +12,15 @@ f2b_filters: >-
 
 f2b_matchlog_filters: >-
   {% for filter in f2b_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}
+
+f2b_loglabels: >-
+  {{
+    f2b_action_labels
+    | dict2items
+    | selectattr('value.loglabel', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+f2b_logfilters: >-
+  {% for filter in f2b_loglabels %}{{ filter }} =~ \"${{ filter }}\"{% if not loop.last %}, {% endif %}{% endfor %}
