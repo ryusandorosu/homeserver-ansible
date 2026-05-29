@@ -31,19 +31,19 @@ scrape_configs:
       - labels:
           status:
           method:
-#          uri:
-#          ip:
-#          agent:
+          uri:
+          ip:
+          agent:
 
-#      - regex:
-#          expression: '^(?P<exclude_ip>\S+)'
-#      - labels:
-#          exclude_ip:
+      - regex:
+          expression: '^(?P<exclude_ip>\S+)'
+      - labels:
+          exclude_ip:
 
-#      - template:
-#          source: uri
-#          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
-#{% endraw %}
+      - template:
+          source: uri
+          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+{% endraw %}
 
       - template:
           source: request_time
@@ -141,7 +141,7 @@ scrape_configs:
 {% endfor %}
             - geoip:
                 db: {{ container_geoip_plugin }}
-                source: src
+                source: saddr
                 db_type: city
             - labeldrop:
 {% for label in geoip_labeldrop %}

@@ -70,7 +70,7 @@
           "type": "loki",
           "uid": "{{ loki_uid }}"
         },
-{% if label == 'exclude_src' %}
+{# {% if label == 'exclude_src' %}
         "current": {
           "text": [
 {% for value in nftlog_relabels.exclude_source_ip.default %}
@@ -87,7 +87,7 @@
 
           ]
         },
-{% endif %}
+{% endif %} #}
         "includeAll": true,
         "multi": true,
         "query": "label_values({job=\"nftables\"}, {{ label }})"

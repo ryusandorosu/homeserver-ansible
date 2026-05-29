@@ -5,15 +5,11 @@ nftlog_prefix_labels:
   - action
 
 nftlog_labels:
-  - SRC
-  - DST
+  # - SRC
+  # - DST
   - PROTO
   - SPT
   - DPT
-  - MAC
-  - MACSRC
-  - MACDST
-  - MACPROTO
 
 nftlog_relabels:
   interface_in:
@@ -22,13 +18,19 @@ nftlog_relabels:
   interface_out:
     regex: OUT
     label: oif
-  exclude_source_ip:
+  address_source:
     regex: SRC
-    label: exclude_src
-    default:
-      - "{{ home_ip }}"
-      - "{{ lan_ip.router }}"
-      - "{{ lan_ip.wifi }}"
-      - 172.17.0.1
-      - 172.23.0.1
-      - "fe80:0000:0000:0000:da0d:17ff:fedf:d182"
+    label: saddr
+  address_destination:
+    regex: DST
+    label: daddr
+  # exclude_source_ip:
+  #   regex: SRC
+  #   label: exclude_src
+  #   default:
+  #     - "{{ home_ip }}"
+  #     - "{{ lan_ip.router }}"
+  #     - "{{ lan_ip.wifi }}"
+  #     - 172.17.0.1
+  #     - 172.23.0.1
+  #     - "fe80:0000:0000:0000:da0d:17ff:fedf:d182"

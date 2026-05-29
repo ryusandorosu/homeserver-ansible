@@ -48,10 +48,10 @@ nftables_dashboard:
   top_src:
     title: Top source IPs
     type: timeseries
-    label: src
+    label: saddr
     expr: >
       topk(10,
-        sum by (src) (
+        sum by (saddr) (
           count_over_time(
             { {{ nftables_expr }} }
             [{{ nftables_dashboard_period.showtime }}]
