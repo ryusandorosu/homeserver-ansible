@@ -33,7 +33,7 @@ promtail_logs:
   nftables:
     name: nftables actions
     path: "{{ nftlog }}"
-    pipeline: false
+    pipeline: nftables
   fail2ban_logs:
     name: Fail2Ban
     path: "{{ f2b_log }}"
