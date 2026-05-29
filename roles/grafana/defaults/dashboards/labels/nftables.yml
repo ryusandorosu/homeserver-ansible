@@ -11,11 +11,6 @@ nftables_labels: >-
     | map('lower')
   }}
 
+# |^$ - empty label value fallback
 nftables_filters: >-
-  {{
-    nftables_labels
-    | zip(nftables_labels)
-    | map('join', ' =~ "$')
-    | list
-    | regex_replace('exclude_src =~','exclude_src !~')
-  }}
+  {% for filter in nftables_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}

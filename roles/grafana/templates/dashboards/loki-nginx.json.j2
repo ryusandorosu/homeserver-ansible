@@ -88,7 +88,7 @@
   ],
   "templating": {
     "list": [
-{% for label, cfg in nginx_labels.items() %}
+{% for label in nginx_labels %}
       {
         "name": "{{ label }}",
         "type": "query",
@@ -96,17 +96,25 @@
           "type": "loki",
           "uid": "{{ loki_uid }}"
         },
-{% if cfg.default is defined %}
+{% if label == 'exclude_ip' %}
         "current": {
           "text": [
-            "{{ cfg.default }}"
+{% for value in nginx_exclude_ip %}
+            "{{ value }}"{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
           ],
           "value": [
-            "{{ cfg.default }}"
+{% for value in nginx_exclude_ip %}
+            "{{ value }}"{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
           ]
         },
 {% endif %}
-        "includeAll": {% if cfg.default is defined %}false{% else %}true{% endif %},
+        "includeAll": {% if label == 'exclude_ip' %}false{% else %}true{% endif %},
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.nginx_access.name }}\"}, {{ label }})"
       }{% if not loop.last %},

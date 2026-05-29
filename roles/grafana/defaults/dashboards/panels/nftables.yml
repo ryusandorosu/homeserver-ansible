@@ -1,11 +1,5 @@
 nftables_expr: >-
-  job = "nftables",
-  {{
-    nftables_filters
-    | join('|^$", ')
-    + '"'
-  }}
-# |^$ - empty label value fallback
+  job = "{{ promtail_logs.nftables.name }}", {{ nftables_filters }}
 
 nftables_dashboard_period:
   showtime: 6h

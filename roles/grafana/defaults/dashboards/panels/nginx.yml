@@ -1,6 +1,5 @@
 nginx_expr: >-
-  job = "{{ promtail_logs.nginx_access.name }}",
-  {{ nginx_filters | join('", ') + '"' }}
+  job = "{{ promtail_logs.nginx_access.name }}", {{ nginx_filters }}
 
 nginx_dashboard_period:
   showtime: 6h

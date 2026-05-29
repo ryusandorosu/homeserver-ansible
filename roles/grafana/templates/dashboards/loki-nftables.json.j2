@@ -90,7 +90,7 @@
 {% endif %} #}
         "includeAll": true,
         "multi": true,
-        "query": "label_values({job=\"nftables\"}, {{ label }})"
+        "query": "label_values({job=\"{{ promtail_logs.nftables.name }}\"}, {{ label }})"
       }{% if not loop.last %},
 {% endif %}
 {% endfor %}

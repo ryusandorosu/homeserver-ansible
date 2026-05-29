@@ -1,34 +1,14 @@
 nginx_labels:
-  vhost:
-    operator: '=~'
-  method:
-    operator: '=~'
-  status:
-    operator: '=~'
-  ip:
-    operator: '=~'
-  agent:
-    operator: '=~'
-  exclude_ip:
-    operator: '!~'
-    default: "{{ home_ip }}"
+  - vhost
+  - method
+  - status
+  - ip
+  - agent
+  - exclude_ip
+
+nginx_exclude_ip:
+  - "{{ home_ip }}"
 
 nginx_filters: >-
-  {{
-    nginx_labels
-      | dict2items
-      | map(attribute='key')
-      | zip(
-          nginx_labels
-          | dict2items
-          | map(attribute='value.operator')
-        )
-      | map('join', ' ')
-      | zip(
-          nginx_labels
-          | dict2items
-          | map(attribute='key')
-        )
-      | map('join', ' "$')
-      | list
-  }}
+  {% for filter in nginx_labels | reject('contains', 'exclude') %}{{ filter }} =~ "${{ filter }}", {% endfor %}
+  exclude_ip !~ "$exclude_ip"
