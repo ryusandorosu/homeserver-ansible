@@ -34,8 +34,7 @@ if [[ "$jail_name" == nginx* ]]; then
       echo "$logtext" \
       | sed -n 's#^/var/log/nginx/\([^:]*\)_access\.log:.*#\1#p' \
       | sort -u \
-      | jq -R . \
-      | jq -s .
+      | paste -sd ',' -
     )
   fi
   # fallback: extract host from nginx error log
@@ -44,8 +43,7 @@ if [[ "$jail_name" == nginx* ]]; then
       echo "$(grep -m $loglines -awF $banned_ip /var/log/nginx/error.log | tail -n $loglines)" \
       | sed -n 's/.*host: "\([^"]*\)".*/\1/p' \
       | sort -u \
-      | jq -R . \
-      | jq -s .
+      | paste -sd ',' -
     )
   fi
 else
@@ -64,7 +62,7 @@ ACTION=$(jq -nc \
 
 }')
 
-[[ -z "{{ custom_logs.fail2ban }}" ]] && touch {{ custom_logs.fail2ban }}
+[[ ! -f "{{ custom_logs.fail2ban }}" ]] && touch {{ custom_logs.fail2ban }}
 echo "$ACTION" >> {{ custom_logs.fail2ban }}
 
 urlencode() { jq -nr --arg v "$1" '$v|@uri'; }

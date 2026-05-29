@@ -8,17 +8,8 @@ f2b_labels: >-
   }}
 
 f2b_filters: >-
-  {{
-    f2b_labels
-    | zip(f2b_labels)
-    | map('join', ' =~ "$')
-    | list
-  }}
+  {% for filter in f2b_labels | reject('equalto', 'vhost') %}{{ filter }} =~ "${{ filter }}", {% endfor %}
+  {% for filter in f2b_labels | select('equalto', 'vhost') %}{{ filter }} =~ ".*${{ filter }}.*"{% endfor %}
 
 f2b_matchlog_filters: >-
-  {{
-    f2b_labels
-    | zip(f2b_labels)
-    | map('join', '={{ .')
-    | list
-  }}
+  {% for filter in f2b_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}

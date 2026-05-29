@@ -1,6 +1,5 @@
 f2b_expr: >-
-  job = "{{ promtail_logs.fail2ban_actions.name }}",
-  {{ f2b_filters | join('", ') + '"' }}
+  job = "{{ promtail_logs.fail2ban_actions.name }}", {{ f2b_filters }}
 
 f2b_dashboard:
   logs:
@@ -15,7 +14,7 @@ f2b_dashboard:
     expr: >
       { {{ f2b_expr }} }
       | json
-      | line_format "{{ f2b_matchlog_filters | join(' }} ') }} }} \n {% raw %}{{.logtext}}{% endraw %}"
+      | line_format "{{ f2b_matchlog_filters }} \n {% raw %}{{.logtext}}{% endraw %}"
 
   geoinfo:
     title: "Banned IPs geo info"

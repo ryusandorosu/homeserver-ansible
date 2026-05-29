@@ -18,14 +18,13 @@ f2b_action_labels:
     bash: ipfailures
   jailfailures:
     bash: ipjailfailures
+  vhost:
+    bash: vhost
+    label: true
   logpath:
     bash: logpath
   logtext:
     bash: logtext
-  vhost:
-    bash: vhost
-    label: true
-    json: true
   geoip:
     bash: geojson
     json: true
