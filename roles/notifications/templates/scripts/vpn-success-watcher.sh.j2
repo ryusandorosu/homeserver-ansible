@@ -2,7 +2,7 @@
 . {{ watcher_scripts_includes }}/geo-include.sh
 
 declare -A new_handshake
-[[ -z {{ custom_logs.wireguard }} ]] && touch {{ custom_logs.wireguard }}
+[[ ! -f {{ custom_logs.wireguard }} ]] && touch {{ custom_logs.wireguard }}
 
 while true; do
 while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do

@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -z {{ custom_logs.container }} ]] && touch {{ custom_logs.container }}
+[[ ! -f {{ custom_logs.container }} ]] && touch {{ custom_logs.container }}
 
 docker ps \
 {% raw %}  --format '{{.Names}} {{.Status}}' | \
