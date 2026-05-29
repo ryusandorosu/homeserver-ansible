@@ -71,10 +71,6 @@ scrape_configs:
 {% for json, value in f2b_action_labels.items() if value.label is defined %}
           {{ json }}:
 {% endfor %}
-#      - template:
-#          source: vhost
-#          template: {% raw %}'{{ какое выражение здесь нужно }}'
-#{% endraw %}
 {% elif job.pipeline == 'fail2ban_log' %}
     pipeline_stages:
       - regex:
