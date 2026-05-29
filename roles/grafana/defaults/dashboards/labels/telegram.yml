@@ -7,18 +7,9 @@ tg_labels: >-
     | list
   }}
 
+# |^$ - empty label value fallback
 tg_filters: >-
-  {{
-    tg_labels
-    | zip(tg_labels)
-    | map('join', ' =~ "$')
-    | list
-  }}
+  {% for filter in tg_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}
 
 tg_matchlog_filters: >-
-  {{
-    tg_labels
-    | zip(tg_labels)
-    | map('join', '={{ .')
-    | list
-  }}
+  {% for filter in tg_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}
