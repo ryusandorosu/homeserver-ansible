@@ -25,6 +25,7 @@ f2b_action_labels:
   vhost:
     bash: vhost
     label: true
+    json: true
   geoip:
     bash: geojson
     json: true
