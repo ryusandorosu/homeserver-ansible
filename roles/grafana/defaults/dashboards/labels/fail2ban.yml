@@ -8,8 +8,7 @@ f2b_labels: >-
   }}
 
 f2b_filters: >-
-  {% for filter in f2b_labels | reject('equalto', 'vhost') %}{{ filter }} =~ "${{ filter }}", {% endfor %}
-  {% for filter in f2b_labels | select('equalto', 'vhost') %}{{ filter }} =~ ".*${{ filter }}.*"{% endfor %}
+  {% for filter in f2b_labels %}{{ filter }} =~ "${{ filter }}"{% if not loop.last %}, {% endif %}{% endfor %}
 
 f2b_matchlog_filters: >-
   {% for filter in f2b_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}
