@@ -106,7 +106,7 @@
           ]
         },
 {% endif %}
-        "includeAll": true,
+        "includeAll": {% if cfg.default is defined %}false{% else %}true{% endif %},
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.nginx_access.name }}\"}, {{ label }})"
       }{% if not loop.last %},
