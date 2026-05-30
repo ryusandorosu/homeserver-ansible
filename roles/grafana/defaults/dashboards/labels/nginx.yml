@@ -1,14 +1,36 @@
 nginx_labels:
-  - vhost
-  - method
-  - status
-  - ip
-  - agent
-  - exclude_ip
+  vhost:
+    - access
+    - error
+  method:
+    - access
+    - error
+  status:
+    - access
+  ip:
+    - access
+    - error
+  agent:
+    - access
+  exclude_ip:
+    - access
+    - error
 
 nginx_exclude_ip:
   - "{{ home_ip }}"
 
-nginx_filters: >-
-  {% for filter in nginx_labels | reject('contains', 'exclude') %}{{ filter }} =~ "${{ filter }}", {% endfor %}
+nginx_access_filters: >-
+  {% for key, value in nginx_labels.items() if key != 'exclude_ip' %}
+  {% if value | select('equalto', 'access') %}
+  {{ key }} =~ "${{ key }}", 
+  {% endif %}
+  {% endfor %}
+  exclude_ip !~ "$exclude_ip"
+
+nginx_error_filters: >-
+  {% for key, value in nginx_labels.items() if key != 'exclude_ip' %}
+  {% if value | select('equalto', 'error') %}
+  {{ key }} =~ "${{ key }}", 
+  {% endif %}
+  {% endfor %}
   exclude_ip !~ "$exclude_ip"

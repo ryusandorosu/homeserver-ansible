@@ -41,10 +41,11 @@ promtail_logs:
   nginx_access:
     name: Nginx sites access logs
     path: /var/log/nginx/*access.log
-    pipeline: nginx
+    pipeline: nginx_access
   nginx_error:
     name: Nginx errors
     path: /var/log/nginx/error.log
+    pipeline: nginx_error
   fail2ban_actions:
     name: Fail2Ban Actions
     path: "{{ custom_logs.fail2ban }}"

@@ -1,5 +1,5 @@
 nginx_expr: >-
-  job = "{{ promtail_logs.nginx_access.name }}", {{ nginx_filters }}
+  job = "{{ promtail_logs.nginx_access.name }}", {{ nginx_access_filters }}
 
 nginx_dashboard_period:
   showtime: 6h
@@ -17,7 +17,7 @@ nginx_dashboard:
     title: Error logs
     type: logs
     row: common
-    expr: '{job = "{{ promtail_logs.nginx_error.name }}"}'
+    expr: '{ job = "{{ promtail_logs.nginx_error.name }}", {{ nginx_error_filters }} }'
 
   top_hosts:
     title: Most attacked hosts
