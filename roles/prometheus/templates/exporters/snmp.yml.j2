@@ -1,0 +1,9 @@
+auths:
+  public_v2:
+    community: public
+    version: 2
+
+modules:
+{{ lookup('file', 'snmp_modules/synology.yml') }}
+{{ lookup('file', 'snmp_modules/system.yml') }}
+{{ lookup('file', 'snmp_modules/if_mib.yml') }}
