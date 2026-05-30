@@ -33,7 +33,3 @@ f2b_action_labels:
   country:
     bash: country
     label: true
-
-f2b_action_dashboard:
-  uid: fail2ban_actions
-  showtime: "{{ showtime.long }}"
