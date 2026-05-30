@@ -62,11 +62,11 @@ tg_dashboard_panels:
     type: timeseries
     label: response_code
     expr: >
-      count_over_time(
-        { {{ tg_expr }} }
-        | json response_code="response_code"
-        | response_code != ""
-        [{{ tg_dashboard.showtime }}]
+      sum by (response_code) (
+        count_over_time(
+          { {{ tg_expr }} }
+          [{{ tg_dashboard.showtime }}]
+        )
       )
 
   length:
