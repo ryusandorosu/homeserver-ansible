@@ -1,0 +1,22 @@
+pipeline_stages:
+  - regex:
+      expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ (?P<message>.*), client: (?P<ip>\d+\.\d+\.\d+\.\d+), server: (?P<server>\S+), request: "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)", host: "(?P<vhost>[^"]*)"(, referrer: "(?P<referrer>[^"]*)")?'
+  - labels:
+      method:
+      uri:
+      ip:
+      vhost:
+  # no labels yet:
+  #- regex:
+  #    expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ (?P<module>\[\w+\]) (?P<module_line>\w+\.\w+:\d+): (?P<module_func>\S+): (?P<error_message>.*): (?P<error_type>.*): (?P<error_reason>.*), (?P<context>\w+): (?P<context_type>\w+\.?\w+)$'
+  # all in one but seems like it does not work:
+  #- regex:
+  #    expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ ((?P<module>\[\w+\]) (?P<module_line>\w+\.\w+:\d+): (?P<module_func>\S+): (?P<error_message>.*): (?P<error_type>.*): (?P<error_reason>.*), (?P<context>\w+): (?P<context_type>\w+\.?\w+)$)?|(?P<message>.*),? client: (?P<ip>\d+\.\d+\.\d+\.\d+), server: (?P<server>\S+), request: "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)", host: "(?P<vhost>[^"]*)"(, referrer: "(?P<referrer>[^"]*)")?'
+  - regex:
+      expression: 'client: (?P<exclude_ip>\d+\.\d+\.\d+\.\d+)'
+  - labels:
+      exclude_ip:
+  - template:
+      source: uri
+      template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+{% endraw %}

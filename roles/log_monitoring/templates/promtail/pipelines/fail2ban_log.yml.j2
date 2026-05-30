@@ -1,0 +1,7 @@
+pipeline_stages:
+  - regex:
+      expression: '^(?P<date>\d+\-\d+\-\d+) (?P<time>\d+:\d+:\d+,\d+) (?P<module>fail2ban\.\w+)\s+\[(?P<session>\d+)\]: (?P<loglevel>[A-Z]+)\s+\[(?P<jail>\S+)\] (?P<action>\w+) (?P<ip>\d+\.\d+\.\d+\.\d+)'
+  - labels:
+{% for label, value in f2b_action_labels.items() if value.loglabel is defined %}
+      {{ label }}:
+{% endfor %}

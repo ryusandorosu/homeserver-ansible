@@ -1,0 +1,41 @@
+pipeline_stages:
+  - regex:
+      source: filename
+      expression: '/var/log/nginx/(?P<vhost>[^_]+)_access.log'
+  - labels:
+      vhost:
+  # combined log format parsing
+  - regex:
+      expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>.+)\] "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<agent>[^"]*)" (?P<request_time>\S+)'
+  - labels:
+      status:
+      method:
+      uri:
+      ip:
+      agent:
+  # separate label to exclude
+  - regex:
+      expression: '^(?P<exclude_ip>\S+)'
+  - labels:
+      exclude_ip:
+  # trimming requests from uri
+  - template:
+      source: uri
+      template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
+{% endraw %}
+  # custom metric to observe latency
+  - template:
+      source: request_time
+      template: {% raw %}'{{ .Value }}'
+{% endraw %}
+  # to get info about ip location
+  - geoip:
+      db: {{ container_geoip_plugin }}
+      source: ip
+      db_type: city
+  - labeldrop:
+{% for label in geoip_labeldrop %}
+      - {{ label }}
+{% endfor %}
+  - labels:
+      geoip_country_name:

@@ -1,0 +1,10 @@
+pipeline_stages:
+  - json:
+      expressions:
+{% for json, value in f2b_action_labels.items() %}
+        {{ json }}:
+{% endfor %}
+  - labels:
+{% for json, value in f2b_action_labels.items() if value.label is defined %}
+      {{ json }}:
+{% endfor %}

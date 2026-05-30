@@ -19,137 +19,21 @@ scrape_configs:
           __path__: {{ job.path }}
 {% if job.pipeline is defined %}
 {% if job.pipeline == 'nginx_access' %}
-    pipeline_stages:
-      - regex:
-          source: filename
-          expression: '/var/log/nginx/(?P<vhost>[^_]+)_access.log'
-      - labels:
-          vhost:
-      # combined log format parsing
-      - regex:
-          expression: '^(?P<ip>\S+) - (?P<user>\S+) \[(?P<time>.+)\] "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)" (?P<status>\d+) (?P<size>\d+) "(?P<referrer>[^"]*)" "(?P<agent>[^"]*)" (?P<request_time>\S+)'
-      - labels:
-          status:
-          method:
-          uri:
-          ip:
-          agent:
-      # separate label to exclude
-      - regex:
-          expression: '^(?P<exclude_ip>\S+)'
-      - labels:
-          exclude_ip:
-      # trimming requests from uri
-      - template:
-          source: uri
-          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
-{% endraw %}
-      # custom metric to observe latency
-      - template:
-          source: request_time
-          template: {% raw %}'{{ .Value }}'
-{% endraw %}
-      # to get info about ip location
-      - geoip:
-          db: {{ container_geoip_plugin }}
-          source: ip
-          db_type: city
-      - labeldrop:
-{% for label in geoip_labeldrop %}
-          - {{ label }}
-{% endfor %}
-      - labels:
-          geoip_country_name:
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nginx_access.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'nftables' %}
-    pipeline_stages:
-      - regex:
-          expression: '{% for label in nftlog_prefix_labels %}{{ label }}=(?P<{{ label }}>\w+){% if not loop.last %} {% endif %}{% endfor %}'
-{% for label in nftlog_labels %}
-      - regex:
-          expression: ' {{ label }}=(?P<{{ label | lower }}>\S+)'
-{% endfor %}
-{% for key, value in nftlog_relabels.items() %}
-      - regex:
-          expression: ' {{ value.regex }}=(?P<{{ value.label }}>\S+)'
-{% endfor %}
-      - labels:
-{% for label in nftlog_prefix_labels %}
-          {{ label }}:
-{% endfor %}
-{% for label in nftlog_labels %}
-          {{ label | lower }}:
-{% endfor %}
-{% for key, value in nftlog_relabels.items() %}
-          {{ value.label }}:
-{% endfor %}
-      - geoip:
-          db: {{ container_geoip_plugin }}
-          source: saddr
-          db_type: city
-      - labeldrop:
-{% for label in geoip_labeldrop %}
-          - {{ label }}
-{% endfor %}
-      - labels:
-          geoip_country_name:
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nftables.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_action' %}
-    pipeline_stages:
-      - json:
-          expressions:
-{% for json, value in f2b_action_labels.items() %}
-            {{ json }}:
-{% endfor %}
-      - labels:
-{% for json, value in f2b_action_labels.items() if value.label is defined %}
-          {{ json }}:
-{% endfor %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/fail2ban_action.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_log' %}
-    pipeline_stages:
-      - regex:
-          expression: '^(?P<date>\d+\-\d+\-\d+) (?P<time>\d+:\d+:\d+,\d+) (?P<module>fail2ban\.\w+)\s+\[(?P<session>\d+)\]: (?P<loglevel>[A-Z]+)\s+\[(?P<jail>\S+)\] (?P<action>\w+) (?P<ip>\d+\.\d+\.\d+\.\d+)'
-      - labels:
-{% for label, value in f2b_action_labels.items() if value.loglabel is defined %}
-          {{ label }}:
-{% endfor %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/fail2ban_log.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'nginx_error' %}
-    pipeline_stages:
-      - regex:
-          expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ (?P<message>.*), client: (?P<ip>\d+\.\d+\.\d+\.\d+), server: (?P<server>\S+), request: "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)", host: "(?P<vhost>[^"]*)"(, referrer: "(?P<referrer>[^"]*)")?'
-      - labels:
-          method:
-          uri:
-          ip:
-          vhost:
-      # no labels yet:
-      #- regex:
-      #    expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ (?P<module>\[\w+\]) (?P<module_line>\w+\.\w+:\d+): (?P<module_func>\S+): (?P<error_message>.*): (?P<error_type>.*): (?P<error_reason>.*), (?P<context>\w+): (?P<context_type>\w+\.?\w+)$'
-      # all in one but seems like it does not work:
-      #- regex:
-      #    expression: '^(?P<date>^\d+/\d+/\d+) (?P<time>\d+:\d+:\d+) \[error\] \d+#\d+: \*\d+ ((?P<module>\[\w+\]) (?P<module_line>\w+\.\w+:\d+): (?P<module_func>\S+): (?P<error_message>.*): (?P<error_type>.*): (?P<error_reason>.*), (?P<context>\w+): (?P<context_type>\w+\.?\w+)$)?|(?P<message>.*),? client: (?P<ip>\d+\.\d+\.\d+\.\d+), server: (?P<server>\S+), request: "(?P<method>\S+) (?P<uri>\S+) (?P<protocol>[^"]+)", host: "(?P<vhost>[^"]*)"(, referrer: "(?P<referrer>[^"]*)")?'
-      - regex:
-          expression: 'client: (?P<exclude_ip>\d+\.\d+\.\d+\.\d+)'
-      - labels:
-          exclude_ip:
-      - template:
-          source: uri
-          template: {% raw %}'{{ regexReplaceAll "\\?.*" .Value "" }}'
-{% endraw %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nginx_error.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'telegram' %}
-    pipeline_stages:
-      - json:
-          expressions:
-{% for json, value in tg_message_labels.items() %}
-            {{ json }}:
-{% endfor %}
-      - labels:
-{% for json, value in tg_message_labels.items() if value.label is defined %}
-          {{ json }}:
-{% endfor %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/telegram.yml.j2') | indent(4) }}
 {% endif %}
 {% endif %}
 
 {% endfor %}
-
   - job_name: docker
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
