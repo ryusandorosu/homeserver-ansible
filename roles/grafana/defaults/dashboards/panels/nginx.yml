@@ -2,7 +2,7 @@ nginx_expr: >-
   job = "{{ promtail_logs.nginx_access.name }}", {{ nginx_access_filters }}
 
 nginx_dashboard_period:
-  showtime: 6h
+  showtime: "{{ showtime.normal }}"
   expr_rate: 1m
 
 nginx_dashboard:

@@ -36,4 +36,4 @@ f2b_action_labels:
 
 f2b_action_dashboard:
   uid: fail2ban_actions
-  showtime: 24h
+  showtime: "{{ showtime.long }}"
