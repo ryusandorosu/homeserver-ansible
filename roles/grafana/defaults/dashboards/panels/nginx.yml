@@ -61,7 +61,6 @@ nginx_dashboard:
         sum by (ip) (
           count_over_time(
             { {{ nginx_expr }} }
-            | regexp "^(?P<ip>\\d+\\.\\d+\\.\\d+\\.\\d+)"
             [{{ nginx_dashboard_period.showtime }}]
           )
         )
@@ -184,6 +183,9 @@ nginx_dashboard:
             status =~ "4.."
           }
           [{{ nginx_dashboard_period.showtime }}]
+        ) / rate(
+          { {{ nginx_expr }} }
+          [{{ nginx_dashboard_period.showtime }}]
         )
       )
 
@@ -193,20 +195,16 @@ nginx_dashboard:
     row: error5
     label: status
     expr: >
-      100 * (
-        sum by (status) (
-          rate(
-            {
-              {{ nginx_expr }},
-              status =~ "5.."
-            }
-            [{{ nginx_dashboard_period.showtime }}]
-          )
-        ) / sum(
-          rate(
-            { {{ nginx_expr }} }
-            [{{ nginx_dashboard_period.showtime }}]
-          )
+      sum by (status) (
+        rate(
+          {
+            {{ nginx_expr }},
+            status =~ "5.."
+          }
+          [{{ nginx_dashboard_period.showtime }}]
+        ) / rate(
+          { {{ nginx_expr }} }
+          [{{ nginx_dashboard_period.showtime }}]
         )
       )
 
@@ -214,6 +212,12 @@ nginx_dashboard:
     title: 95 percentile latency
     type: timeseries
     row: latency
+    label:
+      - ip
+      - method
+      - status
+      - geoip_country_name
+      - vhost
     expr: >
       quantile_over_time(0.95, 
         { {{ nginx_expr }} }
@@ -226,6 +230,12 @@ nginx_dashboard:
     title: 99 percentile latency
     type: timeseries
     row: latency
+    label:
+      - ip
+      - method
+      - status
+      - geoip_country_name
+      - vhost
     expr: >
       quantile_over_time(0.99,
         { {{ nginx_expr }} }
@@ -238,6 +248,12 @@ nginx_dashboard:
     title: Average latency
     type: timeseries
     row: latency
+    label:
+      - ip
+      - method
+      - status
+      - geoip_country_name
+      - vhost
     expr: >
       avg_over_time(
         { {{ nginx_expr }} }
