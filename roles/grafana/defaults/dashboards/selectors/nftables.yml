@@ -1,0 +1,16 @@
+nftables_labels: >-
+  {{
+    (
+      nftlog_prefix_labels + nftlog_labels +
+      (
+        nftlog_relabels.values()
+        | map(attribute='label')
+        | list
+      )
+    )
+    | map('lower')
+  }}
+
+# |^$ - empty label value fallback
+nftables_filters: >-
+  {% for filter in nftables_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}

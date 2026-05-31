@@ -1,0 +1,15 @@
+tg_labels: >-
+  {{
+    tg_message_labels
+    | dict2items
+    | selectattr('value.label', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+# |^$ - empty label value fallback
+tg_filters: >-
+  {% for filter in tg_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}
+
+tg_matchlog_filters: >-
+  {% for filter in tg_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}

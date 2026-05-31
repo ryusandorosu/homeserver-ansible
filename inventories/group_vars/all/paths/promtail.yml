@@ -20,6 +20,7 @@ promtail_logs:
   auditd:
     name: Auditd
     path: /var/log/audit/audit.log
+    pipeline: auditd
   crowdsec:
     name: CrowdSec
     path: /var/log/crowdsec*.log

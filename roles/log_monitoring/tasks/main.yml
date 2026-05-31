@@ -3,6 +3,11 @@
   with_fileglob:
     - defaults/promtail_labels/*.yml
 
+- name: Import grafana defaults recursively
+  include_vars:
+    dir: "{{ role_path + '/..' }}/grafana/defaults/dashboards/labels"
+    extensions: ["yml"]
+
 - name: Create Loki directories
   file:
     path: "{{ item }}"
