@@ -1,3 +1,9 @@
-{% for path in audit_paths %}
--a always,exit -F path={{ path }} -F perm=wa -F auid>=1000 -F auid!=unset -k {{ audit_ruleset }}
-{% endfor %}
+{# {% for path in audit_paths %}
+  -a always,exit -F path={{ path }} -F perm=wa -F auid>=1000 -F auid!=unset -k {{ audit_ruleset }}
+{% endfor %} #}
+{% for rule, value in audit_paths.items() %}{% for path in value %}
+  -w {{ path }} -p wa -k {{ rule }}
+{% endfor %}{% endfor %}
+{% for rule, value in audit_bins.items() %}{% for path in value %}
+  -w {{ path }} -p x -k {{ rule }}
+{% endfor %}{% endfor %}

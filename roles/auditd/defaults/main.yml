@@ -1,2 +1,32 @@
-audit_ruleset: homeserver
-audit_paths: []
+audit_paths:
+  identity:
+    - /etc/group
+    - /etc/shadow
+    - /etc/passwd
+    - /etc/msmtprc
+  privilege:
+    - /etc/sudoers
+    - /etc/sudoers.d
+  systemd:
+    - /etc/systemd/system
+  sshd:
+    - /etc/ssh/sshd_config
+    - /home/{{ user }}/.ssh/authorized_keys
+    - /root/.ssh/authorized_keys
+  firewall:
+    - /etc/nftables.conf
+  wireguard:
+    - /etc/wireguard/{{ wireguard_interface }}.conf
+  fail2ban:
+    - /etc/fail2ban/jail.local
+
+audit_bins:
+  privilege:
+    - /usr/bin/sudo
+  docker:
+    - /usr/bin/docker
+  firewall:
+    - /usr/sbin/nft
+  wireguard:
+    # - /usr/bin/wg
+    - /usr/bin/wg-quick

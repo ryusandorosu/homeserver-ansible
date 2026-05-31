@@ -7,7 +7,7 @@
 - name: Deploy audit rules
   template:
     src: audit.rules.j2
-    dest: /etc/audit/rules.d/homeserver.rules
+    dest: "/etc/audit/rules.d/homeserver.rules"
     owner: root
     group: root
     mode: '0640'
