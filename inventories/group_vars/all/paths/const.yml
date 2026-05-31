@@ -4,3 +4,4 @@ system_logs:
   sshd: /var/log/auth.log
   fail2ban: /var/log/fail2ban.log
   kernel: /var/log/kern.log
+  auditd: /var/log/audit/audit.log

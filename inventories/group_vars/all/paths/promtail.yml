@@ -19,7 +19,7 @@ promtail_logs:
     path: /var/log/user.log
   auditd:
     name: Auditd
-    path: /var/log/audit/audit.log
+    path: "{{ system_logs.auditd }}"
     pipeline: auditd
   crowdsec:
     name: CrowdSec

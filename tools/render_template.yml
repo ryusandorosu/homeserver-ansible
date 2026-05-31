@@ -4,10 +4,16 @@
   become: false
 
   tasks:
-    - name: Load all defaults recursively
+    - name: Load all role defaults recursively
       include_vars:
         dir: "{{ playbook_dir + '/../' + roles_dir + '/' + role_name }}/defaults"
         extensions: ["yml"]
+      failed_when: false
+    - name: Load Promtail labels if role is grafana
+      include_vars:
+        dir: "{{ playbook_dir + '/../' + roles_dir }}/promtail/defaults/labels"
+        extensions: ["yml"]
+      when: role_name == 'grafana'
       failed_when: false
     - name: Render template
       copy:

@@ -1,0 +1,68 @@
+{%- set labels = [] -%}
+{%- set _ = labels.append('type') -%}
+{%- for key, value in auditd_labels.items() -%}{%- for label in value -%}
+{%- set _ = labels.append(label) -%}
+{%- endfor -%}{%- endfor -%}
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+    {
+      "type": "logs",
+      "title": "{{ system_logs.auditd }}",
+      "targets": [
+        {
+          "expr": {{ audit_expr | to_json }},
+          "refId": "1"
+        }
+      ],
+      "options": {
+        "fontSize": "small",
+        "showControls": true,
+        "showTime": true
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "refresh": "{{ refresh_time.quick }}",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "loki",
+    "auditd",
+    "logs"
+  ],
+  "templating": {
+    "list": [
+{% for label in labels %}
+      {
+        "name": "{{ label }}",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "{{ loki_uid }}"
+        },
+        "includeAll": true,
+        "multi": true,
+        "query": "label_values({job=\"{{ promtail_logs.auditd.name }}\"}, {{ label }})"
+      }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+    ]
+  },
+  "time": {
+    "from": "now-{{ showtime.normal }}",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "Loki: Auditd",
+  "version": 1
+}
