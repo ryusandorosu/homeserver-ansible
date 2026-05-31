@@ -9,5 +9,6 @@ custom_logs:
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions.json"
 
-nftlog: /var/log/nftables.log
-erlog: /var/log/edgerouter.log
+rsyslog:
+  nftables: /var/log/nftables.log
+  edgerouter: /var/log/edgerouter.log

@@ -1,6 +1,6 @@
-$template EdgeRouterLogs,"{{ erlog }}"
+$template EdgeRouterLogs,"{{ rsyslog.edgerouter }}"
 
 if $fromhost-ip == '{{ lan_ip.router }}' then {
-    action(type="omfile" file="{{ erlog }}")
+    action(type="omfile" file="{{ rsyslog.edgerouter }}")
     stop
 }

@@ -1,7 +1,7 @@
 promtail_logs:
   edgerouter:
     name: EdgeRouter
-    path: "{{ erlog }}"
+    path: "{{ rsyslog.edgerouter }}"
   status:
     name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
@@ -32,7 +32,7 @@ promtail_logs:
     pipeline: telegram
   nftables:
     name: nftables actions
-    path: "{{ nftlog }}"
+    path: "{{ rsyslog.nftables }}"
     pipeline: nftables
   fail2ban_logs:
     name: Fail2Ban

@@ -14,12 +14,20 @@
   with_fileglob:
     - files/*
 
-- name: Deploy templated logrotate configs
+- name: Deploy templated logrotate config with default settings
   template:
-    src: "{{ item }}"
-    dest: "/etc/logrotate.d/{{ item | basename | regex_replace('j2','') }}"
+    src: default.j2
+    dest: "/etc/logrotate.d/{{ item.key }}"
     owner: root
     group: root
     mode: '0644'
-  with_fileglob:
-    - templates/*
+  loop: "{{ logrotate_configs | dict2items | rejectattr('value.config', 'defined') }}"
+
+- name: Deploy templated logrotate configs with different settings
+  template:
+    src: configured.j2
+    dest: "/etc/logrotate.d/{{ item.key }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ logrotate_configs | dict2items | selectattr('value.config', 'defined') }}"

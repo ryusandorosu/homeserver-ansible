@@ -1,0 +1,18 @@
+logrotate_configs:
+  nftables:
+    path: "{{ rsyslog.nftables }}"
+  fail2ban-actions:
+    path: "{{ custom_logs.fail2ban }}"
+  edgerouter:
+    path: "{{ rsyslog.edgerouter }}"
+  tg-success:
+    path: "{{ custom_logs.telegram.success }}"
+    config:
+      when: daily
+      rotate: 3
+      size: 5M
+  tg-error:
+    path: "{{ custom_logs.telegram.error }}"
+    config:
+      when: weekly
+      rotate: 8

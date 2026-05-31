@@ -1,0 +1,20 @@
+{{ item.value.path }} {
+
+    {{ item.value.config.when }}
+    rotate {{ item.value.config.rotate }}
+
+{% if item.value.config.size is defined %}
+    size {{ item.value.config.size }}
+
+{% endif %}
+    compress
+    delaycompress
+
+    missingok
+    notifempty
+
+    copytruncate
+
+    create 0640 root adm
+
+}
