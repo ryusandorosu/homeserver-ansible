@@ -9,7 +9,7 @@ ipfailures="$6"
 ipjailfailures="$7"
 
 loglines=20
-if grep -m $loglines -awF $banned_ip {{ f2b_log }} | grep -aE "Restore Ban|already banned"; then exit 0; fi
+if grep -m $loglines -awF $banned_ip {{ system_logs.fail2ban }} | grep -aE "Restore Ban|already banned"; then exit 0; fi
 
 BANTIME="$(date -d@$bantime -u +%_H | sed 's/\ //') hours"
 (( $bantime >= 86400 )) && BANTIME="$(date -d@$bantime -u +%_d | sed 's/\ //') days"

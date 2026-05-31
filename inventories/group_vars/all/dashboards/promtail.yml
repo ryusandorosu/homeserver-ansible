@@ -7,13 +7,13 @@ promtail_logs:
     path: "{{ telegram_bot_logs }}/systemd/*.log"
   kernel:
     name: System Kernel
-    path: "{{ kernel_log }}"
+    path: "{{ system_logs.kernel }}"
   syslog:
     name: System
     path: /var/log/syslog
   ssh:
     name: SSH authentication
-    path: "{{ sshd_log }}"
+    path: "{{ system_logs.sshd }}"
   user:
     name: userlog
     path: /var/log/user.log
@@ -36,7 +36,7 @@ promtail_logs:
     pipeline: nftables
   fail2ban_logs:
     name: Fail2Ban
-    path: "{{ f2b_log }}"
+    path: "{{ system_logs.fail2ban }}"
     pipeline: fail2ban_log
   nginx_access:
     name: Nginx sites access logs

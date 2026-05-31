@@ -51,7 +51,7 @@ fail2ban_jails:
 
   - name: recidive
     enabled: true
-    logpath: "{{ f2b_log }}"
+    logpath: "{{ system_logs.fail2ban }}"
     backend: auto
     bantime: -1
     findtime: 1w
