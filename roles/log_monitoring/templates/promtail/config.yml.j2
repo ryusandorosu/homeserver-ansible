@@ -20,16 +20,18 @@ scrape_configs:
 {% if job.pipeline is defined %}
 {% if job.pipeline == 'nginx_access' %}
     {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nginx_access.yml.j2') | indent(4) }}
+{% elif job.pipeline == 'nginx_error' %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nginx_error.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'nftables' %}
     {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nftables.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_action' %}
     {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/fail2ban_action.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_log' %}
     {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/fail2ban_log.yml.j2') | indent(4) }}
-{% elif job.pipeline == 'nginx_error' %}
-    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/nginx_error.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'telegram' %}
     {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/telegram.yml.j2') | indent(4) }}
+{% elif job.pipeline == 'auditd' %}
+    {{ lookup('template', '../roles/log_monitoring/templates/promtail/pipelines/auditd.yml.j2') | indent(4) }}
 {% endif %}
 {% endif %}
 

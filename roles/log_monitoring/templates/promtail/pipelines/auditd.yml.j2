@@ -1,0 +1,12 @@
+pipeline_stages:
+  - regex:
+      expression: '^type=(?P<type>\w+)'
+{% for key, value in auditd_labels.items() %}{% for label in value if key == 'quoted' %}
+  - regex:
+      expression: '{{ label }}="(?P<{{ label }}>[^"]+)"'
+{% endfor %}{% endfor %}
+  - labels:
+      type:
+{% for key, value in auditd_labels.items() %}{% for label in value if key == 'quoted' %}
+      {{ label }}:
+{% endfor %}{% endfor %}

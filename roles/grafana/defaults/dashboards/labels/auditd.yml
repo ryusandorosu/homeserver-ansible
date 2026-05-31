@@ -1,0 +1,6 @@
+auditd_labels:
+  quoted:
+    - exe
+    - name
+    - cwd
+    - key
