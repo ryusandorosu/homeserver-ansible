@@ -1,36 +1,16 @@
-nft_log_prefix: "nft "
+nftables_labels: >-
+  {{
+    (
+      nftlog_prefix_labels + nftlog_labels +
+      (
+        nftlog_relabels.values()
+        | map(attribute='label')
+        | list
+      )
+    )
+    | map('lower')
+  }}
 
-nftlog_prefix_labels:
-  - chain
-  - action
-
-nftlog_labels:
-  # - SRC
-  # - DST
-  - PROTO
-  - SPT
-  - DPT
-
-nftlog_relabels:
-  interface_in:
-    regex: IN
-    label: iif
-  interface_out:
-    regex: OUT
-    label: oif
-  address_source:
-    regex: SRC
-    label: saddr
-  address_destination:
-    regex: DST
-    label: daddr
-  # exclude_source_ip:
-  #   regex: SRC
-  #   label: exclude_src
-  #   default:
-  #     - "{{ home_ip }}"
-  #     - "{{ lan_ip.router }}"
-  #     - "{{ lan_ip.wifi }}"
-  #     - 172.17.0.1
-  #     - 172.23.0.1
-  #     - "fe80:0000:0000:0000:da0d:17ff:fedf:d182"
+# |^$ - empty label value fallback
+nftables_filters: >-
+  {% for filter in nftables_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}

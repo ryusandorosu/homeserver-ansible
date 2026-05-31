@@ -1,0 +1,45 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - defaults/relabels/*.yml
+    - defaults/labels/*.yml
+
+- name: Create Promtail directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ promtail_dir }}"
+    - "{{ promtail_dir }}/data"
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ promtail_dir }}/docker-compose.yml"
+
+- name: Deploy config
+  template:
+    src: config.yml.j2
+    dest: "{{ promtail_dir }}/promtail.yml"
+
+- name: Download MaxMind DB
+  get_url:
+    url: "https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb"
+    dest: "{{ geoip_plugin }}"
+    mode: '0644'
+
+- name: Run Promtail container
+  community.docker.docker_compose_v2:
+    project_src: "{{ promtail_dir }}"
+    state: present
+    recreate: always
+
+- name: Get container info
+  community.docker.docker_container_info:
+    name: "{{ docker.promtail }}"
+  register: promtail_info
+
+- name: Fail if Promtail is not running
+  fail:
+    msg: "Promtail container is not running"
+  when: not promtail_info.container.State.Running

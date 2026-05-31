@@ -1,8 +1,4 @@
-loki_dir: "/opt/loki"
-loki_data_dir: "{{ loki_dir }}/data"
-
 promtail_version: "2.9.5"
-
 promtail_dir: "/opt/promtail"
 geoip_plugin: "{{ promtail_dir }}/GeoLite2-City.mmdb"
 container_geoip_plugin: /etc/promtail/GeoLite2-City.mmdb

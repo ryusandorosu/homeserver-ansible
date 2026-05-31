@@ -46,7 +46,8 @@
       - docker
       - nginx_auth
       - docker_network
-      - log_monitoring
+      - loki
+      - promtail
       - wgdashboard
       - prometheus
       - grafana

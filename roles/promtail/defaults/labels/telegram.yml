@@ -1,0 +1,25 @@
+tg_message_labels:
+  timestamp:
+    bash: (date --rfc-3339=seconds)
+  response_ok:
+    bash: response_ok
+    label: true
+  response_code:
+    bash: '(echo "$response" | jq -r ''if .ok then 200 else .error_code end'')'
+    label: true
+  sent_by:
+    bash: CALLER
+    label: true
+  which_bot:
+    bash: TYPE
+    label: true
+  length:
+    bash: (echo -n "${MESSAGE}" | wc -m)
+    label: true
+  try:
+    bash: i
+  message:
+    bash: MESSAGE
+  response:
+    bash: response
+    json: true

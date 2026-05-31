@@ -1,0 +1,2 @@
+loki_dir: "/opt/loki"
+loki_data_dir: "{{ loki_dir }}/data"

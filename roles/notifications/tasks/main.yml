@@ -2,10 +2,10 @@
   include_vars: "{{ item }}"
   with_fileglob:
     - defaults/*.yml
-    - "{{ role_path + '/..' }}/grafana/defaults/dashboards/main.yml"
-    - "{{ role_path + '/..' }}/grafana/defaults/dashboards/panels/fail2ban.yml"
-    - "{{ role_path + '/..' }}/grafana/defaults/dashboards/labels/fail2ban.yml"
-    - "{{ role_path + '/..' }}/grafana/defaults/dashboards/labels/telegram.yml"
+    - "{{ role_path }}/../grafana/defaults/dashboards/main.yml"
+    - "{{ role_path }}/../grafana/defaults/dashboards/panels/fail2ban.yml"
+    - "{{ role_path }}/../promtail/defaults/labels/fail2ban.yml"
+    - "{{ role_path }}/../promtail/defaults/labels/telegram.yml"
 
 - name: Ensure scripts directory exists
   file:

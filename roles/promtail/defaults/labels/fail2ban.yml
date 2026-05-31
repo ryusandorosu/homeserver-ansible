@@ -1,0 +1,35 @@
+f2b_action_labels:
+  timestamp:
+    bash: (date --iso-8601=seconds)
+  jail:
+    bash: jail_name
+    label: true
+    loglabel: true
+  ip:
+    bash: banned_ip
+    label: true
+    loglabel: true
+  hostname:
+    bash: (hostname)
+    label: true
+  bantime:
+    bash: BANTIME
+  failures:
+    bash: failures
+  ipfailures:
+    bash: ipfailures
+  jailfailures:
+    bash: ipjailfailures
+  vhost:
+    bash: vhost
+    label: true
+  logpath:
+    bash: logpath
+  logtext:
+    bash: logtext
+  geoip:
+    bash: geojson
+    json: true
+  country:
+    bash: country
+    label: true

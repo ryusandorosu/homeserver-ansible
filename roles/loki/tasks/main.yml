@@ -1,0 +1,41 @@
+- name: Create Loki directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ loki_user }}"
+    group: "{{ loki_user }}"
+    mode: "0755"
+  loop:
+    - "{{ loki_dir }}"
+    - "{{ loki_data_dir }}"
+    - "{{ loki_data_dir }}/chunks"
+    - "{{ loki_data_dir }}/compactor"
+    - "{{ loki_data_dir }}/index"
+    - "{{ loki_data_dir }}/tsdb-shipper-active"
+    - "{{ loki_data_dir }}/tsdb-shipper-cache"
+    - "{{ loki_data_dir }}/wal"
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ loki_dir }}/docker-compose.yml"
+
+- name: Deploy config
+  template:
+    src: config.yml.j2
+    dest: "{{ loki_dir }}/loki.yml"
+
+- name: Run Loki container
+  community.docker.docker_compose_v2:
+    project_src: "{{ loki_dir }}"
+    state: present
+    recreate: always
+
+- name: Check Loki container running status
+  uri:
+    url: "http://{{ localhost }}:{{ loki_port }}/ready"
+    status_code: [200, 204]
+  register: result
+  retries: 5
+  delay: 3
+  until: result.status in [200, 204]

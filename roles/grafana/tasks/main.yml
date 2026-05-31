@@ -3,6 +3,11 @@
     dir: "{{ role_path }}/defaults"
     extensions: ["yml"]
 
+- name: Import Promtail defaults recursively
+  include_vars:
+    dir: "{{ role_path }}/../promtail/defaults/labels"
+    extensions: ["yml"]
+
 - name: Create grafana directory
   file:
     path: "{{ item }}"

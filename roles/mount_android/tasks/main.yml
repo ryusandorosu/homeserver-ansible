@@ -11,7 +11,7 @@
 
 - name: Import ssh_client role default variables
   include_vars:
-    file: "{{ role_path + '/..' }}/ssh_client/defaults/main.yml"
+    file: "{{ role_path }}/../ssh_client/defaults/main.yml"
 - name: Ensure android mount dirs exist
   file:
     path: "{{ item }}"
