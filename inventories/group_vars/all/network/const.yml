@@ -17,4 +17,6 @@ smb_netbios_tcp_port: 139
 smb_port: 445
 
 #services_internal
-const_prometheus_port: 9090
+internal_port:
+  prometheus: 9090
+  guacamole: 8080
