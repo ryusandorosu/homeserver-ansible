@@ -59,8 +59,6 @@ nginx_hosts: >-
     )
   }}
 
-nginx_sni: []
-
 nginx_allowed:
   - "{{ wireguard_network }}"
   - "{{ home_network }}"
