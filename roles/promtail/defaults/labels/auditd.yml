@@ -4,3 +4,7 @@ auditd_labels:
     - name
     - cwd
     - key
+    - comm
+  digital:
+    - hostname
+    - addr

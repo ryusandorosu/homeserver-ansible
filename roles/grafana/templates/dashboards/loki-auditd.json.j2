@@ -9,13 +9,14 @@
   },
   "editable": true,
   "panels": [
+{% for key, panel in audit_dashboard_panels.items() %}
     {
       "type": "logs",
-      "title": "{{ system_logs.auditd }}",
+      "title": "{{ panel.title }}",
       "targets": [
         {
-          "expr": {{ audit_expr | to_json }},
-          "refId": "1"
+          "expr": {{ panel.expr | to_json }},
+          "refId": "{{ loop.index }}"
         }
       ],
       "options": {
@@ -23,13 +24,19 @@
         "showControls": true,
         "showTime": true
       },
+{% set panelHeight = 10 %}
+{% set loopPanelHeight = 8 %}
       "gridPos": {
-        "h": 16,
+        "h": {% if key == 'logs' %}{{ panelHeight }}{% else %}8{% endif %},
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": {% if key == 'logs' %}0{% else %}{{ panelHeight + ((loop.index0 - 1) * loopPanelHeight) }}
+{% endif %}
       }
-    }
+    }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
   ],
   "refresh": "{{ refresh_time.quick }}",
   "schemaVersion": 39,

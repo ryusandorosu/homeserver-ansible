@@ -3,6 +3,19 @@ auditd_filters: >-
   type =~ "$type",
   {% for key, value in auditd_labels.items() %}{% for filter in value %}
   {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %},{% endif %}
-  {% endfor %}{% endfor %}
+  {% endfor %}
+  {% if not loop.last %},{% endif %}
+  {% endfor %}
 
-audit_expr: '{ job = "{{ promtail_logs.auditd.name }}", {{ auditd_filters }} }'
+audit_expr: >-
+  job = "{{ promtail_logs.auditd.name }}", {{ auditd_filters }}
+
+audit_dashboard_panels:
+  logs:
+    title: "{{ system_logs.auditd }}"
+    expr: '{ {{ audit_expr }} }'
+
+  execve:
+    title: Executions
+    expr: >-
+      { {{ audit_expr | regex_replace('\$type','EXECVE') }} }
