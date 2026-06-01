@@ -51,6 +51,7 @@
       - wgdashboard
       - prometheus
       - grafana
+      - guacamole
 
   tasks:
     - name: Include roles dynamically

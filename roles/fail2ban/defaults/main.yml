@@ -49,6 +49,13 @@ fail2ban_jails:
     findtime: 10m
     bantime: 1h
 
+  - name: guacamole-auth
+    enabled: true
+    logpath: /var/log/syslog
+    maxretry: 3
+    findtime: 10m
+    bantime: 1h
+
   - name: recidive
     enabled: true
     logpath: "{{ system_logs.fail2ban }}"

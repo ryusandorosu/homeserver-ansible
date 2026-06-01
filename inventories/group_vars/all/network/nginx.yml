@@ -36,6 +36,10 @@ nginx_private_sites:
     authentication: false
     port: "{{ clash_web_port }}"
     proto: http
+  guac:
+    authentication: true
+    port: "{{ guacamole_port }}"
+    proto: http
 
 letsencrypt_domains: >-
   {{

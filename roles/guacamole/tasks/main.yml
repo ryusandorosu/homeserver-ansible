@@ -1,0 +1,39 @@
+- name: Create Apache Guacamole directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ guacamole_dir }}"
+    - "{{ guacamole_dir }}/init"
+    - "{{ guacamole_dir }}/extensions"
+
+#docker run --rm guacamole/guacamole:1.5.5 /opt/guacamole/bin/initdb.sh --postgresql > /opt/guacamole/init/initdb.sql
+- name: Generate Guacamole PostgreSQL init script
+  shell: >
+    docker run --rm guacamole/guacamole:1.5.5
+    {{ guacamole_dir }}/bin/initdb.sh --postgresql
+    > {{ guacamole_dir }}/init/initdb.sql
+  args:
+    creates: "{{ guacamole_dir }}/init/initdb.sql"
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ guacamole_dir }}/docker-compose.yml"
+
+- name: Run containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ guacamole_dir }}"
+    # services: grafana
+    state: present
+    recreate: always
+
+- name: Wait for Guacamole to become available
+  uri:
+    url: "http://{{ localhost }}:{{ guacamole_port }}/guacamole/"
+    status_code: 200
+  register: result
+  retries: 10
+  delay: 5
+  until: result.status == 200

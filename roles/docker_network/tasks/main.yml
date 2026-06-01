@@ -13,3 +13,7 @@
 - name: Create monitoring network
   community.docker.docker_network:
     name: monitoring
+
+- name: Create Apache Guacamole network
+  community.docker.docker_network:
+    name: guac_net

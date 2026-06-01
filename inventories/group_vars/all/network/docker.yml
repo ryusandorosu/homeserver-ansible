@@ -18,3 +18,6 @@ docker:
   privoxy: privoxy
   wireguard_dashboard: wg_dashboard
   mihomo_dashboard: "{{ mihomo_web_interface }}"
+  guacd: guacd
+  postgres: postgres
+  guacamole: guacamole
