@@ -3,78 +3,11 @@ server {
     listen {{ https_port }} ssl;
     server_name {{ item.key }}.{{ domain }};
 
-    if ($bad_bot) {
-        return 444;
-    }
-
-    if ($block_request) {
-        return 444;
-    }
-
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
-    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
-
-    ssl_certificate /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/{{ domain }}/privkey.pem;
-
+    {{ lookup('template', 'modules/common.j2') | indent(4) }}
     access_log /var/log/nginx/{{ item.key }}.{{ domain }}_access.log main;
-{# {% if item.key != 'guac' %} #}
-
-{% for ip in nginx_allowed %}
-    allow {{ ip }};
-{% endfor %}
-    allow {{ localhost }};
-    deny all;
-{# {% endif %} #}
-
-{% if nginx_authentication == 'oauth' %}
-    #verification endpoint for auth_request
-    location = /oauth2/auth {
-        internal;
-        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header X-Auth-Request-Redirect $scheme://$host$request_uri;
-    }
-{% if item.key == 'auth' %}
-    #authentication ui
-    location / {
-        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }};
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Proto https;
-        #proxy_set_header X-Auth-Request-Redirect $request_uri;
-        #proxy_set_header X-Scheme $scheme;
-    }
-{% endif %}
-{% elif nginx_authentication == 'authelia' %}
-    #verification endpoint for auth_request
-    location = /api/verify {
-        internal;
-        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
-        proxy_set_header Host $host;
-        proxy_set_header X-Original-URL $scheme://$host$request_uri;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-{% if item.key == 'auth' %}
-    #authentication ui
-    location / {
-        proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }};
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-{% endif %}
-{% endif %}
+    {{ lookup('template', 'modules/private.j2') | indent(4) }}
+    {{ lookup('template', 'modules/authentication.j2') | indent(4) }}
 {% if item.key != 'auth' %}
-
     location / {
 
 {% if item.value.authentication %}

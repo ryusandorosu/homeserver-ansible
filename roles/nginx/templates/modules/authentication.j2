@@ -1,0 +1,43 @@
+{% if nginx_authentication == 'oauth' %}
+#verification endpoint for auth_request
+location = /oauth2/auth {
+    internal;
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Auth-Request-Redirect $scheme://$host$request_uri;
+}
+{% if item.key == 'auth' %}
+#authentication ui
+location / {
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    #proxy_set_header X-Auth-Request-Redirect $request_uri;
+    #proxy_set_header X-Scheme $scheme;
+}
+{% endif %}
+{% elif nginx_authentication == 'authelia' %}
+#verification endpoint for auth_request
+location = /api/verify {
+    internal;
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
+    proxy_set_header Host $host;
+    proxy_set_header X-Original-URL $scheme://$host$request_uri;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+{% if item.key == 'auth' %}
+#authentication ui
+location / {
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }};
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+{% endif %}
+{% endif %}
