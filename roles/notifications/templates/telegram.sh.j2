@@ -35,27 +35,28 @@ addline() {
 }
 
 for ((i=1; i<=MAX_RETRIES; i++)); do
-  response=$(
+  response="$(
 	curl -S \
     --proxy "socks5h://{{ localhost }}:{{ socks5_port }}" \
     -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
     -d chat_id="{{ vault_telegram_user_chat_id }}" \
     -d text="${MESSAGE}" \
     -d parse_mode="$PARSE_MODE"
-  )
+  )"
 
-  response_ok=$(echo $response | jq -r .ok)
-  logline=$(jq -nc \
+  response_ok="$(echo "$response" | jq -r .ok)"
+  logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}
     {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
 {% endfor %}
-  '{
+    '{
 {% for json, value in tg_message_labels.items() %}
-    {{ json }}:${{ json }}{% if not loop.last %},
+      {{ json }}:${{ json }}{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
-  }')
+    }'
+  )"
 
   if [[ $response_ok = true ]]; then
     addline "$logline" {{ custom_logs.telegram.success }}
