@@ -9,11 +9,11 @@
         dir: "{{ playbook_dir + '/../' + roles_dir + '/' + role_name }}/defaults"
         extensions: ["yml"]
       failed_when: false
-    - name: Load Promtail labels if role is grafana
+    - name: Load Promtail labels
       include_vars:
         dir: "{{ playbook_dir + '/../' + roles_dir }}/promtail/defaults/labels"
         extensions: ["yml"]
-      when: role_name == 'grafana'
+      when: role_name in ['grafana','notifications']
       failed_when: false
     - name: Render template
       copy:
