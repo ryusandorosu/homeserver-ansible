@@ -7,6 +7,11 @@ nginx_public_sites:
   - "{{ domain }}"
   - "www.{{ domain }}"
 
+nginx_allowed:
+  - "{{ wireguard_network }}"
+  - "{{ home_network }}"
+  - "{{ home_ip }}"
+
 nginx_private_sites:
   auth:
     authentication: false
@@ -38,6 +43,7 @@ nginx_private_sites:
     proto: http
   guac:
     authentication: true
+    bypass: false
     port: "{{ guacamole_port }}"
     proto: http
 
@@ -62,8 +68,3 @@ nginx_hosts: >-
         )
     )
   }}
-
-nginx_allowed:
-  - "{{ wireguard_network }}"
-  - "{{ home_network }}"
-  - "{{ home_ip }}"

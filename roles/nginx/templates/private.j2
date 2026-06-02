@@ -5,7 +5,9 @@ server {
 
     {{ lookup('template', 'modules/common.j2') | indent(4) }}
     access_log /var/log/nginx/{{ item.key }}.{{ domain }}_access.log main;
+{% if item.value.bypass is not defined or item.value.bypass is false %}
     {{ lookup('template', 'modules/private.j2') | indent(4) }}
+{% endif %}
     {{ lookup('template', 'modules/authentication.j2') | indent(4) }}
 {% if item.key != 'auth' %}
     location / {
@@ -29,7 +31,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
 {% if item.value.proto == 'http' %}
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;{# {% if item.key != 'guac' %} #}
+        proxy_set_header X-Forwarded-Proto $scheme;
 
         # for websocket
         proxy_http_version 1.1;

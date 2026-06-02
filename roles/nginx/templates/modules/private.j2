@@ -1,8 +1,5 @@
-{# {% if item.key != 'guac' %} #}
-
 {% for ip in nginx_allowed %}
 allow {{ ip }};
 {% endfor %}
 allow {{ localhost }};
 deny all;
-{# {% endif %} #}
