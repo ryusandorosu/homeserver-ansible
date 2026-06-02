@@ -6,16 +6,41 @@
   loop:
     - "{{ guacamole_dir }}"
     - "{{ guacamole_dir }}/init"
+    - "{{ guacamole_dir }}/pgdata"
     - "{{ guacamole_dir }}/extensions"
 
-#docker run --rm guacamole/guacamole:1.5.5 /opt/guacamole/bin/initdb.sh --postgresql > /opt/guacamole/init/initdb.sql
+- name: Get latest guacamole version
+  shell: >
+    curl -s https://downloads.apache.org/guacamole/
+    | grep -oP '<a href="(?P<version>\d+\.\d+\.\d+)/">'
+    | tail -1 | grep -oP '[0-9\.]*'
+  register: latest_guacamole_version
+
 - name: Generate Guacamole PostgreSQL init script
   shell: >
-    docker run --rm guacamole/guacamole:1.5.5
+    docker run --rm guacamole/guacamole:latest
     {{ guacamole_dir }}/bin/initdb.sh --postgresql
     > {{ guacamole_dir }}/init/initdb.sql
   args:
     creates: "{{ guacamole_dir }}/init/initdb.sql"
+
+- name: Download TOTP extension
+  get_url:
+    url: "https://downloads.apache.org/guacamole/{{ latest_guacamole_version.stdout }}/binary/guacamole-auth-totp-{{ latest_guacamole_version.stdout }}.tar.gz"
+    dest: "/tmp/guacamole-auth-totp-{{ latest_guacamole_version.stdout }}.tar.gz"
+
+- name: Extract TOTP archive
+  unarchive:
+    src: "/tmp/guacamole-auth-totp-{{ latest_guacamole_version.stdout }}.tar.gz"
+    dest: /tmp
+    remote_src: yes
+
+- name: Copy TOTP binary to extensions dir
+  copy:
+    src: "/tmp/guacamole-auth-totp-{{ latest_guacamole_version.stdout }}/guacamole-auth-totp-{{ latest_guacamole_version.stdout }}.jar"
+    dest: "{{ guacamole_dir }}/extensions"
+    remote_src: yes
+    mode: '0755'
 
 - name: Deploy docker-compose
   template:
@@ -25,9 +50,8 @@
 - name: Run containers
   community.docker.docker_compose_v2:
     project_src: "{{ guacamole_dir }}"
-    # services: grafana
     state: present
-    recreate: always
+    # recreate: always
 
 - name: Wait for Guacamole to become available
   uri:

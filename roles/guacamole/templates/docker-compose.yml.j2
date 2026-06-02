@@ -4,14 +4,14 @@ networks:
 
 services:
   guacd:
-    image: guacamole/guacd:1.5.5
+    image: guacamole/guacd:latest
     container_name: {{ docker.guacd }}
     restart: unless-stopped
     networks:
       - guac_net
 
   postgres:
-    image: postgres:16
+    image: postgres:latest
     container_name: {{ docker.postgres }}
     restart: unless-stopped
     environment:
@@ -20,12 +20,12 @@ services:
       POSTGRES_PASSWORD: {{ vault_guacamole_db }}
     volumes:
       - "{{ guacamole_dir }}/init:/docker-entrypoint-initdb.d:ro"
-      - pgdata:/var/lib/postgresql/data
+      - "{{ guacamole_dir }}/pgdata:/var/lib/postgresql"
     networks:
       - guac_net
 
   guacamole:
-    image: guacamole/guacamole:1.5.5
+    image: guacamole/guacamole:latest
     container_name: {{ docker.guacamole }}
     restart: unless-stopped
     environment:
@@ -42,10 +42,5 @@ services:
       - postgres
     networks:
       - guac_net
-{% if guacamole_extensions | default([]) | length > 0 %}
     volumes:
       - "{{ guacamole_dir }}/extensions:/etc/guacamole/extensions:ro"
-{% endif %}
-
-volumes:
-  pgdata:
