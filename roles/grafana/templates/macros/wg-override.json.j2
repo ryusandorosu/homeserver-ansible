@@ -1,0 +1,14 @@
+{% macro wg_panel_overrides(unit) -%}"overrides": [
+  {
+    "matcher": {
+      "id": "byType",
+      "options": "number"
+    },
+    "properties": [
+      {
+        "id": "unit",
+        "value": "{{ unit }}"
+      }
+    ]
+  }
+]{%- endmacro %}
