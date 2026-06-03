@@ -8,3 +8,7 @@ auditd_labels:
   digital:
     - hostname
     - addr
+    - auid
+    - uid
+    - gid
+    - ses

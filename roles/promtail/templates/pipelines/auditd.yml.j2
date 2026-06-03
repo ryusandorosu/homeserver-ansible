@@ -8,7 +8,7 @@ pipeline_stages:
 {% endfor %}
 {% for label in value if key == 'digital' %}
   - regex:
-      expression: ' {{ label }}=(?P<{{ label }}>\d+\.\d+\.\d+\.\d+)'
+      expression: ' {{ label }}=(?P<{{ label }}>[0-9\.]+)'
 {% endfor %}
 {% endfor %}
   - labels:

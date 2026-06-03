@@ -13,20 +13,40 @@ audit_paths:
     - /etc/ssh/sshd_config
     - /home/{{ user }}/.ssh/authorized_keys
     - /root/.ssh/authorized_keys
+    - /etc/ssh/
+  docker:
+    - /opt/
   firewall:
     - /etc/nftables.conf
   wireguard:
     - /etc/wireguard/{{ wireguard_interface }}.conf
   fail2ban:
     - /etc/fail2ban/jail.local
+  cron:
+    - /etc/crontab
+    - /etc/cron.d
+    - /var/spool/cron
 
 audit_bins:
+  identity:
+    - /usr/sbin/useradd
+    - /usr/sbin/userdel
+    - /usr/sbin/usermod
+    - /usr/bin/passwd
+    - /usr/bin/chsh
   privilege:
     - /usr/bin/sudo
+  # systemd:
+  #   - /usr/bin/systemctl
   docker:
     - /usr/bin/docker
+    - /usr/bin/docker-compose
   firewall:
     - /usr/sbin/nft
   wireguard:
     # - /usr/bin/wg
     - /usr/bin/wg-quick
+  packages:
+    - /usr/bin/apt
+    - /usr/bin/apt-get
+    - /usr/bin/dpkg

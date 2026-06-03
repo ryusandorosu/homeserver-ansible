@@ -19,3 +19,23 @@ audit_dashboard_panels:
     title: Executions
     expr: >-
       { {{ audit_expr | regex_replace('\$type','EXECVE') }} }
+
+  privilege:
+    title: Privilege changes
+    expr: >-
+      { {{ audit_expr | regex_replace('\$key\|\^\$','privilege') }} }
+
+  firewall:
+    title: Firewall changes
+    expr: >-
+      { {{ audit_expr | regex_replace('\$key\|\^\$','firewall') }} }
+
+  sshd:
+    title: SSHD changes
+    expr: >-
+      { {{ audit_expr | regex_replace('\$key\|\^\$','sshd') }} }
+
+  wireguard:
+    title: Wireguard changes
+    expr: >-
+      { {{ audit_expr | regex_replace('\$key\|\^\$','wireguard') }} }
