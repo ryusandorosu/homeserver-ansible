@@ -37,7 +37,7 @@ mihomo_metrics:
       severity: warning
     condition:
       operator: ">"
-      value: 16
+      value: 10
 
   proxy_healthcheck_latency:
     draw:
@@ -54,7 +54,7 @@ mihomo_metrics:
       severity: warning
     condition:
       operator: ">"
-      value: 18
+      value: 12
 
 mihomo_alerts:
   interval: 1m
