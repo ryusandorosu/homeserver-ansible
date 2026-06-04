@@ -103,6 +103,7 @@
           "uid": "{{ loki_uid }}"
         },
         "includeAll": true,
+        "allValue": ".+",
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.fail2ban_actions.name }}\"}, {{ label }})"
       }{% if not loop.last %},
