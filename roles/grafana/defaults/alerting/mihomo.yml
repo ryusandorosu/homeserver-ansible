@@ -21,6 +21,7 @@ mihomo_metrics:
     condition:
       operator: "=="
       value: 0
+
   proxy_down_nodes:
     draw:
       name: down
@@ -36,7 +37,8 @@ mihomo_metrics:
       severity: warning
     condition:
       operator: ">"
-      value: 12
+      value: 16
+
   proxy_healthcheck_latency:
     draw:
       name: ">1000ms"
@@ -52,9 +54,9 @@ mihomo_metrics:
       severity: warning
     condition:
       operator: ">"
-      value: 16
+      value: 18
 
 mihomo_alerts:
   interval: 1m
-  seek_period: 10m
+  seek_period: 5m
   pending_period: 1m

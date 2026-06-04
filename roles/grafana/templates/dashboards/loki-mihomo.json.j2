@@ -1,40 +1,39 @@
-{% import "macros/mihomo.j2" as imported %}
+{% import "macros/mihomo-query.json.j2" as query %}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
-{% for key, value in mihomo_dashboard_link.panel_id.items() %}
+{% for panel, value in mihomo_dashboard_link.panel_id.items() %}
     {
       "type": "timeseries",
-      "title": "{% if key == 'normal' %}Mihomo proxy health{% elif key == 'relative' %}Mihomo proxy health in percents{% endif %}",
-      "description": "{% if key == 'normal' %}Count of successful and failed health checks of proxy nodes{% elif key == 'relative' %}Relation of successful and failed health checks of proxy nodes{% endif %}",
+      "title": "{% if panel == 'normal' %}Mihomo proxy health{% elif panel == 'relative' %}Mihomo proxy health in percents{% endif %}",
+      "description": "{% if panel == 'normal' %}Count of successful and failed health checks of proxy nodes{% elif panel == 'relative' %}Relation of successful and failed health checks of proxy nodes{% endif %}",
       "targets": [
-{% for key, value in mihomo_metrics.items() %}
-        {
-          "expr": {{ imported.mihomo_loki_query(value, docker.mihomo, mihomo_alerts.seek_period) | to_json }},
-          "legendFormat": "{{ value.draw.name }}",
-          "refId": "{{ key }}"
-        }{% if not loop.last %},
+{% if panel == 'normal' %}{% for metric, value in mihomo_metrics.items() %}
+        {{ query.mihomo_panel_query(metric, value, docker.mihomo, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
 {% endif %}
-{% endfor %}
+{% endfor %}{% else %}{% for metric, value in mihomo_metrics.items() if metric != 'proxy_healthcheck_latency' %}
+        {{ query.mihomo_panel_query(metric, value, docker.mihomo, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
+{% endif %}
+{% endfor %}{% endif %}
 
       ],
       "fieldConfig": {
         "defaults": {
           "custom": {
             "drawStyle": "line",
-            "fillOpacity": {% if key == 'normal' %}50{% elif key == 'relative' %}100{% endif %},
-            "gradientMode": "{% if key == 'normal' %}hue{% elif key == 'relative' %}none{% endif %}",
+            "fillOpacity": {% if panel == 'normal' %}50{% elif panel == 'relative' %}100{% endif %},
+            "gradientMode": "{% if panel == 'normal' %}hue{% elif panel == 'relative' %}none{% endif %}",
             "lineWidth": 3,
             "stacking": {
-              "mode": "{% if key == 'normal' %}none{% elif key == 'relative' %}percent{% endif %}"
+              "mode": "{% if panel == 'normal' %}none{% elif panel == 'relative' %}percent{% endif %}"
             }
           }
         },
         "overrides": [
-{% for key, value in mihomo_metrics.items() %}
+{% for metric, value in mihomo_metrics.items() %}
           {
             "matcher": {
               "id": "byName",

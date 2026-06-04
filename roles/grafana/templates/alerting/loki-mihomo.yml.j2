@@ -1,4 +1,4 @@
-{% import "macros/mihomo.j2" as imported %}
+{% import "macros/mihomo-expr.logql.j2" as expr %}
 apiVersion: 1
 
 groups:
@@ -20,7 +20,7 @@ groups:
             model:
 {% if rule.query.method == 'count' %}
               expr: >
-                {{ imported.mihomo_loki_query(rule, docker.mihomo, mihomo_alerts.seek_period) | indent(16) }}{% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
+                {{ expr.mihomo_loki_query(rule, docker.mihomo, mihomo_alerts.seek_period) | indent(16) }}{% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
 {% endif %}
 
 {% endif %}

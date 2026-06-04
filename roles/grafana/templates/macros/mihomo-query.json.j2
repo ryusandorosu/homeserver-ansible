@@ -1,0 +1,5 @@
+{% import "macros/mihomo-expr.logql.j2" as expr %}{% macro mihomo_panel_query(key, value, container, period) %}{
+  "expr": {{ expr.mihomo_loki_query(value, container, period) | to_json }},
+  "legendFormat": "{{ value.draw.name }}",
+  "refId": "{{ key }}"
+}{% endmacro %}
