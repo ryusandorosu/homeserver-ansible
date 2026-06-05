@@ -1,4 +1,6 @@
-promtail_version: "2.9.5"
+# promtail_version: "2.9.5"
+# promtail_version: "latest-amd64" #3.6
+promtail_version: "3.6.11-amd64"
 promtail_dir: "/opt/promtail"
 geoip_plugin: "{{ promtail_dir }}/GeoLite2-City.mmdb"
 container_geoip_plugin: /etc/promtail/GeoLite2-City.mmdb
