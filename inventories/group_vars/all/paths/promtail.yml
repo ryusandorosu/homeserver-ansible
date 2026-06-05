@@ -57,13 +57,13 @@ promtail_systemd:
     name: Docker service
   android-watcher:
     name: Android SSHFS Auto Watcher
-  wg-quick@wg0:
-    name: Wireguard interface
-  nginx:
-    name: nginx
   NetworkManager:
     name: Network Manager
   ssh:
     name: SSH authentication
   systemd-logind:
     name: User login management
+  wg-quick@wg0:
+    name: Wireguard interface
+  nginx:
+    name: nginx
