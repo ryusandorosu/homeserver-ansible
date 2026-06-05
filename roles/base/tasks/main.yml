@@ -24,6 +24,7 @@
       - unattended-upgrades
       - build-essential
       - bind9-dnsutils
+      - btop
     state: present
     update_cache: yes
 
