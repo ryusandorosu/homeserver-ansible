@@ -7,6 +7,7 @@
   apt:
     name:
     - npm
+    - tree-sitter-cli
     - ripgrep
     - fd-find
     state: present
@@ -20,11 +21,14 @@
 - name: Install lazy.nvim plugin package manager
   git:
     repo: https://github.com/folke/lazy.nvim
-    dest: /home/{{ user }}/.local/share/nvim/lazy/lazy.nvim
+    dest: "/{{ item }}/.local/share/nvim/lazy/lazy.nvim"
+  loop:
+    - "home/{{ user }}"
+    - root
 
-- name: Create config directories
+- name: Create config directories for default user
   file:
-    path: /home/{{ user }}/{{ item }}
+    path: "/home/{{ user }}/{{ item }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -33,19 +37,36 @@
     - .config/nvim/lua/config
     - .config/nvim/lua/plugins
 
+- name: Create config directories for root
+  file:
+    path: "/root/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - .config/nvim/lua/config
+    - .config/nvim/lua/plugins
+
 - name: Deploy init.lua
   copy:
     src: templates/init.lua
-    dest: /home/{{ user }}/.config/nvim
+    dest: "/{{ item }}/.config/nvim"
     mode: '0664'
+  loop:
+    - "home/{{ user }}"
+    - root
 
 - name: Deploy plugins.lua
   copy:
     src: templates/lua/plugins.lua
-    dest: /home/{{ user }}/.config/nvim/lua
+    dest: "/{{ item }}/.config/nvim/lua"
     mode: '0664'
+  loop:
+    - "home/{{ user }}"
+    - root
 
-- name: Deploy separate plugin luas
+- name: Deploy separate plugin luas for default user
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/plugins"
@@ -53,7 +74,15 @@
   with_fileglob:
     - "templates/lua/plugins/*.lua"
 
-- name: Deploy lua configs
+- name: Deploy separate plugin luas for root
+  copy:
+    src: "{{ item }}"
+    dest: /root/.config/nvim/lua/plugins
+    mode: '0664'
+  with_fileglob:
+    - "templates/lua/plugins/*.lua"
+
+- name: Deploy lua configs for default user
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/config"
@@ -61,7 +90,15 @@
   with_fileglob:
     - "templates/lua/config/*.lua"
 
-- name: Deploy templated lua configs
+- name: Deploy lua configs for root
+  copy:
+    src: "{{ item }}"
+    dest: /root/.config/nvim/lua/config
+    mode: '0664'
+  with_fileglob:
+    - "templates/lua/config/*.lua"
+
+- name: Deploy templated lua configs for default user
   template:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
@@ -69,14 +106,34 @@
   with_fileglob:
     - "templates/lua/config/*.lua.j2"
 
-- name: Synchronize lazy.nvim plugins
+- name: Deploy templated lua configs for root
+  template:
+    src: "{{ item }}"
+    dest: "/root/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
+    mode: '0664'
+  with_fileglob:
+    - "templates/lua/config/*.lua.j2"
+
+- name: Synchronize lazy.nvim plugins for default user
   become_user: "{{ user }}"
   command: nvim --headless "+Lazy! sync" +qa
   environment:
     HOME: "/home/{{ user }}"
 
-- name: Install Treesitter parsers
+- name: Synchronize lazy.nvim plugins for root
+  become_user: root
+  command: nvim --headless "+Lazy! sync" +qa
+  environment:
+    HOME: "/root"
+
+- name: Install Treesitter parsers for default user
   become_user: "{{ user }}"
   command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
   environment:
     HOME: "/home/{{ user }}"
+
+- name: Install Treesitter parsers for root
+  become_user: root
+  command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
+  environment:
+    HOME: "/root"
