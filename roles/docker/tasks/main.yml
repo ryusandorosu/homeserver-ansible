@@ -43,3 +43,9 @@
     name: "{{ user }}"
     groups: docker
     append: yes
+
+- name: Deploy service override
+  copy:
+    src: override.conf
+    dest: "{{ systemd_services }}/docker.service.d/override.conf"
+  notify: daemon reload

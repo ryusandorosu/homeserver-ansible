@@ -27,6 +27,11 @@ wake_up() {
     systemctl start "$s"
     echo "$(date --rfc-3339=seconds) service $s starting" >> {{ custom_logs.services }}
   fi
+  chains="$(iptables -L DOCKER)"
+  if [[ "$chains" =~ "No chain/target/match by that name" ]]; then
+    sleep 5
+    systemctl restart docker
+  fi
 }
 
 for s in "${services[@]}"; do
