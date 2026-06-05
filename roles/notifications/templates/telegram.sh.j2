@@ -45,6 +45,9 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   )"
 
   response_ok="$(echo "$response" | jq -r .ok)"
+  # Sanitize: if curl returned non-JSON, wrap it so --argjson doesn't fail
+  response="$(echo "$response" | jq -c '.' 2>/dev/null \
+    || jq -n --arg raw "$response" '{"ok":false,"raw":$raw}')"
   logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}
     {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
@@ -65,6 +68,12 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   echo "$response"
   addline "$logline" {{ custom_logs.telegram.error }}
+
+#  if [[ -z "$logline" ]]; then
+#    echo "EMPTY LOGLINE" >&2
+#    printf 'response=[%s]\n' "$response" >&2
+#    printf 'logline=[%s]\n' "$logline" >&2
+#  fi
 
   sleep $RETRY_DELAY
 done
