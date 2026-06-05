@@ -14,8 +14,8 @@ audit_paths:
     - /home/{{ user }}/.ssh/authorized_keys
     - /root/.ssh/authorized_keys
     - /etc/ssh/
-  docker:
-    - /opt/
+  # docker:
+  #   - /opt/
   firewall:
     - /etc/nftables.conf
   wireguard:
@@ -39,7 +39,7 @@ audit_bins:
   # systemd:
   #   - /usr/bin/systemctl
   docker:
-    - /usr/bin/docker
+    # - /usr/bin/docker
     - /usr/bin/docker-compose
   firewall:
     - /usr/sbin/nft

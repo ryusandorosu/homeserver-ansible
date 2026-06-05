@@ -1,7 +1,7 @@
 auditd_labels:
   quoted:
     - exe
-    - name
+    # - name
     - cwd
     - key
     - comm
