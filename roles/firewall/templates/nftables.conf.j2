@@ -38,8 +38,6 @@ table inet filter {
         icmpv6 type { 130, 134, 135 } accept
         iif "{{ lan_interface }}" ip saddr {{ lan_ip.router }} ip daddr 255.255.255.255 accept
         iif "{{ lan_interface }}" ip saddr {{ lan_ip.wifi }} ip daddr 224.0.0.1 accept
-        iif "{{ lan_interface }}" ip saddr {{ home_network }} ip daddr {{ lan_ip.server }} udp dport {{ dns_port }} accept
-        iif "{{ lan_interface }}" ip saddr {{ home_network }} ip daddr {{ lan_ip.server }} tcp dport { {{ dns_port }}, {{ dns_tls_port }} } accept
 
         iif "{{ wireguard_interface }}" tcp dport {{ sshd_port }} ct state new accept
         tcp dport { {{ firewall_tcp_ports | reject('equalto', sshd_port) | join(', ') }} } accept

@@ -12,6 +12,10 @@ firewall_lan_tcp_ports:
   - "{{ cockpit_port }}"
   - "{{ synology_dsm_port }}"
   - "{{ syslog_port }}"
+  - "{{ dns_port }}"
+  - "{{ dns_tls_port }}"
+  - "{{ ssdp_port }}"
+  - "{{ https_port }}"
 
 firewall_lan_udp_ports:
   - "{{ dhcp_request_port }}"
@@ -19,6 +23,7 @@ firewall_lan_udp_ports:
   - "{{ smb_netbios_udp_ns_port }}"
   - "{{ smb_netbios_udp_dg_port }}"
   - "{{ syslog_port }}"
+  - "{{ dns_port }}"
 
 monitoring_exporter_ports:
   - "{{ wireguard_exporter_port }}"

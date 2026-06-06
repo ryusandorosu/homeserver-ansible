@@ -4,6 +4,9 @@
     state: present
     update_cache: yes
 
+- name: Import promtail role nftables variables
+  include_vars:
+    file: "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
 - name: Deploy nftables config to log separately from kernel logs
   template:
     src: nftables.conf.j2
