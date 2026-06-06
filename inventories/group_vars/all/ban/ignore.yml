@@ -8,3 +8,4 @@ fail2ban_ignoreip:
   - "{{ wireguard_network }}"
   - "{{ localhost }}"
   - ::1
+  - "{{ docker_monitoring_network }}"
