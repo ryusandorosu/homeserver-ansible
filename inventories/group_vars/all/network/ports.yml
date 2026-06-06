@@ -26,6 +26,7 @@ prometheus_port: 9091 #9090
 #prometheus exporters
 cadvisor_port: 8080
 node_exporter_port: 9100
+nginx_exporter_port: 9113
 blackbox_port: 9115
 snmp_exporter_port: 9116
 fail2ban_exporter_port: 9191

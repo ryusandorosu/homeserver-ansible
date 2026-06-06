@@ -15,6 +15,7 @@ docker:
     smartctl: smartctl_exporter
     snmp: snmp_exporter
     blackbox: blackbox_exporter
+    nginx: nginx_exporter
   privoxy: privoxy
   wireguard_dashboard: wg_dashboard
   mihomo_dashboard: "{{ mihomo_web_interface }}"

@@ -20,6 +20,9 @@
 #https://grafana.com/grafana/dashboards/21962-snmp-exporter/ #newer version of 11169
 #https://grafana.com/grafana/dashboards/12504-er-4/ #requires influxdb
 
+#https://grafana.com/grafana/dashboards/9521-nginx-responses-overview/ #requires mtail and different nginx exporter
+#https://grafana.com/grafana/dashboards/12767-nginx/
+
 - name: Deploy Grafana dashboards
   copy:
     src: "{{ item }}"

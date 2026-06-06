@@ -95,3 +95,11 @@ services:
       - "{{ exporters_dir }}/blackbox.yml:/etc/blackbox_exporter/config.yml"
     networks:
       - monitoring
+
+  nginx_exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: {{ docker.metric_exporters.nginx }}
+    restart: unless-stopped
+    command:
+      - "--nginx.scrape-uri=http://{{ localhost }}:{{ http_port }}/stub_status"
+    network_mode: host
