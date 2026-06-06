@@ -19,7 +19,7 @@ prometheus_scrape_configs:
     target_port: "{{ smartctl_exporter_port }}"
     labels: instance
   nginx:
-    target_src: "{{ lan_ip.server }}" #"{{ docker.metric_exporters.nginx }}"
+    target_src: "{{ lan_ip.server }}"
     target_port: "{{ nginx_exporter_port }}"
     labels: instance
 
