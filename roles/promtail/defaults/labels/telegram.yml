@@ -5,7 +5,7 @@ tg_message_labels:
     bash: response_ok
     label: true
   response_code:
-    bash: '(echo "$response" | jq -r ''if .ok then 200 else .error_code end'')'
+    bash: '(echo "$response" | jq -r ''if .ok then 200 else .error_code end'')' #elif .error_code then .error_code else 407
     label: true
   sent_by:
     bash: CALLER

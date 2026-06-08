@@ -47,8 +47,10 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   )"
 
   response_ok="$(echo "$response" | jq -r .ok)"
-  if (( ! $(jq -e . <<< "$response") )); then
-  response="$(jq -nc --arg raw "$response" '{"ok":false,"raw":$raw}')"
+  jq -e . >/dev/null 2>&1 <<< "$response"
+  if (( $? != 0 )); then
+    echo "$(jq -e . <<< "$response")"
+    response="$(jq -n --arg raw "$response" '{"ok":false,"curl":$raw}')"
   fi
   logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}

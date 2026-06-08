@@ -10,3 +10,4 @@ service_state:
   - dnsmasq
   - smbd
   - docker
+  - docker-container-watcher
