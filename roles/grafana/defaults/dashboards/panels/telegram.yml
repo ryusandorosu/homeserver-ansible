@@ -21,14 +21,24 @@ tg_dashboard_panels:
       | json
       | line_format "{{ tg_matchlog_filters }} \n {% raw %}{{.message}}{% endraw %}"
 
-  responses:
+  api_responses:
     title: "Telegram API responses"
     type: logs
     json: true
     expr: >
       { {{ tg_expr }} }
-      | json response="response"
-      | line_format "{% raw %}{{.response}}{% endraw %}"
+      | json api_response="api_response"
+      | line_format "{% raw %}{{.api_response}}{% endraw %}"
+
+  # | line_format "{{ tg_matchlog_filters }} \n {% raw %}{{.curl_response}}{% endraw %}"
+  curl_responses:
+    title: "Curl responses"
+    type: logs
+    json: true
+    expr: >
+      { {{ tg_expr }} }
+      | json curl_response="curl_response"
+      | line_format "{% raw %}{{.curl_response}}{% endraw %}"
 
   top_src:
     title: Top message senders

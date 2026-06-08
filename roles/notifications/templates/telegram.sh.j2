@@ -34,24 +34,46 @@ addline() {
   echo "$1" >> $2
 }
 
+#    --show-error \
 #    --verbose \
-#    --write-out "%{json}\n" \
 for ((i=1; i<=MAX_RETRIES; i++)); do
   response="$(curl \
-    --show-error \
+    --silent \
+    --write-out "%{json}\n" \
     --proxy "socks5h://{{ localhost }}:{{ socks5_port }}" \
     --request POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
     --data chat_id="{{ vault_telegram_user_chat_id }}" \
     --data text="${MESSAGE}" \
-    --data parse_mode="$PARSE_MODE"
+    --data parse_mode="$PARSE_MODE" \
+    2>&1
   )"
 
-  response_ok="$(echo "$response" | jq -r .ok)"
-  jq -e . >/dev/null 2>&1 <<< "$response"
-  if (( $? != 0 )); then
-    echo "$(jq -e . <<< "$response")"
-    response="$(jq -n --arg raw "$response" '{"ok":false,"curl":$raw}')"
+  api_response="$(
+    echo "$response" \
+    | grep -oP '{\"ok\":\w+,\"result\":{.*}}'
+  )"
+  curl_response="$(
+    echo "$response" \
+    | grep -oP '{\"certs\":.*}' \
+    | jq -r 'if .certs then del(.certs) else . end'
+  )"
+  response_ok="$(
+    echo "$api_response" \
+    | jq -r 'if .ok then .ok else "false" end'
+  )"
+  #if .ok then 200 else .error_code end
+  response_code="$(
+    echo "$api_response" \
+    | jq -r '.error_code'
+  )"
+  if [[ "$response_code" == null ]]; then
+  #.http_code
+  response_code="$(
+    echo "$curl_response" \
+    | jq -r '.response_code'
+  )"
   fi
+
   logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}
     {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
@@ -72,12 +94,6 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
 
   echo "$response"
   addline "$logline" {{ custom_logs.telegram.error }}
-
-#  if [[ -z "$logline" ]]; then
-#    echo "EMPTY LOGLINE" >&2
-#    printf 'response=[%s]\n' "$response" >&2
-#    printf 'logline=[%s]\n' "$logline" >&2
-#  fi
 
   sleep $RETRY_DELAY
 done

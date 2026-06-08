@@ -1,16 +1,16 @@
 tg_message_labels:
   timestamp:
     bash: (date --rfc-3339=seconds)
-  response_ok:
+  msg_sent:
     bash: response_ok
     label: true
   response_code:
-    bash: '(echo "$response" | jq -r ''if .ok then 200 else .error_code end'')' #elif .error_code then .error_code else 407
+    bash: response_code
     label: true
   sent_by:
     bash: CALLER
     label: true
-  which_bot:
+  dst_bot:
     bash: TYPE
     label: true
   length:
@@ -20,6 +20,9 @@ tg_message_labels:
     bash: i
   message:
     bash: MESSAGE
-  response:
-    bash: response
+  api_response:
+    bash: api_response
+    json: true
+  curl_response:
+    bash: curl_response
     json: true
