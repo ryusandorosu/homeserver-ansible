@@ -11,9 +11,12 @@ termux:
   samsung:
     user: u0_a145
     key: android_samsung
-  smarttv:
+  x96q:
     user: u0_a87
-    key: android_smarttv
+    key: android_x96q
+  # tronsmart:
+  #   user: u0_axx
+  #   key: android_tronsmart
 
 # Windows
 win_asus_user: Булат Сибгатуллин

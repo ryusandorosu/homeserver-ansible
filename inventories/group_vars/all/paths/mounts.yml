@@ -24,8 +24,8 @@ shares:
     nfs:
       pub:
         src: "{{ lan_ip.diskstation }}:/volume1/PUB"
-      web:
-        src: "{{ lan_ip.diskstation }}:/volume1/web"
+      # web:
+      #   src: "{{ lan_ip.diskstation }}:/volume1/web"
     samba:
       name: DS209
 
@@ -37,8 +37,8 @@ shares:
         path: /root/.smb_asus_credentials
         user: "{{ win_asus_user }}"
         pass: "{{ vault_windows_asus_password }}"
-    # samba:
-    #   name: ASUS
+    samba:
+      name: K95VB
 
 nfs_mounts: >-
   {%- set mounts = [] -%}
