@@ -34,20 +34,22 @@ addline() {
   echo "$1" >> $2
 }
 
+#    --verbose \
+#    --write-out "%{json}\n" \
 for ((i=1; i<=MAX_RETRIES; i++)); do
-  response="$(
-	curl -S \
+  response="$(curl \
+    --show-error \
     --proxy "socks5h://{{ localhost }}:{{ socks5_port }}" \
-    -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
-    -d chat_id="{{ vault_telegram_user_chat_id }}" \
-    -d text="${MESSAGE}" \
-    -d parse_mode="$PARSE_MODE"
+    --request POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
+    --data chat_id="{{ vault_telegram_user_chat_id }}" \
+    --data text="${MESSAGE}" \
+    --data parse_mode="$PARSE_MODE"
   )"
 
   response_ok="$(echo "$response" | jq -r .ok)"
-  # Sanitize: if curl returned non-JSON, wrap it so --argjson doesn't fail
-  response="$(echo "$response" | jq -c '.' 2>/dev/null \
-    || jq -n --arg raw "$response" '{"ok":false,"raw":$raw}')"
+  if (( ! $(jq -e . <<< "$response") )); then
+  response="$(jq -nc --arg raw "$response" '{"ok":false,"raw":$raw}')"
+  fi
   logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}
     {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
