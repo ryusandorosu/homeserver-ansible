@@ -55,12 +55,12 @@ tg_dashboard_panels:
         )
       )
 
-  response_ok:
+  msg_sent:
     title: Message delivery status ratio
     type: timeseries
-    label: response_ok
+    label: msg_sent
     expr: >
-      sum by (response_ok) (
+      sum by (msg_sent) (
         count_over_time(
           { {{ tg_expr }} }
           [{{ tg_dashboard.showtime }}]
