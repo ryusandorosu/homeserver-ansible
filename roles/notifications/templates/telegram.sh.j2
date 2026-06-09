@@ -36,6 +36,7 @@ addline() {
 
 #    --show-error \
 #    --verbose \
+#    --connect-timeout $RETRY_DELAY \
 for ((i=1; i<=MAX_RETRIES; i++)); do
   response="$(curl \
     --silent \
@@ -57,22 +58,24 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     | grep -oP '{\"certs\":.*}' \
     | jq -r 'if .certs then del(.certs) else . end'
   )"
-  response_ok="$(
-    echo "$api_response" \
-    | jq -r 'if .ok then .ok else "false" end'
-  )"
-  #if .ok then 200 else .error_code end
-  response_code="$(
-    echo "$api_response" \
-    | jq -r '.error_code'
-  )"
-  if [[ "$response_code" == null ]]; then
-  #.http_code
-  response_code="$(
-    echo "$curl_response" \
-    | jq -r '.response_code'
-  )"
+  if [[ -n "$api_response" ]]; then
+    response_ok="$(jq -r '.ok' <<< "$api_response")" 
+    response_code="$(jq -r '.error_code' <<< "$api_response")"
+  else
+    api_response="null"
+    response_ok="false"
+    response_code="$(jq -r '.exitcode' <<< "$curl_response")"
+    # api_response="$(jq -n 'null' <<< "$api_response")"
+    # api_response="$(jq -n --arg api_response $api_response '{null:$api_response}')"
   fi
+  if [[ "$response_code" == null ]]; then
+    response_code="$(jq -r '.response_code' <<< "$curl_response")" #.http_code is equivalent
+  fi
+
+{# #ledebug
+{% for jq, value in tg_message_labels.items() %}
+    echo "{% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} ${{ value.bash }}"
+{% endfor %} #}
 
   logline="$(jq -nc \
 {% for jq, value in tg_message_labels.items() %}
@@ -87,13 +90,13 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     }'
   )"
 
-  if [[ $response_ok = true ]]; then
+  if [[ $response_ok == true ]]; then
     addline "$logline" {{ custom_logs.telegram.success }}
     exit 0
+  else
+    echo "$response"
+    addline "$logline" {{ custom_logs.telegram.error }}
   fi
-
-  echo "$response"
-  addline "$logline" {{ custom_logs.telegram.error }}
 
   sleep $RETRY_DELAY
 done
