@@ -7,6 +7,9 @@
   apt:
     name:
     - npm
+    - cargo
+    - golang-go
+    - cmake
     - tree-sitter-cli
     - ripgrep
     - fd-find

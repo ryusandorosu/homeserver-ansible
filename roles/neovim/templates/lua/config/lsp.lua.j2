@@ -6,6 +6,9 @@ require("mason-lspconfig").setup({
 {% for language_server in mason_configs %}
     "{{ language_server }}",
 {% endfor %}
+{# {% for language_server in mason_lspconfig | map(attribute='config') %}
+    "{{ language_server }}",
+{% endfor %} #}
   }
 })
 
@@ -15,3 +18,6 @@ vim.lsp.enable("{{ language_server }}ls")
 {% for language_server in mason_configs %}
 vim.lsp.enable("{{ language_server }}")
 {% endfor %}
+{# {% for language_server in mason_lspconfig | map(attribute='config') %}
+vim.lsp.enable("{{ language_server }}")
+{% endfor %} #}

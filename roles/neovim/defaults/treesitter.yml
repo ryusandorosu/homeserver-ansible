@@ -5,3 +5,11 @@ treesitter:
   - awk
   - jq
   - regex
+  - json
+  - vim
+  - sql
+  - lua
+  - nginx
+  # - perl #treesitter does not support abi version 15
+  - python
+  - go
