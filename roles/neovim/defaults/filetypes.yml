@@ -1,0 +1,31 @@
+repo_roles_path: "/home/{{ user }}/homeserver-ansible/roles"
+repo_templates_path: "{{ repo_roles_path }}/.*/templates"
+
+luaconfig_filetypes:
+  nginx:
+    - /etc/nginx/sites-available/.*
+    - /etc/nginx/snippets/.*
+    - "{{ repo_roles_path }}/nginx/templates/.*"
+  lua:
+    - "{{ repo_roles_path }}/neovim/templates/.*"
+  # dosini:
+  systemd:
+    - "{{ repo_templates_path }}/.*.service.j2"
+    - "{{ repo_templates_path }}/.*.socket.j2"
+    - /etc/.*/.*.conf
+    - /etc/fail2ban/.*.local
+  jinja:
+    - "{{ repo_templates_path }}/[_%a]+.j2"
+    - "{{ repo_templates_path }}/.*.yaml.j2"
+    - "{{ repo_templates_path }}/.*.yml.j2"
+    - "{{ repo_templates_path }}/.*.json.j2"
+    - "{{ repo_templates_path }}/.*.logql.j2"
+    - "{{ repo_templates_path }}/.*.conf.j2"
+    - "{{ repo_templates_path }}/.*.local.j2"
+    - "{{ repo_templates_path }}/.*.rules.j2"
+  yaml:
+    - "{{ repo_templates_path }}/docker-compose.yml.j2"
+  cfg:
+    - "{{ repo_templates_path }}/.*.cfg.j2"
+  samba:
+    - "{{ repo_templates_path }}/smb.conf.j2"

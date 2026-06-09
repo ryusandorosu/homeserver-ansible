@@ -9,6 +9,7 @@ require("config.keybindings")
 require("config.lazy")
 require("config.lsp")
 require("config.cmp")
+require("config.filetypes")
 vim.cmd.colorscheme("gruvbox")
 vim.opt.termguicolors = true
 require("bufferline").setup{}

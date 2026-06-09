@@ -1,0 +1,11 @@
+vim.filetype.add({
+  pattern = {
+{% for filetype, paths in luaconfig_filetypes.items() %}{% for path in paths %}
+    ["{{ path 
+         | regex_replace('-','%-')
+         | regex_replace('\.','%.')
+         | regex_replace('%\.\*','.*')
+      }}"] = "{{ filetype }}",
+{% endfor %}{% endfor %}
+  }
+})
