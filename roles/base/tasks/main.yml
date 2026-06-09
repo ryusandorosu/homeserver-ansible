@@ -52,6 +52,27 @@
     - home/{{ user }}
     - root
 
+- name: Change far2l default panels mode
+  lineinfile:
+    path: "/home/{{ user }}/.config/far2l/settings/panel.ini"
+    regexp: '^ViewMode=\d{1}$'
+    line: 'ViewMode=3'
+- name: Enable far2l autosaving settings on exit
+  lineinfile:
+    path: "/home/{{ user }}/.config/far2l/settings/config.ini"
+    regexp: 'AutoSaveSetup=0'
+    line: 'AutoSaveSetup=1'
+- name: Make far2l use an external editor
+  lineinfile:
+    path: "/home/{{ user }}/.config/far2l/settings/config.ini"
+    regexp: 'UseExternalEditor=0'
+    line: 'UseExternalEditor=1'
+- name: Make far2l use nvim as the external editor
+  lineinfile:
+    path: "/home/{{ user }}/.config/far2l/settings/config.ini"
+    regexp: '^ExternalEditorName=(.*)$'
+    line: 'ExternalEditorName=nvim "!.!"'
+
 - name: Remove mail from motd
   file:
     path: "/var/mail/{{ user }}"
