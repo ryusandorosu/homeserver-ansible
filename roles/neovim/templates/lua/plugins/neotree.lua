@@ -7,30 +7,7 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
     },
-    config = function()
-      vim.keymap.set('n', '<C-n>', ':Neotree toggle<CR>')
-    end
   },
-
-  -- {
-  --   "nvim-tree/nvim-tree.lua",
-  --   dependencies = { "nvim-tree/nvim-web-devicons" },
-  --   config = function()
-  --     require("nvim-tree").setup({
-  --       view = { width = 30 },
-  --       filters = { dotfiles = false },
-  --       git = { enable = true },
-  --       actions = {
-  --         open_file = {
-  --           quit_on_open = true, -- закроет дерево после открытия файла
-  --         },
-  --       },
-  --       -- авто-закрытие при последнем буфере
-  --       -- только если включена эта настройка:
-  --       hijack_netrw = true,
-  --     })
-  --   end,
-  -- },
 
   {
     "antosha417/nvim-lsp-file-operations",
@@ -64,7 +41,16 @@ return {
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
-      require("bufferline").setup()
+      local bufferline = require('bufferline')
+      require("bufferline").setup(
+        -- :h bufferline-configuration
+        -- :h bufferline-styling
+        options = {
+          mode = "buffers",
+          separator_style = "thick",
+          style_preset = bufferline.style_preset.no_italic
+        }
+      )
     end
   },
 }
