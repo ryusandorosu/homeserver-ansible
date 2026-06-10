@@ -29,3 +29,5 @@ luaconfig_filetypes:
     - "{{ repo_templates_path }}/.*.cfg.j2"
   samba:
     - "{{ repo_templates_path }}/smb.conf.j2"
+  # yaml.docker-compose:
+  # yaml.ansible:

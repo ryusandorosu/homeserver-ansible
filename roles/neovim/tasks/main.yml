@@ -69,7 +69,7 @@
     - "home/{{ user }}"
     - root
 
-- name: Deploy separate plugin luas for default user
+- name: Deploy plugin configurations for default user
   copy:
     src: "{{ item }}"
     dest: "/home/{{ user }}/.config/nvim/lua/plugins"
@@ -77,13 +77,29 @@
   with_fileglob:
     - "templates/lua/plugins/*.lua"
 
-- name: Deploy separate plugin luas for root
+- name: Deploy plugin configurations for root
   copy:
     src: "{{ item }}"
     dest: /root/.config/nvim/lua/plugins
     mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua"
+
+- name: Deploy templated plugin configurations for default user
+  template:
+    src: "{{ item }}"
+    dest: "/home/{{ user }}/.config/nvim/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
+    mode: '0664'
+  with_fileglob:
+    - "templates/lua/plugins/*.lua.j2"
+
+- name: Deploy templated plugin configurations for root
+  template:
+    src: "{{ item }}"
+    dest: "/root/.config/nvim/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
+    mode: '0664'
+  with_fileglob:
+    - "templates/lua/plugins/*.lua.j2"
 
 - name: Deploy lua configs for default user
   copy:
@@ -131,12 +147,26 @@
 
 - name: Install Treesitter parsers for default user
   become_user: "{{ user }}"
-  command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
+  command: nvim --headless "+TSUpdate" +qa
   environment:
     HOME: "/home/{{ user }}"
-
+  # command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
 - name: Install Treesitter parsers for root
   become_user: root
-  command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
+  command: nvim --headless "+TSUpdate" +qa
+  environment:
+    HOME: "/root"
+
+- name: Install LSP servers for default user
+  become_user: "{{ user }}"
+  command: nvim --headless "+MasonInstall {{ mason_install | join(' ') }}" +qa
+  environment:
+    HOME: "/home/{{ user }}"
+  # command: nvim --headless "+MasonInstall {{ mason_lspconfig | map(attribute='mason') | join(' ') }}" +qa
+    # command: nvim --headless "+MasonInstall {{ item }}" +qa
+    # loop: "{{ mason_lspconfig | map(attribute='mason') }}"
+- name: Install LSP servers for root
+  become_user: root
+  command: nvim --headless "+MasonInstall {{ mason_install | join(' ') }}" +qa
   environment:
     HOME: "/root"

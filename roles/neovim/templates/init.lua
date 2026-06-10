@@ -7,10 +7,9 @@ vim.g.mapleader = " "
 require("config.clipboard")
 require("config.keybindings")
 require("config.lazy")
-require("config.lsp")
-require("config.cmp")
 require("config.filetypes")
 vim.cmd.colorscheme("gruvbox")
 vim.opt.termguicolors = true
-require("bufferline").setup{}
 vim.opt.guicursor = "i-c-v-n:block"
+-- opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor20"
+-- opt.guifont = "JetBrainsMono Nerd Font:h12"

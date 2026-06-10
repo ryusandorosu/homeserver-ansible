@@ -1,0 +1,49 @@
+return {
+
+  { "neovim/nvim-lspconfig" },
+ 
+  { "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end
+  },
+  
+  { "williamboman/mason-lspconfig.nvim",
+    config = function()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          {% for language_server in mason_lspconfig | map(attribute='config') %}"{{ language_server }}"{% if not loop.last %}, {% endif %}
+{% endfor %}
+        }
+      })
+{% for language_server in mason_lspconfig | map(attribute='config') %}
+      vim.lsp.enable("{{ language_server }}")
+{% endfor %}
+    end
+  },
+
+  { "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+    },
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        mapping = cmp.mapping.preset.insert({
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        }),
+        sources = {
+          { name = "nvim_lsp" },
+          { name = "buffer" },
+          { name = "path" },
+        },
+      })
+    end
+  },
+
+  { "stevearc/conform.nvim" },
+
+}

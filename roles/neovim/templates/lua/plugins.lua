@@ -7,10 +7,6 @@ return {
   },
   
   { "tpope/vim-fugitive" },
-
   { "airblade/vim-gitgutter" },
 
-  { "nvim-treesitter/nvim-treesitter", build=":TSUpdate" },
-
 }
- 
