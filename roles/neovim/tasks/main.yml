@@ -23,13 +23,13 @@
 - name: Install neovim from git repo
   get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
-    dest: /usr/local/bin/nvim
+    dest: "{{ neovim }}"
     mode: '0777'
 
 - name: Install lazy.nvim plugin package manager
   git:
     repo: https://github.com/folke/lazy.nvim
-    dest: "/{{ item }}/.local/share/nvim/lazy/lazy.nvim"
+    dest: "/{{ item }}/{{ nvimdir.share }}/lazy/lazy.nvim"
   loop:
     - "home/{{ user }}"
     - root
@@ -42,8 +42,8 @@
     group: "{{ user }}"
     mode: '0775'
   loop:
-    - .config/nvim/lua/config
-    - .config/nvim/lua/plugins
+    - "{{ nvimdir.config }}/lua/config"
+    - "{{ nvimdir.config }}/lua/plugins"
 
 - name: Create config directories for root
   file:
@@ -53,13 +53,13 @@
     group: root
     mode: '0755'
   loop:
-    - .config/nvim/lua/config
-    - .config/nvim/lua/plugins
+    - "{{ nvimdir.config }}/lua/config"
+    - "{{ nvimdir.config }}/lua/plugins"
 
 - name: Deploy init.lua
   copy:
     src: templates/init.lua
-    dest: "/{{ item }}/.config/nvim"
+    dest: "/{{ item }}/{{ nvimdir.config }}"
     mode: '0664'
   loop:
     - "home/{{ user }}"
@@ -68,7 +68,7 @@
 - name: Deploy plugins.lua
   copy:
     src: templates/lua/plugins.lua
-    dest: "/{{ item }}/.config/nvim/lua"
+    dest: "/{{ item }}/{{ nvimdir.config }}/lua"
     mode: '0664'
   loop:
     - "home/{{ user }}"
@@ -77,7 +77,7 @@
 - name: Deploy plugin configurations for default user
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/.config/nvim/lua/plugins"
+    dest: "/home/{{ user }}/{{ nvimdir.config }}/lua/plugins"
     mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua"
@@ -85,7 +85,7 @@
 - name: Deploy plugin configurations for root
   copy:
     src: "{{ item }}"
-    dest: /root/.config/nvim/lua/plugins
+    dest: /root/{{ nvimdir.config }}/lua/plugins
     mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua"
@@ -93,7 +93,7 @@
 - name: Deploy templated plugin configurations for default user
   template:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/.config/nvim/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "/home/{{ user }}/{{ nvimdir.config }}/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua.j2"
@@ -101,7 +101,7 @@
 - name: Deploy templated plugin configurations for root
   template:
     src: "{{ item }}"
-    dest: "/root/.config/nvim/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "/root/{{ nvimdir.config }}/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0664'
   with_fileglob:
     - "templates/lua/plugins/*.lua.j2"
@@ -109,7 +109,7 @@
 - name: Deploy lua configs for default user
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/.config/nvim/lua/config"
+    dest: "/home/{{ user }}/{{ nvimdir.config }}/lua/config"
     mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua"
@@ -117,7 +117,7 @@
 - name: Deploy lua configs for root
   copy:
     src: "{{ item }}"
-    dest: /root/.config/nvim/lua/config
+    dest: /root/{{ nvimdir.config }}/lua/config
     mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua"
@@ -125,7 +125,7 @@
 - name: Deploy templated lua configs for default user
   template:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "/home/{{ user }}/{{ nvimdir.config }}/lua/config/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua.j2"
@@ -133,7 +133,7 @@
 - name: Deploy templated lua configs for root
   template:
     src: "{{ item }}"
-    dest: "/root/.config/nvim/lua/config/{{ item | basename | regex_replace('.j2','') }}"
+    dest: "/root/{{ nvimdir.config }}/lua/config/{{ item | basename | regex_replace('.j2','') }}"
     mode: '0664'
   with_fileglob:
     - "templates/lua/config/*.lua.j2"
@@ -175,3 +175,7 @@
   command: nvim --headless "+MasonInstall {{ mason_install | join(' ') }}" +qa
   environment:
     HOME: "/root"
+
+- name: Set nvim as default sudoeditor
+  become_user: root
+  command: update-alternatives --install /usr/bin/sudoedit sudoedit {{ neovim }} 50
