@@ -5,7 +5,7 @@ vim.filetype.add({
          | regex_replace('-','%-')
          | regex_replace('\.','%.')
          | regex_replace('%\.\*','.*')
-      }}"] = "{{ filetype }}",
+      }}"] = { "{{ filetype }}"{% if filetype in ['nginx'] %}, { priority = 10 }{% endif %} },
 {% endfor %}{% endfor %}
   }
 })
