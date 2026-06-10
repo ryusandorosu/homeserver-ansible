@@ -42,7 +42,7 @@ return {
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       local bufferline = require('bufferline')
-      require("bufferline").setup(
+      require("bufferline").setup({
         -- :h bufferline-configuration
         -- :h bufferline-styling
         options = {
@@ -50,7 +50,7 @@ return {
           separator_style = "thick",
           style_preset = bufferline.style_preset.no_italic
         }
-      )
-    end
+      })
+    end,
   },
 }

@@ -1,7 +1,7 @@
 -- :help default-mappings
 -- :h nvim-surround.configuration -- default is 'S' when selected in visual mode
 -- :h comment.config -- default is 'gc'(nv) - opleader and 'gcc'(n) - toggler for selected lines. redefined to 'c' and 'cc'
--- ctrl-q and button: key
+-- ctrl-q and button: <key>; <cr> = enter, <cmd> = ':'
 vim.g.mapleader = " "
 vim.keymap.set('n', '<C-w>', ':w<CR>', { desc = "Save the file" })
 vim.keymap.set('n', '<C-x>', ':q<CR>', { desc = "Close current window" })
