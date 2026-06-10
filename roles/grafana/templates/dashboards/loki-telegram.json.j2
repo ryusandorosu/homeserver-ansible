@@ -81,6 +81,7 @@
           "uid": "{{ loki_uid }}"
         },
         "includeAll": true,
+        "allValue": ".+",
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.telegram.name }}\"}, {{ label }})"
       }{% if not loop.last %},
