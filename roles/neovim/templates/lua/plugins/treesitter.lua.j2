@@ -5,6 +5,8 @@ return {
     config = function()
       require("nvim-treesitter").setup({
         ensure_installed = { {% for item in treesitter %}"{{ item }}"{% if not loop.last %}, {% endif %}{% endfor %} },
+        highlight = { enable = true },
+        indent = { enable = true },
       })
     end
   },

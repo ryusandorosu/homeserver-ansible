@@ -10,9 +10,14 @@
     - cargo
     - golang-go
     - cmake
-    - tree-sitter-cli
     - ripgrep
     - fd-find
+    state: present
+
+- name: Install required packages via npm
+  npm:
+    name: tree-sitter-cli
+    global: true
     state: present
 
 - name: Install neovim from git repo
