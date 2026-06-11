@@ -26,8 +26,8 @@ MESSAGE=$(
 )
 fi
 
-MAX_RETRIES=15
-RETRY_DELAY=2
+MAX_RETRIES=3
+RETRY_DELAY=15
 
 addline() {
   [[ ! -f "$2" ]] && touch $2
@@ -65,8 +65,6 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     api_response="null"
     response_ok="false"
     response_code="$(jq -r '.exitcode' <<< "$curl_response")"
-    # api_response="$(jq -n 'null' <<< "$api_response")"
-    # api_response="$(jq -n --arg api_response $api_response '{null:$api_response}')"
   fi
   if [[ "$response_code" == null ]]; then
     response_code="$(jq -r '.response_code' <<< "$curl_response")" #.http_code is equivalent
