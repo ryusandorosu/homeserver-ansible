@@ -18,6 +18,8 @@ nginx_labels:
 
 nginx_exclude_ip:
   - "{{ home_ip }}"
+  - "{{ localhost }}"
+  - "{{ lan_ip.large_laptop }}"
 
 nginx_access_filters: >-
   {% for key, value in nginx_labels.items() if key != 'exclude_ip' %}
