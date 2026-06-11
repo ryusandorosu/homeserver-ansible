@@ -2,7 +2,7 @@ nftables_expr: >-
   job = "{{ promtail_logs.nftables.name }}", {{ nftables_filters }}
 
 nftables_dashboard_period:
-  showtime: "{{ showtime.normal }}"
+  showtime: "{{ showtime.long }}"
   expr_rate: 1m
 
 nftables_dashboard:
