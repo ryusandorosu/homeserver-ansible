@@ -33,6 +33,7 @@ ssh_hosts:
     port: "{{ termux_port }}"
     user: "{{ termux.samsung.user }}"
     identity: "{{ termux.samsung.key }}"
+    path: /storage/0123-4567/
 
   smarttv:
     hostname: "{{ wireguard_devices.x96q.ip }}" #"{{ lan_ip.x96q }}"

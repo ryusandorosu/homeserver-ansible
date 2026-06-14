@@ -15,6 +15,12 @@
         extensions: ["yml"]
       when: role_name in ['grafana','notifications']
       failed_when: false
+    - name: Load SSH labels
+      include_vars:
+        dir: "{{ playbook_dir + '/../' + roles_dir }}/ssh_client/defaults"
+        extensions: ["yml"]
+      when: role_name in ['mount_android']
+      failed_when: false
     - name: Render template
       copy:
         content: "{{ lookup('template', playbook_dir + '/../' + template_path) }}"

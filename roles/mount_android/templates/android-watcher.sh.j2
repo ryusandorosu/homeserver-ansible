@@ -10,9 +10,9 @@ mount_android() {
   local USER="$3"
   local SSH_KEY="$4"
   local MOUNTPOINT="$5"
+  local TARGET="$6"
 
   local SSH_COMMAND="ssh -i $SSH_KEY -p {{ termux_port }}"
-  local SSH_PATH="/data/data/com.termux/files/home/storage/shared/"
 
   if ping -c1 -W1 "$IP" >/dev/null 2>&1; then
     if ! mountpoint -q "$MOUNTPOINT"; then
@@ -24,7 +24,7 @@ mount_android() {
         -o uid=$(get_id {{ user }} uid) \
         -o gid=$(get_id {{ user }} gid) \
         -o umask=0022 \
-        "$USER@$IP:$SSH_PATH" \
+        "$USER@$IP:$TARGET" \
         "$MOUNTPOINT"
     fi
   else
@@ -43,7 +43,8 @@ while true; do
     "{{ device.ip }}" \
     "{{ device.user }}" \
     "/home/{{ user }}/.ssh/{{ device.key }}" \
-    "{{ device.mount }}"
+    "{{ device.mount }}" \
+    "{{ device.path }}"
 
 {% endfor %}
   sleep 3
