@@ -8,3 +8,12 @@ pipeline_stages:
 {% for json, value in vpn_watcher_labels.items() if value.label is defined %}
       {{ json }}:
 {% endfor %}
+  - json:
+      expressions:
+{% for label, value in vpn_watcher_geoip_labels.items() %}
+        {{ label }}: {{ value.json }}
+{% endfor %}
+  - labels:
+{% for label in vpn_watcher_geoip_labels | dict2items %}
+      {{ label.key }}:
+{% endfor %}

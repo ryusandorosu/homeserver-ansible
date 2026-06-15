@@ -117,10 +117,8 @@
         "includeAll": {% if label == 'exclude_ip' %}false{% else %}true{% endif %},
 {% if label != 'exclude_ip' %}
         "allValue": ".+",
+{#         "allValue": ".*",#}
 {% endif %}
-{# {% if label != 'exclude_ip' %}
-        "allValue": ".*",
-{% endif %} #}
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.nginx_access.name }}\"}, {{ label }})"
       }{% if not loop.last %},

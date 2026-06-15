@@ -1,5 +1,5 @@
 vpn_expr: >-
-  job = "{{ promtail_logs.wireguard.name }}", {{ vpn_filters }}
+  job = "{{ promtail_logs.wireguard.name }}", {{ vpn_filters }}, {{ vpn_geoip_filters }}
 
 watcher_dashboard:
   showtime: 7d
@@ -8,6 +8,7 @@ vpn_dashboard_panels:
   logs:
     title: Plain Log
     type: logs
+    json: true
     expr: '{ {{ vpn_expr }} }'
 
   geoip:
@@ -16,5 +17,5 @@ vpn_dashboard_panels:
     json: true
     expr: >
       { {{ vpn_expr }} }
-      | json geoip="geoip"
-      | line_format "{% raw %}{{.geoip}}{% endraw %}"
+      {{ vpn_geoip_json }}
+      | line_format "{{ vpn_filters_logformat }}:\n{{ vpn_geoip_logformat }}"

@@ -1,3 +1,10 @@
+{%- set labels = [] -%}
+{%- for label in vpn_labels -%}
+{%- set _ = labels.append(label) -%}
+{%- endfor -%}
+{%- for label in vpn_watcher_geoip_labels | dict2items -%}
+{%- set _ = labels.append(label.key) -%}
+{%- endfor -%}
 {
   "annotations": {
     "list": []
@@ -27,6 +34,8 @@
         "showLabels": false,
         "showTime": true,
         "syntaxHighlighting": true
+{% else %}
+
 {% endif %}
       },
 {% elif panel.type == "barchart" %}
@@ -72,7 +81,7 @@
   ],
   "templating": {
     "list": [
-{% for label in vpn_labels %}
+{% for label in labels %}
       {
         "name": "{{ label }}",
         "type": "query",
@@ -81,6 +90,7 @@
           "uid": "{{ loki_uid }}"
         },
         "includeAll": true,
+        "allValue": ".+",
         "multi": true,
         "query": "label_values({job=\"{{ promtail_logs.wireguard.name }}\"}, {{ label }})"
       }{% if not loop.last %},

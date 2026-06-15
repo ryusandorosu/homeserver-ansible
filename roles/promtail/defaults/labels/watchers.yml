@@ -1,10 +1,10 @@
 vpn_watcher_labels:
   timestamp:
     bash: (date --rfc-3339=seconds)
-  endpoint_ip:
+  ipsource:
     bash: ip
     label: true
-  endpoint_port:
+  sourceport:
     bash: port
   device:
     bash: device_name
@@ -12,9 +12,21 @@ vpn_watcher_labels:
   pubkey:
     bash: PUBKEY
     label: true
-  vpn_ip:
+  ipdest:
     bash: vpn_ip
     label: true
   geoip:
     bash: (get_ip_geo $ip | jq)
     json: true
+
+vpn_watcher_geoip_labels:
+  country:
+    json: geoip.country
+  region:
+    json: geoip.regionName
+  city:
+    json: geoip.city
+  timezone:
+    json: geoip.timezone
+  asn:
+    json: geoip.as
