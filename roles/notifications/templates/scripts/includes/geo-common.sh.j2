@@ -13,7 +13,8 @@ MESSAGE+="From: <code>$IP</code>
 "
 
 [[ -n "$DEVICE" ]] && MESSAGE+="Device: <b>$DEVICE</b>"
-[[ -n "$DEVICE" && -n "$VPN_IP" ]] && MESSAGE+=" as <code>$VPN_IP</code>"
+[[ -n "$DEVICE" && -n "$VPN_IP" ]] && MESSAGE+=" as <code>$VPN_IP</code>
+"
 
 MESSAGE+="<pre>$(echo "$IP_INFO" | jq)</pre>"
 geo_map_link "$lat" "$lon"
