@@ -7,7 +7,7 @@ previous_ip_check() {
 
   if [[ -f "$LOG" ]]; then
     if [[ "$LOG" == "{{ custom_logs.wireguard }}" ]]; then
-    previous=$(log_tail "$KEY" "$LOG" | awk '{print $3}' | cut -d: -f1)
+    previous=$(log_tail "$KEY" "$LOG" | jq -r .endpoint_ip)
     elif [[ "$LOG" == "{{ system_logs.sshd }}" ]]; then
     previous=$(log_tail "$KEY" "$LOG" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | head -n1) #?
     fi
@@ -30,12 +30,14 @@ local current_lon="$lon"
 previous_ip_info="$(get_ip_geo $PREVIOUS_IP)"
 geo_parse_ip_info "$previous_ip_info"
 
+MESSAGE+="
+"
 [[ "$not_allowed_flag" == true ]] && MESSAGE+="⚠️ "
 [[ "$current_asn" != "$asn" ]] && MESSAGE+="ASN changed, "
 MESSAGE+="Connection from the different IP
 Previous IP:
 "
-geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" "" "$(log_tail "$KEY" "$LOG")"
+geo_message_common "$PREVIOUS_IP" "$previous_ip_info" "$LOG" "$KEY" "" "" "$(log_tail "$KEY" "$LOG" | jq -r 'del(.geoip)')"
 
 fi
 }

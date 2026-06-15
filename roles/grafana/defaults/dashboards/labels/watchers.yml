@@ -1,0 +1,15 @@
+vpn_labels: >-
+  {{
+    vpn_watcher_labels
+    | dict2items
+    | selectattr('value.label', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+# |^$ - empty label value fallback
+vpn_filters: >-
+  {% for filter in vpn_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}
+
+vpn_matchlog_filters: >-
+  {% for filter in vpn_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}

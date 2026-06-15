@@ -32,6 +32,8 @@ scrape_configs:
     {{ lookup('template', '../roles/promtail/templates/pipelines/telegram.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'auditd' %}
     {{ lookup('template', '../roles/promtail/templates/pipelines/auditd.yml.j2') | indent(4) }}
+{% elif job.pipeline == 'watcher_vpn' %}
+    {{ lookup('template', '../roles/promtail/templates/pipelines/watcher_vpn.yml.j2') | indent(4) }}
 {% endif %}
 {% endif %}
 

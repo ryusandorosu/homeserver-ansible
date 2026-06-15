@@ -18,12 +18,22 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
     port="${ENDPOINT#*:}"
     vpn_ip="${ALLOWED%%/*}"
     device_name="${vpn_peer_names[$PUBKEY]}"
-      init_ip_info="$(get_ip_geo $ip)"
-      geo_parse_ip_info "$init_ip_info"
-    logline="$(date --rfc-3339=seconds) $ENDPOINT \"$device_name\" $PUBKEY $vpn_ip $lat,$lon \"$country\" \"$region\" \"$city\" $timezone \"$asn\""
+    logline="$(jq -nc \
+{% for jq, value in vpn_watcher_labels.items() %}
+      {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
+{% endfor %}
+      '{
+{% for json, value in vpn_watcher_labels.items() %}
+        {{ json }}:${{ json }}{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+      }'
+    )"
 
     common_message_init VPN "$PUBKEY" "$device_name"
-    generate_geo_message "$ip" "{{ custom_logs.wireguard }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logline"
+    logshow="$(jq -r 'del(.geoip)' <<< "$logline")"
+    generate_geo_message "$ip" "{{ custom_logs.wireguard }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logshow"
 
     {{ telegram_script }} "$MESSAGE" status "$0"
     echo "$logline" >> {{ custom_logs.wireguard }}

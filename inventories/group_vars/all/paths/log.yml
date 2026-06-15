@@ -1,13 +1,13 @@
 telegram_bot_logs: /var/log/telegram
 custom_logs:
   telegram:
-    error: "{{ telegram_bot_logs }}/message_error.log.json"
-    success: "{{ telegram_bot_logs }}/message_success.log.json"
+    error: "{{ telegram_bot_logs }}/message-error-log.json"
+    success: "{{ telegram_bot_logs }}/message-success-log.json"
     cache: "{{ telegram_bot_logs }}/geo_cache"
-  wireguard: "{{ telegram_bot_logs }}/wireguard/{{ wireguard_interface }}_connections.log"
+  wireguard: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-connections-log.json"
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
-  fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions.json"
+  fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions-log.json"
 
 rsyslog:
   nftables: /var/log/nftables.log

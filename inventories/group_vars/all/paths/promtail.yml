@@ -27,9 +27,10 @@ promtail_logs:
   wireguard:
     name: Wireguard connections
     path: "{{ custom_logs.wireguard }}"
+    pipeline: watcher_vpn
   telegram:
     name: Telegram notifications
-    path: "{{ telegram_bot_logs }}/*.log.json"
+    path: "{{ telegram_bot_logs }}/*log.json"
     pipeline: telegram
   nftables:
     name: nftables actions

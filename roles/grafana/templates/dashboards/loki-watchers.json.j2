@@ -1,0 +1,99 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "panels": [
+{% for key, panel in vpn_dashboard_panels.items() %}
+    {
+      "type": "{{ panel.type }}",
+      "title": "{{ panel.title }}",
+      "targets": [
+        {
+          "expr": {{ panel.expr | to_json }},
+{% if panel.label is defined %}
+          "legendFormat": "{% raw %}{{ {% endraw %}{{ panel.label }} }}",
+{% endif %}
+          "refId": "{{ loop.index }}"
+        }
+      ],
+{% if panel.type == "logs" %}
+      "options": {
+        "fontSize": "small",
+        "showControls": true{% if panel.json is defined %},
+        "wrapLogMessage": true,
+        "prettifyLogMessage": true,
+        "enableLogDetails": true,
+        "showLabels": false,
+        "showTime": true,
+        "syntaxHighlighting": true
+{% endif %}
+      },
+{% elif panel.type == "barchart" %}
+      "options": {
+        "barWidth": 1,
+        "groupWidth": 1,
+        "fullHighlight": false,
+        "xTickLabelSpacing": 100
+      },
+{% elif panel.type == "timeseries" %}
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 15
+          },
+          "stacking": {
+            "mode": "none"
+          }
+        }
+      },
+{% endif %}
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": {{ 0 + (loop.index0 * 8) }}
+      }
+    }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+  ],
+  "refresh": "{{ refresh_time.long }}",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": [
+    "loki",
+    "telegram",
+    "wireguard",
+    "logs"
+  ],
+  "templating": {
+    "list": [
+{% for label in vpn_labels %}
+      {
+        "name": "{{ label }}",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "{{ loki_uid }}"
+        },
+        "includeAll": true,
+        "multi": true,
+        "query": "label_values({job=\"{{ promtail_logs.wireguard.name }}\"}, {{ label }})"
+      }{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+    ]
+  },
+  "time": {
+    "from": "now-{{ watcher_dashboard.showtime }}",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "Loki: {{ promtail_logs.wireguard.name }}",
+  "version": 1
+}

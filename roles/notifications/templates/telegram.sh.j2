@@ -67,12 +67,12 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
     response_code="$(jq -r '.exitcode' <<< "$curl_response")"
   fi
   if [[ "$response_code" == null ]]; then
-    response_code="$(jq -r '.response_code' <<< "$curl_response")" #.http_code is equivalent
+    response_code="$(jq -r '.response_code' <<< "$curl_response")"
   fi
 
 {# #ledebug
 {% for jq, value in tg_message_labels.items() %}
-    echo "{% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} ${{ value.bash }}"
+    echo "{% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} \"${{ value.bash }}\""
 {% endfor %} #}
 
   logline="$(jq -nc \

@@ -1,0 +1,20 @@
+vpn_watcher_labels:
+  timestamp:
+    bash: (date --rfc-3339=seconds)
+  endpoint_ip:
+    bash: ip
+    label: true
+  endpoint_port:
+    bash: port
+  device:
+    bash: device_name
+    label: true
+  pubkey:
+    bash: PUBKEY
+    label: true
+  vpn_ip:
+    bash: vpn_ip
+    label: true
+  geoip:
+    bash: (get_ip_geo $ip | jq)
+    json: true
