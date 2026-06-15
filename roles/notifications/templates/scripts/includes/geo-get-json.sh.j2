@@ -2,6 +2,11 @@
 get_ip_geo() {
   CACHE_FILE="{{ custom_logs.telegram.cache }}/$1.json"
   if [[ -f "$CACHE_FILE" &&
+       $(stat -c %s "$CACHE_FILE") -eq 1
+  ]]; then
+    rm "$CACHE_FILE"
+  fi
+  if [[ -f "$CACHE_FILE" &&
         $(stat -c %Y "$CACHE_FILE") -gt $(date -d '7 days ago' +%s)
   ]]; then
     cat "$CACHE_FILE"
