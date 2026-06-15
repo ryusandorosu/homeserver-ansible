@@ -20,16 +20,10 @@ MESSAGE+="⚠️ Connection from the different subnet
 [[ "$geoip_json" == "fail" && \
    "$geoip_msg" == "private range" ]] && return
 
-if [[ ! " ${allowed_countries[*]} " =~ " ${country} " ]]; then
-MESSAGE+="⚠️ Connection from the different country
+{% for key, value in allowed_criteria.items() %}
+if [[ ! " {% raw %}${{% endraw %}{{ value.bash }}[*]} " =~ " {% raw %}${{% endraw %}{{ value.geoparse | lower }}} " ]]; then
+MESSAGE+="⚠️ Connection from the different {{ value.geoparse }}
 "; not_allowed_flag=true; fi
 
-if [[ ! " ${allowed_regions[*]} " =~ " ${region} " ]]; then
-MESSAGE+="⚠️ Connection from the different region
-"; not_allowed_flag=true; fi
-
-if [[ ! " ${allowed_asn[*]} " =~ " ${asn} " ]]; then
-MESSAGE+="⚠️ Connection from the different ASN
-"; not_allowed_flag=true; fi
-
+{% endfor %}
 }

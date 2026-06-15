@@ -12,3 +12,14 @@ allowed_subnets:
   - "{{ home_network }}"
   - "{{ wireguard_network }}"
   - "{{ home_ip }}/32"
+
+allowed_criteria:
+  country:
+    bash: allowed_countries
+    geoparse: country
+  region:
+    bash: allowed_regions
+    geoparse: region
+  asn:
+    bash: allowed_asn
+    geoparse: ASN
