@@ -3,9 +3,8 @@
 geo_message_allowed_check() {
 not_allowed_flag=false
 
-local IP="$1"
 for subnet in "${allowed_subnets[@]}"; do
-  if [[ "$(ip_in_subnet "$IP" "$subnet")" == "True" ]]; then
+  if [[ "$(ip_in_subnet "$1" "$subnet")" == "True" ]]; then
     allowed_subnet=true
     break
   else
@@ -17,8 +16,7 @@ if [[ "$allowed_subnet" == false ]]; then
 MESSAGE+="⚠️ Connection from the different subnet
 "; not_allowed_flag=true; fi
 
-[[ "$geoip_json" == "fail" && \
-   "$geoip_msg" == "private range" ]] && return
+[[ "$geoip_json" == "fail" && "$geoip_msg" == "private range" ]] && return
 
 {% for key, value in allowed_criteria.items() %}
 if [[ ! " {% raw %}${{% endraw %}{{ value.bash }}[*]} " =~ " {% raw %}${{% endraw %}{{ value.geoparse | lower }}} " ]]; then
