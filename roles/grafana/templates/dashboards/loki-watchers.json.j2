@@ -1,3 +1,4 @@
+{%- set panelHeight = 12 -%}
 {%- set labels = [] -%}
 {%- for label in vpn_labels -%}
   {%- set _ = labels.append(label) -%}
@@ -18,22 +19,6 @@
       "targets": [
         {
           "expr": {{ panel.expr | to_json }},
-{% if panel.label is defined %}
-          "legendFormat": "
-  {%- if panel.label is string -%}
-    {% raw %}{{ {% endraw %}{{ panel.label }} }}
-  {%- else -%}
-    {%- for panellabel in panel.label -%}
-      {%- if loop.first -%}
-      {%- elif loop.last -%}
-        {{ ': ' }}
-      {%- else -%}
-        {{ ' ' }}
-      {%- endif -%}
-    {% raw %}{{ {% endraw %}{{ panellabel }} }}
-    {%- endfor -%}
-  {%- endif -%}",
-{% endif %}
           "refId": "{{ loop.index }}"
         }
       ],
@@ -71,23 +56,69 @@
         }
       },
 {% endif %}
-{% set panelHeight = 12 %}
       "gridPos": {
 {% if key == 'logs' %}
         "h": {{ panelHeight }},
         "w": 24,
         "x": 0,
-        "y": 0{% else %}
+        "y": 0
+{% endif %}
+      }
+    },
+{% endfor %}
+{% for key, panel in vpn_geoip_panels.items() %}
+    {
+      "type": "{{ panel.type }}",
+      "title": "{{ panel.title }}",
+      "targets": [
+        {
+          "expr": {{ panel.expr | to_json }},
+{% if panel.label is defined %}
+          "legendFormat": "
+  {%- if panel.label is string -%}
+    {% raw %}{{ {% endraw %}{{ panel.label }} }}
+  {%- else -%}
+    {%- for panellabel in panel.label -%}
+      {%- if loop.first -%}
+      {%- elif loop.last -%}
+        {{ ': ' }}
+      {%- else -%}
+        {{ ' ' }}
+      {%- endif -%}
+    {% raw %}{{ {% endraw %}{{ panellabel }} }}
+    {%- endfor -%}
+  {%- endif -%}",
+{% endif %}
+          "refId": "{{ loop.index + 1 }}"
+        }
+      ],
+{% if panel.type == "timeseries" %}
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right"
+        }
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 3,
+            "fillOpacity": 15
+          },
+          "stacking": {
+            "mode": "none"
+          }
+        }
+      },
+{% endif %}
+      "gridPos": {
         "h": 8,
         "w": 12,
-        "x": {% if loop.index0 % 2 != 0 %}0{% else %}12{% endif %},
-        "y": {%- if loop.index0 % 2 != 0 -%}
-          {{ panelHeight + ((loop.index0 - 1) / 2 * panelHeight) | int }}
-        {%- else -%}
-          {{ panelHeight + ((loop.index0 - 2) / 2 * panelHeight) | int }}
-        {%- endif -%}
+        "x": {% if loop.index % 2 != 0 %}0{% else %}12{% endif %},
+        "y": {% if loop.index % 2 != 0 %}{{ panelHeight + ((loop.index - 1) / 2 * panelHeight) | int }}
+{% else %}{{ panelHeight + ((loop.index - 2) / 2 * panelHeight) | int }}
 {% endif %}
-
       }
     }{% if not loop.last %},
 {% endif %}

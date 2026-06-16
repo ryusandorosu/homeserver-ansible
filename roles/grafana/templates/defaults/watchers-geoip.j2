@@ -1,0 +1,23 @@
+{%- set ns = namespace(panels={}) -%}
+
+{%- for label in vpn_watcher_geoip_labels.keys() -%}
+  {%- if label != 'timezone' -%}
+
+    {%- set ns.panels = ns.panels | combine({
+      label: {
+        'expr': 'sum by (ipsource, device, ' ~ label ~ ') (\n' ~
+                '  count_over_time(\n' ~
+                '    { ' ~ vpn_expr ~ ' }\n' ~
+                '    [' ~ watcher_dashboard.panel_showtime ~ ']\n' ~
+                '  )\n' ~
+                ')\n',
+        'label': ['ipsource', 'device', label],
+        'title': 'Connections by ' ~ label,
+        'type':  'timeseries'
+      }
+    }) -%}
+
+  {%- endif -%}
+{%- endfor -%}
+
+{{ ns.panels }}
