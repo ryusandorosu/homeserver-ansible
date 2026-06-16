@@ -42,6 +42,7 @@
       - cockpit
       - vim
       - zsh
+      - far2l
       - neovim
       - docker
       - nginx_auth
