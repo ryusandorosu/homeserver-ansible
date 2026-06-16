@@ -7,28 +7,13 @@ vpn_labels: >-
     | list
   }}
 
-# |^$ - empty label value fallback
 vpn_filters: >-
   {%- for filter in vpn_labels -%}
   {{ filter }} =~ "${{ filter }}"{% if not loop.last %}, {% endif %}
   {%- endfor -%}
 
+# |^$ - empty label value fallback
 vpn_geoip_filters: >-
   {%- for label in vpn_watcher_geoip_labels | dict2items -%}
   {{ label.key }} =~ "${{ label.key }}|^$"{% if not loop.last %}, {% endif %}
-  {%- endfor -%}
-
-vpn_filters_logformat: >-
-  {%- for filter in vpn_labels -%}
-  {{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %}
-  {%- endfor -%}
-
-vpn_geoip_json: >-
-  {%- for label, value in vpn_watcher_geoip_labels.items() -%}
-  | json {{ label }}="{{ value.json }}"
-  {%- endfor -%}
-
-vpn_geoip_logformat: >-
-  {%- for label in vpn_watcher_geoip_labels | dict2items -%}
-  {{ label.key }}={% raw %}{{ {% endraw %}.{{ label.key }}{% raw %} }}{% endraw %} \n
   {%- endfor -%}

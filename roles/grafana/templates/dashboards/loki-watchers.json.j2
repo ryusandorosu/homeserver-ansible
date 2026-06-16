@@ -1,9 +1,9 @@
 {%- set labels = [] -%}
 {%- for label in vpn_labels -%}
-{%- set _ = labels.append(label) -%}
+  {%- set _ = labels.append(label) -%}
 {%- endfor -%}
 {%- for label in vpn_watcher_geoip_labels | dict2items -%}
-{%- set _ = labels.append(label.key) -%}
+  {%- set _ = labels.append(label.key) -%}
 {%- endfor -%}
 {
   "annotations": {
@@ -19,7 +19,20 @@
         {
           "expr": {{ panel.expr | to_json }},
 {% if panel.label is defined %}
-          "legendFormat": "{% raw %}{{ {% endraw %}{{ panel.label }} }}",
+          "legendFormat": "
+  {%- if panel.label is string -%}
+    {% raw %}{{ {% endraw %}{{ panel.label }} }}
+  {%- else -%}
+    {%- for panellabel in panel.label -%}
+      {%- if loop.first -%}
+      {%- elif loop.last -%}
+        {{ ': ' }}
+      {%- else -%}
+        {{ ' ' }}
+      {%- endif -%}
+    {% raw %}{{ {% endraw %}{{ panellabel }} }}
+    {%- endfor -%}
+  {%- endif -%}",
 {% endif %}
           "refId": "{{ loop.index }}"
         }
@@ -38,19 +51,18 @@
 
 {% endif %}
       },
-{% elif panel.type == "barchart" %}
-      "options": {
-        "barWidth": 1,
-        "groupWidth": 1,
-        "fullHighlight": false,
-        "xTickLabelSpacing": 100
-      },
 {% elif panel.type == "timeseries" %}
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right"
+        }
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "drawStyle": "line",
-            "lineWidth": 2,
+            "lineWidth": 3,
             "fillOpacity": 15
           },
           "stacking": {
@@ -59,11 +71,23 @@
         }
       },
 {% endif %}
+{% set panelHeight = 12 %}
       "gridPos": {
-        "h": 8,
+{% if key == 'logs' %}
+        "h": {{ panelHeight }},
         "w": 24,
         "x": 0,
-        "y": {{ 0 + (loop.index0 * 8) }}
+        "y": 0{% else %}
+        "h": 8,
+        "w": 12,
+        "x": {% if loop.index0 % 2 != 0 %}0{% else %}12{% endif %},
+        "y": {%- if loop.index0 % 2 != 0 -%}
+          {{ panelHeight + ((loop.index0 - 1) / 2 * panelHeight) | int }}
+        {%- else -%}
+          {{ panelHeight + ((loop.index0 - 2) / 2 * panelHeight) | int }}
+        {%- endif -%}
+{% endif %}
+
       }
     }{% if not loop.last %},
 {% endif %}
@@ -77,6 +101,7 @@
     "loki",
     "telegram",
     "wireguard",
+    "logstatistics",
     "logs"
   ],
   "templating": {

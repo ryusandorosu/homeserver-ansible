@@ -27,10 +27,11 @@
 {% set panelHeight = 10 %}
 {% set loopPanelHeight = 8 %}
       "gridPos": {
-        "h": {% if key == 'logs' %}{{ panelHeight }}{% else %}8{% endif %},
+        "h": {% if key == 'logs' %}{{ panelHeight }}{% else %}{{ loopPanelHeight }}{% endif %},
         "w": 24,
         "x": 0,
-        "y": {% if key == 'logs' %}0{% else %}{{ panelHeight + ((loop.index0 - 1) * loopPanelHeight) }}
+        "y": {% if key == 'logs' %}0
+{% else %}{{ panelHeight + ((loop.index0 - 1) * loopPanelHeight) }}
 {% endif %}
       }
     }{% if not loop.last %},

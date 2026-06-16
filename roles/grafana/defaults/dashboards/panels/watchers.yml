@@ -2,7 +2,8 @@ vpn_expr: >-
   job = "{{ promtail_logs.wireguard.name }}", {{ vpn_filters }}, {{ vpn_geoip_filters }}
 
 watcher_dashboard:
-  showtime: 7d
+  showtime: 2d
+  panel_showtime: 1h
 
 vpn_dashboard_panels:
   logs:
@@ -11,11 +12,62 @@ vpn_dashboard_panels:
     json: true
     expr: '{ {{ vpn_expr }} }'
 
-  geoip:
-    title: Connections GeoIP Info
-    type: logs
-    json: true
+  countries:
+    title: Connections by country
+    type: timeseries
+    label:
+      - ipsource
+      - device
+      - country
     expr: >
-      { {{ vpn_expr }} }
-      {{ vpn_geoip_json }}
-      | line_format "{{ vpn_filters_logformat }}:\n{{ vpn_geoip_logformat }}"
+      sum by (ipsource, device, country) (
+        count_over_time(
+          { {{ vpn_expr }} }
+          [{{ watcher_dashboard.panel_showtime }}]
+        )
+      )
+
+  regions:
+    title: Connections by region
+    type: timeseries
+    label:
+      - ipsource
+      - device
+      - region
+    expr: >
+      sum by (ipsource, device, region) (
+        count_over_time(
+          { {{ vpn_expr }} }
+          [{{ watcher_dashboard.panel_showtime }}]
+        )
+      )
+
+  cities:
+    title: Connections by city
+    type: timeseries
+    label:
+      - ipsource
+      - device
+      - city
+    expr: >
+      sum by (ipsource, device, city) (
+        count_over_time(
+          { {{ vpn_expr }} }
+          [{{ watcher_dashboard.panel_showtime }}]
+        )
+      )
+
+  asn:
+    title: Connections by ASN
+    type: timeseries
+    label:
+      - ipsource
+      - device
+      - asn
+    expr: >
+      sum by (ipsource, device, asn) (
+        count_over_time(
+          { {{ vpn_expr }} }
+          [{{ watcher_dashboard.panel_showtime }}]
+        )
+      )
