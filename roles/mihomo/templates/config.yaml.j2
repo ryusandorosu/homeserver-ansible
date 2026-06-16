@@ -44,27 +44,24 @@ proxy-providers:
       interval: {{ clash_healthcheck_interval }}
 {% else %}
 proxies:
-{% for proxy in clash_proxies %}
-  - name: {{ proxy.name }}
-{% for key, value in proxy.items() if key not in ['name'] %}
-{% set json_obj = value | from_json | dict2items if value in ['grpc-opts', 'reality-opts'] else value | default(null) %}
-{% if value is string or value is integer %}
-    {{ key }}: {{ value }}
-{% elif value is boolean %}
-    {{ key }}: {{ value | lower }}
-{% else %}
-    {{ key }}:
-{% if value|length==1 and key in ['alpn'] %}
-      - {{ value | join }}
-{% else %}
-{% for subkey, subvalue in json_obj.items() %}
-      {{ subkey }}: {{ subvalue }}
-{% endfor %}
+  {% for proxy in clash_proxies %}- name: {{ proxy.name }}
+    {% for key, value in proxy.items() if key not in ['name'] %}
+      {%- set json_obj = value | from_json | dict2items if value in ['grpc-opts', 'reality-opts'] else value | default(null) -%}
+    {% if value is string or value is integer -%} {{ key }}: {{ value }}
+    {% elif value is boolean -%} {{ key }}: {{ value | lower }}
+    {% else -%} {{ key }}:
+      {% if value|length==1 and key in ['alpn'] %}- {{ value | join }}
+    {% else %}
+    {%- for subkey, subvalue in json_obj.items() %}
+      {%- if loop.last and not loop.first -%}{{ '  ' }}{%- endif -%} {{ subkey }}: {{ subvalue }}
+    {% endfor %}
+    {%- endif -%}
+    {%- endif -%}
+    {%- endfor %}
+
+  {% endfor %}
 {% endif %}
-{% endif %}
-{% endfor %}
-{% endfor %}
-{% endif %}
+
 proxy-groups:
   - name: → Remnawave
     type: {{ clash_connection_type }}
@@ -75,19 +72,15 @@ proxy-groups:
     interval: {{ clash_connection_interval }}
 {% else %}
     proxies:
-{% for proxy in clash_proxies %}
-      - {{ proxy.name }}
-{% endfor %}
-{% if clash_connection_type != "select" %}
-    interval: {{ clash_connection_interval }}
+  {% for proxy in clash_proxies -%}{{ '    ' }}- {{ proxy.name }}
+  {% endfor -%}
+  {% if clash_connection_type != "select" -%}{{ '  ' }}interval: {{ clash_connection_interval }}
+  {% endif -%}
+  {% if clash_connection_type == "url-test" -%}{{ '  ' }}tolerance: {{ clash_connection_tolerance }}
+  {% endif -%}
 {% endif %}
-{% if clash_connection_type == "url-test" %}
-    tolerance: {{ clash_connection_tolerance }}
-{% endif %}
-{% endif %}
+
 rules:
-{% for key, value in clash_rules.items() if key in clash_rules_mode %}
-{% for rule in value %}
+{% for key, value in clash_rules.items() if key in clash_rules_mode %}{% for rule in value %}
   - {{ rule }}
-{% endfor %}
-{% endfor %}
+{% endfor %}{% endfor %}

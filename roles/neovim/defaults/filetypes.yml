@@ -1,13 +1,14 @@
-repo_roles_path: "/home/{{ user }}/homeserver-ansible/roles"
-repo_templates_path: "{{ repo_roles_path }}/.*/templates"
+#try dirname?
+repo_roles_path: "{{ role_path | regex_replace(role_path | basename, '') }}" #contains /
+repo_templates_path: "{{ repo_roles_path }}.*/templates"
 
 luaconfig_filetypes:
   nginx:
     - /etc/nginx/sites-available/.*
     - /etc/nginx/snippets/.*
-    - "{{ repo_roles_path }}/nginx/templates/.*"
+    - "{{ repo_roles_path }}nginx/templates/.*"
   lua:
-    - "{{ repo_roles_path }}/neovim/templates/.*"
+    - "{{ repo_roles_path }}neovim/templates/.*"
   # dosini:
   systemd:
     - "{{ repo_templates_path }}/.*.service.j2"

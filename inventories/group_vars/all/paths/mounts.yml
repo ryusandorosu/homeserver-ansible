@@ -41,30 +41,7 @@ shares:
       name: K95VB
 
 nfs_mounts: >-
-  {%- set mounts = [] -%}
-  {%- for share_name, share in shares.items() -%}
-    {%- if share.nfs is defined -%}
-      {%- for name, nfs in share.nfs.items() -%}
-        {%- set _ = mounts.append({
-          'path': share.mount ~ '/' ~ name,
-          'src': nfs.src
-        }) -%}
-      {%- endfor -%}
-    {%- endif -%}
-  {%- endfor -%}
-  {{ mounts }}
+  {{ lookup('template', inventory_dir ~ '/group_vars/all/templates/nfs.j2') | from_yaml }}
 
 cifs_mounts: >-
-  {%- set mounts = [] -%}
-  {%- for name, share in shares.items() -%}
-    {%- if share.cifs is defined -%}
-      {%- set _ = mounts.append({
-        'path': share.mount,
-        'src': share.cifs.src,
-        'opts': [
-          'credentials=' ~ share.cifs.credentials.path
-        ]
-      }) -%}
-    {%- endif -%}
-  {%- endfor -%}
-  {{ mounts }}
+  {{ lookup('template', inventory_dir ~ '/group_vars/all/templates/cifs.j2') | from_yaml }}

@@ -1,0 +1,23 @@
+{%- set devices = [] -%}
+{%- for name, host in ssh_hosts.items() -%}
+  {%- if host.port is defined -%}{%- if (host.port | string) == (termux_port | string) -%}
+
+    {%- if host.path is defined -%}
+      {%- set target_path = host.path -%}
+    {%- else -%}
+      {%- set target_path = default_termux_path -%}
+    {%- endif -%}
+
+    {%- set _ = devices.append({
+      'name': name,
+      'ip': host.hostname,
+      'user': host.user,
+      'key': host.identity,
+      'mount': shares[name].mount,
+      'path': target_path
+    }) -%}
+
+  {%- endif -%}{%- endif -%}
+{%- endfor -%}
+
+{{ devices }}

@@ -1,4 +1,3 @@
-{% set main_logs = docker | dict2items | rejectattr('key', 'equalto', 'metric_exporters') | list %}
 {
   "annotations": {
     "list": []
@@ -39,6 +38,7 @@
       }
     },
 {% endfor %}
+{% set main_logs = docker | dict2items | rejectattr('key', 'equalto', 'metric_exporters') | list %}
     {
       "type": "row",
       "title": "Prometheus metric exporters",

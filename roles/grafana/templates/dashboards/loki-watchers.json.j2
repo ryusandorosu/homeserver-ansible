@@ -1,17 +1,10 @@
-{%- set panelHeight = 12 -%}
-{%- set labels = [] -%}
-{%- for label in vpn_labels -%}
-  {%- set _ = labels.append(label) -%}
-{%- endfor -%}
-{%- for label in vpn_watcher_geoip_labels | dict2items -%}
-  {%- set _ = labels.append(label.key) -%}
-{%- endfor -%}
 {
   "annotations": {
     "list": []
   },
   "editable": true,
   "panels": [
+{% set panelHeight = 12 %}
 {% for key, panel in vpn_dashboard_panels.items() %}
     {
       "type": "{{ panel.type }}",
@@ -116,9 +109,12 @@
         "h": 8,
         "w": 12,
         "x": {% if loop.index % 2 != 0 %}0{% else %}12{% endif %},
-        "y": {% if loop.index % 2 != 0 %}{{ panelHeight + ((loop.index - 1) / 2 * panelHeight) | int }}
-{% else %}{{ panelHeight + ((loop.index - 2) / 2 * panelHeight) | int }}
+        "y": {% if loop.index % 2 != 0 %}
+{{- panelHeight + ((loop.index - 1) / 2 * panelHeight) | int -}}
+{% else %}
+{{- panelHeight + ((loop.index - 2) / 2 * panelHeight) | int -}}
 {% endif %}
+
       }
     }{% if not loop.last %},
 {% endif %}
@@ -137,6 +133,13 @@
   ],
   "templating": {
     "list": [
+{% set labels = [] %}
+{% for label in vpn_labels %}
+  {%- set _ = labels.append(label) -%}
+{% endfor %}
+{% for label in vpn_watcher_geoip_labels.keys() %}
+  {%- set _ = labels.append(label) -%}
+{% endfor %}
 {% for label in labels %}
       {
         "name": "{{ label }}",

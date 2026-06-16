@@ -8,10 +8,14 @@ f2b_labels: >-
   }}
 
 f2b_filters: >-
-  {% for filter in f2b_labels %}{{ filter }} =~ "${{ filter }}"{% if not loop.last %}, {% endif %}{% endfor %}
+  {%- for filter in f2b_labels -%}
+  {{ filter }} =~ "${{ filter }}"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}
 
 f2b_matchlog_filters: >-
-  {% for filter in f2b_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}
+  {%- for filter in f2b_labels -%}
+  {{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }} {% endraw %}
+  {%- endfor -%}
 
 f2b_loglabels: >-
   {{
@@ -23,4 +27,6 @@ f2b_loglabels: >-
   }}
 
 f2b_logfilters: >-
-  {% for filter in f2b_loglabels %}{{ filter }} =~ \"${{ filter }}\"{% if not loop.last %}, {% endif %}{% endfor %}
+  {%- for filter in f2b_loglabels -%}
+  {{ filter }} =~ \"${{ filter }}\"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}

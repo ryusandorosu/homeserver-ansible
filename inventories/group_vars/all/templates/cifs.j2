@@ -1,0 +1,13 @@
+{%- set mounts = [] -%}
+{%- for name, share in shares.items() -%}
+  {%- if share.cifs is defined -%}
+    {%- set _ = mounts.append({
+      'path': share.mount,
+      'src': share.cifs.src,
+      'opts': [
+        'credentials=' ~ share.cifs.credentials.path
+      ]
+    }) -%}
+  {%- endif -%}
+{%- endfor -%}
+{{ mounts }}

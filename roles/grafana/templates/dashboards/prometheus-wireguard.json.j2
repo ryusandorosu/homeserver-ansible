@@ -57,16 +57,21 @@
       },
 {% endif %}
       "gridPos": {
+{% set panelHeight = 8 %}
 {% if key == 'handshakes' %}
-        "h": 8,
+        "h": {{ panelHeight }},
         "w": 24,
         "x": 0,
         "y": 0
 {% else %}
-        "h": 8,
+        "h": {{ panelHeight }},
         "w": 12,
         "x": {% if loop.index0 % 2 != 0 %}0{% else %}12{% endif %},
-        "y": {% if loop.index0 % 2 != 0 %}{{ 8 + ((loop.index0 - 1) / 2 * 8) | int }}{% else %}{{ 8 + ((loop.index0 - 2) / 2 * 8) | int }}{% endif %}
+        "y": {% if loop.index0 % 2 != 0 %}
+{{- panelHeight + ((loop.index0 - 1) / 2 * panelHeight) | int -}}
+{% else %}
+{{- panelHeight + ((loop.index0 - 2) / 2 * panelHeight) | int -}}
+{% endif %}
 {% endif %}
 
       }

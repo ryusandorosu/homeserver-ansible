@@ -1,8 +1,3 @@
-{%- set labels = [] -%}
-{%- set _ = labels.append('type') -%}
-{%- for key, value in auditd_labels.items() -%}{%- for label in value -%}
-{%- set _ = labels.append(label) -%}
-{%- endfor -%}{%- endfor -%}
 {
   "annotations": {
     "list": []
@@ -49,6 +44,11 @@
   ],
   "templating": {
     "list": [
+{% set labels = [] %}
+  {%- set _ = labels.append('type') -%}
+{% for key, value in auditd_labels.items() %}{%- for label in value -%}
+  {% set _ = labels.append(label) %}
+{%- endfor -%}{% endfor %}
 {% for label in labels %}
       {
         "name": "{{ label }}",

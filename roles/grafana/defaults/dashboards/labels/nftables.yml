@@ -13,4 +13,6 @@ nftables_labels: >-
 
 # |^$ - empty label value fallback
 nftables_filters: >-
-  {% for filter in nftables_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}
+  {%- for filter in nftables_labels -%}
+  {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}

@@ -9,7 +9,11 @@ tg_labels: >-
 
 # |^$ - empty label value fallback
 tg_filters: >-
-  {% for filter in tg_labels %}{{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}{% endfor %}
+  {%- for filter in tg_labels -%}
+  {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}
 
 tg_matchlog_filters: >-
-  {% for filter in tg_labels %}{{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }}{% endraw %} {% endfor %}
+  {%- for filter in tg_labels -%}
+  {{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }} {% endraw %}
+  {%- endfor -%}

@@ -8,8 +8,16 @@
 {% for panel, value in mihomo_dashboard_link.panel_id.items() %}
     {
       "type": "timeseries",
-      "title": "{% if panel == 'normal' %}Mihomo proxy health{% elif panel == 'relative' %}Mihomo proxy health in percents{% endif %}",
-      "description": "{% if panel == 'normal' %}Count of successful and failed health checks of proxy nodes{% elif panel == 'relative' %}Relation of successful and failed health checks of proxy nodes{% endif %}",
+      "title": "{%- if panel == 'normal' -%}
+Mihomo proxy health
+{%- elif panel == 'relative' -%}
+Mihomo proxy health in percents
+{%- endif -%}",
+      "description": "{%- if panel == 'normal' -%}
+Count of successful and failed health checks of proxy nodes
+{%- elif panel == 'relative' -%}
+Relation of successful and failed health checks of proxy nodes
+{%- endif -%}",
       "targets": [
 {% if panel == 'normal' %}{% for metric, value in mihomo_metrics.items() %}
         {{ query.mihomo_panel_query(metric, value, docker.mihomo, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},

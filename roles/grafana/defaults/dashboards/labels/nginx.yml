@@ -22,17 +22,17 @@ nginx_exclude_ip:
   - "{{ lan_ip.large_laptop }}"
 
 nginx_access_filters: >-
-  {% for key, value in nginx_labels.items() if key != 'exclude_ip' %}
+  {%- for key, value in nginx_labels.items() if key != 'exclude_ip' -%}
   {% if value | select('equalto', 'access') %}
   {{ key }} =~ "${{ key }}", 
   {% endif %}
-  {% endfor %}
+  {%- endfor -%}
   exclude_ip !~ "$exclude_ip"
 
 nginx_error_filters: >-
-  {% for key, value in nginx_labels.items() if key != 'exclude_ip' %}
+  {%- for key, value in nginx_labels.items() if key != 'exclude_ip' -%}
   {% if value | select('equalto', 'error') %}
   {{ key }} =~ "${{ key }}", 
   {% endif %}
-  {% endfor %}
+  {%- endfor -%}
   exclude_ip !~ "$exclude_ip"

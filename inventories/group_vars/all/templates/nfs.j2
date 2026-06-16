@@ -1,0 +1,12 @@
+{%- set mounts = [] -%}
+{%- for share_name, share in shares.items() -%}
+  {%- if share.nfs is defined -%}
+    {%- for name, nfs in share.nfs.items() -%}
+      {%- set _ = mounts.append({
+        'path': share.mount ~ '/' ~ name,
+        'src': nfs.src
+      }) -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+{{ mounts }}

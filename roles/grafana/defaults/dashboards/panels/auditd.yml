@@ -1,11 +1,11 @@
 # |^$ - empty label value fallback
 auditd_filters: >-
   type =~ "$type",
-  {% for key, value in auditd_labels.items() %}{% for filter in value %}
-  {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %},{% endif %}
-  {% endfor %}
-  {% if not loop.last %},{% endif %}
-  {% endfor %}
+  {% for key, value in auditd_labels.items() -%}{%- for filter in value -%}
+  {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}
+  {% if not loop.last %}, {% endif %}
+  {%- endfor -%}
 
 audit_expr: >-
   job = "{{ promtail_logs.auditd.name }}", {{ auditd_filters }}
