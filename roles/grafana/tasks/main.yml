@@ -8,6 +8,11 @@
     dir: "{{ role_path }}/../promtail/defaults/labels"
     extensions: ["yml"]
 
+- name: Load other default values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ role_path }}/../mihomo/defaults/subscription.yml"
+
 - name: Create grafana directory
   file:
     path: "{{ item }}"

@@ -4,6 +4,11 @@ mihomo_dashboard_link:
     normal: 1
     relative: 2
 
+mihomo_alerts:
+  seek_period: "{{ clash_healthcheck_interval // 60 * 2 }}m"
+  interval: 1m
+  pending_period: 1m
+
 mihomo_metrics:
   proxy_up_nodes:
     draw:
@@ -55,8 +60,3 @@ mihomo_metrics:
     condition:
       operator: ">"
       value: 20
-
-mihomo_alerts:
-  interval: 1m
-  seek_period: 10m
-  pending_period: 1m
