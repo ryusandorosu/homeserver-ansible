@@ -1,0 +1,17 @@
+- name: Download latest far2m build archive
+  get_url:
+    url: https://github.com/spvkgn/far2m-portable/releases/download/latest/far2m-x86_64.run.tar
+    dest: /tmp/far2m-x86_64.run.tar
+    mode: '0777'
+
+- name: Extract the forked archive
+  unarchive:
+    src: /tmp/far2m-x86_64.run.tar
+    dest: /tmp/
+    remote_src: yes
+
+- name: Install binary
+  shell: mv far2m*.run /usr/local/bin/far2m
+  args:
+    chdir: /tmp/
+    creates: /usr/local/bin/far2m

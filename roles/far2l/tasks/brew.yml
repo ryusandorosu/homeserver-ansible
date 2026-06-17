@@ -1,0 +1,6 @@
+- name: Install far2l from Homebrew
+  homebrew:
+    name: far2l-tty
+    state: present
+    update_homebrew: true
+    install_options: build-from-source
