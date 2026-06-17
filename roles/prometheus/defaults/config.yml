@@ -56,6 +56,7 @@ prometheus_scrape_configs_extended:
     targets:
       - https://api.telegram.org
       - https://www.gstatic.com/generate_204
+      - https://github.com
   blackbox_edgerouter:
     path: /probe
     replacement:
