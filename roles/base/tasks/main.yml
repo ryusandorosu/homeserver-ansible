@@ -25,14 +25,21 @@
       - bind9-dnsutils
       - btop
       - strace
+      - bubblewrap
     state: present
     update_cache: yes
 
-- name: Enable apt unattended-upgrades
-  copy:
-    src: apt.conf.d/auto-upgrades
-    dest: /etc/apt/apt.conf.d/20auto-upgrades
-    mode: '0644'
+- name: Install Homebrew
+  shell: >
+    /bin/bash -c "$(
+      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    )"
+  args:
+    creates: /home/linuxbrew/.linuxbrew/bin/brew
+
+- name: Add Homebrew to PATH
+  shell: >
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
 - name: Ensure bat config directory exists
   file:
@@ -62,3 +69,9 @@
     src: update-motd.d/updates.sh
     dest: /etc/update-motd.d/93-updates
     mode: '0755'
+
+- name: Enable apt unattended-upgrades
+  copy:
+    src: apt.conf.d/auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: '0644'
