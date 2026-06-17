@@ -6,6 +6,6 @@ vpn_peer_names["{{ data.public_key }}"]="{{ data.name }}"
 {% endfor %}
 
 declare -A ssh_peer_names
-{% for peer in ssh_authorized %}
+{% for device, peers in ssh_authorized.items() %}{% for peer in peers %}
 ssh_peer_names["$(echo "{{ peer.type }} {{ peer.public_key }}" | ssh-keygen -lf - | awk '{print $2}')"]="{{ peer.name }}"
-{% endfor %}
+{% endfor %}{% endfor %}

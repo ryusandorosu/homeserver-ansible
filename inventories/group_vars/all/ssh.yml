@@ -1,22 +1,28 @@
 ssh_authorized:
-  - name: wsl:ryusandorosu@DESKTOP-5EFI5KM
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAID5q0I4yN8TVs5yFlCdhEV3XccDFROLR7Ms61AzgAYZ3
-    type: ssh-ed25519
-  - name: termius@Redmi14C
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIIwg7J9P0bJXuN4RCXcEaary/qSX0jKcLXjm7WBpBN+2
-    type: ssh-ed25519
-  - name: termius@GalaxyTabA6
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIIeDe7+08lEotvJIr9xzESaVvwEWaO1YJEG+WWXFpp3Y
-    type: ssh-ed25519
-  - name: termius@DESKTOP-2MJ0UCN
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIAqadWOC8soOoaxQ7g5FEqZjMngE81H6rNjhNsuctD1X
-    type: ssh-ed25519
-  - name: termius@DESKTOP-5EFI5KM
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIG2Tjqq68/UtFI6+SK9ULIYOn9yG9Tw+wJ8M6BkqHeTW
-    type: ssh-ed25519
-  - name: powershell:kutae@DESKTOP-2MJ0UCN
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIPzJ2Q7UG0gYwBb/BI8G/JnLlZ0O40GVF3TBAtQIyd3Q
-    type: ssh-ed25519
-  - name: wsl:ryusandorosu@DESKTOP-2MJ0UCN
-    public_key: AAAAC3NzaC1lZDI1NTE5AAAAIOJvXzk8jEqTiO7DJMBDhhQATo2eymENzwomzrbB5AhS
-    type: ssh-ed25519
+  asus:
+    - name: wsl:ryusandorosu@DESKTOP-5EFI5KM
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAID5q0I4yN8TVs5yFlCdhEV3XccDFROLR7Ms61AzgAYZ3
+      type: ssh-ed25519
+    - name: termius@DESKTOP-5EFI5KM
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIG2Tjqq68/UtFI6+SK9ULIYOn9yG9Tw+wJ8M6BkqHeTW
+      type: ssh-ed25519
+    - name: powershell:Булат Сибгатуллин@DESKTOP-5EFI5KM
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAID+aBrD+RrdW0TP92dPSHOpTac9RwZD//d8qw0tIsMYp 
+      type: ssh-ed25519
+  honor:
+    - name: powershell:kutae@DESKTOP-2MJ0UCN
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIPzJ2Q7UG0gYwBb/BI8G/JnLlZ0O40GVF3TBAtQIyd3Q
+      type: ssh-ed25519
+    - name: wsl:ryusandorosu@DESKTOP-2MJ0UCN
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIOJvXzk8jEqTiO7DJMBDhhQATo2eymENzwomzrbB5AhS
+      type: ssh-ed25519
+    - name: termius@DESKTOP-2MJ0UCN
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIAqadWOC8soOoaxQ7g5FEqZjMngE81H6rNjhNsuctD1X
+      type: ssh-ed25519
+  androids:
+    - name: termius@Redmi14C
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIIwg7J9P0bJXuN4RCXcEaary/qSX0jKcLXjm7WBpBN+2
+      type: ssh-ed25519
+    - name: termius@GalaxyTabA6
+      public_key: AAAAC3NzaC1lZDI1NTE5AAAAIIeDe7+08lEotvJIr9xzESaVvwEWaO1YJEG+WWXFpp3Y
+      type: ssh-ed25519

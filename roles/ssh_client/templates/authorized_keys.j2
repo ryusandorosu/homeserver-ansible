@@ -1,3 +1,3 @@
-{% for item in ssh_authorized %}
+{% for device, peers in ssh_authorized.items() %}{% for item in peers %}
 {{ item.type }} {{ item.public_key }} {{ item.name }}
-{% endfor %}
+{% endfor %}{% endfor %}
