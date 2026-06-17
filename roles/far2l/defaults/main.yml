@@ -1,0 +1,3 @@
+batcat_opts:
+  - paging=auto
+  - style=default
