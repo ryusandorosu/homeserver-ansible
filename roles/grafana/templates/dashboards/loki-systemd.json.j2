@@ -25,13 +25,13 @@
         "y": 0
       }
     },
-{% for key, unit in promtail_systemd.items() %}
+{% for unit in promtail_systemd %}
     {
       "type": "logs",
-      "title": "{{ unit.name }} Log",
+      "title": "{{ unit }}",
       "targets": [
         {
-          "expr": "{job=\"systemd\", unit=\"{{ key }}.service\"}",
+          "expr": "{job=\"systemd\", unit=\"{{ unit }}.service\"}",
           "refId": "{{ 1 + loop.index }}"
         }
       ],

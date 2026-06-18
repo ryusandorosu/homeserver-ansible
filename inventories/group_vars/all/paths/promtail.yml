@@ -54,19 +54,11 @@ promtail_logs:
     pipeline: fail2ban_action
 
 promtail_systemd:
-  docker:
-    name: Docker service
-  android-watcher:
-    name: Android SSHFS Auto Watcher
-  NetworkManager:
-    name: Network Manager
-  ssh:
-    name: SSH authentication
-  systemd-logind:
-    name: User login management
-  wg-quick@wg0:
-    name: Wireguard interface
-  nginx:
-    name: nginx
-  logrotate:
-    name: logrotate
+  - docker
+  - android-watcher
+  - NetworkManager
+  - ssh
+  - systemd-logind
+  - wg-quick@{{ wireguard_interface }}
+  - nginx
+  - logrotate
