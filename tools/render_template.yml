@@ -4,6 +4,8 @@
   become: false
 
   tasks:
+    # - debug:
+    #     msg: "{{ ansible_env }}"
     - name: Load all role defaults recursively
       include_vars:
         dir: "{{ playbook_dir + '/../' + roles_dir + '/' + role_name }}/defaults"
