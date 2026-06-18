@@ -34,7 +34,7 @@ shares:
     cifs:
       src: "//{{ lan_ip.large_laptop }}/d"
       credentials:
-        path: /root/.smb_asus_credentials
+        path: "{{ cifs_creds }}/asus"
         user: "{{ win_asus_user }}"
         pass: "{{ vault_windows_asus_password }}"
     samba:
@@ -45,3 +45,5 @@ nfs_mounts: >-
 
 cifs_mounts: >-
   {{ lookup('template', inventory_dir ~ '/group_vars/all/templates/cifs.j2') | from_yaml }}
+
+cifs_creds: /root/.smb
