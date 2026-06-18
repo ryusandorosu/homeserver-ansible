@@ -11,3 +11,4 @@ service_state:
   - smbd
   - docker
   - docker-container-watcher
+  - logrotate

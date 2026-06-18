@@ -68,3 +68,5 @@ promtail_systemd:
     name: Wireguard interface
   nginx:
     name: nginx
+  logrotate:
+    name: logrotate
