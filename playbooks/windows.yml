@@ -17,6 +17,7 @@
   vars:
     roles_list:
       - clash_meta
+      - wezterm
 
   tasks:
     - name: Include roles dynamically

@@ -1,0 +1,30 @@
+- name: Read remote config before deploy
+  ansible.windows.slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"
+  register: before_config
+  ignore_errors: true
+
+- name: Render repo config
+  set_fact:
+    rendered_config: "{{ lookup('file', 'files/wezterm.lua') }}"
+
+- name: Show unified diff 
+  delegate_to: localhost
+  vars:
+    before: "{{ before_config.content | b64decode }}"
+    after: "{{ rendered_config }}"
+  shell: |
+    python3 - << 'EOF'
+    import difflib
+
+    before = """{{ before | replace('"', '\\"') }}""".splitlines()
+    after = """{{ after | replace('"', '\\"') }}""".splitlines()
+
+    for line in difflib.unified_diff(before, after, lineterm=''):
+        print(line)
+    EOF
+
+- name: Deploy config
+  win_copy:
+    src: files/wezterm.lua
+    dest: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"
