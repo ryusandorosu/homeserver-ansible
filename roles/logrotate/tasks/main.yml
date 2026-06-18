@@ -4,7 +4,7 @@
     state: present
     update_cache: yes
 
-- name: Deploy logrotate configs
+- name: Deploy simple logrotate configs
   copy:
     src: "{{ item }}"
     dest: "/etc/logrotate.d/{{ item | basename }}"
@@ -14,20 +14,11 @@
   with_fileglob:
     - files/*
 
-- name: Deploy templated logrotate config with default settings
-  template:
-    src: default.j2
-    dest: "/etc/logrotate.d/{{ item.key }}"
-    owner: root
-    group: root
-    mode: '0644'
-  loop: "{{ logrotate_configs | dict2items | rejectattr('value.config', 'defined') }}"
-
-- name: Deploy templated logrotate configs with different settings
+- name: Deploy templated logrotate configs
   template:
     src: configured.j2
     dest: "/etc/logrotate.d/{{ item.key }}"
     owner: root
     group: root
     mode: '0644'
-  loop: "{{ logrotate_configs | dict2items | selectattr('value.config', 'defined') }}"
+  loop: "{{ logrotate_configs | dict2items }}"

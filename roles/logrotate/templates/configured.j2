@@ -1,20 +1,33 @@
 {{ item.value.path }} {
-
-    {{ item.value.config.when }}
-    rotate {{ item.value.config.rotate }}
-
-{% if item.value.config.size is defined %}
-    size {{ item.value.config.size }}
-
+{% if item.value.config.period is defined %}
+    {{ item.value.config.period }}
+{% else %}
+    {{ logrotate_defaults.period }}
 {% endif %}
+    rotate {% if item.value.config.rotate is defined %}{{ item.value.config.rotate }}
+{% else %}{{ logrotate_defaults.rotate }}
+{% endif %}
+    size {% if item.value.config.size is defined %}{{ item.value.config.size }}
+{% else %}{{ logrotate_defaults.size }}
+{% endif %}
+
     compress
     delaycompress
+    copytruncate
 
     missingok
     notifempty
 
-    copytruncate
-
-    create 0640 root adm
-
+    create {% if item.value.config.createmode is defined %}{{ item.value.config.createmode -}}
+{% else %}{{ logrotate_defaults.createmode -}}
+{% endif %}
+ {% if item.value.config.createowner is defined %}{{ item.value.config.createowner -}}
+{% else %}{{ logrotate_defaults.createowner -}}
+{% endif %}
+ {% if item.value.config.creategroup is defined %}{{ item.value.config.creategroup }}
+{% else %}{{ logrotate_defaults.creategroup }}
+{% endif %}
+{% if item.value.path is contains('/home/' ~ user) %}
+    su {{ item.value.config.createowner }} {{ item.value.config.creategroup }}
+{% endif %}
 }

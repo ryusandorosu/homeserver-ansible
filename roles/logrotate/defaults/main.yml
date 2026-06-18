@@ -1,3 +1,11 @@
+logrotate_defaults:
+  period: daily
+  rotate: 14
+  size: 10M
+  createmode: "0640"
+  createowner: root
+  creategroup: adm
+
 logrotate_configs:
   tg-error:
     path: "{{ custom_logs.telegram.error }}"
@@ -11,11 +19,15 @@ logrotate_configs:
     path: "{{ custom_logs.container }}"
   service-state:
     path: "{{ custom_logs.services }}"
-  ansible:
-    path: "/home/{{ user }}/ansible/deployment.log"
   tg-success:
     path: "{{ custom_logs.telegram.success }}"
     config:
-      when: daily
+      period: daily
       rotate: 3
       size: 5M
+  ansible:
+    path: "/home/{{ user }}/.ansible/deployment.log"
+    config:
+      createmode: "0664"
+      createowner: "{{ user }}"
+      creategroup: "{{ user }}"
