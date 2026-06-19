@@ -23,6 +23,7 @@
     for line in difflib.unified_diff(before, after, lineterm=''):
         print(line)
     EOF
+  ignore_errors: true
 
 - name: Deploy config
   win_copy:
