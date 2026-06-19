@@ -16,7 +16,7 @@
 
   vars:
     roles_list:
-      - clash_meta
+      - clashmeta
       - wezterm
 
   tasks:
