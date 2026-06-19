@@ -6,7 +6,7 @@
 
 - name: Render repo config
   set_fact:
-    rendered_config: "{{ lookup('file', 'files/wezterm.lua') }}"
+    rendered_config: "{{ lookup('template', 'templates/wezterm.lua.j2') }}"
 
 - name: Show unified diff 
   delegate_to: localhost
@@ -26,6 +26,6 @@
   ignore_errors: true
 
 - name: Deploy config
-  win_copy:
-    src: files/wezterm.lua
+  win_template:
+    src: templates/wezterm.lua.j2
     dest: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"

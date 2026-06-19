@@ -1,3 +1,9 @@
+{%- set device = [] -%}
+{%- if ansible_env.COMPUTERNAME == "DESKTOP-2MJ0UCN" -%}
+  {%- set device = 'honor' -%}
+{%- elif ansible_env.COMPUTERNAME == "DESKTOP-5EFI5KM" -%}
+  {%- set device = 'asus' -%}
+{% endif %}
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
 
@@ -8,11 +14,18 @@ config.initial_cols = 120
 config.initial_rows = 28
 config.font_size = 10
 config.font = wezterm.font 'JetBrains Mono'
---config.default_prog = { 'ssh', 'nuc' }
-config.default_prog = { 'wsl', '--cd', '/mnt/d/s21' }
+-- config.default_prog = { 'ssh', 'nuc' }
+config.default_prog = { 'wsl'
+{%- if device == 'asus' -%}, '--cd', '/mnt/d/s21'{%- endif %} }
 -- config.default_prog = { 'powershell.exe' }
+config.color_scheme = '
+{%- if device == 'honor' -%}
+NightLion v1
+{%- elif device == 'asus' -%}
+Konsolas
+{%- endif -%}'
 -- config.color_scheme = 'Orangish (terminal.sexy)'
-config.color_scheme = 'Konsolas'
+-- config.color_scheme = 'Konsolas'
 -- config.color_scheme = 'Seti'
 -- config.color_scheme = 'Hurtado'
 -- config.color_scheme = 'NightLion v1'
