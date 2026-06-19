@@ -81,3 +81,12 @@
   loop:
     - "home/{{ user }}"
     - root
+
+- name: Show file deleting progress
+  lineinfile:
+    path: "/{{ item }}/.config/far2l/settings/config.ini"
+    regexp: 'DelShowTotal=0'
+    line: 'DelShowTotal=1'
+  loop:
+    - "home/{{ user }}"
+    - root
