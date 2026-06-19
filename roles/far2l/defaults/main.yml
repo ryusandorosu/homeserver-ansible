@@ -1,3 +1,20 @@
+far2l_configdir: .config/far2l/settings
 batcat_opts:
   - paging=auto
   - style=default
+
+config_replacements:
+  - regex: AutoSaveSetup=0
+    replace: AutoSaveSetup=1
+  - regex: UseExternalEditor=0
+    replace: UseExternalEditor=1
+  - regex: ^ExternalEditorName=(.*)$
+    replace: ExternalEditorName=nvim "!.!"
+  - regex: UseExternalViewer=0
+    replace: UseExternalViewer=1
+  - regex: ^ExternalViewerName=(.*)$
+    replace: ExternalViewerName=batcat --{{ batcat_opts | join(" --") }} "!.!"
+  - regex: TTYPaletteOverride=1
+    replace: TTYPaletteOverride=0
+  - regex: DelShowTotal=0
+    replace: DelShowTotal=1

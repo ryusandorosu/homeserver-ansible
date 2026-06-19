@@ -5,88 +5,26 @@
 - name: Deploy settings configs for user
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/.config/far2l/settings/"
+    dest: "/home/{{ user }}/{{ far2l_configdir }}/"
     mode: '0644'
   with_fileglob:
     - "files/*.ini"
 
-- name: Deploy settings configs for root
-  copy:
-    src: "{{ item }}"
-    dest: /root/.config/far2l/settings/
-    mode: '0644'
-  with_fileglob:
-    - "files/*.ini"
-
-- name: Enable far2l autosaving settings on exit
+- name: Configure settings
   lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: 'AutoSaveSetup=0'
-    line: 'AutoSaveSetup=1'
-  loop:
-    - "home/{{ user }}"
-    - root
-
-- name: Make far2l use an external editor
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: 'UseExternalEditor=0'
-    line: 'UseExternalEditor=1'
-  loop:
-    - "home/{{ user }}"
-    - root
-
-- name: Set nvim as the external editor
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: '^ExternalEditorName=(.*)$'
-    line: 'ExternalEditorName=nvim "!.!"'
-  loop:
-    - "home/{{ user }}"
-    - root
-
-- name: Make far2l use an external viewer
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: 'UseExternalViewer=0'
-    line: 'UseExternalViewer=1'
-  loop:
-    - "home/{{ user }}"
-    - root
-
-- name: Set bat as the external viewer
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: '^ExternalViewerName=(.*)$'
-    line: 'ExternalViewerName=batcat --{{ batcat_opts | join(" --") }} "!.!"'
-  loop:
-    - "home/{{ user }}"
-    - root
-
-#looks ok enabled too on hercules night
-- name: Disable far2l palette overriding
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: 'TTYPaletteOverride=1'
-    line: 'TTYPaletteOverride=0'
-  loop:
-    - "home/{{ user }}"
-    - root
+    path: "/home/{{ user }}/{{ far2l_configdir }}/config.ini"
+    regexp: '{{ item.regex }}'
+    line: '{{ item.replace }}'
+  loop: "{{ config_replacements }}"
 
 - name: Change default theme to Hercules Night
   lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/colors.ini"
+    path: "/home/{{ user }}/{{ far2l_configdir }}/colors.ini"
     regexp: 'CurrentTheme=(.*)'
     line: 'CurrentTheme=Hercules Night'
-  loop:
-    - "home/{{ user }}"
-    - root
 
-- name: Show file deleting progress
-  lineinfile:
-    path: "/{{ item }}/.config/far2l/settings/config.ini"
-    regexp: 'DelShowTotal=0'
-    line: 'DelShowTotal=1'
-  loop:
-    - "home/{{ user }}"
-    - root
+- name: Create root far2l configs symlink
+  file:
+    src: "/home/{{ user }}/{{ far2l_configdir }}"
+    dest: "/root/{{ far2l_configdir }}"
+    state: link
