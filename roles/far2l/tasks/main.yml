@@ -1,30 +1,30 @@
-- import_tasks: appimage.yml #2.8.0
+# - import_tasks: appimage.yml #2.8.0
 # - import_tasks: brew.yml #2.8.0 with less plugins
 # - import_tasks: fork.yml #2.7.0 has lua plugins but bugged as apt 2.6.0 version
 
 - name: Deploy settings configs for user
   copy:
     src: "{{ item }}"
-    dest: "/home/{{ user }}/{{ far2l_configdir }}/"
+    dest: "{{ ansible_env.SUDO_HOME }}/{{ far2l_configdir }}/"
     mode: '0644'
   with_fileglob:
     - "files/*.ini"
 
 - name: Configure settings
   lineinfile:
-    path: "/home/{{ user }}/{{ far2l_configdir }}/config.ini"
+    path: "{{ ansible_env.SUDO_HOME }}/{{ far2l_configdir }}/config.ini"
     regexp: '{{ item.regex }}'
     line: '{{ item.replace }}'
   loop: "{{ config_replacements }}"
 
 - name: Change default theme to Hercules Night
   lineinfile:
-    path: "/home/{{ user }}/{{ far2l_configdir }}/colors.ini"
+    path: "{{ ansible_env.SUDO_HOME }}/{{ far2l_configdir }}/colors.ini"
     regexp: 'CurrentTheme=(.*)'
     line: 'CurrentTheme=Hercules Night'
 
 - name: Create root far2l configs symlink
   file:
-    src: "/home/{{ user }}/{{ far2l_configdir }}"
-    dest: "/root/{{ far2l_configdir }}"
+    src: "{{ ansible_env.SUDO_HOME }}/{{ far2l_configdir }}"
+    dest: "{{ ansible_env.HOME }}/{{ far2l_configdir }}"
     state: link
