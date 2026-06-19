@@ -20,11 +20,11 @@
     global: true
     state: present
 
-# - name: Install neovim from git repo
-#   get_url:
-#     url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
-#     dest: "{{ neovim }}"
-#     mode: '0777'
+- name: Install neovim from git repo
+  get_url:
+    url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+    dest: "{{ neovim }}"
+    mode: '0777'
 
 - name: Install lazy.nvim plugin package manager
   git:
