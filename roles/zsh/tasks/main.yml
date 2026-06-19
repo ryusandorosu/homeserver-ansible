@@ -11,7 +11,7 @@
   become_user: "{{ user }}"
   git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: /home/{{ user }}/.oh-my-zsh
+    dest: "{{ ansible_env.SUDO_HOME }}/{{ omz }}"
     version: master
     update: no
 
@@ -19,55 +19,52 @@
   become_user: root
   shell: "chsh -s $(which zsh)"
 
-- name: Clone syntax highlighting
+- name: Clone zsh plugins
   become_user: "{{ user }}"
   git:
-    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
-    dest: /home/{{ user }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-
-- name: Clone autosuggestions
-  become_user: "{{ user }}"
-  git:
-    repo: https://github.com/zsh-users/zsh-autosuggestions
-    dest: /home/{{ user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    repo: "{{ item }}"
+    dest: "{{ ansible_env.SUDO_HOME }}/{{ omz_plug_dir }}/{{ item | basename }}"
+  loop:
+    - https://github.com/zsh-users/zsh-syntax-highlighting
+    - https://github.com/zsh-users/zsh-autosuggestions
 
 - name: Symlink omz for root
   file:
-    src: "/home/{{ user }}/.oh-my-zsh"
-    dest: /root/.oh-my-zsh
+    src: "{{ ansible_env.SUDO_HOME }}/{{ omz }}"
+    dest: "{{ ansible_env.HOME }}/{{ omz }}"
     state: link
 
 - name: Clone personal configs repo
   become_user: "{{ user }}"
   git:
     repo: "{{ zsh_repo_url }}"
-    dest: "/home/{{ user }}/{{ zsh_repo_dir }}"
+    dest: "{{ ansible_env.SUDO_HOME }}/{{ zsh_repo_dir }}"
 
 - name: Symlink configs repo for root
   file:
-    src: "/home/{{ user }}/{{ zsh_repo_dir }}"
-    dest: "/root/{{ zsh_repo_dir }}"
+    src: "{{ ansible_env.SUDO_HOME }}/{{ zsh_repo_dir }}"
+    dest: "{{ ansible_env.HOME }}/{{ zsh_repo_dir }}"
     state: link
 
 - name: Symlink .zshrc
   become_user: "{{ item | basename }}"
   file:
-    src: "/{{ item }}/{{ zsh_repo_dir }}/.zshrc"
-    dest: "/{{ item }}/.zshrc"
+    src: "{{ item }}/{{ zsh_repo_dir }}/.zshrc"
+    dest: "{{ item }}/.zshrc"
     state: link
   loop:
-    - home/{{ user }}
-    - root
+    - "{{ ansible_env.SUDO_HOME }}"
+    - "{{ ansible_env.HOME }}"
 
 - name: Symlink custom theme - passion
   become_user: "{{ item | basename }}"
   file:
-    src: "/home/{{ user }}/{{ zsh_repo_dir }}/passion.zsh-theme"
-    dest: "/{{ item }}/.oh-my-zsh/themes/passion.zsh-theme"
+    src: "{{ ansible_env.SUDO_HOME }}/{{ zsh_repo_dir }}/passion.zsh-theme"
+    dest: "{{ item }}/{{ omz_themes }}/passion.zsh-theme"
     state: link
   loop:
-    - home/{{ user }}
-    - root
+    - "{{ ansible_env.SUDO_HOME }}"
+    - "{{ ansible_env.HOME }}"
 
 - name: Enable command-not-found for zsh
   command: update-command-not-found
