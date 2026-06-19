@@ -15,6 +15,10 @@
     version: master
     update: no
 
+- name: Make zsh default shell for root
+  become_user: root
+  shell: "chsh -s $(which zsh)"
+
 - name: Clone syntax highlighting
   become_user: "{{ user }}"
   git:
