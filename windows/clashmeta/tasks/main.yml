@@ -1,6 +1,6 @@
 - name: Read profile.yaml
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\profile.yaml"
+    path: "{{ ansible_env.APPDATA }}\\{{ clash_meta_client }}\\profile.yaml"
   register: clash_profile
 
 - name: Extract current id
@@ -9,7 +9,7 @@
 
 - name: Read remote rules before deploy
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+    path: "{{ ansible_env.APPDATA }}\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
   register: before_rules
   ignore_errors: true
 
@@ -36,11 +36,11 @@
 - name: Deploy clash custom rules
   win_template:
     src: templates/rules.yaml.j2
-    dest: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
+    dest: "{{ ansible_env.APPDATA }}\\{{ clash_meta_client }}\\rules\\{{ clash_id }}.yaml"
 
 - name: Read remote config before deploy
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\mihomo.yaml"
+    path: "{{ ansible_env.APPDATA }}\\{{ clash_meta_client }}\\mihomo.yaml"
   register: before_config
   ignore_errors: true
 
@@ -67,4 +67,4 @@
 - name: Deploy mihomo config
   win_template:
     src: templates/mihomo.yaml.j2
-    dest: "{{ ansible_env.USERPROFILE }}\\AppData\\Roaming\\{{ clash_meta_client }}\\mihomo.yaml"
+    dest: "{{ ansible_env.APPDATA }}\\{{ clash_meta_client }}\\mihomo.yaml"
