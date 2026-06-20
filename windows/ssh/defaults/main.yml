@@ -1,0 +1,68 @@
+win_ssh_hosts:
+  nuc:
+    hostname: "{{ wireguard_server_ip }}"
+    user: "{{ user }}"
+    identity: nuc_server
+    device:
+      - asus
+      - honor
+
+  github.com:
+    hostname: github.com
+    user: git
+    identity: github
+    device:
+      - asus
+      - honor
+
+  redmi:
+    hostname: "{{ wireguard_devices.phone.ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux.redmi.user }}"
+    identity: "{{ termux.redmi.key }}"
+    device:
+      - asus
+      - honor
+
+  asus-lan:
+    hostname: "{{ lan_ip.large_laptop }}"
+    user: "\"{{ whost.asus.user }}\""
+    identity: asus_k95vb
+    device:
+      - honor
+
+  asus-vpn:
+    hostname: "{{ wireguard_devices.large_laptop.ip }}"
+    user: "\"{{ whost.asus.user }}\""
+    identity: asus_k95vb
+    device:
+      - honor
+  
+  # ds209:
+  #   hostname: "{{ lan_ip.diskstation }}"
+  #   user: admin
+  #   identity: ds209
+  #   options:
+  #     - PubkeyAcceptedAlgorithms +ssh-rsa
+  #     - HostKeyAlgorithms +ssh-rsa
+
+  honor-lan:
+    hostname: "{{ lan_ip.small_laptop }}"
+    user: "{{ whost.honor.user }}"
+    identity: honor_magicbook
+    device:
+      - asus
+
+  honor-vpn:
+    hostname: "{{ wireguard_devices.laptop.ip }}"
+    user: "{{ whost.honor.user }}"
+    identity: honor_magicbook
+    device:
+      - asus
+
+  icl:
+    hostname: "{{ lan_ip.icl_srv }}"
+    user: "{{ user }}"
+    identity: icl_server
+    device:
+      - honor

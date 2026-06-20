@@ -7,20 +7,22 @@ sshd_allow_users:
 termux:
   redmi:
     user: u0_a497
-    key: android_termux
+    key: android_redmi
   samsung:
     user: u0_a145
     key: android_samsung
   x96q:
     user: u0_a87
     key: android_x96q
-  # tronsmart:
-  #   user: u0_axx
-  #   key: android_tronsmart
 
 # Windows
-win_asus_user: Булат Сибгатуллин
-win_honor_user: kutae
+whost:
+  asus:
+    user: Булат Сибгатуллин
+    name: DESKTOP-5EFI5KM
+  honor:
+    user: kutae
+    name: DESKTOP-2MJ0UCN
 
 # services
 grafana_user: 472

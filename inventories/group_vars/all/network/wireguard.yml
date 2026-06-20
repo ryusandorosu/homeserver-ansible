@@ -25,7 +25,3 @@ wireguard_devices:
     ip: 10.10.0.6
     name: X96Q SmartTV
     public_key: "UHe2+y4ILdJ/ag5ENcHQRYeB/odBnqwuQmVpqHT4Ti4="
-  # tronsmart:
-  #   ip: 10.10.0.7
-  #   name: Tronsmart MXIII Plus
-  #   public_key: "/RrlGzaqCGeExdY4SnF5cm1yLePyh8iFlDt9PP1NPQ0="

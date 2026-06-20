@@ -35,7 +35,7 @@ shares:
       src: "//{{ lan_ip.large_laptop }}/d"
       credentials:
         path: "{{ cifs_creds }}/asus"
-        user: "{{ win_asus_user }}"
+        user: "{{ whost.asus.user }}"
         pass: "{{ vault_windows_asus_password }}"
     samba:
       name: K95VB

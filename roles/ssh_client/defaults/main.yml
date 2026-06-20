@@ -21,7 +21,7 @@ ssh_hosts:
   icl:
     hostname: "{{ lan_ip.icl_srv }}"
     user: "{{ user }}"
-    identity: icl_srv
+    identity: icl_server
 
   router:
     hostname: "{{ lan_ip.router }}"
@@ -36,12 +36,7 @@ ssh_hosts:
     path: /storage/0123-4567/
 
   smarttv:
-    hostname: "{{ wireguard_devices.x96q.ip }}" #"{{ lan_ip.x96q }}"
+    hostname: "{{ wireguard_devices.x96q.ip }}"
     port: "{{ termux_port }}"
     user: "{{ termux.x96q.user }}"
     identity: "{{ termux.x96q.key }}"
-  # smarttv:
-  #   hostname: "{{ lan_ip.tronsmart }}"
-  #   port: "{{ termux_port }}"
-  #   user: "{{ termux.tronsmart.user }}"
-  #   identity: "{{ termux.tronsmart.key }}"

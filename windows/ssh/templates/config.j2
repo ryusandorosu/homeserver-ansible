@@ -1,0 +1,21 @@
+{% for key, value in win_ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
+{% if ansible_env.COMPUTERNAME == subvalue.name %}{% if value.device | select('equalto', subkey) %}
+Host {{ key }}
+    HostName {{ value.hostname }}
+    User {{ value.user }}
+    IdentityFile {{
+        ansible_env.USERPROFILE 
+        | regex_replace('\\\\','/')
+        | regex_replace(value.identity,'Bulat')
+      }}/.ssh/{{ value.identity }}
+  {% if value.port is defined %}
+  Port {{ value.port }}
+  {% endif %}
+  {%- if value.options is defined %}
+    {%- for item in value.options %}
+    {{ item }}
+    {%- endfor %}
+  {%- endif %}
+
+{% endif %}{% endif %}
+{% endfor %}{% endfor %}

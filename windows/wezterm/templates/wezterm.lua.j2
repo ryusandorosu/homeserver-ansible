@@ -1,19 +1,17 @@
-{%- set device = [] -%}
-{%- if ansible_env.COMPUTERNAME == "DESKTOP-2MJ0UCN" -%}
-  {%- set device = 'honor' -%}
-{%- elif ansible_env.COMPUTERNAME == "DESKTOP-5EFI5KM" -%}
-  {%- set device = 'asus' -%}
-{% endif %}
 local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {
-{% if device == 'asus' %}
+{% for key, value in whost.items() %}
+{% if ansible_env.COMPUTERNAME == value.name %}
+{% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
   color_scheme = 'Konsolas',
-{% elif device == 'honor' %}
+{% elif key == 'honor' %}
   default_prog = { 'powershell.exe' },
   color_scheme = 'Hurtado',
 {% endif %}
+{% endif %}
+{% endfor %}
   initial_cols = 120,
   initial_rows = 32,
   font_size = 10,

@@ -1,0 +1,33 @@
+# - debug:
+#     msg: "{{ ansible_env }}"
+- name: Read remote config before deploy
+  ansible.windows.slurp:
+    path: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
+  register: before_config
+  ignore_errors: true
+
+- name: Render repo config
+  set_fact:
+    rendered_config: "{{ lookup('template', 'templates/config.j2') }}"
+
+- name: Show unified diff 
+  delegate_to: localhost
+  vars:
+    before: "{{ before_config.content | b64decode }}"
+    after: "{{ rendered_config }}"
+  shell: |
+    python3 - << 'EOF'
+    import difflib
+
+    before = """{{ before | replace('"', '\\"') }}""".splitlines()
+    after = """{{ after | replace('"', '\\"') }}""".splitlines()
+
+    for line in difflib.unified_diff(before, after, lineterm=''):
+        print(line)
+    EOF
+  ignore_errors: true
+
+- name: Deploy config
+  win_template:
+    src: templates/config.j2
+    dest: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
