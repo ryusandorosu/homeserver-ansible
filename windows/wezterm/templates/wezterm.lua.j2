@@ -4,47 +4,39 @@
 {%- elif ansible_env.COMPUTERNAME == "DESKTOP-5EFI5KM" -%}
   {%- set device = 'asus' -%}
 {% endif %}
--- Pull in the wezterm API
 local wezterm = require 'wezterm'
-
--- This will hold the configuration.
--- local config = wezterm.config_builder()
-local config = {}
-config.initial_cols = 120
-config.initial_rows = 28
-config.font_size = 10
-config.font = wezterm.font 'JetBrains Mono'
--- config.default_prog = { 'ssh', 'nuc' }
+local act = wezterm.action
+local config = {
 {% if device == 'asus' %}
-config.default_prog = { 'wsl', '--cd', '/mnt/d/s21' }
+  default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
+  color_scheme = 'Konsolas',
 {% elif device == 'honor' %}
-config.default_prog = { 'powershell.exe' }
+  default_prog = { 'powershell.exe' },
+  color_scheme = 'Hurtado',
 {% endif %}
-config.color_scheme = '
-{%- if device == 'honor' -%}
-Hurtado
-{%- elif device == 'asus' -%}
-Konsolas
-{%- endif -%}'
+  initial_cols = 120,
+  initial_rows = 32,
+  font_size = 10,
+  font = wezterm.font 'JetBrains Mono',
+  colors = {
+    cursor_bg = 'white',
+    selection_bg = '#fffacd',
+    selection_fg = 'black',
+  },
+  keys = {
+    { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
+    { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
+    { key = 'z', mods = 'CTRL', action = act.DisableDefaultAssignment },
+    { key = 'PageUp', mods = 'CTRL', action = act.DisableDefaultAssignment },
+    { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
+  },
+}
+-- config.default_prog = { 'ssh', 'nuc' }
 -- config.color_scheme = 'Orangish (terminal.sexy)'
 -- config.color_scheme = 'Konsolas'
 -- config.color_scheme = 'Seti'
 -- config.color_scheme = 'Hurtado'
 -- config.color_scheme = 'NightLion v1'
 -- config.color_scheme = 'Red Alert'
-config.colors = {
-  cursor_bg = 'white',
-  selection_bg = '#fffacd',
-  selection_fg = 'black',
-}
-local act = wezterm.action
-config.keys = {
-  { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
-  { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
-  { key = 'z', mods = 'CTRL', action = act.DisableDefaultAssignment },
-  { key = 'PageUp', mods = 'CTRL', action = act.DisableDefaultAssignment },
-  { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
-}
-
 -- Finally, return the configuration to wezterm:
 return config
