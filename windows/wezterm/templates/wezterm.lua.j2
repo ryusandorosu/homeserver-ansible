@@ -15,12 +15,14 @@ config.initial_rows = 28
 config.font_size = 10
 config.font = wezterm.font 'JetBrains Mono'
 -- config.default_prog = { 'ssh', 'nuc' }
-config.default_prog = { 'wsl'
-{%- if device == 'asus' -%}, '--cd', '/mnt/d/s21'{%- endif %} }
--- config.default_prog = { 'powershell.exe' }
+{% if device == 'asus' %}
+config.default_prog = { 'wsl', '--cd', '/mnt/d/s21' }
+{% elif device == 'honor' %}
+config.default_prog = { 'powershell.exe' }
+{% endif %}
 config.color_scheme = '
 {%- if device == 'honor' -%}
-NightLion v1
+Hurtado
 {%- elif device == 'asus' -%}
 Konsolas
 {%- endif -%}'
