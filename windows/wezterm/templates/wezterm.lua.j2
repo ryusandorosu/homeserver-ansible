@@ -30,6 +30,14 @@ Konsolas
 -- config.color_scheme = 'Hurtado'
 -- config.color_scheme = 'NightLion v1'
 -- config.color_scheme = 'Red Alert'
+local act = wezterm.action
+config.keys = {
+  { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
+  { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
+  { key = 'z', mods = 'CTRL', action = act.DisableDefaultAssignment },
+  { key = 'PageUp', mods = 'CTRL', action = act.DisableDefaultAssignment },
+  { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
+}
 
 -- Finally, return the configuration to wezterm:
 return config
