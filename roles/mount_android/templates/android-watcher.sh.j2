@@ -42,7 +42,7 @@ while true; do
     "{{ device.name }}" \
     "{{ device.ip }}" \
     "{{ device.user }}" \
-    "/home/{{ user }}/.ssh/{{ device.key }}" \
+    "{{ sshkeys }}/{{ device.key }}" \
     "{{ device.mount }}" \
     "{{ device.path }}"
 

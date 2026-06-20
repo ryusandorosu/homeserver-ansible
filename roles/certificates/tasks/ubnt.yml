@@ -68,13 +68,13 @@
 
 - name: Upload PEM to router
   shell: |
-    scp -i {{ router_ssh_key }} \
+    scp -i {{ sshkeys }}/{{ ssh_hosts.router.identity }} \
     {{ ubnt_cert_dir }}/{{ ubnt_cert_name }}.pem \
-    {{ router_ssh_host }}:{{ ubnt_cert_destination }}
+    {{ ssh_hosts.router.user }}@{{ ssh_hosts.router.hostname }}:{{ ubnt_cert_destination }}
 
 - name: Configure EdgeRouter GUI certificate
   shell: >
-    ssh -i {{ router_ssh_key }} {{ router_ssh_host }} '
+    ssh -i {{ sshkeys }}/{{ ssh_hosts.router.identity }} {{ ssh_hosts.router.user }}@{{ ssh_hosts.router.hostname }} '
       source /opt/vyatta/etc/functions/script-template
       configure
       delete service gui cert-file

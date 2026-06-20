@@ -1,4 +1,5 @@
-win_ssh_hosts:
+sshkeys: "/home/{{ user }}/.ssh"
+ssh_hosts:
   nuc:
     hostname: "{{ wireguard_server_ip }}"
     user: "{{ user }}"
@@ -12,6 +13,7 @@ win_ssh_hosts:
     user: git
     identity: github
     device:
+      - server
       - asus
       - honor
 
@@ -21,6 +23,7 @@ win_ssh_hosts:
     user: "{{ termux.redmi.user }}"
     identity: "{{ termux.redmi.key }}"
     device:
+      - server
       - asus
       - honor
 
@@ -38,13 +41,15 @@ win_ssh_hosts:
     device:
       - honor
   
-  # ds209:
-  #   hostname: "{{ lan_ip.diskstation }}"
-  #   user: admin
-  #   identity: ds209
-  #   options:
-  #     - PubkeyAcceptedAlgorithms +ssh-rsa
-  #     - HostKeyAlgorithms +ssh-rsa
+  ds209:
+    hostname: "{{ lan_ip.diskstation }}"
+    user: admin
+    identity: ds209
+    options:
+      - PubkeyAcceptedAlgorithms +ssh-rsa
+      - HostKeyAlgorithms +ssh-rsa
+    device:
+      - server
 
   honor-lan:
     hostname: "{{ lan_ip.small_laptop }}"
@@ -65,4 +70,30 @@ win_ssh_hosts:
     user: "{{ user }}"
     identity: icl_server
     device:
+      - server
       - honor
+
+  # Ubiquiti EdgeRouter Lite (ERLite-3)
+  router:
+    hostname: "{{ lan_ip.router }}"
+    user: ubnt
+    identity: router
+    device:
+      - server
+
+  samsung:
+    hostname: "{{ wireguard_devices.pad.ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux.samsung.user }}"
+    identity: "{{ termux.samsung.key }}"
+    path: /storage/0123-4567/
+    device:
+      - server
+
+  smarttv:
+    hostname: "{{ wireguard_devices.x96q.ip }}"
+    port: "{{ termux_port }}"
+    user: "{{ termux.x96q.user }}"
+    identity: "{{ termux.x96q.key }}"
+    device:
+      - server

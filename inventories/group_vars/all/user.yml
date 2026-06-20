@@ -28,8 +28,3 @@ whost:
 grafana_user: 472
 loki_user: 10001
 prometheus_user: 65534
-
-# Ubiquiti EdgeRouter Lite (ERLite-3)
-ubnt_user: ubnt
-router_ssh_key: "/home/{{ user }}/.ssh/router"
-router_ssh_host: "{{ ubnt_user }}@{{ lan_ip.router }}"

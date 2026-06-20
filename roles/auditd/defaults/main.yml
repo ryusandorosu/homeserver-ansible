@@ -11,7 +11,7 @@ audit_paths:
     - /etc/systemd/system
   sshd:
     - /etc/ssh/sshd_config
-    - /home/{{ user }}/.ssh/authorized_keys
+    - "{{ sshkeys }}/authorized_keys"
     - /root/.ssh/authorized_keys
     - /etc/ssh/
   # docker:

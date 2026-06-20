@@ -1,4 +1,4 @@
-{% for key, value in win_ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
+{% for key, value in ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
 {% if ansible_env.COMPUTERNAME == subvalue.name %}{% if value.device | select('equalto', subkey) %}
 Host {{ key }}
     HostName {{ value.hostname }}
@@ -11,11 +11,12 @@ Host {{ key }}
   {% if value.port is defined %}
   Port {{ value.port }}
   {% endif %}
-  {%- if value.options is defined %}
-    {%- for item in value.options %}
+  {%- if value.options is defined -%}
+    {%- for item in value.options -%}
+      {%- if not loop.last -%}{{ '  ' }}{%- endif -%}
     {{ item }}
-    {%- endfor %}
-  {%- endif %}
+    {% endfor %}
+  {% endif %}
 
 {% endif %}{% endif %}
 {% endfor %}{% endfor %}

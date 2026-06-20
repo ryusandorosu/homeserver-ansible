@@ -9,9 +9,6 @@
     regexp: '^#?user_allow_other'
     line: 'user_allow_other'
 
-- name: Import ssh_client role default variables
-  include_vars:
-    file: "{{ role_path }}/../ssh_client/defaults/main.yml"
 - name: Ensure android mount dirs exist
   file:
     path: "{{ item }}"
