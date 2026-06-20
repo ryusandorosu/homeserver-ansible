@@ -30,6 +30,11 @@ Konsolas
 -- config.color_scheme = 'Hurtado'
 -- config.color_scheme = 'NightLion v1'
 -- config.color_scheme = 'Red Alert'
+config.colors = {
+  cursor_bg = 'white',
+  selection_bg = '#fffacd',
+  selection_fg = 'black',
+}
 local act = wezterm.action
 config.keys = {
   { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
