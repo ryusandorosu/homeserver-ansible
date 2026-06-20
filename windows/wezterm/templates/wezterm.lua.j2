@@ -5,7 +5,7 @@ local config = {
 {% if ansible_env.COMPUTERNAME == value.name %}
 {% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
-  color_scheme = 'Konsolas',
+  color_scheme = 'Hurtado',
 {% elif key == 'honor' %}
   default_prog = { 'powershell.exe' },
   color_scheme = 'Hurtado',
@@ -32,8 +32,6 @@ local config = {
 }
 -- config.default_prog = { 'ssh', 'nuc' }
 -- config.color_scheme = 'Orangish (terminal.sexy)'
--- config.color_scheme = 'Konsolas'
--- config.color_scheme = 'Seti'
 -- config.color_scheme = 'Hurtado'
 -- config.color_scheme = 'NightLion v1'
 -- config.color_scheme = 'Red Alert'
