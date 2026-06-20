@@ -23,15 +23,8 @@
     before: "{{ before_rules.content | b64decode }}"
     after: "{{ rendered_rules }}"
   shell: |
-    python3 - << 'EOF'
-    import difflib
-
-    before = """{{ before | replace('"', '\\"') }}""".splitlines()
-    after = """{{ after | replace('"', '\\"') }}""".splitlines()
-
-    for line in difflib.unified_diff(before, after, lineterm=''):
-        print(line)
-    EOF
+    {{ lookup('template', '../templates/pyshell.sh.j2') }}
+  ignore_errors: true
 
 - name: Deploy clash custom rules
   win_template:
@@ -54,15 +47,8 @@
     before: "{{ before_config.content | b64decode }}"
     after: "{{ rendered_config }}"
   shell: |
-    python3 - << 'EOF'
-    import difflib
-
-    before = """{{ before | replace('"', '\\"') }}""".splitlines()
-    after = """{{ after | replace('"', '\\"') }}""".splitlines()
-
-    for line in difflib.unified_diff(before, after, lineterm=''):
-        print(line)
-    EOF
+    {{ lookup('template', '../templates/pyshell.sh.j2') }}
+  ignore_errors: true
 
 - name: Deploy mihomo config
   win_template:

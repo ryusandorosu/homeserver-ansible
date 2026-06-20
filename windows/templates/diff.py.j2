@@ -1,0 +1,5 @@
+import difflib
+before = r"""{{ before | replace('"', '\"') }}""".splitlines()
+after = r"""{{ after | replace('"', '\"') }}""".splitlines()
+for line in difflib.unified_diff(before, after, lineterm=''):
+    print(line)
