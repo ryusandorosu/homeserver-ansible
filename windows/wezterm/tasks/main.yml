@@ -8,7 +8,7 @@
   set_fact:
     rendered_config: "{{ lookup('template', 'templates/wezterm.lua.j2') }}"
 
-- name: Show unified diff 
+- name: Show config unified diff 
   delegate_to: localhost
   vars:
     before: "{{ before_config.content | b64decode }}"
@@ -21,3 +21,11 @@
   win_template:
     src: templates/wezterm.lua.j2
     dest: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"
+
+- name: Create configuration modules dir
+  win_file:
+    path: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}"
+    state: directory
+
+- include_tasks: plugins.yml
+  loop: "{{ wezterm_modules }}"

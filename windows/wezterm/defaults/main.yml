@@ -1,0 +1,4 @@
+wezterm_modules_path: "WezTerm\\lua"
+wezterm_modules:
+  - bar
+  # - tabline

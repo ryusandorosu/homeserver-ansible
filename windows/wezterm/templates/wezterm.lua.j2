@@ -5,13 +5,21 @@ local config = {
 {% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
   color_scheme = 'Hurtado',
+  launch_menu = {
+    {
+      label = 'New Tab (domain `powershell`)',
+      args = { 'powershell.exe' },
+    },
+  },
 {% elif key == 'honor' %}
   default_prog = { 'powershell.exe' },
   color_scheme = 'Hurtado',
 {% endif %}
 {% endif %}{% endfor %}
-  initial_cols = 120,
-  initial_rows = 32,
+  wezterm.on('gui-startup', function(cmd)
+    local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+    window:gui_window():maximize()
+  end),
   font_size = 10,
   font = wezterm.font {
     family = 'JetBrains Mono',
@@ -37,5 +45,10 @@ local config = {
 -- config.color_scheme = 'NightLion v1'
 -- config.color_scheme = 'Red Alert'
 -- { key = 'RightArrow', mods = 'OPT', action = act.SendKey { key = 'f', mods = 'ALT' }, },
+
+{% for plugin in wezterm_modules %}
+local {{ plugin }} = require '{{ plugin }}'
+{{ plugin }}.apply_to_config(config)
+{% endfor %}
 -- Finally, return the configuration to wezterm:
 return config
