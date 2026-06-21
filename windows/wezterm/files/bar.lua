@@ -2,6 +2,7 @@ local wezterm = require 'wezterm'
 local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
 local config = {}
 bar.apply_to_config(config, {
+  position = "top",
   modules = {
     tabs = {
       inactive_tab_fg = 8,
@@ -14,6 +15,3 @@ bar.apply_to_config(config, {
   },
 })
 return bar
--- does not have effect on bar plugin:
---config.tab_bar_at_bottom = true,
---config.use_fancy_tab_bar = false,

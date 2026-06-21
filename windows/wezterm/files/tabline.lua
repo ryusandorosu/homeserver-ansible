@@ -14,6 +14,5 @@ tabline.setup({
     tabline_z = { 'battery', {'datetime', style = '%H:%M:%S'} },
   },
 })
---tabline.apply_to_config(config)
 return tabline
 --does not work with tab_bar_at_bottom = true

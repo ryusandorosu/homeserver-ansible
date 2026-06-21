@@ -1,4 +1,8 @@
 wezterm_modules_path: "WezTerm\\lua"
 wezterm_modules:
   - bar
-  # - tabline
+  # - status #ok
+  # - tabline #raw
+  # - theme_rotator #overrides bar
+  - domains
+  - sessions

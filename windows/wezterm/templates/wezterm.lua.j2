@@ -20,6 +20,8 @@ local config = {
     local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
     window:gui_window():maximize()
   end),
+  tab_bar_at_bottom = true,
+  use_fancy_tab_bar = false,
   font_size = 10,
   font = wezterm.font {
     family = 'JetBrains Mono',
@@ -36,19 +38,14 @@ local config = {
     { key = 'z', mods = 'CTRL', action = act.DisableDefaultAssignment },
     { key = 'PageUp', mods = 'CTRL', action = act.DisableDefaultAssignment },
     { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
-    { key = 'l', mods = 'ALT', action = act.ShowLauncher },
+    { key = 't', mods = 'ALT', action = act.ShowLauncher },
   },
 }
--- config.default_prog = { 'ssh', 'nuc' }
--- config.color_scheme = 'Orangish (terminal.sexy)'
--- config.color_scheme = 'Hurtado'
--- config.color_scheme = 'NightLion v1'
--- config.color_scheme = 'Red Alert'
--- { key = 'RightArrow', mods = 'OPT', action = act.SendKey { key = 'f', mods = 'ALT' }, },
 
 {% for plugin in wezterm_modules %}
 local {{ plugin }} = require '{{ plugin }}'
 {{ plugin }}.apply_to_config(config)
 {% endfor %}
--- Finally, return the configuration to wezterm:
+
+wezterm.plugin.update_all()
 return config
