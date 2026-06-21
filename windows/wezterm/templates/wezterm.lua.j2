@@ -1,8 +1,7 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {
-{% for key, value in whost.items() %}
-{% if ansible_env.COMPUTERNAME == value.name %}
+{% for key, value in whost.items() %}{% if ansible_env.COMPUTERNAME == value.name %}
 {% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
   color_scheme = 'Hurtado',
@@ -10,12 +9,14 @@ local config = {
   default_prog = { 'powershell.exe' },
   color_scheme = 'Hurtado',
 {% endif %}
-{% endif %}
-{% endfor %}
+{% endif %}{% endfor %}
   initial_cols = 120,
   initial_rows = 32,
   font_size = 10,
-  font = wezterm.font 'JetBrains Mono',
+  font = wezterm.font {
+    family = 'JetBrains Mono',
+    weight = 'Medium',
+  },
   colors = {
     cursor_bg = 'white',
     selection_bg = '#fffacd',
