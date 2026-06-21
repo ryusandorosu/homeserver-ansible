@@ -22,7 +22,7 @@
       - auditd
       - sysctl
       - sshd
-      - ssh_client
+      - ssh
       - wireguard
       - firewall
       - nginx
