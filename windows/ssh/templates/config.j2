@@ -13,7 +13,7 @@ Host {{ key }}
   {% endif %}
   {%- if value.options is defined -%}
     {%- for item in value.options -%}
-      {%- if not loop.last -%}{{ '  ' }}{%- endif -%}
+      {%- if not loop.last or value.options|length == 1 -%}{{ '  ' }}{%- endif -%}
     {{ item }}
     {% endfor %}
   {% endif %}

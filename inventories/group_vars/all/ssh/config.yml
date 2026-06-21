@@ -4,6 +4,8 @@ ssh_hosts:
     hostname: "{{ wireguard_server_ip }}"
     user: "{{ user }}"
     identity: nuc_server
+    options:
+      - TCPKeepAlive true
     device:
       - asus
       - honor
