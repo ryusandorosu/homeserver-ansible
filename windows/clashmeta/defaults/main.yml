@@ -1,19 +1,23 @@
 clash_meta_client: koala-clash
 
-clash_domain_exclude:
-  - github.com
-  - ryusandorosu.ru
-  - home.arpa
-  - gosuslugi.ru
-  - tatenergosbyt.ru
-  - vk-next.net
-  - vknext.net
-  - vk.com
-  - vk.ru
-  - vkuserphoto.ru
+clash_exclude:
+  domains_dns:
+    - github.com
+    - ryusandorosu.ru
+    - home.arpa
+    - vk.com
+  domains:
+    - gosuslugi.ru
+    - tatenergosbyt.ru
+    - vk-next.net
+    - vknext.net
+    - vk.ru
+    - vkuserphoto.ru
+  cidrs:
+    - "{{ home_network }}"
+    - "{{ wireguard_network }}"
 
-clash_dns_exclude:
-  - vk.com
-  - github.com
-  - ryusandorosu.ru
-  - home.arpa
+clash_domain_configured:
+  claude:
+    domain: claude.ai
+    rule: 🇫🇮 Finland - grpc

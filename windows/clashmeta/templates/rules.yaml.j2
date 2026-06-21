@@ -1,10 +1,14 @@
 prepend:
   - 5,PROCESS-NAME,YandexDisk4.exe,DIRECT
-  - IP-CIDR,{{ home_network }},DIRECT
-  - IP-CIDR,{{ wireguard_network }},DIRECT
+{% for rule, values in clash_exclude.items() %}{% for subnet in values if rule in ['cidrs'] %}
+  - IP-CIDR,{{ subnet }},DIRECT
+{% endfor %}{% endfor %}
   - 2,PROCESS-NAME,:System,DIRECT
-{% for domain in clash_domain_exclude %}
+{% for rule, values in clash_exclude.items() %}{% for domain in values if rule not in ['cidrs'] %}
   - DOMAIN-SUFFIX,{{ domain }},DIRECT
+{% endfor %}{% endfor %}
+{% for item in clash_domain_configured.values() %}
+  - DOMAIN-SUFFIX,{{ item.domain }},{{ item.rule }}
 {% endfor %}
   - GEOIP,RU,DIRECT
 append: []
