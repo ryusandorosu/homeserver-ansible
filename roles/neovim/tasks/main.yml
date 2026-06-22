@@ -115,13 +115,13 @@
     # command: nvim --headless "+MasonInstall {{ item }}" +qa
     # loop: "{{ mason_lspconfig | map(attribute='mason') }}"
 
-- name: Create root nvim configs symlink
+- name: Create root symlink for nvim configs
   file:
     src: "{{ ansible_env.SUDO_HOME }}/{{ nvimdir.config }}"
     dest: "{{ ansible_env.HOME }}/{{ nvimdir.config }}"
     state: link
 
-- name: Create root nvim shares symlink
+- name: Create root symlink for nvim shares
   file:
     src: "{{ ansible_env.SUDO_HOME }}/{{ nvimdir.share }}"
     dest: "{{ ansible_env.HOME }}/{{ nvimdir.share }}"

@@ -1,5 +1,4 @@
 - name: Install vim
-  # become: true
   apt:
     name:
     - vim
@@ -31,3 +30,15 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0644'
+
+- name: Create root symlink for vimrc
+  file:
+    src: "{{ ansible_env.HOME }}/.vimrc"
+    dest: /root/.vimrc
+    state: link
+
+- name: Create root symlink for vim plugins
+  file:
+    src: "{{ ansible_env.HOME }}/.vim"
+    dest: "/root/.vim"
+    state: link
