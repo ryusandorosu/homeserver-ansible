@@ -5,4 +5,4 @@ wezterm_modules:
   # - tabline #raw
   # - theme_rotator #overrides bar
   - domains
-  - sessions
+  # - sessions #does not work
