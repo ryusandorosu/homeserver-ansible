@@ -3,9 +3,15 @@
   gather_facts: false
   become: false
 
+# - debug:
+#     msg: "{{ ansible_env }}"
+# - debug:
+#   msg: >
+#     arch: "{{ ansible_architecture }}"
+#     os: "{{ ansible_os_family }}"
+#     distr: "{{ ansible_distribution }}"
+#     release: "{{ ansible_distribution_release }}"
   tasks:
-    # - debug:
-    #     msg: "{{ ansible_env }}"
     - name: Load all role defaults recursively
       include_vars:
         dir: "{{ playbook_dir + '/../' + roles_dir + '/' + role_name }}/defaults"

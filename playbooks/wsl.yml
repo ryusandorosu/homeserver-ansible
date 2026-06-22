@@ -6,8 +6,8 @@
   pre_tasks:
     - name: Check OS family
       assert:
-        that: ansible_os_family == "Debian"
-        fail_msg: "This playbook supports only Debian-based systems"
+        that: ansible_distribution == "Ubuntu"
+        fail_msg: "This playbook supports only Ubuntu"
     - name: Fail if unknown tag is used
       tags: always
       assert:
