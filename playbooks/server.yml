@@ -57,11 +57,9 @@
   tasks:
     - name: Include roles dynamically
       include_role:
-        name: "{{ role_item }}"
+        name: "{{ item }}"
         apply:
-          tags: "{{ role_item }}"
+          tags: "{{ item }}"
       loop: "{{ roles_list }}"
-      loop_control:
-        loop_var: role_item
       tags:
         - always
