@@ -44,7 +44,9 @@ local config = {
 
 {% for plugin in wezterm_modules %}
 local {{ plugin }} = require '{{ plugin }}'
-{{ plugin }}.apply_to_config(config)
+{% endfor %}
+{% for plugin in wezterm_modules %}
+{{ plugin }}.applyconfig(config)
 {% endfor %}
 
 wezterm.plugin.update_all()
