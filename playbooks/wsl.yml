@@ -1,5 +1,5 @@
 - hosts: winlinux
-  become: false
+  become: true #note that become pass of wsl is required in tasks where it is true (not server's as usual)
   gather_subset:
     - min
 
@@ -19,6 +19,7 @@
   vars:
     roles_list:
       - sshconf
+      - vim
 
   tasks:
     - name: Include roles dynamically

@@ -1,0 +1,33 @@
+- name: Install vim
+  # become: true
+  apt:
+    name:
+    - vim
+    - vim-gtk3
+    state: present
+
+- name: Create plugins directory
+  file:
+    path: "{{ ansible_env.HOME }}/{{ vimplugins }}"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
+- name: Clone vim plugins
+  become_user: "{{ user }}"
+  git:
+    repo: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/{{ vimplugins }}/{{ item | basename | regex_replace('.git','') }}"
+  loop:
+    - https://github.com/tpope/vim-fugitive.git
+    - https://github.com/airblade/vim-gitgutter.git
+    - https://github.com/vim-airline/vim-airline.git
+
+- name: Deploy vimrc
+  copy:
+    src: .vimrc
+    dest: "{{ ansible_env.HOME }}"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'

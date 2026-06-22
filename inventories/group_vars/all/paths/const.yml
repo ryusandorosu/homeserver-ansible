@@ -5,3 +5,5 @@ system_logs:
   fail2ban: /var/log/fail2ban.log
   kernel: /var/log/kern.log
   auditd: /var/log/audit/audit.log
+
+vimplugins: .vim/pack/plugins/start
