@@ -1,14 +1,14 @@
-- name: Read remote plugin config before deploy
+- name: "{{ item }} : Read remote config before deploy"
   ansible.windows.slurp:
     path: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"
   register: before_config
   ignore_errors: true
 
-- name: Render repo plugin config
+- name: "{{ item }} : Render repo config"
   set_fact:
     rendered_config: "{{ lookup('file', 'files/{{ item }}.lua') }}"
 
-- name: Show plugin config unified diff 
+- name: "{{ item }} : Show config unified diff"
   delegate_to: localhost
   vars:
     before: "{{ before_config.content | b64decode }}"
@@ -17,7 +17,7 @@
     {{ lookup('template', '../templates/pyshell.sh.j2') }}
   ignore_errors: true
 
-- name: Deploy plugin config
+- name: "{{ item }} : Deploy config"
   win_copy:
     src: files/{{ item }}.lua
     dest: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"
