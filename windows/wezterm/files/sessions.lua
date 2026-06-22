@@ -8,42 +8,14 @@ function module.applyconfig(config)
     auto_save_interval_s = 300,
     git_branch_warn = true,
     keys = {
-      {
-        key = 's',
-        mods = 'ALT',
-        action = act({ EmitEvent = "save_session" }),
-      },
-      {
-        key = 'l',
-        mods = 'ALT',
-        action = act({ EmitEvent = "load_session" }),
-      },
-      {
-        key = 'r',
-        mods = 'ALT',
-        action = act({ EmitEvent = "restore_session" }),
-      },
-      {
-        key = 'd',
-        mods = 'CTRL|SHIFT',
-        action = act({ EmitEvent = "delete_session" }),
-      },
-        {
-        key = 'a',
-        mods = 'ALT',
-        action = act({ EmitEvent = "toggle_autosave" }),
-      },
-      {
-        key = 'e',
-        mods = 'CTRL|SHIFT',
-        action = act({ EmitEvent = "edit_session" }),
-      },
-      {
-        key = 'f',
-        mods = 'ALT',
-        action = act({ EmitEvent = "fork_session" }),
-      },
-    }
+      { key = 's', mods = 'ALT', action = act({ EmitEvent = "save_session" }) },
+      { key = 'l', mods = 'ALT', action = act({ EmitEvent = "load_session" }) },
+      { key = 'r', mods = 'ALT', action = act({ EmitEvent = "restore_session" }) },
+      { key = 'd', mods = 'CTRL|SHIFT', action = act({ EmitEvent = "delete_session" }) },
+      { key = 'a', mods = 'ALT', action = act({ EmitEvent = "toggle_autosave" }) },
+      { key = 'e', mods = 'CTRL|SHIFT', action = act({ EmitEvent = "edit_session" }) },
+      { key = 'f', mods = 'ALT', action = act({ EmitEvent = "fork_session" }) },
+    },
   })
 end
 return module
