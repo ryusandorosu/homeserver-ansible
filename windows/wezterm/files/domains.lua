@@ -5,7 +5,7 @@ domains.apply_to_config(config, {
   keys = {
     attach = { key = 't', mods = 'CTRL' },
     hsplit = { key  = 'h', mods = 'CTRL' },
-    vsplit = {},
+    vsplit = { key  = 'v', mods = 'ALT' },
   }
 })
 return domains
