@@ -1,6 +1,6 @@
 vpn_watcher_labels:
   timestamp:
-    bash: (date --rfc-3339=seconds)
+    bash: "{{ customlog_dateformat }}"
   ipsource:
     bash: ip
     label: true

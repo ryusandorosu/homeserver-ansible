@@ -18,14 +18,14 @@ post_and_log() {
   else
     {{ telegram_script }} "🔴 $(hostname) service $s status: $1" status "$0"
   fi
-  echo "$(date --rfc-3339=seconds) service $s $1" >> {{ custom_logs.services }}
+  echo "${{ customlog_dateformat }} service $s $1" >> {{ custom_logs.services }}
 }
 
 wake_up() {
   if [[ "$1" == "inactive" ]]; then
     sleep 5
     systemctl start "$s"
-    echo "$(date --rfc-3339=seconds) service $s starting" >> {{ custom_logs.services }}
+    echo "${{ customlog_dateformat }} service $s starting" >> {{ custom_logs.services }}
   fi
   chains="$(iptables -L DOCKER)"
   if [[ "$chains" =~ "No chain/target/match by that name" ]]; then

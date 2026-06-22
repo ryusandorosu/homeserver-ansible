@@ -1,6 +1,6 @@
 tg_message_labels:
   timestamp:
-    bash: (date --rfc-3339=seconds)
+    bash: "{{ customlog_dateformat }}"
   msg_sent:
     bash: response_ok
     label: true

@@ -1,6 +1,6 @@
 f2b_action_labels:
   timestamp:
-    bash: (date --iso-8601=seconds)
+    bash: "{{ customlog_dateformat }}"
   jail:
     bash: jail_name
     label: true
