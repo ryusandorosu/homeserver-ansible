@@ -35,11 +35,12 @@ local config = {
   keys = {
     { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
     { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
+    { key = 't', mods = 'ALT', action = act.ShowLauncher },
+    { key = 'q', mods = 'CTRL|SHIFT', action = act.CloseCurrentPane { confirm = true } },
     { key = 'z', mods = 'CTRL', action = act.DisableDefaultAssignment },
     { key = 'PageUp', mods = 'CTRL', action = act.DisableDefaultAssignment },
     { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
-    { key = 't', mods = 'ALT', action = act.ShowLauncher },
-    { key = 'q', mods = 'CTRL|SHIFT', action = act.CloseCurrentPane { confirm = true } },
+    { key = 'd', mods = 'CTRL', action = act.DisableDefaultAssignment },
   },
 }
 
