@@ -1,23 +1,4 @@
-- name: Read remote config before deploy
-  ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
-  register: before_config
-  ignore_errors: true
-
-- name: Render repo config
-  set_fact:
-    rendered_config: "{{ lookup('template', 'templates/config.j2') }}"
-
-- name: Show unified diff 
-  delegate_to: localhost
-  vars:
-    before: "{{ before_config.content | b64decode }}"
-    after: "{{ rendered_config }}"
-  shell: |
-    {{ lookup('template', '../templates/pyshell.sh.j2') }}
-  ignore_errors: true
-
-- name: Deploy config
-  win_template:
-    src: templates/config.j2
-    dest: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
+- import_tasks: win.yml
+  when: ansible_os_family == "Windows"
+- import_tasks: wsl.yml
+  when: ansible_os_family == "Debian"

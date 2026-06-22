@@ -1,0 +1,21 @@
+- name: "WSL: Ensure .ssh dir"
+  file:
+    path: "{{ ansible_env.HOME }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ user }}"
+
+- name: "WSL: Validate SSH config"
+  assert:
+    that:
+      - item.value.hostname == item.key
+    fail_msg: "GitHub host is different from its hostname"
+  loop: "{{ ssh_hosts | dict2items }}"
+  when: item.value.hostname == "github.com"
+
+- name: "WSL: Deploy SSH config"
+  template:
+    src: wslconfig.j2
+    dest: "{{ ansible_env.HOME }}/.ssh/config"
+    mode: '0644'
+    owner: "{{ user }}"

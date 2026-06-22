@@ -1,0 +1,18 @@
+{% for key, value in ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
+{% if ansible_env.NAME == subvalue.name %}{% if value.device | select('equalto', 'wsl' ~ subkey) %}
+Host {{ key }}
+    HostName {{ value.hostname }}
+    User {{ value.user }}
+    IdentityFile ~/.ssh/{{ value.identity }}
+  {% if value.port is defined %}
+  Port {{ value.port }}
+  {% endif %}
+  {%- if value.options is defined -%}
+    {%- for item in value.options -%}
+      {%- if not loop.last or value.options|length == 1 -%}{{ '  ' }}{%- endif -%}
+    {{ item }}
+    {% endfor %}
+  {% endif %}
+
+{% endif %}{% endif %}
+{% endfor %}{% endfor %}
