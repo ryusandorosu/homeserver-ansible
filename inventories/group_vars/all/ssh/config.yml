@@ -55,7 +55,7 @@ ssh_hosts:
       - HostKeyAlgorithms +ssh-rsa
     device:
       - server
-      # - wslasus #key moved to c:
+      - wslasus
 
   honor-lan:
     hostname: "{{ lan_ip.small_laptop }}"
