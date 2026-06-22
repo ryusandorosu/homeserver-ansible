@@ -1,0 +1,18 @@
+#!/bin/bash
+if ping -c1 {{ wireguard_devices.phone.ip }}; then
+#update: to skip newer files on receiver to be replaced
+rsync \
+  --dry-run \
+  --stats \
+  --itemize-changes \
+  --log-file='{{ musictools }}/rsynclog.log' \
+  --archive \
+  --update \
+  --delete \
+  --mkpath \
+  --filter='exclude .thumbnails' \
+  --filter='exclude \[playlists\]/script' \
+  --filter='exclude \[playlists\]/PC' \
+  /mnt/d/Music/ \
+  redmi:{{ default_termux_path }}/Music/
+fi

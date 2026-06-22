@@ -1,0 +1,16 @@
+- name: Import mount_android role default variables
+  include_vars:
+    file: "{{ playbook_dir }}/../roles/mount_android/defaults/main.yml"
+
+- name: Deploy the script that syncs music between pc and phone
+  template:
+    src: syncmusicdir.sh.j2
+    dest: "{{ musictools }}/syncmusicdir.sh"
+
+# Make sure rsync is installed in remote device (manually)
+- name: Make sure rsync is installed in source device
+  apt:
+    name:
+      - rsync
+    state: present
+    update_cache: yes
