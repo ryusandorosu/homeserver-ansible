@@ -4,6 +4,8 @@
   become: false
 
 # - debug:
+#     msg: "{{ ansible_facts }}"
+# - debug:
 #     msg: "{{ ansible_env }}"
 # - debug:
 #   msg: >

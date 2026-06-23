@@ -1,6 +1,6 @@
 - name: Read remote config before deploy
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
+    path: "{{ ansible_facts.env.USERPROFILE }}\\.ssh\\config"
   register: before_config
   ignore_errors: true
 
@@ -20,4 +20,4 @@
 - name: Deploy config
   win_template:
     src: templates/config.j2
-    dest: "{{ ansible_env.USERPROFILE }}\\.ssh\\config"
+    dest: "{{ ansible_facts.env.USERPROFILE }}\\.ssh\\config"

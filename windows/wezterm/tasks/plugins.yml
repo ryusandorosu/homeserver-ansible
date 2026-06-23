@@ -1,12 +1,12 @@
 - name: "{{ item }} : Read remote config before deploy"
   ansible.windows.slurp:
-    path: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"
+    path: "{{ ansible_facts.env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"
   register: before_config
   ignore_errors: true
 
 - name: "{{ item }} : Render repo config"
   set_fact:
-    rendered_config: "{{ lookup('file', 'files/{{ item }}.lua') }}"
+    rendered_config: "{{ lookup('file', 'files/' ~ item ~ '.lua') }}"
 
 - name: "{{ item }} : Show config unified diff"
   delegate_to: localhost
@@ -20,4 +20,4 @@
 - name: "{{ item }} : Deploy config"
   win_copy:
     src: files/{{ item }}.lua
-    dest: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"
+    dest: "{{ ansible_facts.env.ProgramFiles }}\\{{ wezterm_modules_path }}\\{{ item }}.lua"

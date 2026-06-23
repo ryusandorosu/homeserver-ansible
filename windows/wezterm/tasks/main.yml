@@ -1,6 +1,6 @@
 - name: Read remote config before deploy
   ansible.windows.slurp:
-    path: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"
+    path: "{{ ansible_facts.env.USERPROFILE }}\\.wezterm.lua"
   register: before_config
   ignore_errors: true
 
@@ -20,11 +20,11 @@
 - name: Deploy config
   win_template:
     src: templates/wezterm.lua.j2
-    dest: "{{ ansible_env.USERPROFILE }}\\.wezterm.lua"
+    dest: "{{ ansible_facts.env.USERPROFILE }}\\.wezterm.lua"
 
 - name: Create configuration modules dir
   win_file:
-    path: "{{ ansible_env.ProgramFiles }}\\{{ wezterm_modules_path }}"
+    path: "{{ ansible_facts.env.ProgramFiles }}\\{{ wezterm_modules_path }}"
     state: directory
 
 - include_tasks: plugins.yml

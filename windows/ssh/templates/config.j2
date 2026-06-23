@@ -1,10 +1,10 @@
 {% for key, value in ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
-{% if ansible_env.COMPUTERNAME == subvalue.name %}{% if value.device | select('equalto', subkey) %}
+{% if ansible_facts.env.COMPUTERNAME == subvalue.name %}{% if value.device | select('equalto', subkey) %}
 Host {{ key }}
     HostName {{ value.hostname }}
     User {{ value.user }}
     IdentityFile {{
-        ansible_env.USERPROFILE 
+        ansible_facts.env.USERPROFILE 
         | regex_replace('\\\\','/')
         | regex_replace('Булат Сибгатуллин','Bulat')
       }}/.ssh/{{ value.identity }}

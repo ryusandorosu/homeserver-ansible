@@ -7,7 +7,7 @@
 
 - name: Create plugins directory
   file:
-    path: "{{ ansible_env.HOME }}/{{ vimplugins }}"
+    path: "/home/{{ user }}/{{ vimplugins }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
@@ -17,7 +17,7 @@
   become_user: "{{ user }}"
   git:
     repo: "{{ item }}"
-    dest: "{{ ansible_env.HOME }}/{{ vimplugins }}/{{ item | basename | regex_replace('.git','') }}"
+    dest: "/home/{{ user }}/{{ vimplugins }}/{{ item | basename | regex_replace('.git','') }}"
   loop:
     - https://github.com/tpope/vim-fugitive.git
     - https://github.com/airblade/vim-gitgutter.git
@@ -26,19 +26,19 @@
 - name: Deploy vimrc
   copy:
     src: .vimrc
-    dest: "{{ ansible_env.HOME }}"
+    dest: "/home/{{ user }}"
     owner: "{{ user }}"
     group: "{{ user }}"
     mode: '0644'
 
 - name: Create root symlink for vimrc
   file:
-    src: "{{ ansible_env.HOME }}/.vimrc"
+    src: "/home/{{ user }}/.vimrc"
     dest: /root/.vimrc
     state: link
 
 - name: Create root symlink for vim plugins
   file:
-    src: "{{ ansible_env.HOME }}/.vim"
+    src: "/home/{{ user }}/.vim"
     dest: "/root/.vim"
     state: link

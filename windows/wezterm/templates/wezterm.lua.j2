@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 local config = {
-{% for key, value in whost.items() %}{% if ansible_env.COMPUTERNAME == value.name %}
+{% for key, value in whost.items() %}{% if ansible_facts.env.COMPUTERNAME == value.name %}
 {% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
   color_scheme = 'Hurtado',
