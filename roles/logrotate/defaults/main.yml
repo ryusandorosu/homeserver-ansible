@@ -26,7 +26,7 @@ logrotate_configs:
       rotate: 3
       size: 5M
   ansible:
-    path: "/home/{{ user }}/.ansible/deployment.log"
+    path: "{{ homedir }}/.ansible/deployment.log"
     config:
       createmode: "0664"
       createowner: "{{ user }}"

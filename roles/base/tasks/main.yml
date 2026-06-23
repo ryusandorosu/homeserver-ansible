@@ -46,7 +46,7 @@
     path: "{{ item }}/.config/bat/"
     state: directory
   loop:
-    - "{{ ansible_facts.env.SUDO_HOME }}"
+    - "{{ homedir }}"
     - "{{ ansible_facts.env.HOME }}"
 
 - name: Bat settings
@@ -56,7 +56,7 @@
       --paging=never
     dest: "{{ item }}/.config/bat/config"
   loop:
-    - "{{ ansible_facts.env.SUDO_HOME }}"
+    - "{{ homedir }}"
     - "{{ ansible_facts.env.HOME }}"
 
 - name: Remove mail from motd

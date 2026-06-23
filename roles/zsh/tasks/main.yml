@@ -11,7 +11,7 @@
   become_user: "{{ user }}"
   git:
     repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: "{{ ansible_facts.env.SUDO_HOME }}/{{ omz }}"
+    dest: "{{ homedir }}/{{ omz }}"
     version: master
     update: no
 
@@ -23,14 +23,14 @@
   become_user: "{{ user }}"
   git:
     repo: "{{ item }}"
-    dest: "{{ ansible_facts.env.SUDO_HOME }}/{{ omz_plug_dir }}/{{ item | basename }}"
+    dest: "{{ homedir }}/{{ omz_plug_dir }}/{{ item | basename }}"
   loop:
     - https://github.com/zsh-users/zsh-syntax-highlighting
     - https://github.com/zsh-users/zsh-autosuggestions
 
 - name: Symlink omz for root
   file:
-    src: "{{ ansible_facts.env.SUDO_HOME }}/{{ omz }}"
+    src: "{{ homedir }}/{{ omz }}"
     dest: "{{ ansible_facts.env.HOME }}/{{ omz }}"
     state: link
 
@@ -38,11 +38,11 @@
   become_user: "{{ user }}"
   git:
     repo: "{{ zsh_repo_url }}"
-    dest: "{{ ansible_facts.env.SUDO_HOME }}/{{ zsh_repo_dir }}"
+    dest: "{{ homedir }}/{{ zsh_repo_dir }}"
 
 - name: Symlink configs repo for root
   file:
-    src: "{{ ansible_facts.env.SUDO_HOME }}/{{ zsh_repo_dir }}"
+    src: "{{ homedir }}/{{ zsh_repo_dir }}"
     dest: "{{ ansible_facts.env.HOME }}/{{ zsh_repo_dir }}"
     state: link
 
@@ -53,17 +53,17 @@
     dest: "{{ item }}/.zshrc"
     state: link
   loop:
-    - "{{ ansible_facts.env.SUDO_HOME }}"
+    - "{{ homedir }}"
     - "{{ ansible_facts.env.HOME }}"
 
 - name: Symlink custom theme - passion
   become_user: "{{ item | basename }}"
   file:
-    src: "{{ ansible_facts.env.SUDO_HOME }}/{{ zsh_repo_dir }}/passion.zsh-theme"
+    src: "{{ homedir }}/{{ zsh_repo_dir }}/passion.zsh-theme"
     dest: "{{ item }}/{{ omz_themes }}/passion.zsh-theme"
     state: link
   loop:
-    - "{{ ansible_facts.env.SUDO_HOME }}"
+    - "{{ homedir }}"
     - "{{ ansible_facts.env.HOME }}"
 
 - name: Enable command-not-found for zsh

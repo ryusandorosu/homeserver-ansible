@@ -1,4 +1,5 @@
 user: ryusandorosu
+homedir: "/home/{{ user }}"
 
 sshd_allow_users:
   - "{{ user }}"

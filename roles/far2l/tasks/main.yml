@@ -5,26 +5,26 @@
 - name: Deploy settings configs for user
   copy:
     src: "{{ item }}"
-    dest: "{{ ansible_facts.env.SUDO_HOME }}/{{ far2l_configdir }}/"
+    dest: "{{ homedir }}/{{ far2l_configdir }}/"
     mode: '0644'
   with_fileglob:
     - "files/*.ini"
 
 - name: Configure settings
   lineinfile:
-    path: "{{ ansible_facts.env.SUDO_HOME }}/{{ far2l_configdir }}/config.ini"
+    path: "{{ homedir }}/{{ far2l_configdir }}/config.ini"
     regexp: '{{ item.regex }}'
     line: '{{ item.replace }}'
   loop: "{{ config_replacements }}"
 
 - name: Change default theme to Hercules Night
   lineinfile:
-    path: "{{ ansible_facts.env.SUDO_HOME }}/{{ far2l_configdir }}/colors.ini"
+    path: "{{ homedir }}/{{ far2l_configdir }}/colors.ini"
     regexp: 'CurrentTheme=(.*)'
     line: 'CurrentTheme=Hercules Night'
 
 - name: Create root far2l configs symlink
   file:
-    src: "{{ ansible_facts.env.SUDO_HOME }}/{{ far2l_configdir }}"
+    src: "{{ homedir }}/{{ far2l_configdir }}"
     dest: "{{ ansible_facts.env.HOME }}/{{ far2l_configdir }}"
     state: link

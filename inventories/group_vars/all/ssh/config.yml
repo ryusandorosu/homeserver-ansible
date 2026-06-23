@@ -1,4 +1,4 @@
-sshkeys: "/home/{{ user }}/.ssh"
+sshkeys: "{{ homedir }}/.ssh"
 ssh_hosts:
   nuc:
     hostname: "{{ wireguard_server_ip }}"
