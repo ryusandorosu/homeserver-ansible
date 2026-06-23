@@ -1,3 +1,10 @@
+{%- set dashboard = [] -%}
+{%- for key, panel in nginx_dashboard.items() -%}
+  {%- set _ = dashboard.append(panel) -%}
+{%- endfor -%}
+{%- for key, panel in nginx_latency_panels.items() -%}
+  {%- set _ = dashboard.append(panel) -%}
+{%- endfor -%}
 {
   "annotations": {
     "list": []
@@ -19,7 +26,7 @@
       "panels": []
     },
 {% set ns.y = ns.y + 1 %}
-{% for key, panel in nginx_dashboard.items() if panel.row == row_name %}
+{% for panel in dashboard if panel.row == row_name %}
     {
       "type": "{{ panel.type }}",
       "title": "{{ panel.title }}",

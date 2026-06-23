@@ -1,0 +1,22 @@
+{%- set ns = namespace(panels={}) -%}
+
+{%- for key, item in nginx_rows.latency.panels.items() -%}
+
+  {%- set ns.panels = ns.panels | combine({
+    key: {
+      'expr': item.param ~ '(' ~ item.val ~ '\n' ~
+              '  { ' ~ nginx_expr ~ ' }\n' ~
+              '  | regexp " (?P<request_time>[0-9.]+)$"\n' ~
+              '  | unwrap request_time\n' ~
+              '  [' ~ nginx_dashboard_period.showtime ~ ']\n' ~
+              ')\n',
+      'label': ['ip', 'method', 'status', 'geoip_country_name', 'vhost'],
+      'title': item.name ~ ' ' ~ nginx_rows.latency.title,
+      'type': 'timeseries',
+      'row': 'latency'
+    }
+  }) -%}
+
+{%- endfor -%}
+
+{{ ns.panels }}

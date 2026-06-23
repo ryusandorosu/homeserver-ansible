@@ -208,59 +208,8 @@ nginx_dashboard:
         )
       )
 
-  latency_p95:
-    title: 95 percentile latency
-    type: timeseries
-    row: latency
-    label:
-      - ip
-      - method
-      - status
-      - geoip_country_name
-      - vhost
-    expr: >
-      quantile_over_time(0.95, 
-        { {{ nginx_expr }} }
-        | regexp " (?P<request_time>[0-9.]+)$"
-        | unwrap request_time
-        [{{ nginx_dashboard_period.showtime }}]
-      )
-
-  latency_p99:
-    title: 99 percentile latency
-    type: timeseries
-    row: latency
-    label:
-      - ip
-      - method
-      - status
-      - geoip_country_name
-      - vhost
-    expr: >
-      quantile_over_time(0.99,
-        { {{ nginx_expr }} }
-        | regexp " (?P<request_time>[0-9.]+)$"
-        | unwrap request_time
-        [{{ nginx_dashboard_period.showtime }}]
-      )
-
-  latency_avg:
-    title: Average latency
-    type: timeseries
-    row: latency
-    label:
-      - ip
-      - method
-      - status
-      - geoip_country_name
-      - vhost
-    expr: >
-      avg_over_time(
-        { {{ nginx_expr }} }
-        | regexp " (?P<request_time>[0-9.]+)$"
-        | unwrap request_time
-        [{{ nginx_dashboard_period.showtime }}]
-      )
+nginx_latency_panels: |
+  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-latency.j2') | from_yaml }}
 
 nginx_rows:
   common:
@@ -275,3 +224,16 @@ nginx_rows:
     title: 5xx errors
   latency:
     title: Latency
+    panels:
+      latency_p95:
+        name: 95 percentile
+        param: quantile_over_time
+        val: "0.95,"
+      latency_p99:
+        name: 99 percentile
+        param: quantile_over_time
+        val: "0.99,"
+      latency_avg:
+        name: Average
+        param: avg_over_time
+        val: ""
