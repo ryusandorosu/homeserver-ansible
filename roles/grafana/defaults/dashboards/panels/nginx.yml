@@ -5,6 +5,10 @@ nginx_dashboard_period:
   showtime: "{{ showtime.normal }}"
   expr_rate: 1m
 
+nginx_http_errors:
+  - 4
+  - 5
+
 nginx_dashboard:
 
   access:
@@ -118,99 +122,6 @@ nginx_dashboard:
         )
       )
 
-  4xx_log:
-    title: 4xx error logs
-    type: logs
-    row: error4
-    expr: >
-      {
-        {{ nginx_expr }},
-        status =~ "4.."
-      }
-
-  5xx_log:
-    title: 5xx error logs
-    type: logs
-    row: error5
-    expr: >
-      {
-        {{ nginx_expr }},
-        status =~ "5.."
-      }
-
-  4xx_sum:
-    title: 4xx errors summary
-    type: timeseries
-    row: error4
-    label: status
-    expr: >
-      sum by (status) (
-        count_over_time(
-          {
-            {{ nginx_expr }},
-            status =~ "4.."
-          }
-          [{{ nginx_dashboard_period.showtime }}]
-        )
-      )
-
-  5xx_sum:
-    title: 5xx errors summary
-    type: timeseries
-    row: error5
-    label: status
-    expr: >
-      sum by (status) (
-        count_over_time(
-          {
-            {{ nginx_expr }},
-            status =~ "5.."
-          }
-          [{{ nginx_dashboard_period.showtime }}]
-        )
-      )
-
-  4xx_rate:
-    title: 4xx error rate
-    type: timeseries
-    row: error4
-    label: status
-    expr: >
-      sum by (status) (
-        rate(
-          {
-            {{ nginx_expr }},
-            status =~ "4.."
-          }
-          [{{ nginx_dashboard_period.showtime }}]
-        ) / rate(
-          { {{ nginx_expr }} }
-          [{{ nginx_dashboard_period.showtime }}]
-        )
-      )
-
-  5xx_rate:
-    title: 5xx error rate %
-    type: timeseries
-    row: error5
-    label: status
-    expr: >
-      sum by (status) (
-        rate(
-          {
-            {{ nginx_expr }},
-            status =~ "5.."
-          }
-          [{{ nginx_dashboard_period.showtime }}]
-        ) / rate(
-          { {{ nginx_expr }} }
-          [{{ nginx_dashboard_period.showtime }}]
-        )
-      )
-
-nginx_latency_panels: |
-  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-latency.j2') | from_yaml }}
-
 nginx_rows:
   common:
     title: Common logs
@@ -237,3 +148,15 @@ nginx_rows:
         name: Average
         param: avg_over_time
         val: ""
+
+nginx_erlog_panels: |
+  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-erlog.j2') | from_yaml }}
+
+nginx_ersum_panels: |
+  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-ersum.j2') | from_yaml }}
+
+nginx_errate_panels: |
+  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-errate.j2') | from_yaml }}
+
+nginx_latency_panels: |
+  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-latency.j2') | from_yaml }}

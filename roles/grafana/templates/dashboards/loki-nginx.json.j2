@@ -2,6 +2,15 @@
 {%- for key, panel in nginx_dashboard.items() -%}
   {%- set _ = dashboard.append(panel) -%}
 {%- endfor -%}
+{%- for key, panel in nginx_erlog_panels.items() -%}
+  {%- set _ = dashboard.append(panel) -%}
+{%- endfor -%}
+{%- for key, panel in nginx_ersum_panels.items() -%}
+  {%- set _ = dashboard.append(panel) -%}
+{%- endfor -%}
+{%- for key, panel in nginx_errate_panels.items() -%}
+  {%- set _ = dashboard.append(panel) -%}
+{%- endfor -%}
 {%- for key, panel in nginx_latency_panels.items() -%}
   {%- set _ = dashboard.append(panel) -%}
 {%- endfor -%}

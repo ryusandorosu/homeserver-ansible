@@ -1,0 +1,19 @@
+{%- set ns = namespace(panels={}) -%}
+
+{%- for status in nginx_http_errors -%}
+
+  {%- set ns.panels = ns.panels | combine({
+    status ~ 'xx_sum': {
+      'expr': '{\n' ~
+              '  ' ~ nginx_expr ~ ',\n' ~
+              '  status =~ "' ~ status ~ '.."\n' ~
+              '}',
+      'title': status ~ 'xx error logs',
+      'type': 'logs',
+      'row': 'error' ~ status
+    }
+  }) -%}
+
+{%- endfor -%}
+
+{{ ns.panels }}

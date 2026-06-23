@@ -1,0 +1,28 @@
+{%- set ns = namespace(panels={}) -%}
+
+{%- for status in nginx_http_errors -%}
+
+  {%- set ns.panels = ns.panels | combine({
+    status ~ 'xx_rate': {
+      'expr': 'sum by (status) (\n' ~
+              '  rate(\n' ~
+              '    {\n' ~
+              '      ' ~ nginx_expr ~ ',\n' ~
+              '      status =~ "' ~ status ~ '.."\n' ~
+              '    }\n' ~
+              '    [' ~ nginx_dashboard_period.showtime ~ ']\n' ~
+              '  ) / rate(\n' ~
+              '    { ' ~ nginx_expr ~ ' }\n' ~
+              '    [' ~ nginx_dashboard_period.showtime ~ ']\n' ~
+              '  )\n' ~
+              ')\n',
+      'label': 'status',
+      'title': status ~ 'xx error rate',
+      'type': 'timeseries',
+      'row': 'error' ~ status
+    }
+  }) -%}
+
+{%- endfor -%}
+
+{{ ns.panels }}
