@@ -14,13 +14,15 @@
         that: ansible_run_tags | difference(valid_tags + ['all']) | length == 0
         fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags + ['all']) }}"
       vars:
-        valid_tags: "{{ roles_list }}"
+        valid_tags: "{{ roles_list + includes_list }}"
 
   vars:
     roles_list:
       - sshconf
       - vim
       - scripts
+    includes_list:
+      - zsh
 
   tasks:
     - name: Include roles dynamically
@@ -31,5 +33,15 @@
       loop: "{{ roles_list }}"
       loop_control:
         loop_var: role_item
+      tags:
+        - always
+    - name: Include server roles
+      include_role:
+        name: "{{ included_item }}"
+        apply:
+          tags: "{{ included_item }}"
+      loop: "{{ includes_list }}"
+      loop_control:
+        loop_var: included_item
       tags:
         - always
