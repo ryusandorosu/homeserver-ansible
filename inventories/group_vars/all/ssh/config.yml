@@ -10,6 +10,7 @@ ssh_hosts:
       - asus
       - honor
       - wslasus
+      - wslhonor
 
   github.com:
     hostname: github.com
@@ -20,6 +21,7 @@ ssh_hosts:
       - asus
       - honor
       - wslasus
+      - wslhonor
 
   redmi:
     hostname: "{{ wireguard_devices.phone.ip }}"
@@ -90,6 +92,7 @@ ssh_hosts:
       - server
       - asus
       # - wslasus #key moved to c:
+      - wslhonor
 
   samsung:
     hostname: "{{ wireguard_devices.pad.ip }}"
