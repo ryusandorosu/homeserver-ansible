@@ -1,18 +1,11 @@
 {%- set dashboard = [] -%}
-{%- for key, panel in nginx_dashboard.items() -%}
+{%- for panel in nginx_dashboard.values() -%}
   {%- set _ = dashboard.append(panel) -%}
 {%- endfor -%}
-{%- for key, panel in nginx_erlog_panels.items() -%}
-  {%- set _ = dashboard.append(panel) -%}
-{%- endfor -%}
-{%- for key, panel in nginx_ersum_panels.items() -%}
-  {%- set _ = dashboard.append(panel) -%}
-{%- endfor -%}
-{%- for key, panel in nginx_errate_panels.items() -%}
-  {%- set _ = dashboard.append(panel) -%}
-{%- endfor -%}
-{%- for key, panel in nginx_latency_panels.items() -%}
-  {%- set _ = dashboard.append(panel) -%}
+{%- for panelset in nginx_panel_templates.values() -%}
+  {%- for panel in panelset.values() -%}
+    {%- set _ = dashboard.append(panel) -%}
+  {%- endfor -%}
 {%- endfor -%}
 {
   "annotations": {

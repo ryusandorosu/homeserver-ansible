@@ -149,14 +149,12 @@ nginx_rows:
         param: avg_over_time
         val: ""
 
-nginx_erlog_panels: |
-  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-erlog.j2') | from_yaml }}
-
-nginx_ersum_panels: |
-  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-ersum.j2') | from_yaml }}
-
-nginx_errate_panels: |
-  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-errate.j2') | from_yaml }}
-
-nginx_latency_panels: |
-  {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-latency.j2') | from_yaml }}
+nginx_panel_templates:
+  erlog: |
+    {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-erlog.j2') | from_yaml }}
+  ersum: |
+    {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-ersum.j2') | from_yaml }}
+  errate: |
+    {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-errate.j2') | from_yaml }}
+  latency: |
+    {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-latency.j2') | from_yaml }}
