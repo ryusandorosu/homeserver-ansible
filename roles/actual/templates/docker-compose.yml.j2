@@ -1,0 +1,8 @@
+services:
+  actual:
+    image: actualbudget/actual-server:latest
+    container_name: {{ docker.actual }}
+    restart: unless-stopped
+    volumes:
+      - "{{ actual_dir }}/data:/data"
+    network_mode: host

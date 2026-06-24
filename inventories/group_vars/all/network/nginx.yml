@@ -46,6 +46,10 @@ nginx_private_sites:
     bypass: false
     port: "{{ guacamole_port }}"
     proto: http
+  actual:
+    authentication: true
+    port: "{{ actual_port }}"
+    proto: http
 
 letsencrypt_domains: >-
   {{

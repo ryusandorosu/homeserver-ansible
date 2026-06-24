@@ -52,6 +52,7 @@
       - prometheus
       - grafana
       - guacamole
+      - actual
 
   tasks:
     - name: Include roles dynamically
