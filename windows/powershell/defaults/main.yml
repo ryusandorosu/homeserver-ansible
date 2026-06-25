@@ -20,6 +20,7 @@ winenvvars:
       - C:\Users\{{ ansible_facts.env.USERNAME }}\.local\bin
       - C:\ProgramData\chocolatey\bin
       - C:\Program Files\Git\cmd
+      - c:\Program Files\starship\bin
     honor:
       - C:\ProgramData\chocolatey\bin
       - C:\Program Files\Git\cmd

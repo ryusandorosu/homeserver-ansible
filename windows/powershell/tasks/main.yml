@@ -25,7 +25,63 @@
       }
   loop: "{{ winenvvars.custompaths[win_host_profile] }}"
 
+- name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
+  win_chocolatey:
+    name: chocolatey
+
+- name: Then upgrade Chocolatey because community repo contains an outdated version
+  win_command: choco upgrade chocolatey -y
+
 - name: Install Starship
   win_chocolatey:
     name: starship
     state: present
+
+- name: Detect Powershell profile dir placement
+  win_command: powershell.exe -
+  args:
+    stdin: Split-Path -Path $PROFILE -Parent
+  register: pwsh_dir
+
+- name: Detect Powershell profile
+  win_command: powershell.exe -
+  args:
+    stdin: $PROFILE
+  register: pwsh_profile
+
+- name: Ensure PowerShell profile directory exists
+  ansible.windows.win_file:
+    path: "{{ pwsh_dir.stdout_lines | first }}"
+    state: directory
+
+- name: Add Starship initialization to PowerShell profile
+  community.windows.win_lineinfile:
+    path: "{{ pwsh_profile.stdout_lines | first }}"
+    line: 'Invoke-Expression (&starship init powershell)'
+    create: true
+
+# - name: Get Powershell profile path
+#   set_fact:
+#     pwsh_profile_raw: "{{ pwsh_profile.stdout_lines | first }}"
+
+# - name: Configure Starship in PowerShell profile
+#   ansible.windows.win_powershell:
+#     script: |
+#       $profilePath = {{ pwsh_profile_raw | regex_replace('\\\\','\\') }}
+#       if (!(Test-Path (Split-Path $profilePath))) {
+#         New-Item -ItemType Directory -Force -Path (Split-Path $profilePath)
+#       }
+
+#       if (Test-Path $profilePath) {
+#         $content = Get-Content $profilePath -Raw
+#       } else {
+#         $content = ""
+#       }
+
+#       $line = 'Invoke-Expression (&starship init powershell)'
+
+#       if ($content -notmatch [regex]::Escape($line)) {
+#         Add-Content -Path $profilePath -Value "`r`n$line"
+#       } else {
+#         $Ansible.Changed = $false
+#       }
