@@ -6,14 +6,9 @@ local config = {
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
   color_scheme = 'Hurtado',
   launch_menu = {
-    {
-      label = 'New Tab (domain `Windows PowerShell`)',
-      args = { 'powershell.exe' },
-    },
-    {
-      label = 'New Tab (domain `PowerShell 7`)',
-      args = { 'pwsh.exe' },
-    },
+    { label = 'New Tab (domain `AutoSSH:nuc`)', args = { 'wsl', 'autossh', 'nuc' } },
+    { label = 'New Tab (domain `Windows PowerShell`)', args = { 'powershell.exe' } },
+    { label = 'New Tab (domain `PowerShell 7`)', args = { 'pwsh.exe' } },
   },
 {% elif key == 'honor' %}
   default_prog = { 'powershell.exe' },
