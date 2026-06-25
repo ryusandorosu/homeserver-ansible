@@ -1,3 +1,8 @@
+- name: Load all defaults recursively
+  include_vars:
+    dir: "{{ role_path }}/defaults"
+    extensions: ["yml"]
+
 - name: Allow to run local scripts
   ansible.windows.win_powershell:
     script: Set-ExecutionPolicy RemoteSigned
@@ -24,9 +29,7 @@
         [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "User")
       }
   loop: "{{ winenvvars.custompaths[win_host_profile] }}"
-
-- name: Refresh environment variables
-  win_command: refreshenv
+  notify: refresh environment
 
 - name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
   win_chocolatey:
@@ -34,11 +37,6 @@
 
 - name: Then upgrade Chocolatey because community repo contains an outdated version
   win_command: choco upgrade chocolatey -y
-
-- name: Install Starship
-  win_chocolatey:
-    name: starship
-    state: present
 
 - name: Update NuGet provider
   ansible.windows.win_powershell:
@@ -48,31 +46,55 @@
   ansible.windows.win_powershell:
     script: Install-Module PSReadLine -Force
 
+- name: Install Starship
+  win_chocolatey:
+    name: starship
+    state: present
+  notify: refresh environment
+
 - name: Detect Powershell profile dir placement
   win_command: powershell.exe -
   args:
     stdin: Split-Path -Path $PROFILE -Parent
-  register: pwsh_dir
+  register: pwsh_dir_raw
+- name: Set Powershell profile dir var
+  set_fact:
+    pwsh_dir: "{{ pwsh_dir_raw.stdout_lines | first }}"
 
 - name: Detect Powershell profile
   win_command: powershell.exe -
   args:
     stdin: $PROFILE
-  register: pwsh_profile
+  register: pwsh_profile_raw
+- name: Set Powershell profile path var
+  set_fact:
+    pwsh_profile: "{{ pwsh_profile_raw.stdout_lines | first }}"
 
 - name: Ensure PowerShell profile directory exists
   ansible.windows.win_file:
-    path: "{{ pwsh_dir.stdout_lines | first }}"
+    path: "{{ pwsh_dir }}"
     state: directory
 
-- name: Configure PowerShell profile
-  community.windows.win_lineinfile:
-    path: "{{ pwsh_profile.stdout_lines | first }}"
-    line: '{{ item }}'
-    create: true
-  loop:
-  #Add Starship initialization to PowerShell profile
-    - Invoke-Expression (&starship init powershell)
-  #Enable PSReadLine predictions, zsh-autosuggestions analogue for powershell
-    - Set-PSReadLineOption -PredictionSource History
-    - Set-PSReadLineOption -PredictionViewStyle InlineView
+- name: Read remote profile before deploy
+  ansible.windows.slurp:
+    path: "{{ pwsh_profile }}"
+  register: before_profile
+  ignore_errors: true
+
+- name: Render repo profile
+  set_fact:
+    rendered_profile: "{{ lookup('template', 'templates/profile.ps1.j2') }}"
+
+- name: Show unified diff 
+  delegate_to: localhost
+  vars:
+    before: "{{ before_profile.content | b64decode }}"
+    after: "{{ rendered_profile }}"
+  shell: |
+    {{ lookup('template', '../templates/pyshell.sh.j2') }}
+  ignore_errors: true
+
+- name: Deploy PowerShell profile
+  win_template:
+    src: templates/profile.ps1.j2
+    dest: "{{ pwsh_profile }}"

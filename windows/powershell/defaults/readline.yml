@@ -1,0 +1,4 @@
+#Set-PSReadLineOption {{ item }}
+psreadline_options:
+  PredictionSource: History
+  PredictionViewStyle: InlineView

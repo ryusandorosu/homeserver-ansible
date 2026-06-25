@@ -1,29 +1,2 @@
 powershell_initial_setup: false
 starship_path: c:\Program Files\starship\bin #chocolatey adds it to system variables environment
-
-winenvvars:
-  pathdefaults:
-    - C:\WINDOWS\system32
-    - C:\WINDOWS
-    - C:\WINDOWS\System32\Wbem
-    - C:\WINDOWS\System32\WindowsPowerShell\v1.0
-    - C:\WINDOWS\System32\OpenSSH
-  custompaths:
-    asus:
-      - C:\Program Files\Eclipse Adoptium\jdk-25.0.2.10-hotspot\bin
-      - C:\Program Files\dotnet
-      - C:\Program Files\WireGuard
-      - C:\Program Files\Microsoft VS Code\bin
-      - C:\Program Files\WezTerm
-      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Microsoft\WindowsApps
-      - D:\ytdl_rdgf_script\win
-      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Python\bin
-      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Roaming\Python\Python314\Scripts
-      - C:\Users\{{ ansible_facts.env.USERNAME }}\.local\bin
-      - C:\ProgramData\chocolatey\bin
-      - C:\Program Files\Git\cmd
-      - "{{ starship_path }}"
-    honor:
-      - C:\ProgramData\chocolatey\bin
-      - C:\Program Files\Git\cmd
-      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Programs\Python\Launcher

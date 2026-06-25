@@ -1,0 +1,2 @@
+- name: refresh environment
+  win_command: refreshenv
