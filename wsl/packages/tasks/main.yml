@@ -5,3 +5,10 @@
       - autossh
     state: present
     update_cache: yes
+
+- name: Install required Ansible collections
+  become: false
+  command: ansible-galaxy collection install {{ item }} --upgrade
+  loop:
+    - community.docker
+    - ansible.windows
