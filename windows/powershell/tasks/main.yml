@@ -38,6 +38,10 @@
 - name: Then upgrade Chocolatey because community repo contains an outdated version
   win_command: choco upgrade chocolatey -y
 
+- name: Install PowerShell 7
+  win_chocolatey:
+    name: powershell-core
+
 - name: Update NuGet provider
   ansible.windows.win_powershell:
     script: Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force

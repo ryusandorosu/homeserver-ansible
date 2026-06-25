@@ -1,17 +1,18 @@
-# Import the Chocolatey Profile that contains the necessary code to enable
-# tab-completions to function for `choco`.
-# Be aware that if you are missing these lines from your profile, tab completion
-# for `choco` will not function.
-# See https://ch0.co/tab-completion for details.
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
 
 {# Enable PSReadLine predictions, zsh-autosuggestions analogue for powershell #}
+Import-Module PSReadLine
 {% for option in psreadline_options | dict2items %}
 Set-PSReadLineOption -{{ option.key }} {{ option.value }}
 {% endfor %}
+{# Make PSReadLine history search behave like zsh-autosuggestions: considering the prefix typed to commandline #}
+{% for option in psreadline_keys | dict2items %}
+Set-PSReadLineKeyHandler -Key {{ option.key }} -Function {{ option.value }}
+{% endfor %}
 
 {# Must be called last: Add Starship initialization to PowerShell profile #}
+{# pwsh is not supported by starship #}
 Invoke-Expression (&starship init powershell)

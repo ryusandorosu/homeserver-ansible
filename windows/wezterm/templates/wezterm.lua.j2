@@ -7,8 +7,12 @@ local config = {
   color_scheme = 'Hurtado',
   launch_menu = {
     {
-      label = 'New Tab (domain `powershell`)',
+      label = 'New Tab (domain `Windows PowerShell`)',
       args = { 'powershell.exe' },
+    },
+    {
+      label = 'New Tab (domain `PowerShell 7`)',
+      args = { 'pwsh.exe' },
     },
   },
 {% elif key == 'honor' %}

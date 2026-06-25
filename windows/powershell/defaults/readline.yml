@@ -1,4 +1,9 @@
-#Set-PSReadLineOption {{ item }}
 psreadline_options:
-  PredictionSource: History
+  PredictionSource: History #HistoryAndPlugin: requires PowerShell 7.2 or higher but pwsh is not supported by starship
   PredictionViewStyle: InlineView
+  HistorySearchCursorMovesToEnd: ""
+  HistoryNoDuplicates: ""
+
+psreadline_keys:
+  UpArrow: HistorySearchBackward
+  DownArrow: HistorySearchForward
