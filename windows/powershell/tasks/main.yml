@@ -25,6 +25,9 @@
       }
   loop: "{{ winenvvars.custompaths[win_host_profile] }}"
 
+- name: Refresh environment variables
+  win_command: refreshenv
+
 - name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
   win_chocolatey:
     name: chocolatey
@@ -36,6 +39,14 @@
   win_chocolatey:
     name: starship
     state: present
+
+- name: Update NuGet provider
+  ansible.windows.win_powershell:
+    script: Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
+- name: Update PSReadLine module
+  ansible.windows.win_powershell:
+    script: Install-Module PSReadLine -Force
 
 - name: Detect Powershell profile dir placement
   win_command: powershell.exe -
@@ -54,34 +65,14 @@
     path: "{{ pwsh_dir.stdout_lines | first }}"
     state: directory
 
-- name: Add Starship initialization to PowerShell profile
+- name: Configure PowerShell profile
   community.windows.win_lineinfile:
     path: "{{ pwsh_profile.stdout_lines | first }}"
-    line: 'Invoke-Expression (&starship init powershell)'
+    line: '{{ item }}'
     create: true
-
-# - name: Get Powershell profile path
-#   set_fact:
-#     pwsh_profile_raw: "{{ pwsh_profile.stdout_lines | first }}"
-
-# - name: Configure Starship in PowerShell profile
-#   ansible.windows.win_powershell:
-#     script: |
-#       $profilePath = {{ pwsh_profile_raw | regex_replace('\\\\','\\') }}
-#       if (!(Test-Path (Split-Path $profilePath))) {
-#         New-Item -ItemType Directory -Force -Path (Split-Path $profilePath)
-#       }
-
-#       if (Test-Path $profilePath) {
-#         $content = Get-Content $profilePath -Raw
-#       } else {
-#         $content = ""
-#       }
-
-#       $line = 'Invoke-Expression (&starship init powershell)'
-
-#       if ($content -notmatch [regex]::Escape($line)) {
-#         Add-Content -Path $profilePath -Value "`r`n$line"
-#       } else {
-#         $Ansible.Changed = $false
-#       }
+  loop:
+  #Add Starship initialization to PowerShell profile
+    - Invoke-Expression (&starship init powershell)
+  #Enable PSReadLine predictions, zsh-autosuggestions analogue for powershell
+    - Set-PSReadLineOption -PredictionSource History
+    - Set-PSReadLineOption -PredictionViewStyle InlineView

@@ -1,4 +1,6 @@
 powershell_initial_setup: false
+starship_path: c:\Program Files\starship\bin #chocolatey adds it to system variables environment
+
 winenvvars:
   pathdefaults:
     - C:\WINDOWS\system32
@@ -20,7 +22,7 @@ winenvvars:
       - C:\Users\{{ ansible_facts.env.USERNAME }}\.local\bin
       - C:\ProgramData\chocolatey\bin
       - C:\Program Files\Git\cmd
-      - c:\Program Files\starship\bin
+      - "{{ starship_path }}"
     honor:
       - C:\ProgramData\chocolatey\bin
       - C:\Program Files\Git\cmd
