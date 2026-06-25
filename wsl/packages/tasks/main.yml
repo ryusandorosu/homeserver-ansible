@@ -12,3 +12,4 @@
   loop:
     - community.docker
     - ansible.windows
+    - chocolatey.chocolatey

@@ -16,6 +16,7 @@
 
   vars:
     roles_list:
+      - powershell
       - ssh
       - clashmeta
       - wezterm

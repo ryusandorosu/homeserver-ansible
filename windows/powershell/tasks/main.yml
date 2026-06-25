@@ -1,0 +1,39 @@
+- debug:
+    msg: "{{ ansible_facts.env.Path }}"
+
+- name: Allow to run local scripts
+  ansible.windows.win_powershell:
+    script: Set-ExecutionPolicy RemoteSigned
+  # ansible.windows.win_command: powershell.exe -
+  # args:
+  #   stdin: Set-ExecutionPolicy RemoteSigned
+
+# - name: Restore environment variables to defaults
+#   ansible.windows.win_powershell:
+#     script: |
+#       [System.Environment]::SetEnvironmentVariable("PATH", "{{ winenvvars.pathdefaults | join(';') }}", "Machine")
+
+- name: Add environment variables
+  ansible.windows.win_powershell:
+    script: |
+      $PATH = [System.Environment]::GetEnvironmentVariables().PATH
+      if ($PATH | Select-String -Pattern "{{ item }}" -SimpleMatch) {
+        $Ansible.Changed = $false
+      } else {
+        [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "User")
+      }
+  loop: "{{ winenvvars.custompaths }}"
+
+# - name: Add environment variables
+#   ansible.windows.win_powershell:
+#     script: |
+#       $PATH = [System.Environment]::GetEnvironmentVariables().PATH
+#       [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "User")
+#   loop: "{{ winenvvars.custompaths }}"
+#   when: ansible_facts.env.Path is not contains item
+
+- name: Install Starship
+  # win_command: winget install --id Starship.Starship
+  win_chocolatey:
+    name: starship
+    state: present
