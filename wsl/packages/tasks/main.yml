@@ -1,0 +1,7 @@
+- name: Install base packages
+  apt:
+    name:
+      - rsync
+      - autossh
+    state: present
+    update_cache: yes

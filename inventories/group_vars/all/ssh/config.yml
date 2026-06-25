@@ -1,11 +1,21 @@
+ssh_defaults:
+  options:
+    - ServerAliveInterval 30
+    - ServerAliveCountMax 3
+    - TCPKeepAlive true
+  device:
+    - server
+    - asus
+    - honor
+    - wslasus
+    - wslhonor
+
 sshkeys: "{{ homedir }}/.ssh"
 ssh_hosts:
   nuc:
     hostname: "{{ wireguard_server_ip }}"
     user: "{{ user }}"
     identity: nuc_server
-    options:
-      - TCPKeepAlive true
     device:
       - asus
       - honor

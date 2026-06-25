@@ -18,6 +18,7 @@
 
   vars:
     roles_list:
+      - packages
       - sshconf
       - vim
       - scripts

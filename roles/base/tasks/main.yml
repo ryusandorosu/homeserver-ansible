@@ -26,6 +26,7 @@
       - btop
       - strace
       - bubblewrap
+      - autossh
     state: present
     update_cache: yes
 

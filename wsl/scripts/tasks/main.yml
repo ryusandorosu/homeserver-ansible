@@ -8,9 +8,4 @@
     dest: "{{ musictools }}/syncmusicdir.sh"
 
 # Make sure rsync is installed in remote device (manually)
-- name: Make sure rsync is installed in source device
-  apt:
-    name:
-      - rsync
-    state: present
-    update_cache: yes
+# Make sure rsync is installed in source device (moved task to packages role)

@@ -1,3 +1,12 @@
+{%- for subkey, subvalue in whost.items() -%}
+{% if ansible_facts.hostname == subvalue.name %}{% if ssh_defaults.device | select('equalto', 'wsl' ~ subkey) %}
+Host *
+{% for option in ssh_defaults.options %}
+    {{ option }}
+{% endfor %}
+
+{% endif %}{% endif %}
+{%- endfor -%}
 {% for key, value in ssh_hosts.items() %}{% for subkey, subvalue in whost.items() %}
 {% if ansible_facts.hostname == subvalue.name %}{% if value.device | select('equalto', 'wsl' ~ subkey) %}
 Host {{ key }}

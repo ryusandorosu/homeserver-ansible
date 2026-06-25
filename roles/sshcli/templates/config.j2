@@ -1,3 +1,10 @@
+{% if ssh_defaults.device | select('equalto', 'server') %}
+Host *
+  {% for option in ssh_defaults.options %}
+  {{ option }}
+  {% endfor %}
+
+{% endif %}
 {% for key, value in ssh_hosts.items() %}
 {% if value.device | select('equalto', 'server') %}
 Host {{ key }}
