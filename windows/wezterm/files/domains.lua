@@ -5,8 +5,8 @@ function module.applyconfig(config)
   .require("https://github.com/DavidRR-F/quick_domains.wezterm")
   .apply_to_config(config, {
     keys = {
-      attach = { key = 't', mods = 'CTRL' },
-      hsplit = { key  = 'h', mods = 'CTRL' },
+      attach = { key = 't', mods = 'ALT' },
+      hsplit = { key  = 'h', mods = 'ALT' },
       vsplit = { key  = 'v', mods = 'ALT' },
     }
   })
