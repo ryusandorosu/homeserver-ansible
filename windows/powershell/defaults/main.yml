@@ -18,6 +18,8 @@ winenvvars:
       - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Python\bin
       - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Roaming\Python\Python314\Scripts
       - C:\Users\{{ ansible_facts.env.USERNAME }}\.local\bin
+      - C:\ProgramData\chocolatey\bin
+      - C:\Program Files\Git\cmd
     honor:
       - C:\ProgramData\chocolatey\bin
       - C:\Program Files\Git\cmd
