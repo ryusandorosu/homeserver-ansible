@@ -3,10 +3,18 @@ if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
 
+{# define PowerShell version because some module options like HistoryAndPlugin are not supported in versions <7.2 #}
+$psVersion = $PSVersionTable.PSVersion.Major
 {# Enable PSReadLine predictions, zsh-autosuggestions analogue for powershell #}
 Import-Module PSReadLine
 {% for option in psreadline_options | dict2items %}
-Set-PSReadLineOption -{{ option.key }} {{ option.value }}
+  {%- if option.value is string -%}
+  Set-PSReadLineOption -{{ option.key }} {{ option.value }}
+  {%- else -%}
+  if ($psVersion -lt 7) { Set-PSReadLineOption -{{ option.key }} {{ option.value.powershell }} }
+else { Set-PSReadLineOption -{{ option.key }} {{ option.value.pwsh }} }
+  {%- endif %}
+
 {% endfor %}
 {# Make PSReadLine history search behave like zsh-autosuggestions: considering the prefix typed to commandline #}
 {% for option in psreadline_keys | dict2items %}
