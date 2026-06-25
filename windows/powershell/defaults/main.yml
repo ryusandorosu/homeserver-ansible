@@ -1,27 +1,24 @@
+powershell_initial_setup: false
 winenvvars:
   pathdefaults:
     - C:\WINDOWS\system32
-    # - "{{ ansible_facts.env.SystemRoot }}\\system32"
     - C:\WINDOWS
-    # - "{{ ansible_facts.env.SystemRoot }}"
     - C:\WINDOWS\System32\Wbem
-    # - "{{ ansible_facts.env.SystemRoot }}\\System32\\Wbem"
     - C:\WINDOWS\System32\WindowsPowerShell\v1.0
-    # - "{{ ansible_facts.env.SystemRoot }}\\System32\\WindowsPowerShell\\v1.0"
     - C:\WINDOWS\System32\OpenSSH
-    # - "{{ ansible_facts.env.SystemRoot }}\\System32\\OpenSSH"
   custompaths:
-    - C:\ProgramData\chocolatey\bin
-    # - "{{ ansible_facts.env.ProgramData }}\\chocolatey\\bin"
-    - C:\Program Files\Microsoft VS Code\bin
-    # - "{{ ansible_facts.env.ProgramFiles }}\\Microsoft VS Code\\bin"
-    - C:\Program Files\Git\cmd
-    # - "{{ ansible_facts.env.ProgramFiles }}\\Git\\cmd"
-    - C:\Program Files\WireGuard
-    # - "{{ ansible_facts.env.ProgramFiles }}\\WireGuard"
-    - C:\Program Files\WezTerm
-    # - "{{ ansible_facts.env.ProgramFiles }}\\WezTerm"
-    - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Programs\Python\Launcher
-    # - "{{ ansible_facts.env.LOCALAPPDATA }}\\Programs\\Python\\Launcher"
-    - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Microsoft\WindowsApps
-    # - "{{ ansible_facts.env.LOCALAPPDATA }}\\Microsoft\\WindowsApps"
+    asus:
+      - C:\Program Files\Eclipse Adoptium\jdk-25.0.2.10-hotspot\bin
+      - C:\Program Files\dotnet
+      - C:\Program Files\WireGuard
+      - C:\Program Files\Microsoft VS Code\bin
+      - C:\Program Files\WezTerm
+      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Microsoft\WindowsApps
+      - D:\ytdl_rdgf_script\win
+      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Python\bin
+      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Roaming\Python\Python314\Scripts
+      - C:\Users\{{ ansible_facts.env.USERNAME }}\.local\bin
+    honor:
+      - C:\ProgramData\chocolatey\bin
+      - C:\Program Files\Git\cmd
+      - C:\Users\{{ ansible_facts.env.USERNAME }}\AppData\Local\Programs\Python\Launcher
