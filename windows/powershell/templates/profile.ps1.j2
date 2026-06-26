@@ -30,14 +30,6 @@ if ($psVersion -lt 7) {
     [Console]::Write("$esc]7;file://$env:COMPUTERNAME$path$esc\")
   }
 
-  {# function Send-Osc7Pwd {
-    $path = (Get-Location).ProviderPath #.Replace('\', '/')
-    if ($path -match '^([A-Za-z]):') { $path = '/' + $path }
-    $hostName = $env:COMPUTERNAME
-    $esc = [char]27
-    Write-Host -NoNewline "$esc]7;file://$hostName$path$esc\"
-  } #}
-
   {# Must be called last: Add Starship initialization to PowerShell profile #}
   {# pwsh is not supported by starship #}
   Invoke-Expression (&starship init powershell)
@@ -45,127 +37,7 @@ if ($psVersion -lt 7) {
   $OriginalPrompt = $function:prompt #$StarshipPrompt = $function:prompt
   function prompt {
     Update-WezTermPwd
-    #Send-Osc7Pwd
-    & $OriginalPrompt #& $StarshipPrompt
+    & $OriginalPrompt
   }
 
-} else {
-
-  $global:__LAST_PWD = ""
-  function prompt {
-    $pwd = (Get-Location).Path
-    if ($pwd -ne $global:__LAST_PWD) {
-      $global:__LAST_PWD = $pwd
-      $env:WEZTERM_PWD = $pwd
-    }
-    "PS $pwd> "
-  }
-  $env:WEZTERM_PWD = (Get-Location).Path
-
-  {# if ($env:TERM_PROGRAM -eq "WezTerm") {
-    . "$env:WEZTERM_SHELL_INTEGRATION_DIR/pwsh.ps1"
-  }
-
-  Set-PSReadLineOption -AddToHistoryHandler {
-    param($line)
-    # let wezterm know command finished
-    return $line
-  }
-
-  Set-PSReadLineOption -PromptText {
-    # this runs on every prompt render
-    if ($env:TERM_PROGRAM -eq "WezTerm") {
-      $global:LAST_WEZTERM_CWD = (Get-Location).Path
-    }
-  }
-
-  function prompt {
-    $pwd = (Get-Location).ProviderPath
-    if ($env:TERM_PROGRAM -eq "WezTerm") {
-      $uri = "file:///$pwd"
-      Write-Host -NoNewline "`e]7;$uri`a"
-    }
-    return "PS $pwd> "
-  } #}
-
-  {# function Update-WezTermPwd {
-    $path = (Get-Location).ProviderPath.Replace('\','/')
-    if ($path -match '^([A-Za-z]):') {
-      $path = "/$($matches[1])$($path.Substring(2))"
-    }
-    $esc = [char]27
-    [Console]::Write("$esc]7;file://$env:COMPUTERNAME$path$esc\")
-  } #}
-
-  {# function Update-WezTermPwd {
-    "called $(Get-Location)" | Add-Content C:\Temp\wezterm.log
-    $path = (Get-Location).ProviderPath.Replace('\','/')
-    if ($path -match '^([A-Za-z]):') {
-        $path = "/$($matches[1])$($path.Substring(2))"
-    }
-    $esc = [char]27
-    [Console]::Write("$esc]7;file://$env:COMPUTERNAME$path$esc\")
-  } #}
-
-  {# function Update-WezTermPwd {
-    $path = (Get-Location).ProviderPath.Replace('\','/')
-    $esc = [char]27
-    [Console]::Write("$esc]7;file://$env:COMPUTERNAME/$path$esc\")
-    # $bytes = [System.Text.Encoding]::ASCII.GetBytes("$esc]7;file://test/c$/Users$esc\")
-    # [Console]::OpenStandardOutput().Write($bytes,0,$bytes.Length)
-  } #}
-
-  {# function Update-WezTermPwd {
-    "called" | Add-Content C:\Temp\wezterm.log
-    $path = (Get-Location).ProviderPath.Replace('\','/')
-    $uri = "file:///$path"
-    Add-Content C:\Temp\wezterm.log $uri
-    $esc = [char]27
-    $bel = [char]7
-    [Console]::Out.Write("$esc]7;$uri$bel")
-  } #}
-
-  {# function Update-WezTermPwd {
-    $path = (Get-Location).ProviderPath.Replace('\','/')
-    if ($path -match '^([A-Za-z]):') {
-      $drive = $matches[1].ToLower()
-      $path = "/${drive}$/$($path.Substring(3))"
-    }
-    $esc = [char]27
-    $bel = [char]7
-    [Console]::Write("$esc]7;file://$env:COMPUTERNAME$path$bel")
-  } #}
-
-  {# function Update-WezTermPwd {
-    $esc = "`e"
-    $bel = "`a"
-    $path = (Get-Location).ProviderPath
-    # convert C:\Users -> /c/Users (ВАЖНО: slash, not c$)
-    if ($path -match '^([A-Za-z]):\\(.*)') {
-        $drive = $matches[1].ToLower()
-        $rest  = $matches[2] -replace '\\','/'
-        $path = "/$drive/$rest"
-    }
-    $uri = "file://$env:COMPUTERNAME$path"
-    # CRITICAL: use Write-Host -NoNewline (forces correct encoding in pwsh)
-    Write-Host -NoNewline "$esc]7;$uri$bel"
-  } #}
-
-  {# это не сработало:
-  Set-PSReadLineOption -CommandValidationHandler {
-    param($CommandAst)
-    Update-WezTermPwd
-  }
-  Set-PSReadLineOption -OnIdle { Update-WezTermPwd }
-  это тоже: #}
-  {# Set-PSReadLineOption -PromptText { Update-WezTermPwd } #}
-  {# это тоже:
-  Set-PSReadLineKeyHandler -Key Enter -ScriptBlock {
-    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
-    Update-WezTermPwd
-  }
-  Register-EngineEvent PowerShell.OnIdle -SupportEvent -Action { Update-WezTermPwd }
-  Register-EngineEvent PowerShell.Exiting -Action { Update-WezTermPwd }
-  #}
-
-}
+} 

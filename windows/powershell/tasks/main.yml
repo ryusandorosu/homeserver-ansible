@@ -3,67 +3,67 @@
     dir: "{{ role_path }}/defaults"
     extensions: ["yml"]
 
-# - name: Allow to run local scripts
-#   ansible.windows.win_powershell:
-#     script: Set-ExecutionPolicy RemoteSigned
-#   when: powershell_initial_setup
+- name: Allow to run local scripts
+  ansible.windows.win_powershell:
+    script: Set-ExecutionPolicy RemoteSigned
+  when: powershell_initial_setup
 
-# - name: Detect host profile
-#   set_fact:
-#     win_host_profile: >-
-#       {{
-#         whost
-#         | dict2items
-#         | selectattr('value.name', 'equalto', ansible_facts.env.COMPUTERNAME)
-#         | map(attribute='key')
-#         | first
-#       }}
+- name: Detect host profile
+  set_fact:
+    win_host_profile: >-
+      {{
+        whost
+        | dict2items
+        | selectattr('value.name', 'equalto', ansible_facts.env.COMPUTERNAME)
+        | map(attribute='key')
+        | first
+      }}
 
-# - name: Add environment variables
-#   ansible.windows.win_powershell:
-#     script: |
-#       $PATH = [System.Environment]::GetEnvironmentVariables().PATH
-#       if ($PATH | Select-String -Pattern "{{ item }}" -SimpleMatch) {
-#         $Ansible.Changed = $false
-#       } else {
-#         [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "User")
-#       }
-#   loop: "{{ winenvvars.custompaths[win_host_profile] }}"
-#   notify: refresh environment
+- name: Add environment variables
+  ansible.windows.win_powershell:
+    script: |
+      $PATH = [System.Environment]::GetEnvironmentVariables().PATH
+      if ($PATH | Select-String -Pattern "{{ item }}" -SimpleMatch) {
+        $Ansible.Changed = $false
+      } else {
+        [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "User")
+      }
+  loop: "{{ winenvvars.custompaths[win_host_profile] }}"
+  notify: refresh environment
 
-# - name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
-#   win_chocolatey:
-#     name: chocolatey
+- name: Ensure Chocolatey itself is installed, using community repo for the bootstrap
+  win_chocolatey:
+    name: chocolatey
 
-# - name: Then upgrade Chocolatey because community repo contains an outdated version
-#   win_command: choco upgrade chocolatey -y
+- name: Then upgrade Chocolatey because community repo contains an outdated version
+  win_command: choco upgrade chocolatey -y
 
-# - name: Install PowerShell 7
-#   win_chocolatey:
-#     name: powershell-core
+- name: Install PowerShell 7
+  win_chocolatey:
+    name: powershell-core
 
-# - name: Update NuGet provider
-#   ansible.windows.win_powershell:
-#     script: Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+- name: Update NuGet provider
+  ansible.windows.win_powershell:
+    script: Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 
-# - name: Update PSReadLine module
-#   ansible.windows.win_powershell:
-#     script: Install-Module PSReadLine -Force
+- name: Update PSReadLine module
+  ansible.windows.win_powershell:
+    script: Install-Module PSReadLine -Force
 
-# - name: Install Starship
-#   win_chocolatey:
-#     name: starship
-#     state: present
-#   notify: refresh environment
+- name: Install Starship
+  win_chocolatey:
+    name: starship
+    state: present
+  notify: refresh environment
 
-# - name: Detect Powershell profile dir placement
-#   win_command: powershell.exe -
-#   args:
-#     stdin: Split-Path -Path $PROFILE -Parent
-#   register: pwsh_dir_raw
-# - name: Set Powershell profile dir var
-#   set_fact:
-#     pwsh_dir: "{{ pwsh_dir_raw.stdout_lines | first }}"
+- name: Detect Powershell profile dir placement
+  win_command: powershell.exe -
+  args:
+    stdin: Split-Path -Path $PROFILE -Parent
+  register: pwsh_dir_raw
+- name: Set Powershell profile dir var
+  set_fact:
+    pwsh_dir: "{{ pwsh_dir_raw.stdout_lines | first }}"
 
 - name: Detect Powershell profile
   win_command: powershell.exe -
@@ -74,10 +74,10 @@
   set_fact:
     pwsh_profile: "{{ pwsh_profile_raw.stdout_lines | first }}"
 
-# - name: Ensure PowerShell profile directory exists
-#   ansible.windows.win_file:
-#     path: "{{ pwsh_dir }}"
-#     state: directory
+- name: Ensure PowerShell profile directory exists
+  ansible.windows.win_file:
+    path: "{{ pwsh_dir }}"
+    state: directory
 
 - name: Read remote profile before deploy
   ansible.windows.slurp:
