@@ -23,7 +23,7 @@
       include_vars:
         dir: "{{ playbook_dir + '/../' + roles_dir }}/promtail/defaults/labels"
         extensions: ["yml"]
-      when: role_name in ['grafana','notifications']
+      when: role_name in ['grafana','notifications','firewall','rsyslog']
       failed_when: false
     - name: Load SSH labels
       include_vars:

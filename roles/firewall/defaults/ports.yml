@@ -28,3 +28,8 @@ firewall_lan_udp_ports:
 monitoring_exporter_ports:
   - "{{ wireguard_exporter_port }}"
   - "{{ snmp_exporter_port }}"
+
+firewall_lan_subnets:
+  - "{{ home_network }}"
+  - 224.0.0.1
+  - 255.255.255.255
