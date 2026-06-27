@@ -1,7 +1,9 @@
 [Unit]
 Description=Send Telegram notification on boot
 After=network-online.target docker.service
-Wants=network-online.target
+{# Wants=network-online.target #}
+{# Requires=docker.service #}
+Requires=network-online.target docker.service
 
 [Service]
 Type=oneshot
