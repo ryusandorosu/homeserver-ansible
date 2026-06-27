@@ -1,0 +1,12 @@
+cadvisor_disabled_metrics:
+  - percpu
+  - sched
+  - tcp
+  - udp
+  - process
+  - hugetlb
+  - resctrl
+  - advtcp
+  # - cpu_topology
+  # - referenced_memory
+  # - diskIO

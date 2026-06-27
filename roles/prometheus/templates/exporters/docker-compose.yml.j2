@@ -59,6 +59,11 @@ services:
     command:
       - '--docker_only=true'
       - '--store_container_labels=false'
+      - '--housekeeping_interval=30s'
+      - '--max_housekeeping_interval=35s'
+      - '--event_storage_event_limit=default=0'
+      - '--event_storage_age_limit=default=0'
+      - '--disable_metrics={{ cadvisor_disabled_metrics | join(',') }}'
     networks:
       - monitoring
 
