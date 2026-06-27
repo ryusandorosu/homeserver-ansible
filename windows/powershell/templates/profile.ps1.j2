@@ -24,20 +24,32 @@ Set-PSReadLineKeyHandler -Key {{ option.key }} -Function {{ option.value }}
 if ($psVersion -lt 7) {
 
   function Update-WezTermPwd {
-    $path = (Get-Location).ProviderPath #.Replace('\','/')
-    if ($path -match '^([A-Za-z]):') { $path = '/' + $path }
-    $esc = [char]27
-    [Console]::Write("$esc]7;file://$env:COMPUTERNAME$path$esc\")
+    $p = $executionContext.SessionState.Path.CurrentLocation
+    $ansi_escape = [char]27
+    $provider_path = $p.ProviderPath -Replace "\\", "/"
+    [Console]::Write("$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}${ansi_escape}\")
   }
 
-  {# Must be called last: Add Starship initialization to PowerShell profile #}
-  {# pwsh is not supported by starship #}
+{# Must be called last: Add Starship initialization to PowerShell profile #}
+{# pwsh is not supported by starship #}
   Invoke-Expression (&starship init powershell)
 
-  $OriginalPrompt = $function:prompt #$StarshipPrompt = $function:prompt
+{#  $StarshipPrompt = $function:prompt
+  function prompt {
+    $p = $executionContext.SessionState.Path.CurrentLocation
+    $osc7 = ""
+    if ($p.Provider.Name -eq "FileSystem") {
+      $ansi_escape = [char]27
+      $provider_path = $p.ProviderPath -Replace "\\", "/"
+      $osc7 = "$ansi_escape]7;file://${env:COMPUTERNAME}/${provider_path}${ansi_escape}\"
+    }
+    "${osc7}$p$('>' * ($nestedPromptLevel + 1)) ";
+  }
+#}
+  $OriginalPrompt = $function:prompt
   function prompt {
     Update-WezTermPwd
     & $OriginalPrompt
   }
 
-} 
+}
