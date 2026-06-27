@@ -3,7 +3,7 @@ nginx_expr: >-
 
 nginx_dashboard_period:
   showtime: "{{ showtime.normal }}"
-  expr_rate: 1m
+  expr_rate: "{{ refresh_time.normal }}"
 
 nginx_http_errors:
   - 4

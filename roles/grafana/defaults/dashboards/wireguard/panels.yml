@@ -2,8 +2,8 @@ vpn_expr: >-
   job = "{{ promtail_logs.wireguard.name }}", {{ vpn_filters }}, {{ vpn_geoip_filters }}
 
 watcher_dashboard:
-  showtime: 2d
-  panel_showtime: 1h
+  showtime: 7d
+  panel_showtime: 7d
 
 vpn_dashboard_panels:
   logs:

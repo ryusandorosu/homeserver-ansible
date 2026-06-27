@@ -3,7 +3,7 @@ nftables_expr: >-
 
 nftables_dashboard_period:
   showtime: "{{ showtime.long }}"
-  expr_rate: 1m
+  expr_rate: "{{ refresh_time.normal }}"
 
 nftables_dashboard:
   logs:
@@ -21,7 +21,7 @@ nftables_dashboard:
             {{ nftables_expr }},
             action="drop"
           }
-          [{{ nftables_dashboard_period.expr_rate }}]
+          [{{ refresh_time.long }}]
         )
       )
 

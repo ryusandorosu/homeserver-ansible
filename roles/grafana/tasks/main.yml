@@ -32,11 +32,13 @@
   template:
     src: datasources.yml.j2
     dest: "{{ grafana_provisioning_dir }}/datasources/datasources.yml"
+  notify: restart grafana
 
 - name: Deploy dashboards config
   template:
     src: dashboards.yml.j2
     dest: "{{ grafana_provisioning_dir }}/dashboards/dashboards.yml"
+  notify: restart grafana
 
 - import_tasks: dashboards.yml
   when: update_grafana_dashboards
@@ -59,6 +61,7 @@
   template:
     src: docker-compose.yml.j2
     dest: "{{ grafana_base_dir }}/docker-compose.yml"
+  notify: restart grafana
 
 - name: Deploy privoxy config
   template:
@@ -70,7 +73,6 @@
     project_src: "{{ grafana_base_dir }}"
     services: grafana
     state: present
-    recreate: always
 
 - name: Run Privoxy container
   community.docker.docker_compose_v2:

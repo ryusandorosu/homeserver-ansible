@@ -4,7 +4,7 @@ tg_expr: >-
 tg_dashboard:
   uid: telegram_messages
   showtime: "{{ showtime.long }}"
-  expr_rate: 1m
+  expr_rate: "{{ refresh_time.normal }}"
 
 tg_dashboard_panels:
   logs:
