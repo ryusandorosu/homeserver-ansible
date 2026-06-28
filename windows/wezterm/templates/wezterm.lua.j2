@@ -4,14 +4,18 @@ local config = {
 {% for key, value in whost.items() %}{% if ansible_facts.env.COMPUTERNAME == value.name %}
 {% if key == 'asus' %}
   default_prog = { 'wsl', '--cd', '/mnt/d/s21' },
-  color_scheme = 'Hurtado',
   launch_menu = {
     { label = 'New Tab (domain `AutoSSH:nuc`)', args = { 'wsl', 'autossh', 'nuc' } },
     { label = 'New Tab (domain `Windows PowerShell`)', args = { 'powershell.exe' } },
     { label = 'New Tab (domain `PowerShell 7`)', args = { 'pwsh.exe' } },
   },
+  color_scheme = 'Hurtado',
 {% elif key == 'honor' %}
   default_prog = { 'powershell.exe' },
+  launch_menu = {
+    { label = 'New Tab (domain `AutoSSH:nuc`)', args = { 'wsl', 'autossh', 'nuc' } },
+    { label = 'New Tab (domain `PowerShell 7`)', args = { 'pwsh.exe' } },
+  },
   color_scheme = 'Hurtado',
 {% endif %}
 {% endif %}{% endfor %}

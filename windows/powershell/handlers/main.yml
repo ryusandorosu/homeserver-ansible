@@ -1,2 +1,3 @@
 - name: refresh environment
-  win_command: refreshenv
+  ansible.windows.win_powershell:
+    script: refreshenv

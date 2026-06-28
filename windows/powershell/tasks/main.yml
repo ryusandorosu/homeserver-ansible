@@ -8,6 +8,18 @@
     script: Set-ExecutionPolicy RemoteSigned
   when: powershell_initial_setup
 
+- name: Add system environment variables
+  ansible.windows.win_powershell:
+    script: |
+      $PATH = [System.Environment]::GetEnvironmentVariables().Path
+      if ($PATH | Select-String -Pattern "{{ item }}" -SimpleMatch) {
+        $Ansible.Changed = $false
+      } else {
+        [System.Environment]::SetEnvironmentVariable("PATH", "$PATH;{{ item }}", "Machine")
+      }
+  loop: "{{ winenvvars.pathdefaults }}"
+  notify: refresh environment
+
 - name: Detect host profile
   set_fact:
     win_host_profile: >-
@@ -19,7 +31,7 @@
         | first
       }}
 
-- name: Add environment variables
+- name: Add user environment variables
   ansible.windows.win_powershell:
     script: |
       $PATH = [System.Environment]::GetEnvironmentVariables().PATH
