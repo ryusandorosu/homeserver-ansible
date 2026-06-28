@@ -1,11 +1,13 @@
 #!/bin/bash
+execdate=${{ customlog_datefile }}
+logfile="{{ musictools }}/log/rsynclog_$execdate.log"
 if ping -c1 {{ wireguard_devices.phone.ip }}; then
 #update: to skip newer files on receiver to be replaced
 rsync \
   --dry-run \
   --stats \
   --itemize-changes \
-  --log-file='{{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log' \
+  --log-file="$logfile" \
   --archive \
   --update \
   --delete \
@@ -17,5 +19,9 @@ rsync \
   redmi:{{ default_termux_path }}Music/
 fi
 
-#grep -P '(<f\++|cd\++)' {{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log
-#grep -P '(\*deleting)' {{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log
+grep -vP '\.(f|d)\.+t?p\.+' "$logfile" > "$logfile.tmp"
+mv "$logfile.tmp" > "$logfile"
+
+#grep -P '(<f\++|cd\++)' "$logfile" #created
+#grep -P '(<f\.stp\.+)' "$logfile" #modified
+#grep -P '(\*deleting)' "$logfile"
