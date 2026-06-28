@@ -9,6 +9,7 @@ custom_logs:
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions-log.json"
 customlog_dateformat: "(date '+%b %d %H:%M:%S')"
+customlog_datefile: "(date '+%F_%H-%M-%S')"
 
 rsyslog:
   nftables: /var/log/nftables.log

@@ -5,14 +5,17 @@ rsync \
   --dry-run \
   --stats \
   --itemize-changes \
-  --log-file='{{ musictools }}/rsynclog.log' \
+  --log-file='{{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log' \
   --archive \
   --update \
   --delete \
   --mkpath \
-  --filter='exclude .thumbnails' \
-  --filter='exclude \[playlists\]/script' \
-  --filter='exclude \[playlists\]/PC' \
+{% for pattern in excludepatterns %}
+  --filter='exclude {{ pattern }}' \
+{% endfor %}
   /mnt/d/Music/ \
   redmi:{{ default_termux_path }}Music/
 fi
+
+#grep -P '(<f\++|cd\++)' {{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log
+#grep -P '(\*deleting)' {{ musictools }}/log/rsynclog_${{ customlog_datefile }}.log

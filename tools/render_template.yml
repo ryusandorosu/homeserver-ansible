@@ -25,11 +25,17 @@
         extensions: ["yml"]
       when: role_name in ['grafana','notifications','firewall','rsyslog']
       failed_when: false
-    - name: Load SSH labels
+    - name: Load SSH defaults
       include_vars:
-        dir: "{{ playbook_dir + '/../' + roles_dir }}/ssh_client/defaults"
+        dir: "{{ playbook_dir + '/../' + roles_dir }}/sshcli/defaults"
         extensions: ["yml"]
       when: role_name in ['mount_android']
+      failed_when: false
+    - name: Load Mount Android defaults
+      include_vars:
+        dir: "{{ playbook_dir + '/..' }}/roles/mount_android/defaults"
+        extensions: ["yml"]
+      when: role_name in ['scripts']
       failed_when: false
     - name: Render template
       copy:

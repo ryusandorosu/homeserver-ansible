@@ -1,1 +1,5 @@
 musictools: /mnt/d/Music/[playlists]/script/musictools
+excludepatterns:
+  - .thumbnails
+  - \[playlists\]/script
+  - \[playlists\]/PC
