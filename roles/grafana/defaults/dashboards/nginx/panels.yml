@@ -149,6 +149,7 @@ nginx_rows:
         param: avg_over_time
         val: ""
 
+#DEPRECATION WARNING
 nginx_panel_templates:
   erlog: |
     {{ lookup('template', '{{ role_path }}/templates/defaults/nginx-erlog.j2') | from_yaml }}

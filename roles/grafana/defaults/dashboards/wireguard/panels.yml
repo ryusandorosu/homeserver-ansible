@@ -12,5 +12,6 @@ vpn_dashboard_panels:
     json: true
     expr: '{ {{ vpn_expr }} }'
 
+#DEPRECATION WARNING
 vpn_geoip_panels: |
   {{ lookup('template', '{{ role_path }}/templates/defaults/watchers-geoip.j2') | from_yaml }}
