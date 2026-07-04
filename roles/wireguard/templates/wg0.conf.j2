@@ -9,5 +9,6 @@ MTU = {{ wireguard_mtu }}
 [Peer]
 PublicKey = {{ data.public_key }}
 AllowedIPs = {{ data.ip }}/32
+PersistentKeepalive = {{ wireguard_keepalive }}
 
 {% endfor %}
