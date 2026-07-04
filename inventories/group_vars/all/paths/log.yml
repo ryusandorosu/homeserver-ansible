@@ -4,7 +4,9 @@ custom_logs:
     error: "{{ telegram_bot_logs }}/message-error-log.json"
     success: "{{ telegram_bot_logs }}/message-success-log.json"
     cache: "{{ telegram_bot_logs }}/geo_cache"
-  wireguard: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-connections-log.json"
+  wireguard:
+    connect: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-connections-log.json"
+    disconnect: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-disconnections-log.json"
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions-log.json"

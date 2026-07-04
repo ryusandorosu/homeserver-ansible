@@ -6,7 +6,7 @@ previous_ip_check() {
   local previous=""
 
   if [[ -f "$LOG" ]]; then
-    if [[ "$LOG" == "{{ custom_logs.wireguard }}" ]]; then
+    if [[ "$LOG" == "{{ custom_logs.wireguard.connect }}" ]] || [[ "$LOG" == "{{ custom_logs.wireguard.disconnect }}" ]]; then
     previous=$(log_tail "$KEY" "$LOG" | jq -r .ipsource)
     elif [[ "$LOG" == "{{ system_logs.sshd }}" ]]; then
     previous=$(log_tail "$KEY" "$LOG" | grep -oP '(?<=from )([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' | head -n1) #?

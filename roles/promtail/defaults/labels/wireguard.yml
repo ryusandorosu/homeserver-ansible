@@ -1,6 +1,8 @@
 vpn_watcher_labels:
   timestamp:
     bash: "{{ customlog_dateformat }}"
+  epoch:
+    bash: EPOCH
   ipsource:
     bash: ip
     label: true

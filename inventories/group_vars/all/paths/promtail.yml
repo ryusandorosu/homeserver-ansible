@@ -26,7 +26,7 @@ promtail_logs:
     path: /var/log/crowdsec*.log
   wireguard:
     name: Wireguard connections
-    path: "{{ custom_logs.wireguard }}"
+    path: "{{ custom_logs.wireguard.connect }}"
     pipeline: watcher_vpn
   telegram:
     name: Telegram notifications
@@ -60,5 +60,6 @@ promtail_systemd:
   - ssh
   - systemd-logind
   - wg-quick@{{ wireguard_interface }}
+  - vpn-success-watcher
   - nginx
   - logrotate
