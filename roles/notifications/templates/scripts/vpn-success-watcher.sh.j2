@@ -2,47 +2,85 @@
 . {{ watcher_scripts_includes }}/geo-include.sh
 
 declare -A new_handshake
-[[ ! -f {{ custom_logs.wireguard }} ]] && touch {{ custom_logs.wireguard }}
+declare -A connected
+#declare -A last_handshake
+disconnect_timeout=$(( {{ wireguard_keepalive }} * 5 ))
+[[ ! -f {{ custom_logs.wireguard.connect }} ]] && touch {{ custom_logs.wireguard.connect }}
+[[ ! -f {{ custom_logs.wireguard.disconnect }} ]] && touch {{ custom_logs.wireguard.disconnect }}
 
 while true; do
 while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
 
-  if [[ "$EPOCH" == "0" ]]; then
-    new_handshake[$PUBKEY]=1
-    continue
-  fi
+  currenttime=$(date +%s)
+  new_handshake[$PUBKEY]=false
 
-  if [[ "${new_handshake[$PUBKEY]}" == "1" ]]; then
-
-    ip="${ENDPOINT%:*}"
-    port="${ENDPOINT#*:}"
-    vpn_ip="${ALLOWED%%/*}"
-    device_name="${vpn_peer_names[$PUBKEY]}"
-    logline="$(jq -nc \
+  ip="${ENDPOINT%:*}"
+  port="${ENDPOINT#*:}"
+  vpn_ip="${ALLOWED%%/*}"
+  device_name="${vpn_peer_names[$PUBKEY]}"
+  logline="$(jq -nc \
 {% for jq, value in vpn_watcher_labels.items() %}
-      {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
+    {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
 {% endfor %}
-      '{
+    '{
 {% for json, value in vpn_watcher_labels.items() %}
-        {{ json }}:${{ json }}{% if not loop.last %},
+      {{ json }}:${{ json }}{% if not loop.last %},
 {% endif %}
 {% endfor %}
 
-      }'
-    )"
+    }'
+  )"
+  logshow="$(jq -r 'del(.geoip)' <<< "$logline")"
+
+  if [[ "$EPOCH" == "0" ]]; then
+    new_handshake[$PUBKEY]=true
+    continue
+  fi
+
+  echo "DEBUG ${vpn_peer_names[$PUBKEY]}: new_handshake \"${new_handshake[$PUBKEY]}\""
+  if [[ "${new_handshake[$PUBKEY]}" == "true" ]]; then
 
     common_message_init VPN "$PUBKEY" "$device_name"
-    logshow="$(jq -r 'del(.geoip)' <<< "$logline")"
-    generate_geo_message "$ip" "{{ custom_logs.wireguard }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logshow"
+    generate_geo_message "$ip" "{{ custom_logs.wireguard.connect }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logshow"
+    echo "$logline" >> {{ custom_logs.wireguard.connect }}
 
-    {{ telegram_script }} "$MESSAGE" status "$0"
-    echo "$logline" >> {{ custom_logs.wireguard }}
+    connected[$PUBKEY]=true
+    new_handshake[$PUBKEY]=false
 
-    new_handshake[$PUBKEY]=0
+  elif (( currenttime - EPOCH > disconnect_timeout )); then
 
+    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: diff $((currenttime - EPOCH))"
+    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: $EPOCH"
+
+    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: connected \"${connected[$PUBKEY]}\""
+    if [[ -z "${connected[$PUBKEY]}" ]]; then
+      ping -c1 -W1 $vpn_ip
+      pingstatus=$?
+      echo "DEBUG ${vpn_peer_names[$PUBKEY]}: ping $pingstatus"
+      [[ "$pingstatus" == 0 ]] && connected[$PUBKEY]=true || connected[$PUBKEY]=false
+    fi
+    
+    if [[ "${connected[$PUBKEY]}" == "false" ]]; then
+      disconnect_message_init VPN "$PUBKEY" "$device_name"
+      generate_geo_message "$ip" "{{ custom_logs.wireguard.disconnect }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logshow"
+      echo "$logline" >> {{ custom_logs.wireguard.disconnect }}
+
+      new_handshake[$PUBKEY]=true
+      #last_handshake[$PUBKEY]=$EPOCH
+    else
+      echo "DEBUG ${vpn_peer_names[$PUBKEY]}: connected = true"
+      continue
+    fi
+
+  else
+    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: main condition: else"
+    continue
   fi
+
+  echo "DEBUG ${vpn_peer_names[$PUBKEY]}: main cycle: send message"
+  {{ telegram_script }} "$MESSAGE" status "$0"
 
 done < <(wg show {{ wireguard_interface }} dump | tail -n +2)
 
-sleep 10
+sleep {{ wireguard_keepalive }}
 done
