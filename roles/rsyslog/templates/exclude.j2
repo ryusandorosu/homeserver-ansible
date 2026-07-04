@@ -1,0 +1,4 @@
+if $programname == '{{ item.value.service }}' then {
+    action(type="omfile" file="{{ item.value.path }}")
+    stop
+}

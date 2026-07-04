@@ -7,11 +7,18 @@
 - name: Import promtail role nftables variables
   include_vars:
     file: "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
-- name: Deploy nftables config to log separately from kernel logs
+- name: Deploy configs to log separately from kernel logs
   template:
-    src: nftables.conf.j2
-    dest: /etc/rsyslog.d/10-nftables.conf
+    src: duplicate.j2
+    dest: /etc/rsyslog.d/{{ item.value.priority }}-{{ item.key }}.conf
+  loop: "{{ rsyslog_conf | dict2items }}"
   notify: restart rsyslog
+# - name: Deploy configs to log separately from kernel logs
+#   template:
+#     src: exclude.j2
+#     dest: /etc/rsyslog.d/{{ item.value.priority }}-{{ item.key }}.conf
+#   loop: "{{ rsyslog_conf | dict2items }}"
+#   notify: restart rsyslog
 
 - name: Enable remote logging for edgerouter
   template:

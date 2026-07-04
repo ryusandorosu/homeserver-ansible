@@ -7,6 +7,7 @@ custom_logs:
   wireguard:
     connect: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-connections-log.json"
     disconnect: "{{ telegram_bot_logs }}/grafana/{{ wireguard_interface }}-disconnections-log.json"
+    watcher: "{{ telegram_bot_logs }}/wireguard/{{ vpn_watcher_script | basename | regex_replace('.sh','') }}.log"
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions-log.json"

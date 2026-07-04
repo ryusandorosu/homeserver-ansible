@@ -28,23 +28,24 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
   )"
 
   logshow="$(jq -r 'del(.geoip)' <<< "$logline")"
+  logscript() { echo "${{ customlog_dateformat }} $device_name $1" >> {{ custom_logs.wireguard.watcher }}; }
 
   currenttime=$(date +%s)
   lastconnection="$(grep "$PUBKEY" {{ custom_logs.wireguard.disconnect }} | tail -n1 | jq -cr .epoch)"
 
-  echo "DEBUG ${vpn_peer_names[$PUBKEY]}: begin cycle: new_handshake = ${new_handshake[$PUBKEY]}"
+  logscript "begin cycle: new_handshake = ${new_handshake[$PUBKEY]}"
   if [[ "$EPOCH" == "0" ]]; then
     new_handshake[$PUBKEY]=true
     continue
   elif [[ "$EPOCH" == "$lastconnection" ]]; then
     new_handshake[$PUBKEY]=true
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: preccondition continue. LOG: $EPOCH == $lastconnection, new_handshake := ${new_handshake[$PUBKEY]}"
+    logscript "preccondition continue. LOG: $EPOCH == $lastconnection, new_handshake := ${new_handshake[$PUBKEY]}"
     continue
   fi
 
   if [[ "${new_handshake[$PUBKEY]}" == "true" ]] && (( EPOCH > lastconnection )); then
 
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: entered connect condition. epoch = $EPOCH, lastconnection = $lastconnection"
+    logscript "entered connect condition. epoch = $EPOCH, lastconnection = $lastconnection"
 
     common_message_init VPN "$PUBKEY" "$device_name"
     generate_geo_message "$ip" "{{ custom_logs.wireguard.connect }}" "$PUBKEY" "$device_name" "$vpn_ip" "$logshow"
@@ -55,12 +56,12 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
 
   elif (( currenttime - EPOCH > disconnect_timeout )); then
 
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: entered disconnect condition. diff = $((currenttime - EPOCH)), epoch = $EPOCH"
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}:   connected status before = ${connected[$PUBKEY]}"
+    logscript "entered disconnect condition. diff = $((currenttime - EPOCH)), epoch = $EPOCH"
+    logscript "   connected status before = ${connected[$PUBKEY]}"
     if [[ -z "${connected[$PUBKEY]}" ]]; then
-      ping -c1 -W1 $vpn_ip
+      ping -q -c1 -W1 $vpn_ip
       pingstatus=$?
-      echo "DEBUG ${vpn_peer_names[$PUBKEY]}:   ping status = $pingstatus"
+      logscript "   ping status = $pingstatus"
       [[ "$pingstatus" == 0 ]] && connected[$PUBKEY]=true || connected[$PUBKEY]=false
     fi
     
@@ -70,19 +71,19 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
       echo "$logline" >> {{ custom_logs.wireguard.disconnect }}
 
       new_handshake[$PUBKEY]=true
-      echo "DEBUG ${vpn_peer_names[$PUBKEY]}: disconnect. connected = ${connected[$PUBKEY]}, new_handshake := ${new_handshake[$PUBKEY]}"
+      logscript "disconnect. connected = ${connected[$PUBKEY]}, new_handshake := ${new_handshake[$PUBKEY]}"
     else
-      echo "DEBUG ${vpn_peer_names[$PUBKEY]}: disconnect. continue. connected = ${connected[$PUBKEY]}"
+      logscript "disconnect. continue. connected = ${connected[$PUBKEY]}"
       continue
     fi
 
   else
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}: main condition: else. continue:"
-    echo "DEBUG ${vpn_peer_names[$PUBKEY]}:   diff = $(( currenttime - EPOCH )). epoch = $EPOCH, lastconnection = $lastconnection"
+    logscript "main condition: else. continue:"
+    logscript "   diff = $(( currenttime - EPOCH )). epoch = $EPOCH, lastconnection = $lastconnection"
     continue
   fi
 
-  echo "DEBUG ${vpn_peer_names[$PUBKEY]}: end cycle. send message: connected = ${connected[$PUBKEY]}, new_handshake = ${new_handshake[$PUBKEY]}"
+  logscript "end cycle. send message: connected = ${connected[$PUBKEY]}, new_handshake = ${new_handshake[$PUBKEY]}"
   {{ telegram_script }} "$MESSAGE" status "$0"
 
 done < <(wg show {{ wireguard_interface }} dump | tail -n +2)

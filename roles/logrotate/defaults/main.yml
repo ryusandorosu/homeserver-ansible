@@ -19,6 +19,8 @@ logrotate_configs:
     path: "{{ custom_logs.container }}"
   service-state:
     path: "{{ custom_logs.services }}"
+  vpn-watcher:
+    path: "{{ custom_logs.wireguard.watcher }}"
   tg-success:
     path: "{{ custom_logs.telegram.success }}"
     config:

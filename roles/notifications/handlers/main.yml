@@ -19,8 +19,7 @@
   loop:
     - "{{ telegram_bot_logs }}"
     - "{{ custom_logs.telegram.cache }}"
-    - "{{ custom_logs.wireguard.connect | dirname }}"
-    - "{{ custom_logs.container | dirname }}"
-    - "{{ custom_logs.services | dirname }}"
-    - "{{ custom_logs.fail2ban | dirname }}"
+    - "{{ custom_logs.wireguard.connect | dirname }}" #/grafana
+    - "{{ custom_logs.wireguard.watcher | dirname }}" #/wireguard
+    - "{{ custom_logs.services | dirname }}" #/systemd
   notify: daemon reload

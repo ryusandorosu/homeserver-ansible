@@ -5,6 +5,9 @@ promtail_logs:
   status:
     name: Services and containers health
     path: "{{ telegram_bot_logs }}/systemd/*.log"
+  vpn-watcher:
+    name: VPN connection success watcher
+    path: "{{ custom_logs.wireguard.watcher }}"
   kernel:
     name: System Kernel
     path: "{{ system_logs.kernel }}"

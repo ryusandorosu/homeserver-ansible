@@ -1,0 +1,6 @@
+rsyslog_conf:
+  nftables:
+    priority: "10"
+    service: nft
+    content: "{{ nft_log_prefix }}"
+    path: "{{ rsyslog.nftables }}"
