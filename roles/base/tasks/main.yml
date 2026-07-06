@@ -42,6 +42,12 @@
   shell: >
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
+- name: Install elio from Homebrew
+  homebrew:
+    name: elio
+    state: present
+    update_homebrew: true
+
 - name: Ensure bat config directory exists
   file:
     path: "{{ item }}/.config/bat/"
