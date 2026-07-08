@@ -1,9 +1,11 @@
-- name: Install zsh
+- name: Install zsh and its plugin dependencies
   apt:
     name:
       - zsh
       - bc
       - command-not-found
+      - fzf
+      - silversearcher-ag
     state: present
     update_cache: yes
 
@@ -27,6 +29,7 @@
   loop:
     - https://github.com/zsh-users/zsh-syntax-highlighting
     - https://github.com/zsh-users/zsh-autosuggestions
+    # - https://github.com/junegunn/fzf
 
 - name: Symlink omz for root
   file:

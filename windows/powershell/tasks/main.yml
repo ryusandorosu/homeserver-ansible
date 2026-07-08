@@ -54,6 +54,12 @@
   win_chocolatey:
     name: powershell-core
 
+- name: Install fuzzyfinder
+  win_chocolatey:
+    name:
+    - fzf
+    - ag
+
 - name: Update NuGet provider
   ansible.windows.win_powershell:
     script: Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
