@@ -43,7 +43,7 @@ nginx_private_sites:
     proto: http
   guac:
     authentication: true
-    bypass: false
+    bypass: true
     port: "{{ guacamole_port }}"
     proto: http
   actual:
