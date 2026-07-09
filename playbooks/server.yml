@@ -18,13 +18,13 @@
   vars:
     includes_list:
       - base
+      - sshcli
       - zsh
     roles_list:
       - etckeeper
       - auditd
       - sysctl
       - sshd
-      - sshcli
       - wireguard
       - firewall
       - nginx

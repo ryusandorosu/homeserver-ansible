@@ -15,7 +15,24 @@
 
 - name: Deploy SSH config
   template:
-    src: config.j2
+    src: config_wsl.j2
     dest: "{{ homedir }}/.ssh/config"
     mode: '0644'
     owner: "{{ user }}"
+  when: ansible_facts.hostname != "nuc-server"
+
+- name: Deploy SSH config
+  template:
+    src: config_server.j2
+    dest: "{{ homedir }}/.ssh/config"
+    mode: '0600'
+    owner: "{{ user }}"
+  when: ansible_facts.hostname == "nuc-server"
+
+- name: Deploy SSH authorized keys
+  template:
+    src: authorized_keys.j2
+    dest: "{{ homedir }}/.ssh/authorized_keys"
+    mode: '0600'
+    owner: "{{ user }}"
+  when: ansible_facts.hostname == "nuc-server"

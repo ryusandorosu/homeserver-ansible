@@ -6,6 +6,7 @@
   template:
     src: syncmusicdir.sh.j2
     dest: "{{ musictools }}/syncmusicdir.sh"
+  when: ansible_facts.hostname != "nuc-server"
 
 # Make sure rsync is installed in remote device (manually)
 # Make sure rsync is installed in source device (moved task to packages role)
