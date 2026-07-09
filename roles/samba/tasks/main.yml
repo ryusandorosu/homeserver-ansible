@@ -1,9 +1,10 @@
 - name: Install Samba
   apt:
-    name:
-      - samba
-      - smbclient
+    name: "{{ item }}"
     state: present
+  loop:
+    - samba
+    - smbclient
 
 - name: Deploy smb.conf
   template:

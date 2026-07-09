@@ -1,19 +1,15 @@
-- name: Install nginx bouncer dependencies
+- name: Install nginx bouncer and its dependencies
   apt:
-    name:
-      - lua5.1
-      - libnginx-mod-http-lua
-      - luarocks
-      - gettext-base
-      - lua-cjson
+    name: "{{ item }}"
     state: present
     update_cache: yes
-
-- name: Install nginx bouncer
-  apt:
-    name: crowdsec-nginx-bouncer
-    state: present
-    update_cache: yes
+  loop:
+    - lua5.1
+    - libnginx-mod-http-lua
+    - luarocks
+    - gettext-base
+    - lua-cjson
+    - crowdsec-nginx-bouncer
 
 - name: Ensure AppSec collections are present
   command: "cscli collections install crowdsecurity/appsec-{{ item }}"

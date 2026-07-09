@@ -10,9 +10,15 @@
 
 - name: Install Docker packages
   apt:
-    name: "{{ docker_packages }}"
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - docker-buildx-plugin
+    - docker-compose-plugin
 
 - name: Ensure docker service is running
   service:

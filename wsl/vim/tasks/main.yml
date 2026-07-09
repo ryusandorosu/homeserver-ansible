@@ -1,9 +1,10 @@
 - name: Install vim
   apt:
-    name:
+    name: "{{ item }}"
+    state: present
+  loop:
     - vim
     - vim-gtk3
-    state: present
 
 - name: Create plugins directory
   file:

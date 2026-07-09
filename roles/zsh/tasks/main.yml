@@ -1,13 +1,14 @@
 - name: Install zsh and its plugin dependencies
   apt:
-    name:
-      - zsh
-      - bc
-      - command-not-found
-      - fzf
-      - silversearcher-ag
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  loop:
+    - zsh
+    - bc
+    - command-not-found
+    - fzf
+    - silversearcher-ag
 
 - name: Clone oh-my-zsh
   become_user: "{{ user }}"

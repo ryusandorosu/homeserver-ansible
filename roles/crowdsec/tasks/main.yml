@@ -1,14 +1,11 @@
-- name: Install CrowdSec
+- name: Install CrowdSec and the nft firewall bouncer
   apt:
-    name: crowdsec
+    name: "{{ item }}"
     state: present
     update_cache: yes
-
-- name: Install firewall bouncer
-  apt:
-    name: crowdsec-firewall-bouncer-nftables
-    state: present
-    update_cache: yes
+  loop:
+    - crowdsec
+    - crowdsec-firewall-bouncer-nftables
 
 - name: Ensure CrowdSec hub index is up to date
   command: cscli hub update

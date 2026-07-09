@@ -1,10 +1,11 @@
 - name: Install nginx
   apt:
-    name:
-      - nginx
-      - libnginx-mod-stream
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  loop:
+    - nginx
+    - libnginx-mod-stream
 
 - name: Enable nginx
   systemd:

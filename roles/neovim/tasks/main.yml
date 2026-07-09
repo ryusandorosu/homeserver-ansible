@@ -5,14 +5,15 @@
 
 - name: Install required packages
   apt:
-    name:
+    name: "{{ item }}"
+    state: present
+  loop:
     - npm
     - cargo
     - golang-go
     - cmake
     - ripgrep
     - fd-find
-    state: present
 
 - name: Install required packages via npm
   npm:
