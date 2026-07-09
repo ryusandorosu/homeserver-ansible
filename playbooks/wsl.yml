@@ -18,11 +18,11 @@
 
   vars:
     roles_list:
-      - packages
       - sshconf
       - vim
       - scripts
     includes_list:
+      - base
       - zsh
 
   tasks:

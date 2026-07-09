@@ -6,31 +6,36 @@
     src: apt.conf.d/mihomo-proxy.j2
     dest: /etc/apt/apt.conf.d/99-mihomo-proxy
     mode: '0644'
+  when: ansible_facts.hostname == "nuc-server"
 
 - name: Install base packages
   apt:
-    name:
-      - git
-      - curl
-      - jq
-      - tree
-      - bat
-      - tcpdump
-      - rsync
-      - gcc
-      - make
-      - ca-certificates
-      - unattended-upgrades
-      - build-essential
-      - bind9-dnsutils
-      - btop
-      - strace
-      - bubblewrap
-      - autossh
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  loop:
+    - git
+    - curl
+    - jq
+    - tree
+    - bat
+    - fasd
+    - tcpdump
+    - rsync
+    - gcc
+    - make
+    - ca-certificates
+    - unattended-upgrades
+    - build-essential
+    - bind9-dnsutils
+    - btop
+    - strace
+    - bubblewrap
+    - autossh
 
+# may require manual install when absent
 - name: Install Homebrew
+  # become: false
   shell: >
     /bin/bash -c "$(
       curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
@@ -43,10 +48,12 @@
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
 - name: Install elio from Homebrew
+  # become: false
   homebrew:
     name: elio
     state: present
     update_homebrew: true
+  when: ansible_facts.hostname == "nuc-server"
 
 - name: Ensure bat config directory exists
   file:
@@ -70,6 +77,7 @@
   file:
     path: "/var/mail/{{ user }}"
     state: absent
+  when: ansible_facts.hostname == "nuc-server"
 
 - name: Print motd to check updates
   copy:
@@ -82,3 +90,11 @@
     src: apt.conf.d/auto-upgrades
     dest: /etc/apt/apt.conf.d/20auto-upgrades
     mode: '0644'
+
+- name: Install required Ansible collections
+  become: false
+  command: ansible-galaxy collection install {{ item }} --upgrade
+  loop:
+    - community.docker
+    - ansible.windows
+    - chocolatey.chocolatey
