@@ -35,7 +35,7 @@
 
 # may require manual install when absent
 - name: Install Homebrew
-  # become: false
+  become: false
   shell: >
     /bin/bash -c "$(
       curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
