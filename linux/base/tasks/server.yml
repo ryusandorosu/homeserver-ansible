@@ -1,0 +1,20 @@
+- name: Import mihomo role default variables
+  include_vars:
+    file: "{{ inventory_dir }}/../server/mihomo/defaults/main.yml"
+- name: Configure apt proxy
+  template:
+    src: apt.conf.d/mihomo-proxy.j2
+    dest: /etc/apt/apt.conf.d/99-mihomo-proxy
+    mode: '0644'
+
+- name: Install elio from Homebrew
+  # become: false
+  homebrew:
+    name: elio
+    state: present
+    update_homebrew: true
+
+- name: Remove mail from motd
+  file:
+    path: "/var/mail/{{ user }}"
+    state: absent

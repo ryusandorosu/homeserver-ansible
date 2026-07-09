@@ -6,8 +6,8 @@
   pre_tasks:
     - name: Check OS family
       assert:
-        that: ansible_distribution == "Ubuntu"
-        fail_msg: "This playbook supports only Ubuntu"
+        that: ansible_os_family == "Debian"
+        fail_msg: "This playbook supports only Debian-based systems"
     - name: Fail if unknown tag is used
       tags: always
       assert:
@@ -19,14 +19,14 @@
   vars:
     roles_list:
       - sshconf
-      - vim
       - scripts
     includes_list:
       - base
       - zsh
+      - vim
 
   tasks:
-    - name: Include roles dynamically
+    - name: Include roles from wsl dir dynamically
       include_role:
         name: "{{ role_item }}"
         apply:
@@ -36,7 +36,7 @@
         loop_var: role_item
       tags:
         - always
-    - name: Include server roles
+    - name: Include common linux roles
       include_role:
         name: "{{ included_item }}"
         apply:

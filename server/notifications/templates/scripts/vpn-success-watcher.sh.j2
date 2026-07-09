@@ -3,7 +3,7 @@
 
 declare -A new_handshake
 declare -A connected
-disconnect_timeout=$(( {{ wireguard_keepalive }} * 5 + 1 ))
+disconnect_timeout=$(( {{ wireguard_keepalive }} * 6 ))
 [[ ! -f {{ custom_logs.wireguard.connect }} ]] && touch {{ custom_logs.wireguard.connect }}
 [[ ! -f {{ custom_logs.wireguard.disconnect }} ]] && touch {{ custom_logs.wireguard.disconnect }}
 
@@ -39,7 +39,7 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
     continue
   elif [[ "$EPOCH" == "$lastconnection" ]]; then
     new_handshake[$PUBKEY]=true
-    logscript "preccondition continue. LOG: $EPOCH == $lastconnection, new_handshake := ${new_handshake[$PUBKEY]}"
+    logscript "precondition continue. LOG: $EPOCH == $lastconnection, new_handshake := ${new_handshake[$PUBKEY]}"
     continue
   fi
 
@@ -58,12 +58,11 @@ while read -r PUBKEY PSK ENDPOINT ALLOWED EPOCH RX TX KEEPALIVE; do
 
     logscript "entered disconnect condition. diff = $((currenttime - EPOCH)), epoch = $EPOCH"
     logscript "   connected status before = ${connected[$PUBKEY]}"
-    if [[ -z "${connected[$PUBKEY]}" ]]; then
+
       ping -q -c1 -W1 $vpn_ip
       pingstatus=$?
       logscript "   ping status = $pingstatus"
       [[ "$pingstatus" == 0 ]] && connected[$PUBKEY]=true || connected[$PUBKEY]=false
-    fi
     
     if [[ "${connected[$PUBKEY]}" == "false" ]]; then
       disconnect_message_init VPN "$PUBKEY" "$device_name"

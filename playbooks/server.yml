@@ -3,21 +3,23 @@
     - min
 
   pre_tasks:
-    - name: Check OS family
+    - name: Check the server by hostname
       assert:
-        that: ansible_os_family == "Debian"
-        fail_msg: "This playbook supports only Debian-based systems"
+        that: ansible_facts.hostname == "nuc-server"
+        fail_msg: "This playbook is supposed to be run only on the server"
     - name: Fail if unknown tag is used
       tags: always
       assert:
         that: ansible_run_tags | difference(valid_tags + ['all']) | length == 0
         fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags + ['all']) }}"
       vars:
-        valid_tags: "{{ roles_list }}"
+        valid_tags: "{{ roles_list + includes_list }}"
 
   vars:
-    roles_list:
+    includes_list:
       - base
+      - zsh
+    roles_list:
       - etckeeper
       - auditd
       - sysctl
@@ -40,7 +42,6 @@
       - mihomo
       - notifications
       - cockpit
-      - zsh
       - far2l
       - neovim
       - docker
@@ -55,7 +56,17 @@
       - actual
 
   tasks:
-    - name: Include roles dynamically
+    - name: Include common linux roles
+      include_role:
+        name: "{{ included_item }}"
+        apply:
+          tags: "{{ included_item }}"
+      loop: "{{ includes_list }}"
+      loop_control:
+        loop_var: included_item
+      tags:
+        - always
+    - name: Include server roles dynamically
       include_role:
         name: "{{ role_item }}"
         apply:

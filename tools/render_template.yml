@@ -33,7 +33,7 @@
       failed_when: false
     - name: Load Mount Android defaults
       include_vars:
-        dir: "{{ playbook_dir + '/..' }}/roles/mount_android/defaults"
+        dir: "{{ playbook_dir + '/..' }}/server/mount_android/defaults"
         extensions: ["yml"]
       when: role_name in ['scripts']
       failed_when: false

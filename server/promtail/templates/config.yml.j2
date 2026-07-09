@@ -19,21 +19,21 @@ scrape_configs:
           __path__: {{ job.path }}
 {% if job.pipeline is defined %}
 {% if job.pipeline == 'nginx_access' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/nginx_access.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/nginx_access.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'nginx_error' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/nginx_error.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/nginx_error.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'nftables' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/nftables.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/nftables.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_action' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/fail2ban_action.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/fail2ban_action.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'fail2ban_log' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/fail2ban_log.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/fail2ban_log.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'telegram' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/telegram.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/telegram.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'auditd' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/auditd.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/auditd.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'watcher_vpn' %}
-    {{ lookup('template', '../roles/promtail/templates/pipelines/watcher_vpn.yml.j2') | indent(4) }}
+    {{ lookup('template', '../server/promtail/templates/pipelines/watcher_vpn.yml.j2') | indent(4) }}
 {% endif %}
 {% endif %}
 
