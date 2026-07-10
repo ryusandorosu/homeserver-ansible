@@ -8,7 +8,7 @@
     mode: '0644'
 
 - name: Install elio from Homebrew
-  # become: false
+  become: false
   homebrew:
     name: elio
     state: present

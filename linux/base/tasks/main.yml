@@ -37,6 +37,7 @@
 - name: Bat settings
   copy:
     content: |
+      --color=always
       --style=plain
       --paging=never
     dest: "{{ item }}/.config/bat/config"
