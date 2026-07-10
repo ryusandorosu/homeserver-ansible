@@ -12,7 +12,6 @@
     - jq
     - tree
     - bat
-    - fasd
     - tcpdump
     - rsync
     - gcc

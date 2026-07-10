@@ -7,8 +7,17 @@
     - zsh
     - bc
     - command-not-found
-    - fzf
     - silversearcher-ag
+    - fasd
+
+# https://github.com/clvv/fasd
+# https://github.com/junegunn/fzf
+- name: Install fzf from Homebrew
+  become: false
+  homebrew:
+    name: fzf
+    state: present
+    update_homebrew: true
 
 - name: Clone oh-my-zsh
   become_user: "{{ user }}"
@@ -30,7 +39,6 @@
   loop:
     - https://github.com/zsh-users/zsh-syntax-highlighting
     - https://github.com/zsh-users/zsh-autosuggestions
-    # - https://github.com/junegunn/fzf
 
 - name: Symlink omz for root
   file:
