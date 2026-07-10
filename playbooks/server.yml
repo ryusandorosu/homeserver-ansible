@@ -40,7 +40,7 @@
       - certificates
       - mail_sender
       - mihomo
-      - notifications
+      # - notifications
       - cockpit
       - far2l
       - neovim

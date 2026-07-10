@@ -1,0 +1,21 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ inventory_dir }}/../server/grafana/defaults/dashboards/common.yml"
+    - "{{ inventory_dir }}/../server/grafana/defaults/dashboards/fail2ban/panels.yml"
+    - "{{ inventory_dir }}/../server/promtail/defaults/labels/fail2ban.yml"
+
+- name: Ensure required directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ scripts_dir }}"
+
+- name: Deploy notification sender script
+  template:
+    src: f2b-notifications.sh.j2
+    dest: "{{ f2b_tg_script }}"
+    mode: '0755'
+  notify: daemon reload

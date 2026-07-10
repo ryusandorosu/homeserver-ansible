@@ -1,0 +1,20 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ inventory_dir }}/../server/promtail/defaults/labels/telegram.yml"
+
+- name: Ensure custom logs directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ telegram_bot_logs }}"
+    - "{{ custom_logs.telegram.cache }}"
+
+- name: Deploy notification sender script
+  template:
+    src: telegram.sh.j2
+    dest: "{{ telegram_script }}"
+    mode: '0755'
+  notify: daemon reload

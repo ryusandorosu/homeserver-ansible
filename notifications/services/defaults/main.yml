@@ -1,0 +1,11 @@
+service_state:
+  - "wg-quick@{{ wireguard_interface }}"
+  - nftables
+  - nginx
+  - fail2ban
+  - crowdsec
+  - dnsmasq
+  - smbd
+  - docker
+  - docker-container-watcher
+  - logrotate

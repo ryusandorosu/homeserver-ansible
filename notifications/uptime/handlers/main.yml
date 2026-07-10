@@ -1,0 +1,11 @@
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart services
+  systemd:
+    name: "{{ item | basename | regex_replace('.j2','') | regex_replace('.service','') }}"
+    enabled: yes
+    state: restarted
+  with_fileglob:
+    - "templates/*.service.j2"
