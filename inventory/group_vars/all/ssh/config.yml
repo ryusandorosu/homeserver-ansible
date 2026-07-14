@@ -45,7 +45,7 @@ ssh_hosts:
       - wslasus
 
   asus-lan:
-    hostname: "{{ lan_ip.large_laptop }}"
+    hostname: "{{ lan_ip.large_laptop.wired }}"
     user: "\"{{ whost.asus.user }}\""
     identity: asus_k95vb
     device:

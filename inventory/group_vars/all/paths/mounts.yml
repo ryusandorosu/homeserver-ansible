@@ -32,7 +32,7 @@ shares:
   win_asus:
     mount: /mnt/k95vb
     cifs:
-      src: "//{{ lan_ip.large_laptop }}/d"
+      src: "//{{ lan_ip.large_laptop.wired }}/d"
       credentials:
         path: "{{ cifs_creds }}/asus"
         user: "{{ whost.asus.user }}"

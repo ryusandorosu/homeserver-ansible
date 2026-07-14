@@ -19,7 +19,8 @@ nginx_labels:
 nginx_exclude_ip:
   - "{{ home_ip }}"
   - "{{ localhost }}"
-  - "{{ lan_ip.large_laptop }}"
+  - "{{ lan_ip.large_laptop.wireless }}"
+  - "{{ lan_ip.large_laptop.wired }}"
   - "{{ wireguard_devices.laptop.ip }}"
 
 nginx_access_filters: >-
