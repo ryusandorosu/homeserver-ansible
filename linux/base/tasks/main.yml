@@ -24,6 +24,7 @@
     - strace
     - bubblewrap
     - autossh
+    - plocate
 
 - name: Ensure bat config directory exists
   file:
