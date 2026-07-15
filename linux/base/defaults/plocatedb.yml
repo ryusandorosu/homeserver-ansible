@@ -1,0 +1,16 @@
+prunefs_enabled: false
+prunenames:
+  - .git
+  - .bzr
+  - .hg
+  - .svn
+prunepaths:
+  - /tmp
+  - /var/spool
+  - /media
+  - /var/lib/os-prober
+  - /var/lib/ceph
+  - /home/.ecryptfs
+  - /var/lib/schroot
+  # end defaults, my own settings:
+  - /opt/loki/data/chunks/fake
