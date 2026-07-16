@@ -52,13 +52,12 @@
 
 - name: Install PowerShell 7
   win_chocolatey:
-    name: powershell-core
-
-- name: Install fuzzyfinder
-  win_chocolatey:
-    name:
+    name: "{{ item }}"
+  loop:
+    - powershell-core #PowerShell 7
     - fzf
-    - ag
+    - ripgrep
+    - ag #possibly not needed
 
 - name: Update NuGet provider
   ansible.windows.win_powershell:
