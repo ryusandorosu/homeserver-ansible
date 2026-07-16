@@ -11,9 +11,11 @@ local config = {
   },
   color_scheme = 'Hurtado',
 {% elif key == 'honor' %}
-  default_prog = { 'powershell.exe' },
+  --default_prog = { 'powershell.exe' },
+  default_prog = { 'wsl', '--cd', '{{ homedir }}' },
   launch_menu = {
     { label = 'New Tab (domain `AutoSSH:nuc`)', args = { 'wsl', 'autossh', 'nuc' } },
+    { label = 'New Tab (domain `Windows PowerShell`)', args = { 'powershell.exe' } },
     { label = 'New Tab (domain `PowerShell 7`)', args = { 'pwsh.exe' } },
   },
   color_scheme = 'Hurtado',
