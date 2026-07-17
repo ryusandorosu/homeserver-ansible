@@ -1,4 +1,0 @@
-zsh_repo_url: git@github.com:ryusandorosu/zsh_settings.git
-zsh_repo_dir: "{{ zsh_repo_url | basename | regex_replace('.git','') }}"
-omz: .oh-my-zsh
-omz_themes: "{{ omz }}/themes"
