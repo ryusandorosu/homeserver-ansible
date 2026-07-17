@@ -14,16 +14,16 @@
 # https://github.com/clvv/fasd
 # https://github.com/junegunn/fzf
 # https://github.com/BurntSushi/ripgrep
-- name: Install productivity utils and plugin dependencies from Homebrew
-  become: false
-  homebrew:
-    name: fzf
-    state: present
-    update_homebrew: true
-  loop:
-    - fzf
-    - fd
-    # - ripgrep
+# - name: Install productivity utils and plugin dependencies from Homebrew
+#   become: false
+#   homebrew:
+#     name: "{{ item }}"
+#     state: present
+#     update_homebrew: true
+#   loop:
+#     - fzf
+#     - fd
+#     # - ripgrep
 
 # - name: Clone oh-my-zsh
 #   become_user: "{{ user }}"
