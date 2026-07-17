@@ -7,7 +7,6 @@
     - zsh
     - bc
     - command-not-found
-    - silversearcher-ag
     - fasd
 
 # https://github.com/sharkdp/fd - fd-find is too old for ubuntu, not so fresh for debian to install from apt. the package is already present in neovim role, but for direct usage brew version is preferred
