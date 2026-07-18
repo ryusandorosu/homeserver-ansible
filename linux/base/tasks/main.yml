@@ -11,7 +11,6 @@
     - curl
     - jq
     - tree
-    - bat
     - tcpdump
     - rsync
     - gcc
@@ -25,6 +24,15 @@
     - bubblewrap
     - autossh
     - plocate
+
+- name: Install newer packages from Homebrew
+  become: false
+  homebrew:
+    name: "{{ item }}"
+    state: present
+    update_homebrew: true
+  loop:
+    - bat
 
 - name: Ensure bat config directory exists
   file:
