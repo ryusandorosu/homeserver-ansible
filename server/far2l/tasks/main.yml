@@ -1,6 +1,4 @@
-- import_tasks: appimage.yml #2.8.0
-# - import_tasks: brew.yml #2.8.0 with less plugins
-# - import_tasks: fork.yml #2.7.0 has lua plugins but bugged as apt 2.6.0 version
+- import_tasks: appimage.yml
 
 - name: Deploy settings configs for user
   copy:

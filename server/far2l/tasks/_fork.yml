@@ -1,3 +1,4 @@
+#2.7.0 has lua plugins but bugged as apt 2.6.0 version
 - name: Download latest far2m build archive
   get_url:
     url: https://github.com/spvkgn/far2m-portable/releases/download/latest/far2m-x86_64.run.tar
