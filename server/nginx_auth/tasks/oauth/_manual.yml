@@ -13,7 +13,7 @@
     | cut -d '/' -f 8
   register: oauth_release_version
 
-- import_tasks: install.yml
+- import_tasks: __install.yml
   when: oauth_release_version.stdout != oauth_installed_version.stdout
 
 - name: Create systemd service
