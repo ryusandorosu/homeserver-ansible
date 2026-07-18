@@ -38,9 +38,7 @@
       - mounts
       - mount_android
       - certificates
-      - mail_sender
       - mihomo
-      # - notifications
       - cockpit
       - far2l
       - neovim

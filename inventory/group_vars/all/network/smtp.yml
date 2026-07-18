@@ -1,4 +1,4 @@
-smtp_account: "{{ smtp.gmail.account }}"
+# smtp_account: "{{ smtp.gmail.account }}" # has been used by mstmp only
 smtp_host: "{{ smtp.gmail.host }}"
 
 smtp:
