@@ -12,8 +12,6 @@
     - cargo
     - golang-go
     - cmake
-    - ripgrep
-    - fd-find
 
 - name: Install required packages via npm
   npm:

@@ -33,6 +33,9 @@
     update_homebrew: true
   loop:
     - bat
+  # nvim requirements also used in zsh fzf plugin:
+    - fd
+    - ripgrep
 
 - name: Ensure bat config directory exists
   file:
