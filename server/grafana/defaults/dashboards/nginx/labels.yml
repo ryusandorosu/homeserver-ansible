@@ -21,8 +21,8 @@ nginx_exclude_ip:
   - "{{ localhost }}"
   - "{{ wireguard_devices.laptop.ip }}"
   # - "{{ lan_ip.large_laptop }}" #:
-  - "{{ asus_lan.wireless }}"
-  - "{{ asus_lan.wired_to_ap }}"
+  - "{{ asus_lan.wireless_tplink }}"
+  - "{{ asus_lan.wired_to_tplink }}"
   - "{{ asus_lan.wired_to_router }}"
 
 nginx_access_filters: >-

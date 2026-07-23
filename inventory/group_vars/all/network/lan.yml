@@ -12,7 +12,7 @@ lan_ip:
   router: 192.168.0.1
   wifi: 192.168.0.2
   server: 192.168.0.100
-  large_laptop: "{{ asus_lan.wired_to_ap }}"
+  large_laptop: "{{ asus_lan.wired_to_tplink }}"
   small_laptop: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
@@ -20,6 +20,7 @@ lan_ip:
   tronsmart: 192.168.0.113
 
 asus_lan:
-  wireless: 192.168.0.101
-  wired_to_ap: 192.168.0.103
-  wired_to_router: 192.168.1.100
+  wireless_tplink: 192.168.0.101      # eth1 a8:29:48:87:f5:70
+  wired_to_tplink: 192.168.0.103      # eth1 74:d0:2b:62:81:0c
+  wired_to_router: 192.168.1.100      # eth2 a8:29:48:87:f5:70
+  wireless_audiocodes: 192.168.1.100  # eth2 a8:29:48:87:f5:70
