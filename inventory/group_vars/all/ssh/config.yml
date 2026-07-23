@@ -101,7 +101,7 @@ ssh_hosts:
     device:
       - server
       - asus
-      # - wslasus #key moved to c:
+      - wslasus
       - wslhonor
 
   samsung:
