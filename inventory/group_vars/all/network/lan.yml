@@ -1,6 +1,13 @@
 lan_interface: wlp2s0
 home_ip: 87.117.169.26
-home_network: 192.168.0.0/24
+
+# affected roles: firewall,fail2ban,nginx notifications:watchers windows:clashmeta
+# home_network: 192.168.0.0/24
+home_network: 192.168.0.0/23 # includes 192.168.0.0/24 and 192.168.1.0/24
+# lan_networks:
+#   - 192.168.0.0/24
+#   - 192.168.1.0/24
+
 # affected roles: mounts,samba,sshcli,grafana
 lan_ip:
   router: 192.168.0.1
@@ -8,7 +15,9 @@ lan_ip:
   server: 192.168.0.100
   large_laptop:
     wireless: 192.168.0.101
+    # to update:
     wired: 192.168.0.103
+    wired-to-router: 192.168.1.100
   small_laptop: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
