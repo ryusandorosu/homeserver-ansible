@@ -1,18 +1,18 @@
 lan_interface: wlp2s0
 home_ip: 87.117.169.26
 
-# affected roles: firewall,fail2ban,nginx notifications:watchers windows:clashmeta
+# affected roles to deploy on change: firewall,fail2ban,nginx notifications:watchers windows:clashmeta
 home_network: 192.168.0.0/23 # includes 192.168.0.0/24 and 192.168.1.0/24
 # lan_networks:
 #   - 192.168.0.0/24
 #   - 192.168.1.0/24
 
-# affected roles: mounts,samba,sshcli,grafana windows:playbook
+# affected roles to deploy on change: mounts,samba,sshcli,grafana ; not necessary to deploy but affects: if running any windows playbook
 lan_ip:
   router: 192.168.0.1
   wifi: 192.168.0.2
   server: 192.168.0.100
-  large_laptop: "{{ asus_lan.wired_to_router }}"
+  large_laptop: "{{ asus_lan.wired_to_ap }}"
   small_laptop: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
