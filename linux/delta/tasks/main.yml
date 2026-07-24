@@ -1,15 +1,12 @@
-- name: Install git
-  apt:
-    name: git
-    state: present
-    update_cache: yes
-
-- name: Install delta
+- name: Install git and delta
   become: false
   homebrew:
-    name: git-delta
+    name: "{{ item }}"
     state: present
     update_homebrew: true
+  loop:
+    - git
+    - git-delta
     # macos may require also 'less' as well as windows
 
 - name: Deploy gitconfig
