@@ -1,4 +1,9 @@
+# do not deploy rendered templates
+**/templates/*
+!**/templates/*.j2
+
 .idea
+.swp
+
 geoip
 gpt.md
-.swp
