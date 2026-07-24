@@ -1,0 +1,21 @@
+- name: Install git
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+
+- name: Install delta
+  become: false
+  homebrew:
+    name: git-delta
+    state: present
+    update_homebrew: true
+    # macos may require also 'less' as well as windows
+
+- name: Deploy gitconfig
+  template:
+    src: gitconfig.j2
+    dest: "{{ homedir }}/.gitconfig"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'

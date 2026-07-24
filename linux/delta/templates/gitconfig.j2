@@ -1,0 +1,28 @@
+[user]
+    email = {{ vault_msmtp_user }}
+    name = Bulat Sibgatullin
+
+[pull]
+    rebase = false
+
+# git-delta settings
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictStyle = zdiff3
+
+[delta "behavior"]
+    navigate = true       # use n and N to move between diff sections
+    side-by-side = true   # to check how it works
+    colorMoved = default  # to check how it works
+
+[delta "appearance"]
+    dark = true
+    line-numbers = true
+    hyperlinks = true     # to check how it works
+    hyperlinks-file-link-format = "vscode://file/{path}:{line}"

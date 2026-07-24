@@ -7,7 +7,6 @@
     state: present
     update_cache: yes
   loop:
-    - git
     - curl
     - jq
     - tree

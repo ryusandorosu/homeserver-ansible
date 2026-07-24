@@ -18,6 +18,7 @@
 
   vars:
     roles_list:
+      - delta
       - base
       - sshcli
       - zsh

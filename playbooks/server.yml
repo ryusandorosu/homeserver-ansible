@@ -17,6 +17,7 @@
 
   vars:
     includes_list:
+      - delta
       - base
       - sshcli
       - zsh
