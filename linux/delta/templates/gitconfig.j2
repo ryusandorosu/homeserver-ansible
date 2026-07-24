@@ -16,13 +16,19 @@
 [merge]
     conflictStyle = zdiff3
 
-[delta "behavior"]
+[delta]
+  ; behavior
     navigate = true       # use n and N to move between diff sections
     side-by-side = true   # to check how it works
     colorMoved = default  # to check how it works
-
-[delta "appearance"]
+  ; general appearance
     dark = true
+    detect-dark-light = never
     line-numbers = true
+    # syntax-theme = Dracula
+  ; color appearance
+    file-style = blue
+    commit-style = yellow
+  ; formatting
     hyperlinks = true     # to check how it works
     hyperlinks-file-link-format = "vscode://file/{path}:{line}"
