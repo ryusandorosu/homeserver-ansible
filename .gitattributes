@@ -1,6 +1,6 @@
-roles/*/files/* text eol=lf
-roles/*/files/*/* text eol=lf
-roles/*/files/*/*/* text eol=lf
-roles/*/templates/* text eol=lf
-roles/*/templates/*/* text eol=lf
-roles/*/templates/*/*/* text eol=lf
+{server,linux}/*/files/* text eol=lf
+{server,linux}/*/files/*/* text eol=lf
+{server,linux}/*/files/*/*/* text eol=lf
+{server,linux}/*/templates/* text eol=lf
+{server,linux}/*/templates/*/* text eol=lf
+{server,linux}/*/templates/*/*/* text eol=lf
