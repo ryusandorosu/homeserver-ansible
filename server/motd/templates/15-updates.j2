@@ -1,0 +1,26 @@
+#!/bin/sh
+. {{ scripts_includes }}/colors.sh
+
+upgrade_template() {
+  PKG_MANAGER="$1"
+  case $PKG_MANAGER in
+    apt)  PKG_LIST="$(apt list --upgradable 2>/dev/null | tail -n +2)"
+          PKG_UPGRADE="sudo apt upgrade"
+          PKG_MANAGER="system"
+    ;;
+    brew) PKG_LIST="$(brew outdated --quiet 2>/dev/null | grep -v 'JSON API')"
+          PKG_UPGRADE="brew upgrade"
+    ;;
+  esac
+  PKG_COUNT=$(printf "%s\n" "$PKG_LIST" | grep -c .)
+  if [ "$PKG_COUNT" -gt 0 ]; then
+    echo "${red}●${nocolor} $PKG_COUNT $PKG_MANAGER updates available:"
+    printf "%s\n" "$PKG_LIST"
+    echo "'${white}${PKG_UPGRADE}${nocolor}' to upgrade them."
+  else
+    echo "${green}●${nocolor} $PKG_MANAGER is up to date."
+  fi
+}
+
+upgrade_template apt
+upgrade_template brew
