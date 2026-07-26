@@ -1,3 +1,5 @@
+# test command: run-parts /etc/update-motd.d
+
 - name: Ensure bat config directory exists
   file:
     path: "{{ item }}/.config/bat/"
