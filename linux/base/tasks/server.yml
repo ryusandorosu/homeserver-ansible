@@ -21,7 +21,7 @@
 
 - name: Install elio from Homebrew
   become: false
-  homebrew:
+  community.general.homebrew:
     name: elio
     state: present
     update_homebrew: true

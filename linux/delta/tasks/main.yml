@@ -1,6 +1,6 @@
 - name: Install git and delta
   become: false
-  homebrew:
+  community.general.homebrew:
     name: "{{ item }}"
     state: present
     update_homebrew: true

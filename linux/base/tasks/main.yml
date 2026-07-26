@@ -7,6 +7,7 @@
     state: present
     update_cache: yes
   loop:
+    - git # omz needs it
     - curl
     - jq
     - tree
@@ -26,7 +27,7 @@
 
 - name: Install newer packages from Homebrew
   become: false
-  homebrew:
+  community.general.homebrew:
     name: "{{ item }}"
     state: present
     update_homebrew: true
@@ -36,30 +37,10 @@
     - fd
     - ripgrep
 
-- name: Ensure bat config directory exists
-  file:
-    path: "{{ item }}/.config/bat/"
-    state: directory
-  loop:
-    - "{{ homedir }}"
-    - "{{ ansible_facts.env.HOME }}"
+- import_tasks: rc.yml
 
-- name: Bat settings
-  copy:
-    content: |
-      --color=always
-      --style=plain
-      --paging=never
-    dest: "{{ item }}/.config/bat/config"
-  loop:
-    - "{{ homedir }}"
-    - "{{ ansible_facts.env.HOME }}"
-
-- name: Print motd to check updates
-  copy:
-    src: update-motd.d/updates.sh
-    dest: /etc/update-motd.d/93-updates
-    mode: '0755'
+- import_tasks: motd.yml
+  when: ansible_facts.hostname == "nuc-server"
 
 - name: Enable apt unattended-upgrades
   copy:

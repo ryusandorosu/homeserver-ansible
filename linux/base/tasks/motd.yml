@@ -1,0 +1,11 @@
+- name: Print motd to check updates
+  copy:
+    src: update-motd.d/updates.sh
+    dest: /etc/update-motd.d/15-updates
+    mode: '0755'
+
+- name: Print motd to check failed services
+  copy:
+    src: update-motd.d/systemctl.sh
+    dest: /etc/update-motd.d/11-systemctl
+    mode: '0755'

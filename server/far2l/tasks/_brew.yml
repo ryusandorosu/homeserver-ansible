@@ -1,6 +1,6 @@
 #2.8.0 with less plugins
 - name: Install far2l from Homebrew
-  homebrew:
+  community.general.homebrew:
     name: far2l-tty
     state: present
     update_homebrew: true
