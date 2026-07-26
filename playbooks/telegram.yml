@@ -17,6 +17,7 @@
 
   vars:
     roles_list:
+      - includes
       - telegram
       - uptime
       - services

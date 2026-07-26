@@ -1,0 +1,16 @@
+- name: Ensure scripts include directory exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ scripts_includes }}"
+
+- name: Deploy scripts common includes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ scripts_includes }}"
+  with_fileglob:
+    - "files/*.sh"
+  notify:
+    - daemon reload

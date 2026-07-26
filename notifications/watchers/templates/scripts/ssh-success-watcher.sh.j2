@@ -1,5 +1,5 @@
 #!/bin/bash
-. {{ watcher_scripts_includes }}/geo-include.sh
+. {{ scripts_includes }}/geo-include.sh
 
 journalctl -fu ssh.service -fu sshd.service | \
 while read line; do

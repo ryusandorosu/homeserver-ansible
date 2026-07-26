@@ -39,9 +39,6 @@
 
 - import_tasks: rc.yml
 
-- import_tasks: motd.yml
-  when: ansible_facts.hostname == "nuc-server"
-
 - name: Enable apt unattended-upgrades
   copy:
     src: apt.conf.d/auto-upgrades

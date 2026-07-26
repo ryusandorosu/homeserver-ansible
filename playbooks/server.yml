@@ -22,6 +22,7 @@
       - sshcli
       - zsh
     roles_list:
+      - motd
       - etckeeper
       - auditd
       - sysctl

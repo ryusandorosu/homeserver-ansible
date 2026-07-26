@@ -1,5 +1,5 @@
 #!/bin/bash
-. {{ watcher_scripts_includes }}/allowed-peers.sh
+. {{ scripts_includes }}/allowed-peers.sh
 
 common_message_init() {
 local METHOD="$1"
@@ -35,16 +35,16 @@ log_tail() {
   echo "$line"
 }
 
-. {{ watcher_scripts_includes }}/geo-get-json.sh
-. {{ watcher_scripts_includes }}/geo-parse.sh
+. {{ scripts_includes }}/geo-get-json.sh
+. {{ scripts_includes }}/geo-parse.sh
 #requires get_ip_geo, geo_parse_ip_info:
-. {{ watcher_scripts_includes }}/geo-common.sh
+. {{ scripts_includes }}/geo-common.sh
 
-. {{ watcher_scripts_includes }}/geo-allowed.sh
-. {{ watcher_scripts_includes }}/allowed-subnets.sh
-. {{ watcher_scripts_includes }}/geo-allowed-check.sh
+. {{ scripts_includes }}/geo-allowed.sh
+. {{ scripts_includes }}/allowed-subnets.sh
+. {{ scripts_includes }}/geo-allowed-check.sh
 
-. {{ watcher_scripts_includes }}/geo-previous-ip.sh
+. {{ scripts_includes }}/geo-previous-ip.sh
 
 generate_geo_message() {
   local IP="$1"

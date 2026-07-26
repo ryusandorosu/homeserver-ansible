@@ -1,11 +1,12 @@
 #!/bin/sh
+. {{ scripts_includes }}/colors.sh
 
 UPDATES="$(apt list --upgradable 2>/dev/null | tail -n +2)"
 COUNT=$(printf "%s\n" "$UPDATES" | grep -c .)
 
 if [ "$COUNT" -gt 0 ]; then
-  echo "🔴 $COUNT updates available:"
+  echo "${red}●${nocolor} $COUNT updates available:"
   printf "%s\n" "$UPDATES"
 else
-  echo "🟢 System is up to date"
+  echo "${green}●${nocolor} System is up to date"
 fi
