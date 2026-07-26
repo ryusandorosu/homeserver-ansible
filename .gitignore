@@ -1,6 +1,9 @@
-# do not deploy rendered templates
-**/templates/*
+# git check-ignore -v path-to-file : to check which rule has been applied
+# do not deploy rendered templates.
+**/templates/**
+!**/templates/**/
 !**/templates/*.j2
+!**/templates/**/*.j2
 
 .idea
 .swp
