@@ -6,7 +6,7 @@ services:
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"
     healthcheck:
-      test: ["CMD", "nc", "-z", "{{ localhost }}", "{{ docker.mihomo.socks5_port }}"]
+      test: ["CMD", "nc", "-z", "{{ localhost }}", "{{ docker.mihomo.port.socks5 }}"]
       interval: 10s
       timeout: 5s
       retries: 5

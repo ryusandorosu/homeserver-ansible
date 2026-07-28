@@ -12,9 +12,10 @@ lan_port:
 docker:
   mihomo:
     name: mihomo
-    mixed_port: 7890 #http and socks5
-    socks5_port: 7891
-    web_port: 9092
+    port:
+      mixed: 7890 #http and socks5
+      socks5: 7891
+      web: 9092
 
   mihomo_dashboard:
     name: "{{ mihomo_interface.name }}"

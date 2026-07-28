@@ -1,6 +1,6 @@
 {% if clash_rules_mode == 'global' %}
-Acquire::http::Proxy "http://{{ localhost }}:{{ docker.mihomo.mixed_port }}";
-Acquire::https::Proxy "http://{{ localhost }}:{{ docker.mihomo.mixed_port }}";
+Acquire::http::Proxy "http://{{ localhost }}:{{ docker.mihomo.port.mixed }}";
+Acquire::https::Proxy "http://{{ localhost }}:{{ docker.mihomo.port.mixed }}";
 {% endif %}
 Acquire::http::Proxy::{{ localhost }} "DIRECT";
 Acquire::http::Proxy::localhost "DIRECT";

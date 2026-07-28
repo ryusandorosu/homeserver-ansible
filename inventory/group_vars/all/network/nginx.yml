@@ -47,7 +47,7 @@ nginx_private_sites:
     proto: http
   mihomo:
     authentication: false
-    port: "{{ docker.mihomo.web_port }}"
+    port: "{{ docker.mihomo.port.web }}"
     proto: http
   guac:
     authentication: true

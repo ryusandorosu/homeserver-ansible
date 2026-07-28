@@ -12,8 +12,8 @@
     recreate: true
     restart: true
     ports:
-      - "{{ docker.mihomo.mixed_port }}:{{ docker.mihomo.mixed_port }}"
-      - "{{ docker.mihomo.socks5_port }}:{{ docker.mihomo.socks5_port }}"
+      - "{{ docker.mihomo.port.mixed }}:{{ docker.mihomo.port.mixed }}"
+      - "{{ docker.mihomo.port.socks5 }}:{{ docker.mihomo.port.socks5 }}"
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"
     stop_timeout: 30

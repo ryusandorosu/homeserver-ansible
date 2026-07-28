@@ -19,7 +19,7 @@ format: |
   }
 
 url: https://api.telegram.org/bot{{ vault_telegram_alert_bot_token }}/sendMessage
-proxy: socks5h://{{ localhost }}:{{ docker.mihomo.socks5_port }} #socks5: ?
+proxy: socks5h://{{ localhost }}:{{ docker.mihomo.port.socks5 }} #socks5: ?
 
 method: POST
 headers:

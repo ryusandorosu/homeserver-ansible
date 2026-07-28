@@ -21,14 +21,14 @@
 - import_tasks: compose.yml
 
 - name: Check proxy
-  shell: curl --proxy socks5h://{{ localhost }}:{{ docker.mihomo.socks5_port }} https://www.gstatic.com/generate_204 #https://api.ipify.org
+  shell: curl --proxy socks5h://{{ localhost }}:{{ docker.mihomo.port.socks5 }} https://www.gstatic.com/generate_204 #https://api.ipify.org
   register: proxy_check
   retries: 5
   delay: 5
   until: proxy_check.rc == 0
 
 - name: Check Telegram availability
-  shell: curl --proxy socks5h://{{ localhost }}:{{ docker.mihomo.socks5_port }} https://api.telegram.org
+  shell: curl --proxy socks5h://{{ localhost }}:{{ docker.mihomo.port.socks5 }} https://api.telegram.org
   register: telegram_check
   retries: 5
   delay: 5

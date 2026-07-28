@@ -1,4 +1,4 @@
 [Service]
-Environment="HTTP_PROXY=socks5://{{ localhost }}:{{ docker.mihomo.socks5_port }}"
-Environment="HTTPS_PROXY=socks5://{{ localhost }}:{{ docker.mihomo.socks5_port }}"
+Environment="HTTP_PROXY=socks5://{{ localhost }}:{{ docker.mihomo.port.socks5 }}"
+Environment="HTTPS_PROXY=socks5://{{ localhost }}:{{ docker.mihomo.port.socks5 }}"
 Environment="NO_PROXY={{ localhost }},localhost,{{ lan_ip.server }}"

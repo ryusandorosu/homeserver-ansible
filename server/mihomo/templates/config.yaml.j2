@@ -1,10 +1,10 @@
-mixed-port: {{ docker.mihomo.mixed_port }}
-socks-port: {{ docker.mihomo.socks5_port }}
+mixed-port: {{ docker.mihomo.port.mixed }}
+socks-port: {{ docker.mihomo.port.socks5 }}
 #redir-port: 7892
 allow-lan: true
 mode: {{ clash_proxy_mode }}
 log-level: debug
-external-controller: 0.0.0.0:{{ docker.mihomo.web_port }}
+external-controller: 0.0.0.0:{{ docker.mihomo.port.web }}
 tun:
   enable: {{ clash_tunnel_enable | lower }}
   stack: system
