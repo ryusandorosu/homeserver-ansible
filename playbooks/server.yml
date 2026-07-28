@@ -13,7 +13,7 @@
         that: ansible_run_tags | difference(valid_tags + ['all']) | length == 0
         fail_msg: "Unknown tag used: {{ ansible_run_tags | difference(valid_tags + ['all']) }}"
       vars:
-        valid_tags: "{{ roles_list + includes_list }}"
+        valid_tags: "{{ roles_list + includes_list + docker_list }}"
 
   vars:
     includes_list:
@@ -45,6 +45,7 @@
       - far2l
       - neovim
       - docker
+    docker_list:
       - nginx_auth
       - docker_network
       - loki
@@ -53,7 +54,6 @@
       - prometheus
       - grafana
       - guacamole
-      - actual
 
   tasks:
     - name: Include common linux roles
@@ -74,5 +74,15 @@
       loop: "{{ roles_list }}"
       loop_control:
         loop_var: role_item
+      tags:
+        - always
+    - name: Include server docker roles dynamically
+      include_role:
+        name: "{{ docker_item }}"
+        apply:
+          tags: "{{ docker_item }}"
+      loop: "{{ docker_list }}"
+      loop_control:
+        loop_var: docker_item
       tags:
         - always
