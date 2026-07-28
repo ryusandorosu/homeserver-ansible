@@ -1,3 +1,6 @@
+- set_fact:
+    actual_dir: /opt/actualbudget
+
 - name: Create Actual directories
   file:
     path: "{{ item }}"

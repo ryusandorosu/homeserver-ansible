@@ -1,3 +1,8 @@
+- set_fact:
+    loki_dir: "/opt/loki"
+- set_fact:
+    loki_data_dir: "{{ loki_dir }}/data"
+
 - name: Create Loki directories
   file:
     path: "{{ item }}"

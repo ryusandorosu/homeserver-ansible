@@ -1,3 +1,6 @@
+- set_fact:
+    guacamole_dir: /opt/guacamole
+
 - name: Create Apache Guacamole directories
   file:
     path: "{{ item }}"

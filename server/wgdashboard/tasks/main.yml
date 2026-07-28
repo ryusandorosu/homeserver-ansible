@@ -1,3 +1,6 @@
+- set_fact:
+    base_dir: /opt/wg-dashboard
+
 - name: Create project directory
   file:
     path: "{{ base_dir }}"
