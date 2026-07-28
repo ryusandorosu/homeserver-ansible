@@ -13,13 +13,13 @@ server {
     location / {
 
 {% if item.value.authentication %}
-{% if nginx_authentication == 'basic_auth' %}
+{% if nginx_authentication.name == 'basic_auth' %}
         auth_basic "Restricted";
         auth_basic_user_file {{ nginx_basic_auth_path }};
-{% elif nginx_authentication == 'oauth' %}
+{% elif nginx_authentication.name == 'oauth' %}
         auth_request /oauth2/auth;
         error_page 401 =302 {{ nginx_hosts.auth }}/oauth2/sign_in?rd=$scheme://$host$request_uri;
-{% elif nginx_authentication == 'authelia' %}
+{% elif nginx_authentication.name == 'authelia' %}
         auth_request /api/verify;
         error_page 401 =302 {{ nginx_hosts.auth }}/?rd=$scheme://$host$request_uri;
 {% endif %}

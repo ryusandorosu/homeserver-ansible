@@ -8,4 +8,4 @@ services:
     command:
       - --config={{ oauth_config }}
     ports:
-      - "{{ localhost }}:{{ docker.nginx_auth.oauthproxy_port }}:{{ docker.nginx_auth.oauthproxy_port }}"
+      - "{{ localhost }}:{{ docker.nginx_auth.port }}:{{ docker.nginx_auth.port }}"

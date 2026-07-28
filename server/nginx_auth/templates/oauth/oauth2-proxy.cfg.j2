@@ -9,19 +9,17 @@ cookie_refresh = "1h"
 cookie_expire = "168h"
 
 whitelist_domains = [".{{ domain }}"]
-trusted_ips = ["{{ localhost }}"] #seems like works too
-#trusted_ips = ["{{ docker_network }}"]
-#trusted_ips = ["0.0.0.0/0"] #works
+trusted_ips = ["{{ localhost }}"]
 email_domains = ["*"]
 
 upstreams = ["static://200"]
-http_address = "0.0.0.0:{{ docker.nginx_auth.oauthproxy_port }}"
+http_address = "0.0.0.0:{{ docker.nginx_auth.port }}"
 
 redirect_url = "{{ nginx_hosts.auth }}/oauth2/callback"
 reverse_proxy = true
 set_xauthrequest = true
 skip_provider_button = true
-skip_auth_preflight = true #not deployed yet
+skip_auth_preflight = true
 set_authorization_header = true
 pass_access_token = true
 

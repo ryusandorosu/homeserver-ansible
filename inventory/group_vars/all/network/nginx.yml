@@ -1,7 +1,15 @@
 domain: ryusandorosu.ru
 
-mihomo_web_interface: metacubexd #yacd, metacubexd
-nginx_authentication: oauth #oauth, authelia
+mihomo_interface:
+  name: metacubexd
+  port: 9094
+  # name: yacd
+  # port: 9088
+nginx_authentication:
+  name: oauth
+  port: 4180
+  # name: authelia
+  # port: 9095 #9091
 
 nginx_public_sites:
   - "{{ domain }}"
@@ -15,7 +23,7 @@ nginx_allowed:
 nginx_private_sites:
   auth:
     authentication: false
-    port: "{{ docker.nginx_auth.oauthproxy_port }}"
+    port: "{{ docker.nginx_auth.port }}"
     proto: http
   cockpit:
     authentication: false
@@ -35,7 +43,7 @@ nginx_private_sites:
     proto: http
   clash:
     authentication: true
-    port: "{{ docker.mihomo_dashboard.metacubexd_port }}"
+    port: "{{ docker.mihomo_dashboard.port }}"
     proto: http
   mihomo:
     authentication: false

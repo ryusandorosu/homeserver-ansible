@@ -15,25 +15,17 @@ docker:
     mixed_port: 7890 #http and socks5
     socks5_port: 7891
     web_port: 9092
-  # make var depending on which web ui is chosen. change 'clash.auth.port' after
-    # look for homeserver-ansible/server/mihomo/templates/docker-compose.yml.j2
+
   mihomo_dashboard:
-    name: "{{ mihomo_web_interface }}"
-    yacd_port: 9088
-    metacubexd_port: 9094
-
-  # make var depending on which auth method is chosen. change 'nginx_private_sites.auth.port' after
-    # look for homeserver-ansible/server/nginx_auth/templates/authelia/docker-compose.yml.j2
-    # look for homeserver-ansible/server/nginx_auth/templates/oauth/docker-compose.yml.j2
-    # look for homeserver-ansible/server/nginx/templates/modules/authentication.j2
-  nginx_auth:
-    name: "{{ nginx_authentication }}"
-    oauthproxy_port: 4180
-    authelia_port: 9095 #9091
-
+    name: "{{ mihomo_interface.name }}"
+    port: "{{ mihomo_interface.port }}"
   wireguard_dashboard:
     name: wg_dashboard
     port: 10086
+
+  nginx_auth:
+    name: "{{ nginx_authentication.name }}"
+    port: "{{ nginx_authentication.port }}"
 
   # monitoring
   promtail:

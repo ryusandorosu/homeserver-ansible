@@ -13,22 +13,22 @@ services:
     network_mode: host
     stop_grace_period: 30s
 
-{% if mihomo_web_interface == 'yacd' %}
-  yacd:
+{% if mihomo_interface.name == 'yacd' %}
+  {{ mihomo_interface.name }}:
     image: haishanh/yacd
     container_name: {{ docker.mihomo_dashboard.name }}
     restart: unless-stopped
     ports:
-      - "{{ docker.mihomo_dashboard.yacd_port }}:{{ http_port }}"
+      - "{{ docker.mihomo_dashboard.port }}:{{ http_port }}"
     environment:
       - BACKEND={{ nginx_hosts.mihomo }}
-{% elif mihomo_web_interface == 'metacubexd' %}
-  metacubexd:
+{% elif mihomo_interface.name == 'metacubexd' %}
+  {{ mihomo_interface.name }}:
     image: ghcr.io/metacubex/metacubexd:latest
     container_name: {{ docker.mihomo_dashboard.name }}
     restart: unless-stopped
     ports:
-      - "{{ docker.mihomo_dashboard.metacubexd_port }}:{{ http_port }}"
+      - "{{ docker.mihomo_dashboard.port }}:{{ http_port }}"
     environment:
       - DEFAULT_BACKEND_URL={{ nginx_hosts.mihomo }}
 {% endif %}
