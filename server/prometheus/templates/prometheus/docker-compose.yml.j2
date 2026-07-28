@@ -12,7 +12,7 @@ services:
       - {{ prometheus_config_dir }}/prometheus.yml:{{ prometheus_container_config_dir }}/prometheus.yml
       - {{ prometheus_data_dir }}:{{ prometheus_container_data_dir }}
     ports:
-      - "{{ docker.prometheus.port }}:{{ internal_port.prometheus }}"
+      - "{{ docker.prometheus.port.exposed }}:{{ docker.prometheus.port.internal }}"
     command:
       - '--config.file={{ prometheus_container_config_dir }}/prometheus.yml'
       - '--web.external-url={{ nginx_hosts.prometheus }}'

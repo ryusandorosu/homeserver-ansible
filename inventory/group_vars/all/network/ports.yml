@@ -43,7 +43,9 @@ docker:
     port: 8118 #http_proxy_port
   prometheus:
     name: prometheus
-    port: 9091 #9090
+    port:
+      exposed: 9091
+      internal: 9090
 
   monitoring:
     node:
@@ -78,7 +80,9 @@ docker:
     name: postgres
   guacamole:
     name: guacamole
-    port: 8085 #8080
+    port:
+      exposed: 8085
+      internal: 8080
 
   ### non-infra:
   actual:
@@ -86,6 +90,8 @@ docker:
     port: 5006
   vdf:
     name: vdf
-    port: 8888 #8080
+    port:
+      exposed: 8888
+      internal: 8080
 
 ### docker dictionary ends here ###

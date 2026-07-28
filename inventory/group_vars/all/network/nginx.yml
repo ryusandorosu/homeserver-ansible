@@ -35,7 +35,7 @@ nginx_private_sites:
     proto: http
   prometheus:
     authentication: true
-    port: "{{ docker.prometheus.port }}"
+    port: "{{ docker.prometheus.port.exposed }}"
     proto: http
   wg:
     authentication: false
@@ -52,7 +52,7 @@ nginx_private_sites:
   guac:
     authentication: true
     bypass: true
-    port: "{{ docker.guacamole.port }}"
+    port: "{{ docker.guacamole.port.exposed }}"
     proto: http
   actual:
     authentication: true

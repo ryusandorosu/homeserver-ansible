@@ -15,4 +15,4 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    url: http://{{ docker.prometheus.name }}:{{ internal_port.prometheus }}
+    url: http://{{ docker.prometheus.name }}:{{ docker.prometheus.port.internal }}

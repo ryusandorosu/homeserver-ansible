@@ -36,7 +36,7 @@ services:
       POSTGRESQL_USER: guacamole_user
       POSTGRESQL_PASSWORD: {{ vault_guacamole_db }}
     ports:
-      - "{{ localhost }}:{{ docker.guacamole.port }}:{{ internal_port.guacamole }}"
+      - "{{ localhost }}:{{ docker.guacamole.port.exposed }}:{{ docker.guacamole.port.internal }}"
     depends_on:
       - guacd
       - postgres

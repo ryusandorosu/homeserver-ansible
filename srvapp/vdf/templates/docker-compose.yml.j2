@@ -5,7 +5,7 @@ services:
     container_name: {{ docker.vdf.name }}
     restart: unless-stopped
     ports:
-      - "{{ docker.vdf.port }}:{{ internal_port.vdf }}"
+      - "{{ docker.vdf.port.exposed }}:{{ docker.vdf.port.internal }}"
     environment:
       - VDF_WEB_AUTH=false
     volumes:

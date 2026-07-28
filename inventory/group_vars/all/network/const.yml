@@ -16,10 +16,3 @@ smb_netbios_udp_ns_port: 137
 smb_netbios_udp_dg_port: 138
 smb_netbios_tcp_port: 139
 smb_port: 445
-
-#services_internal
-internal_port:
-  prometheus: 9090
-  guacamole: 8080
-  # non-infra
-  vdf: 8080
