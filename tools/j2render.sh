@@ -19,11 +19,12 @@ ansible-playbook \
   -e template_path="$relative_template" \
   -e roles_dir="$roles_root" \
   -e role_name="$role" \
-  -e output_path="$outfile"
+  -e output_path="$outfile" \
+  --tags always,vars
 
 OS_ID=$(grep '^ID=' /etc/os-release | cut -d= -f2)
 if [[ "$OS_ID" == debian ]]; then
-  batcat "$outfile"
+  bat "$outfile"
   rm "$outfile"
 elif [[ "$OS_ID" == ubuntu ]]; then
   code "$outfile"
