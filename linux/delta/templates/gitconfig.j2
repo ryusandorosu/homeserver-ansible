@@ -17,18 +17,62 @@
     conflictStyle = zdiff3
 
 [delta]
-  ; behavior
-    navigate = true       # use n and N to move between diff sections
-    side-by-side = true   # to check how it works
-    colorMoved = default  # to check how it works
-  ; general appearance
-    dark = true
+  ; necessary
     detect-dark-light = never
-    line-numbers = true
-    # syntax-theme = Dracula
-  ; color appearance
-    file-style = blue
-    commit-style = yellow
+    dark = true
+  ; behavior
+    diff-highlight = true
+    side-by-side = true
+    colorMoved = default          # to check how it works
   ; formatting
-    hyperlinks = true     # to check how it works
-    hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+    hyperlinks                    = true
+    hyperlinks-file-link-format   = "vscode://file/{path}:{line}"
+  # defaults changed
+    commit-style                  = bold yellow
+    file-style                    = raw blue
+    # file-decoration-style = gray ol
+    # commit-decoration-style = ul
+  # defaults. see 'delta --show-config'
+    hunk-header-style             = syntax
+    minus-style                   = syntax "#3f0001"
+    minus-non-emph-style          = syntax "#3f0001"
+    minus-emph-style              = syntax "#901011"
+    minus-empty-line-marker-style = normal "#3f0001"
+    zero-style                    = syntax
+    plus-style                    = syntax "#002800"
+    plus-non-emph-style           = syntax "#002800"
+    plus-emph-style               = syntax "#006000"
+    plus-empty-line-marker-style  = normal "#002800"
+    grep-file-style               = purple
+    grep-line-number-style        = green
+    whitespace-error-style        = reverse purple
+    blame-palette                 = "#000000 #222222 #444444"
+    true-color                    = auto
+    file-added-label              = 'added:'
+    # file-modified-label           = Δ
+    file-removed-label            = 'removed:'
+    file-renamed-label            = 'renamed:'
+    right-arrow                   = '⟶  '
+    inspect-raw-lines             = true
+    keep-plus-minus-markers       = false
+    line-numbers                  = true
+    line-numbers-minus-style      = 88
+    line-numbers-zero-style       = "#444444"
+    line-numbers-plus-style       = 28
+    line-numbers-left-style       = blue
+    line-numbers-right-style      = blue
+    line-numbers-left-format      = │{nm:^4}│
+    line-numbers-right-format     = │{np:^4}│
+    max-line-distance             = 0.6
+    max-line-length               = 3000
+    diff-stat-align-width         = 48
+    line-fill-method              = ansi
+    navigate                      = true
+    navigate-regex                = '^(commit|added:|removed:|renamed:|Δ|•)'
+    pager                         = none
+    paging                        = auto
+    side-by-side                  = true
+    syntax-theme                  = Monokai Extended
+    width                         = 238
+    tabs                          = 8
+    word-diff-regex               = '\\w+'
