@@ -1,0 +1,37 @@
+- set_fact:
+    vdf_dir: /opt/videoduplicatefinder
+  tags: [vars]
+
+- name: Create VDF directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - "{{ vdf_dir }}"
+    - "{{ vdf_dir }}/vdf-db"
+    - "{{ vdf_dir }}/vdf-state"
+
+- name: Deploy docker-compose
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ vdf_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0664"
+
+- name: Run containers
+  community.docker.docker_compose_v2:
+    project_src: "{{ vdf_dir }}"
+    state: present
+
+- name: Wait for VDF to become available
+  uri:
+    url: "http://{{ localhost }}:{{ vdf_port }}"
+    status_code: 200
+  register: result
+  retries: 5
+  delay: 3
+  until: result.status == 200

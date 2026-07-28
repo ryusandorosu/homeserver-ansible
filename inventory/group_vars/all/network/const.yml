@@ -21,3 +21,5 @@ smb_port: 445
 internal_port:
   prometheus: 9090
   guacamole: 8080
+  # non-infra
+  vdf: 8080

@@ -14,7 +14,6 @@ wireguard_dashboard_port: 10086
 #services
 cockpit_port: 9090
 synology_dsm_port: 5001
-actual_port: 5006
 guacamole_port: 8085 #8080
 #authentication
 oauthproxy_port: 4180
@@ -33,3 +32,7 @@ snmp_exporter_port: 9116
 fail2ban_exporter_port: 9191
 wireguard_exporter_port: 9586
 smartctl_exporter_port: 9633
+
+#non-infa
+actual_port: 5006
+vdf_port: 8888

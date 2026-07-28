@@ -22,4 +22,6 @@ docker:
   guacd: guacd
   postgres: postgres
   guacamole: guacamole
+  ### non-infra:
   actual: actual
+  vdf: vdf

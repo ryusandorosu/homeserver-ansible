@@ -1,0 +1,16 @@
+# https://github.com/0x90d/videoduplicatefinder/blob/master/docker-compose.yml
+services:
+  vdf:
+    image: ghcr.io/0x90d/vdf-web:latest
+    container_name: {{ docker.vdf }}
+    restart: unless-stopped
+    ports:
+      - "{{ vdf_port }}:{{ internal_port.vdf }}"
+    environment:
+      - VDF_WEB_AUTH=false
+    volumes:
+      - "{{ vdf_dir }}/vdf-db:/root/.config/VDF"
+      - "{{ vdf_dir }}/vdf-state:/root/.local/state/VDF"
+{% for path in vault_vdf_volumes %}
+      - {{ path }}
+{% endfor %}
