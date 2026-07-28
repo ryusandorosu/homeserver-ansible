@@ -1,6 +1,6 @@
 {%- set devices = [] -%}
 {%- for name, host in ssh_hosts.items() -%}
-  {%- if host.port is defined -%}{%- if (host.port | string) == (termux_port | string) -%}
+  {%- if host.port is defined -%}{%- if (host.port | string) == (lan_port.termux | string) -%}
 
     {%- if host.path is defined -%}
       {%- set target_path = host.path -%}

@@ -1,4 +1,3 @@
-appsec_port: 7422
 appsecurity_collections:
   - virtual-patching
   - generic-rules

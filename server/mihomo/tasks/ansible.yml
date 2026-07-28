@@ -6,14 +6,14 @@
 
 - name: Run mihomo container
   community.docker.docker_container:
-    name: "{{ docker.mihomo }}"
+    name: "{{ docker.mihomo.name }}"
     image: metacubex/mihomo:latest
     restart_policy: unless-stopped
     recreate: true
     restart: true
     ports:
-      - "{{ clash_mixed_port }}:{{ clash_mixed_port }}"
-      - "{{ socks5_port }}:{{ socks5_port }}"
+      - "{{ docker.mihomo.mixed_port }}:{{ docker.mihomo.mixed_port }}"
+      - "{{ docker.mihomo.socks5_port }}:{{ docker.mihomo.socks5_port }}"
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"
     stop_timeout: 30

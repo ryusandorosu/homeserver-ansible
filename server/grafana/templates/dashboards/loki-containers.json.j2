@@ -16,13 +16,13 @@
       },
       "panels": []
     },
-{% for key, value in docker.items() if key not in ['metric_exporters'] %}
+{% for key, value in docker.items() if key not in ['monitoring'] %}
     {
       "type": "logs",
-      "title": "{{ value }} logs",
+      "title": "{{ value.name }} logs",
       "targets": [
         {
-          "expr": "{container=\"/{{ value }}\"}",
+          "expr": "{container=\"/{{ value.name }}\"}",
           "refId": "{{ loop.index }}"
         }
       ],
@@ -38,7 +38,7 @@
       }
     },
 {% endfor %}
-{% set main_logs = docker | dict2items | rejectattr('key', 'equalto', 'metric_exporters') | list %}
+{% set main_logs = docker | dict2items | rejectattr('key', 'equalto', 'monitoring') | list %}
     {
       "type": "row",
       "title": "Prometheus metric exporters",
@@ -50,13 +50,13 @@
         "y": {{ 1 + (main_logs | length * 8) }}
       },
       "panels": [
-{% for key, value in docker.metric_exporters.items() %}
+{% for key, value in docker.monitoring.items() %}
         {
           "type": "logs",
-          "title": "{{ value }} logs",
+          "title": "{{ value.name }} logs",
           "targets": [
             {
-              "expr": "{container=\"/{{ value }}\"}",
+              "expr": "{container=\"/{{ value.name }}\"}",
               "refId": "{{ loop.index }}"
             }
           ],

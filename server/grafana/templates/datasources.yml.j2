@@ -4,7 +4,7 @@ datasources:
   - name: Loki
     type: loki
     access: proxy
-    url: http://{{ docker.loki }}:{{ loki_port }}
+    url: http://{{ docker.loki.name }}:{{ docker.loki.port }}
     isDefault: true
     jsonData:
       derivedFields:
@@ -15,4 +15,4 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    url: http://{{ docker.prometheus }}:{{ internal_port.prometheus }}
+    url: http://{{ docker.prometheus.name }}:{{ internal_port.prometheus }}

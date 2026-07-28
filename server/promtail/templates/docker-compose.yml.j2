@@ -5,7 +5,7 @@ networks:
 services:
   promtail:
     image: grafana/promtail:{{ promtail_version }}
-    container_name: {{ docker.promtail }}
+    container_name: {{ docker.promtail.name }}
     restart: unless-stopped
     user: root
     command: -config.file=/etc/promtail/promtail.yml
@@ -19,6 +19,6 @@ services:
       - /run/systemd/journal:/run/systemd/journal:ro
       - "{{ geoip_plugin }}:{{ container_geoip_plugin }}"
     ports:
-      - "{{ localhost }}:{{ promtail_port }}:{{ promtail_port }}"
+      - "{{ localhost }}:{{ docker.promtail.port }}:{{ docker.promtail.port }}"
     networks:
       - monitoring

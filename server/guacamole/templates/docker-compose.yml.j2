@@ -5,14 +5,14 @@ networks:
 services:
   guacd:
     image: guacamole/guacd:latest
-    container_name: {{ docker.guacd }}
+    container_name: {{ docker.guacd.name }}
     restart: unless-stopped
     networks:
       - guac_net
 
   postgres:
     image: postgres:latest
-    container_name: {{ docker.postgres }}
+    container_name: {{ docker.postgres.name }}
     restart: unless-stopped
     environment:
       POSTGRES_DB: guacamole_db
@@ -26,7 +26,7 @@ services:
 
   guacamole:
     image: guacamole/guacamole:latest
-    container_name: {{ docker.guacamole }}
+    container_name: {{ docker.guacamole.name }}
     restart: unless-stopped
     environment:
       GUACD_HOSTNAME: guacd
@@ -36,7 +36,7 @@ services:
       POSTGRESQL_USER: guacamole_user
       POSTGRESQL_PASSWORD: {{ vault_guacamole_db }}
     ports:
-      - "{{ localhost }}:{{ guacamole_port }}:{{ internal_port.guacamole }}"
+      - "{{ localhost }}:{{ docker.guacamole.port }}:{{ internal_port.guacamole }}"
     depends_on:
       - guacd
       - postgres

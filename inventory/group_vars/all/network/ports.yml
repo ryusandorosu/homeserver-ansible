@@ -1,38 +1,98 @@
-termux_port: 8022
+local_port:
+  wireguard: 51820
+  cockpit: 9090
+  wifi_ap: 8082
+  appsec: 7422
 
-#vpn
-wireguard_port: 51820
-clash_mixed_port: 7890 #http and socks5
-socks5_port: 7891
-wifi_port: 8082
-http_proxy_port: 8118
-clash_web_port: 9092
-yacd_port: 9088
-metacubexd_port: 9094
-wireguard_dashboard_port: 10086
+lan_port:
+  synology_dsm: 5001
+  termux: 8022
 
-#services
-cockpit_port: 9090
-synology_dsm_port: 5001
-guacamole_port: 8085 #8080
-#authentication
-oauthproxy_port: 4180
-authelia_port: 9095 #9091
-#monitoring
-grafana_port: 3000
-loki_port: 3100
-promtail_port: 9080
-prometheus_port: 9091 #9090
-#prometheus exporters
-cadvisor_port: 8080
-node_exporter_port: 9100
-nginx_exporter_port: 9113
-blackbox_port: 9115
-snmp_exporter_port: 9116
-fail2ban_exporter_port: 9191
-wireguard_exporter_port: 9586
-smartctl_exporter_port: 9633
 
-#non-infa
-actual_port: 5006
-vdf_port: 8888
+docker:
+  mihomo:
+    name: mihomo
+    mixed_port: 7890 #http and socks5
+    socks5_port: 7891
+    web_port: 9092
+  # make var depending on which web ui is chosen. change 'clash.auth.port' after
+    # look for homeserver-ansible/server/mihomo/templates/docker-compose.yml.j2
+  mihomo_dashboard:
+    name: "{{ mihomo_web_interface }}"
+    yacd_port: 9088
+    metacubexd_port: 9094
+
+  # make var depending on which auth method is chosen. change 'nginx_private_sites.auth.port' after
+    # look for homeserver-ansible/server/nginx_auth/templates/authelia/docker-compose.yml.j2
+    # look for homeserver-ansible/server/nginx_auth/templates/oauth/docker-compose.yml.j2
+    # look for homeserver-ansible/server/nginx/templates/modules/authentication.j2
+  nginx_auth:
+    name: "{{ nginx_authentication }}"
+    oauthproxy_port: 4180
+    authelia_port: 9095 #9091
+
+  wireguard_dashboard:
+    name: wg_dashboard
+    port: 10086
+
+  # monitoring
+  promtail:
+    name: promtail
+    port: 9080
+  loki:
+    name: loki
+    port: 3100
+  grafana:
+    name: grafana
+    port: 3000
+  privoxy:
+    name: privoxy
+    port: 8118 #http_proxy_port
+  prometheus:
+    name: prometheus
+    port: 9091 #9090
+
+  monitoring:
+    node:
+      name: node_exporter
+      port: 9100
+    wireguard:
+      name: wg_exporter
+      port: 9586
+    fail2ban:
+      name: f2b_exporter
+      port: 9191
+    cadvisor:
+      name: cadvisor
+      port: 8080
+    smartctl:
+      name: smartctl_exporter
+      port: 9633
+    snmp:
+      name: snmp_exporter
+      port: 9116
+    blackbox:
+      name: blackbox_exporter
+      port: 9115
+    nginx:
+      name: nginx_exporter
+      port: 9113
+
+  # guacamole network
+  guacd:
+    name: guacd
+  postgres:
+    name: postgres
+  guacamole:
+    name: guacamole
+    port: 8085 #8080
+
+  ### non-infra:
+  actual:
+    name: actual
+    port: 5006
+  vdf:
+    name: vdf
+    port: 8888 #8080
+
+### docker dictionary ends here ###

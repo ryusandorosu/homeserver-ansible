@@ -1,7 +1,7 @@
 [Interface]
 PrivateKey = {{ vault_wireguard_private_key }}
 Address = {{ wireguard_server_ip }}/24
-ListenPort = {{ wireguard_port }}
+ListenPort = {{ local_port.wireguard }}
 MTU = {{ wireguard_mtu }}
 
 {% for device, data in wireguard_devices.items() %}

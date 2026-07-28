@@ -35,7 +35,7 @@ ssh_hosts:
 
   redmi:
     hostname: "{{ wireguard_devices.phone.ip }}"
-    port: "{{ termux_port }}"
+    port: "{{ lan_port.termux }}"
     user: "{{ termux.redmi.user }}"
     identity: "{{ termux.redmi.key }}"
     device:
@@ -106,7 +106,7 @@ ssh_hosts:
 
   samsung:
     hostname: "{{ wireguard_devices.pad.ip }}"
-    port: "{{ termux_port }}"
+    port: "{{ lan_port.termux }}"
     user: "{{ termux.samsung.user }}"
     identity: "{{ termux.samsung.key }}"
     path: /storage/0123-4567/
@@ -115,7 +115,7 @@ ssh_hosts:
 
   smarttv:
     hostname: "{{ wireguard_devices.x96q.ip }}"
-    port: "{{ termux_port }}"
+    port: "{{ lan_port.termux }}"
     user: "{{ termux.x96q.user }}"
     identity: "{{ termux.x96q.key }}"
     device:

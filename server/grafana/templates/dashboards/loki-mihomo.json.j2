@@ -20,10 +20,10 @@ Relation of successful and failed health checks of proxy nodes
 {%- endif -%}",
       "targets": [
 {% if panel == 'normal' %}{% for metric, value in mihomo_metrics.items() %}
-        {{ query.mihomo_panel_query(metric, value, docker.mihomo, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
+        {{ query.mihomo_panel_query(metric, value, docker.mihomo.name, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
 {% endif %}
 {% endfor %}{% else %}{% for metric, value in mihomo_metrics.items() if metric != 'proxy_healthcheck_latency' %}
-        {{ query.mihomo_panel_query(metric, value, docker.mihomo, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
+        {{ query.mihomo_panel_query(metric, value, docker.mihomo.name, mihomo_alerts.seek_period) | indent(8) }}{% if not loop.last %},
 {% endif %}
 {% endfor %}{% endif %}
 

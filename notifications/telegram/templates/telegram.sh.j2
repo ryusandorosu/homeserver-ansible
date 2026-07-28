@@ -41,7 +41,7 @@ for ((i=1; i<=MAX_RETRIES; i++)); do
   response="$(curl \
     --silent \
     --write-out "%{json}\n" \
-    --proxy "socks5h://{{ localhost }}:{{ socks5_port }}" \
+    --proxy "socks5h://{{ localhost }}:{{ docker.mihomo.socks5_port }}" \
     --request POST "https://api.telegram.org/bot$TOKEN/sendMessage" \
     --data chat_id="{{ vault_telegram_user_chat_id }}" \
     --data text="${MESSAGE}" \

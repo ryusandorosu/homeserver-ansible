@@ -1,7 +1,7 @@
 auth_enabled: false
 
 server:
-  http_listen_port: {{ loki_port }}
+  http_listen_port: {{ docker.loki.port }}
 
 common:
   path_prefix: /loki

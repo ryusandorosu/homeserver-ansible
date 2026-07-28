@@ -1,5 +1,5 @@
 server:
-  address: "tcp://0.0.0.0:{{ authelia_port }}"
+  address: "tcp://0.0.0.0:{{ docker.nginx_auth.authelia_port }}"
 
 log:
   level: info

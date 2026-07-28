@@ -1,12 +1,12 @@
 services:
   mihomo:
     image: metacubex/mihomo:latest
-    container_name: {{ docker.mihomo }}
+    container_name: {{ docker.mihomo.name }}
     restart: unless-stopped
     volumes:
       - "{{ clash_config_dir }}:/root/.config/mihomo"
     healthcheck:
-      test: ["CMD", "nc", "-z", "{{ localhost }}", "{{ socks5_port }}"]
+      test: ["CMD", "nc", "-z", "{{ localhost }}", "{{ docker.mihomo.socks5_port }}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -16,21 +16,19 @@ services:
 {% if mihomo_web_interface == 'yacd' %}
   yacd:
     image: haishanh/yacd
-    container_name: {{ docker.mihomo_dashboard }}
+    container_name: {{ docker.mihomo_dashboard.name }}
     restart: unless-stopped
     ports:
-      - "{{ yacd_port }}:{{ http_port }}"
+      - "{{ docker.mihomo_dashboard.yacd_port }}:{{ http_port }}"
     environment:
-      #- BACKEND=http://{{ lan_ip.server }}:{{ clash_web_port }}
       - BACKEND={{ nginx_hosts.mihomo }}
 {% elif mihomo_web_interface == 'metacubexd' %}
   metacubexd:
     image: ghcr.io/metacubex/metacubexd:latest
-    container_name: {{ docker.mihomo_dashboard }}
+    container_name: {{ docker.mihomo_dashboard.name }}
     restart: unless-stopped
     ports:
-      - "{{ metacubexd_port }}:{{ http_port }}"
+      - "{{ docker.mihomo_dashboard.metacubexd_port }}:{{ http_port }}"
     environment:
-      #- DEFAULT_BACKEND_URL=http://{{ lan_ip.server }}:{{ clash_web_port }}
       - DEFAULT_BACKEND_URL={{ nginx_hosts.mihomo }}
 {% endif %}

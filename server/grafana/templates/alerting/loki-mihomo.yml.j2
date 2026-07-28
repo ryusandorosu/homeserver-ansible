@@ -2,7 +2,7 @@
 apiVersion: 1
 
 groups:
-  - name: {{ docker.mihomo }}
+  - name: {{ docker.mihomo.name }}
     folder: alerts
     interval: {{ mihomo_alerts.interval }}
     rules:
@@ -20,7 +20,7 @@ groups:
             model:
 {% if rule.query.method == 'count' %}
               expr: >
-                {{ expr.mihomo_loki_query(rule, docker.mihomo, mihomo_alerts.seek_period) | indent(16) }}{% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
+                {{ expr.mihomo_loki_query(rule, docker.mihomo.name, mihomo_alerts.seek_period) | indent(16) }}{% if rule.query.type == 'instant' %} {{ rule.condition.operator }} {{ rule.condition.value }}
 {% endif %}
 
 {% endif %}

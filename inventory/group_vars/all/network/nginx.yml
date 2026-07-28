@@ -15,40 +15,40 @@ nginx_allowed:
 nginx_private_sites:
   auth:
     authentication: false
-    port: "{{ oauthproxy_port }}"
+    port: "{{ docker.nginx_auth.oauthproxy_port }}"
     proto: http
   cockpit:
     authentication: false
-    port: "{{ cockpit_port }}"
+    port: "{{ local_port.cockpit }}"
     proto: https
   grafana:
     authentication: true
-    port: "{{ grafana_port }}"
+    port: "{{ docker.grafana.port }}"
     proto: http
   prometheus:
     authentication: true
-    port: "{{ prometheus_port }}"
+    port: "{{ docker.prometheus.port }}"
     proto: http
   wg:
     authentication: false
-    port: "{{ wireguard_dashboard_port }}"
+    port: "{{ docker.wireguard_dashboard.port }}"
     proto: http
   clash:
     authentication: true
-    port: "{{ metacubexd_port }}"
+    port: "{{ docker.mihomo_dashboard.metacubexd_port }}"
     proto: http
   mihomo:
     authentication: false
-    port: "{{ clash_web_port }}"
+    port: "{{ docker.mihomo.web_port }}"
     proto: http
   guac:
     authentication: true
     bypass: true
-    port: "{{ guacamole_port }}"
+    port: "{{ docker.guacamole.port }}"
     proto: http
   actual:
     authentication: true
-    port: "{{ actual_port }}"
+    port: "{{ docker.actual.port }}"
     proto: http
 
 letsencrypt_domains: >-

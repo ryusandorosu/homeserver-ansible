@@ -5,18 +5,18 @@ networks:
 services:
   grafana:
     image: grafana/grafana:latest
-    container_name: {{ docker.grafana }}
+    container_name: {{ docker.grafana.name }}
     restart: unless-stopped
     user: "{{ grafana_user }}:{{ grafana_user }}"
     ports:
-      - "{{ localhost }}:{{ grafana_port }}:{{ grafana_port }}"
+      - "{{ localhost }}:{{ docker.grafana.port }}:{{ docker.grafana.port }}"
     environment:
       - GF_SERVER_ROOT_URL={{ nginx_hosts.grafana }}
       - GF_SERVER_SERVE_FROM_SUB_PATH=false
       - GF_SERVER_PROTOCOL=http
-      - HTTP_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
-      - HTTPS_PROXY=http://{{ docker.privoxy }}:{{ http_proxy_port }}
-      - NO_PROXY={{ docker.loki }},{{ docker.prometheus }},{{ localhost }},localhost
+      - HTTP_PROXY=http://{{ docker.privoxy.name }}:{{ docker.privoxy.port }}
+      - HTTPS_PROXY=http://{{ docker.privoxy.name }}:{{ docker.privoxy.port }}
+      - NO_PROXY={{ docker.loki.name }},{{ docker.prometheus.name }},{{ localhost }},localhost
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST={{ smtp_host }}:{{ smtp_port }}
       - GF_SMTP_USER={{ vault_msmtp_user }}
@@ -31,10 +31,10 @@ services:
 
   privoxy:
     image: vimagick/privoxy
-    container_name: {{ docker.privoxy }}
+    container_name: {{ docker.privoxy.name }}
     restart: unless-stopped
     ports:
-      - "{{ http_proxy_port }}:{{ http_proxy_port }}"
+      - "{{ docker.privoxy.port }}:{{ docker.privoxy.port }}"
     volumes:
       - "{{ grafana_base_dir }}/privoxy.config:/etc/privoxy/config"
     networks:

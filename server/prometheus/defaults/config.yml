@@ -1,26 +1,26 @@
 prometheus_scrape_configs:
   node:
-    target_src: "{{ docker.metric_exporters.node }}"
-    target_port: "{{ node_exporter_port }}"
+    target_src: "{{ docker.monitoring.node.name }}"
+    target_port: "{{ docker.monitoring.node.port }}"
     labels: instance
   wireguard:
     target_src: "{{ lan_ip.server }}"
-    target_port: "{{ wireguard_exporter_port }}"
+    target_port: "{{ docker.monitoring.wireguard.port }}"
   fail2ban:
-    target_src: "{{ docker.metric_exporters.fail2ban }}"
-    target_port: "{{ fail2ban_exporter_port }}"
+    target_src: "{{ docker.monitoring.fail2ban.name }}"
+    target_port: "{{ docker.monitoring.fail2ban.port }}"
     labels: instance
   cadvisor:
-    target_src: "{{ docker.metric_exporters.cadvisor }}"
-    target_port: "{{ cadvisor_port }}"
+    target_src: "{{ docker.monitoring.cadvisor.name }}"
+    target_port: "{{ docker.monitoring.cadvisor.port }}"
     labels: instance
   smartctl:
-    target_src: "{{ docker.metric_exporters.smartctl }}"
-    target_port: "{{ smartctl_exporter_port }}"
+    target_src: "{{ docker.monitoring.smartctl.name }}"
+    target_port: "{{ docker.monitoring.smartctl.port }}"
     labels: instance
   nginx:
     target_src: "{{ lan_ip.server }}"
-    target_port: "{{ nginx_exporter_port }}"
+    target_port: "{{ docker.monitoring.nginx.port }}"
     labels: instance
 
 prometheus_scrape_configs_extended:
@@ -28,7 +28,7 @@ prometheus_scrape_configs_extended:
     path: /snmp
     replacement:
       src: "{{ lan_ip.server }}"
-      port: "{{ snmp_exporter_port }}"
+      port: "{{ docker.monitoring.snmp.port }}"
     params:
       module: synology
       auth: public_v2
@@ -38,7 +38,7 @@ prometheus_scrape_configs_extended:
     path: /snmp
     replacement:
       src: "{{ lan_ip.server }}"
-      port: "{{ snmp_exporter_port }}"
+      port: "{{ docker.monitoring.snmp.port }}"
     params:
       module:
         - system
@@ -49,8 +49,8 @@ prometheus_scrape_configs_extended:
   blackbox:
     path: /probe
     replacement:
-      src: "{{ docker.metric_exporters.blackbox }}"
-      port: "{{ blackbox_port }}"
+      src: "{{ docker.monitoring.blackbox.name }}"
+      port: "{{ docker.monitoring.blackbox.port }}"
     params:
       module: http_2xx
     targets:
@@ -60,8 +60,8 @@ prometheus_scrape_configs_extended:
   blackbox_edgerouter:
     path: /probe
     replacement:
-      src: "{{ docker.metric_exporters.blackbox }}"
-      port: "{{ blackbox_port }}"
+      src: "{{ docker.monitoring.blackbox.name }}"
+      port: "{{ docker.monitoring.blackbox.port }}"
     params:
       module: http_2xx_insecure
     targets:

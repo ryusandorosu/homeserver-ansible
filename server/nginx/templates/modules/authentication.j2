@@ -2,7 +2,7 @@
 #verification endpoint for auth_request
 location = /oauth2/auth {
     internal;
-    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }}/oauth2/auth;
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ docker.nginx_auth.oauthproxy_port }}/oauth2/auth;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Host $host;
@@ -12,7 +12,7 @@ location = /oauth2/auth {
 {% if item.key == 'auth' %}
 #authentication ui
 location / {
-    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ oauthproxy_port }};
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ docker.nginx_auth.oauthproxy_port }};
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Host $host;
@@ -25,7 +25,7 @@ location / {
 #verification endpoint for auth_request
 location = /api/verify {
     internal;
-    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }}/api/verify;
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ docker.nginx_auth.authelia_port }}/api/verify;
     proxy_set_header Host $host;
     proxy_set_header X-Original-URL $scheme://$host$request_uri;
     proxy_set_header X-Real-IP $remote_addr;
@@ -34,7 +34,7 @@ location = /api/verify {
 {% if item.key == 'auth' %}
 #authentication ui
 location / {
-    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ authelia_port }};
+    proxy_pass {{ item.value.proto }}://{{ localhost }}:{{ docker.nginx_auth.authelia_port }};
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-Proto $scheme;

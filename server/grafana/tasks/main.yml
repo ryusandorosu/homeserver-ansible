@@ -85,7 +85,7 @@
 
 - name: Check Grafana container running status
   uri:
-    url: "http://{{ localhost }}:{{ grafana_port }}"
+    url: "http://{{ localhost }}:{{ docker.grafana.port }}"
     status_code: 200
   register: result
   retries: 5

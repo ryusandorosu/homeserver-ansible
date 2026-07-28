@@ -10,7 +10,7 @@
     that:
       - wireguard_interface is defined
       - wireguard_network is defined
-      - wireguard_port is defined
+      - local_port.wireguard is defined
     fail_msg: "Required WireGuard variables are not defined"
 
 - name: Ensure SSH port is allowed in firewall

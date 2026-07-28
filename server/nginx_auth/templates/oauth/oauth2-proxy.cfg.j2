@@ -15,7 +15,7 @@ trusted_ips = ["{{ localhost }}"] #seems like works too
 email_domains = ["*"]
 
 upstreams = ["static://200"]
-http_address = "0.0.0.0:{{ oauthproxy_port }}"
+http_address = "0.0.0.0:{{ docker.nginx_auth.oauthproxy_port }}"
 
 redirect_url = "{{ nginx_hosts.auth }}/oauth2/callback"
 reverse_proxy = true

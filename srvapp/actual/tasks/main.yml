@@ -23,7 +23,7 @@
 
 - name: Wait for Actual to become available
   uri:
-    url: "http://{{ localhost }}:{{ actual_port }}"
+    url: "http://{{ localhost }}:{{ docker.actual.port }}"
     status_code: 200
   register: result
   retries: 5

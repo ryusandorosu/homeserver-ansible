@@ -1,6 +1,9 @@
 lan_interface: wlp2s0
 home_ip: 87.117.169.26
 
+docker_network: 172.16.0.0/12
+docker_monitoring_network: 172.18.0.0/16
+
 # affected roles to deploy on change: firewall,fail2ban,nginx notifications:watchers windows:clashmeta
 home_network: 192.168.0.0/23 # includes 192.168.0.0/24 and 192.168.1.0/24
 # lan_networks:

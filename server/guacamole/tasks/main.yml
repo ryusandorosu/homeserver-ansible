@@ -59,7 +59,7 @@
 
 - name: Wait for Guacamole to become available
   uri:
-    url: "http://{{ localhost }}:{{ guacamole_port }}/guacamole/"
+    url: "http://{{ localhost }}:{{ docker.guacamole.port }}/guacamole/"
     status_code: 200
   register: result
   retries: 10

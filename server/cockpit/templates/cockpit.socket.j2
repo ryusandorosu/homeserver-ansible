@@ -3,7 +3,7 @@ Description=Cockpit Web Service Socket
 Documentation=man:cockpit-ws(8)
 
 [Socket]
-ListenStream={{ localhost }}:{{ cockpit_port }}
+ListenStream={{ localhost }}:{{ local_port.cockpit }}
 
 [Install]
 WantedBy=sockets.target

@@ -5,20 +5,20 @@ networks:
 services:
   node_exporter:
     image: prom/node-exporter:latest
-    container_name: {{ docker.metric_exporters.node }}
+    container_name: {{ docker.monitoring.node.name }}
     restart: unless-stopped
     volumes:
       - /:/host:ro,rslave
     command:
       - '--path.rootfs=/host'
     ports:
-      - "{{ localhost }}:{{ node_exporter_port }}:{{ node_exporter_port }}"
+      - "{{ localhost }}:{{ docker.monitoring.node.port }}:{{ docker.monitoring.node.port }}"
     networks:
       - monitoring
 
   wireguard_exporter:
     image: mindflavor/prometheus-wireguard-exporter:latest
-    container_name: {{ docker.metric_exporters.wireguard }}
+    container_name: {{ docker.monitoring.wireguard.name }}
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -35,18 +35,18 @@ services:
 
   fail2ban_exporter:
     image: registry.gitlab.com/hctrdev/fail2ban-prometheus-exporter:latest
-    container_name: {{ docker.metric_exporters.fail2ban }}
+    container_name: {{ docker.monitoring.fail2ban.name }}
     restart: unless-stopped
     volumes:
       - /var/run/fail2ban/:/var/run/fail2ban:ro
     ports:
-      - "{{ fail2ban_exporter_port }}:{{ fail2ban_exporter_port }}"
+      - "{{ docker.monitoring.fail2ban.port }}:{{ docker.monitoring.fail2ban.port }}"
     networks:
       - monitoring
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
-    container_name: {{ docker.metric_exporters.cadvisor }}
+    container_name: {{ docker.monitoring.cadvisor.name }}
     restart: unless-stopped
     privileged: true
     devices:
@@ -69,7 +69,7 @@ services:
 
   smartctl_exporter:
     image: prometheuscommunity/smartctl-exporter:latest
-    container_name: {{ docker.metric_exporters.smartctl }}
+    container_name: {{ docker.monitoring.smartctl.name }}
     restart: unless-stopped
     privileged: true
     user: root
@@ -84,7 +84,7 @@ services:
 
   snmp_exporter:
     image: prom/snmp-exporter:latest
-    container_name: {{ docker.metric_exporters.snmp }}
+    container_name: {{ docker.monitoring.snmp.name }}
     restart: unless-stopped
     volumes:
       - "{{ exporters_dir }}/snmp.yml:/etc/snmp_exporter/snmp.yml"
@@ -92,10 +92,10 @@ services:
 
   blackbox_exporter:
     image: prom/blackbox-exporter:latest
-    container_name: {{ docker.metric_exporters.blackbox }}
+    container_name: {{ docker.monitoring.blackbox.name }}
     restart: unless-stopped
     ports:
-      - "{{ blackbox_port }}:{{ blackbox_port }}"
+      - "{{ docker.monitoring.blackbox.port }}:{{ docker.monitoring.blackbox.port }}"
     volumes:
       - "{{ exporters_dir }}/blackbox.yml:/etc/blackbox_exporter/config.yml"
     networks:
@@ -103,7 +103,7 @@ services:
 
   nginx_exporter:
     image: nginx/nginx-prometheus-exporter:latest
-    container_name: {{ docker.metric_exporters.nginx }}
+    container_name: {{ docker.monitoring.nginx.name }}
     restart: unless-stopped
     command:
       - "--nginx.scrape-uri=http://{{ localhost }}:{{ http_port }}/stub_status"

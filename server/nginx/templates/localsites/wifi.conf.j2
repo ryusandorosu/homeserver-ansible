@@ -1,5 +1,5 @@
 server {
-    listen {{ localhost }}:{{ wifi_port }};
+    listen {{ localhost }}:{{ local_port.wifi_ap }};
 
     location / {
         proxy_pass http://{{ lan_ip.wifi }};

@@ -29,7 +29,7 @@
 
 - name: Wait for VDF to become available
   uri:
-    url: "http://{{ localhost }}:{{ vdf_port }}"
+    url: "http://{{ localhost }}:{{ docker.vdf.port }}"
     status_code: 200
   register: result
   retries: 5

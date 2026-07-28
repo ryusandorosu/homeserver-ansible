@@ -2,10 +2,10 @@
 services:
   vdf:
     image: ghcr.io/0x90d/vdf-web:latest
-    container_name: {{ docker.vdf }}
+    container_name: {{ docker.vdf.name }}
     restart: unless-stopped
     ports:
-      - "{{ vdf_port }}:{{ internal_port.vdf }}"
+      - "{{ docker.vdf.port }}:{{ internal_port.vdf }}"
     environment:
       - VDF_WEB_AUTH=false
     volumes:

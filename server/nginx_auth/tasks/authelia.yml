@@ -31,7 +31,7 @@
 
 - name: Check Authelia container running status
   uri:
-    url: "http://{{ localhost }}:{{ authelia_port }}"
+    url: "http://{{ localhost }}:{{ docker.nginx_auth.authelia_port }}"
     status_code: 200
   register: result
   retries: 5

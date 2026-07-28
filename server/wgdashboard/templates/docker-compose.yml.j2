@@ -3,10 +3,10 @@ services:
   wgdashboard:
     image: ghcr.io/wgdashboard/wgdashboard:latest
     restart: unless-stopped
-    container_name: {{ docker.wireguard_dashboard }}
+    container_name: {{ docker.wireguard_dashboard.name }}
     ports:
-      - {{ wireguard_dashboard_port }}:{{ wireguard_dashboard_port }}/tcp
-      - {{ wireguard_port }}:{{ wireguard_port }}/udp
+      - {{ docker.wireguard_dashboard.port }}:{{ docker.wireguard_dashboard.port }}/tcp
+      - {{ local_port.wireguard }}:{{ local_port.wireguard }}/udp
     volumes:
       - /etc/wireguard:/etc/wireguard
     cap_add:

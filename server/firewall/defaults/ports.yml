@@ -4,13 +4,13 @@ firewall_tcp_ports:
   - "{{ https_port }}"
 
 firewall_udp_ports:
-  - "{{ wireguard_port }}"
+  - "{{ local_port.wireguard }}"
 
 firewall_lan_tcp_ports:
   - "{{ smb_netbios_tcp_port }}"
   - "{{ smb_port }}"
-  - "{{ cockpit_port }}"
-  - "{{ synology_dsm_port }}"
+  - "{{ local_port.cockpit }}"
+  - "{{ lan_port.synology_dsm }}"
   - "{{ syslog_port }}"
   - "{{ dns_port }}"
   - "{{ dns_tls_port }}"
@@ -26,8 +26,8 @@ firewall_lan_udp_ports:
   - "{{ dns_port }}"
 
 monitoring_exporter_ports:
-  - "{{ wireguard_exporter_port }}"
-  - "{{ snmp_exporter_port }}"
+  - "{{ docker.monitoring.wireguard.port }}"
+  - "{{ docker.monitoring.snmp.port }}"
 
 firewall_lan_subnets:
   - "{{ home_network }}"

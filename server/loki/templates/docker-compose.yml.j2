@@ -5,7 +5,7 @@ networks:
 services:
   loki:
     image: grafana/loki:latest
-    container_name: {{ docker.loki }}
+    container_name: {{ docker.loki.name }}
     restart: unless-stopped
     user: "{{ loki_user }}:{{ loki_user }}"
     command: -config.file=/etc/loki/loki.yml
@@ -13,6 +13,6 @@ services:
       - "{{ loki_dir }}/loki.yml:/etc/loki/loki.yml"
       - "{{ loki_data_dir }}:/loki"
     ports:
-      - "{{ localhost }}:{{ loki_port }}:{{ loki_port }}"
+      - "{{ localhost }}:{{ docker.loki.port }}:{{ docker.loki.port }}"
     networks:
       - monitoring

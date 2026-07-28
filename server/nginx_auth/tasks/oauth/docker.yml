@@ -22,7 +22,7 @@
 
 - name: Check oauth2-proxy container running status
   uri:
-    url: "http://{{ localhost }}:{{ oauthproxy_port }}/ping"
+    url: "http://{{ localhost }}:{{ docker.nginx_auth.oauthproxy_port }}/ping"
     status_code: 200
   register: result
   retries: 5
