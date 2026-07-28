@@ -1,5 +1,6 @@
 - set_fact:
     guacamole_dir: /opt/guacamole
+  tags: [vars]
 
 - name: Create Apache Guacamole directories
   file:

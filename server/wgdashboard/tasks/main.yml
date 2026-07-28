@@ -1,5 +1,6 @@
 - set_fact:
     base_dir: /opt/wg-dashboard
+  tags: [vars]
 
 - name: Create project directory
   file:

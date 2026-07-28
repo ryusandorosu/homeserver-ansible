@@ -30,6 +30,7 @@
         | map(attribute='key')
         | first
       }}
+  tags: [vars]
 
 - name: Add user environment variables
   ansible.windows.win_powershell:
@@ -57,7 +58,7 @@
     - powershell-core #PowerShell 7
     - fzf
     - ripgrep
-    - ag #possibly not needed
+    - ag #possibly not needed. delete and replace it with ripgrep
 
 - name: Update NuGet provider
   ansible.windows.win_powershell:
@@ -81,6 +82,7 @@
 - name: Set Powershell profile dir var
   set_fact:
     pwsh_dir: "{{ pwsh_dir_raw.stdout_lines | first }}"
+  tags: [vars]
 
 - name: Detect Powershell profile
   win_command: powershell.exe -
@@ -90,6 +92,7 @@
 - name: Set Powershell profile path var
   set_fact:
     pwsh_profile: "{{ pwsh_profile_raw.stdout_lines | first }}"
+  tags: [vars]
 
 - name: Ensure PowerShell profile directory exists
   ansible.windows.win_file:
