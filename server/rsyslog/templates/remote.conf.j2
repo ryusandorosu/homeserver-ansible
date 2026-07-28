@@ -1,5 +1,5 @@
 module(load="imudp")
-input(type="imudp" port="{{ syslog_port }}")
+input(type="imudp" port="{{ const_port.syslog }}")
 
 module(load="imtcp")
-input(type="imtcp" port="{{ syslog_port }}")
+input(type="imtcp" port="{{ const_port.syslog }}")

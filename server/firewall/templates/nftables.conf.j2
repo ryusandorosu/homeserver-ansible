@@ -38,15 +38,15 @@ table inet filter {
         icmpv6 type { 130, 134, 135 } accept
         iif "{{ lan_interface }}" ip saddr {{ home_network }} ip daddr { {{ firewall_lan_subnets | join(', ') }} } accept
 
-        iif "{{ wireguard_interface }}" tcp dport {{ sshd_port }} ct state new accept
-        tcp dport { {{ firewall_tcp_ports | reject('equalto', sshd_port) | join(', ') }} } accept
+        iif "{{ wireguard_interface }}" tcp dport {{ const_port.sshd }} ct state new accept
+        tcp dport { {{ firewall_tcp_ports | map('int') | reject('equalto', const_port.sshd) | join(', ') }} } accept
         udp dport { {{ firewall_udp_ports | join(', ') }} } accept
         iif "{{ wireguard_interface }}" accept
 
         iif "{{ lan_interface }}" tcp dport { {{ firewall_lan_tcp_ports | join(', ') }} } accept
         iif "{{ lan_interface }}" udp dport { {{ firewall_lan_udp_ports | join(', ') }} } accept
 {% for interface in docker_interfaces %}
-        iifname "{{ interface }}" udp dport { {{ firewall_lan_udp_ports | reject('equalto', syslog_port) | join(', ') }} } accept
+        iifname "{{ interface }}" udp dport { {{ firewall_lan_udp_ports | map('int') | reject('equalto', const_port.syslog) | join(', ') }} } accept
 {% endfor %}
 
         limit rate 5/minute log prefix "{{ nft_log_prefix }}chain=input action=drop: " flags all counter drop

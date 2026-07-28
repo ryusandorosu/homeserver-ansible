@@ -1,29 +1,32 @@
+### reminder. list items need to be mapped to int when they consist of template var dictionary items, to be compared correctly. without that they are strings.
+### otherwise when simple variables are referenced in list they stay ints
+
 firewall_tcp_ports:
-  - "{{ sshd_port }}"
-  - "{{ http_port }}"
-  - "{{ https_port }}"
+  - "{{ const_port.sshd }}"
+  - "{{ const_port.http }}"
+  - "{{ const_port.https }}"
 
 firewall_udp_ports:
   - "{{ local_port.wireguard }}"
 
 firewall_lan_tcp_ports:
-  - "{{ smb_netbios_tcp_port }}"
-  - "{{ smb_port }}"
+  - "{{ const_port.smb.netbios.tcp }}"
+  - "{{ const_port.smb.port }}"
   - "{{ local_port.cockpit }}"
   - "{{ lan_port.synology_dsm }}"
-  - "{{ syslog_port }}"
-  - "{{ dns_port }}"
-  - "{{ dns_tls_port }}"
-  - "{{ ssdp_port }}"
-  - "{{ https_port }}"
+  - "{{ const_port.syslog }}"
+  - "{{ const_port.dns }}"
+  - "{{ const_port.dns_tls }}"
+  - "{{ const_port.ssdp }}"
+  - "{{ const_port.https }}"
 
 firewall_lan_udp_ports:
-  - "{{ dhcp_request_port }}"
-  - "{{ dhcp_resolve_port }}"
-  - "{{ smb_netbios_udp_ns_port }}"
-  - "{{ smb_netbios_udp_dg_port }}"
-  - "{{ syslog_port }}"
-  - "{{ dns_port }}"
+  - "{{ const_port.dhcp.request }}"
+  - "{{ const_port.dhcp.resolve }}"
+  - "{{ const_port.smb.netbios.udp_ns }}"
+  - "{{ const_port.smb.netbios.udp_dg }}"
+  - "{{ const_port.syslog }}"
+  - "{{ const_port.dns }}"
 
 monitoring_exporter_ports:
   - "{{ docker.monitoring.wireguard.port }}"

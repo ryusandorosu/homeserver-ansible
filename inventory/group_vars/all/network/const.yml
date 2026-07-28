@@ -1,18 +1,20 @@
 localhost: 127.0.0.1
 
-sshd_port: 22
-dns_port: 53
-dns_tls_port: 853
-dhcp_request_port: 67
-dhcp_resolve_port: 68
-http_port: 80
-https_port: 443
-syslog_port: 514
-smtp_port: 587
-ssdp_port: 1900
-
-#samba
-smb_netbios_udp_ns_port: 137
-smb_netbios_udp_dg_port: 138
-smb_netbios_tcp_port: 139
-smb_port: 445
+const_port:
+  sshd: 22
+  dns: 53
+  dns_tls: 853
+  dhcp:
+    request: 67
+    resolve: 68
+  http: 80
+  https: 443
+  syslog: 514
+  smtp: 587
+  ssdp: 1900
+  smb:
+    port: 445
+    netbios:
+      udp_ns: 137
+      udp_dg: 138
+      tcp: 139

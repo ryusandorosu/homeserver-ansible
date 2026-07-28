@@ -106,5 +106,5 @@ services:
     container_name: {{ docker.monitoring.nginx.name }}
     restart: unless-stopped
     command:
-      - "--nginx.scrape-uri=http://{{ localhost }}:{{ http_port }}/stub_status"
+      - "--nginx.scrape-uri=http://{{ localhost }}:{{ const_port.http }}/stub_status"
     network_mode: host

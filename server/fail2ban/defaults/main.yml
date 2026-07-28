@@ -15,7 +15,7 @@ fail2ban_action:
 fail2ban_jails:
   - name: sshd
     enabled: true
-    port: "{{ sshd_port }}"
+    port: "{{ const_port.sshd }}"
 
   - name: nginx-http-auth
     enabled: true

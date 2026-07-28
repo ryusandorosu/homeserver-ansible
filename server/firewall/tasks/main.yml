@@ -5,6 +5,14 @@
     - "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
   tags: [vars]
 
+- debug:
+    msg: "dict={{ const_port.sshd }} ({{ const_port.sshd | type_debug }}), var={{ sshd_port }} ({{ sshd_port | type_debug }})"
+- debug:
+    msg: "{{ item }} -> {{ item | type_debug }}"
+  loop: "{{ firewall_tcp_ports }}"
+- debug:
+    msg: "in-check: {{ const_port.sshd in firewall_tcp_ports }}"
+
 - name: Ensure required network vars defined
   assert:
     that:
@@ -13,9 +21,10 @@
       - local_port.wireguard is defined
     fail_msg: "Required WireGuard variables are not defined"
 
+### this task makes sense if it is not rejected from the rule allowing tcp ports to separately set allowing only via wireguard interface
 - name: Ensure SSH port is allowed in firewall
   assert:
-    that: sshd_port in firewall_tcp_ports
+    that: const_port.sshd in (firewall_tcp_ports | map('int') | list)
     fail_msg: "SSH port is not listed in firewall settings"
 
 - name: Install nftables

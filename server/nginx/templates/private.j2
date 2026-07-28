@@ -1,6 +1,6 @@
 server {
 
-    listen {{ https_port }} ssl;
+    listen {{ const_port.https }} ssl;
     server_name {{ item.key }}.{{ domain }};
 
     {{ lookup('template', 'modules/common.j2') | indent(4) }}
