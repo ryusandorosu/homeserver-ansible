@@ -42,12 +42,14 @@ local config = {
     { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
     { key = 't', mods = 'CTRL', action = act.ShowLauncher },
     { key = 'h', mods = 'CTRL', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    -- if act.Nop is disabled from ctrl+d it replaces these bindings in following order:
+    { key = 'q', mods = 'CTRL|SHIFT', action = act.CloseCurrentPane { confirm = false } }, 
     { key = 'w', mods = 'CTRL|SHIFT', action = act.CloseCurrentTab  { confirm = false } },
-    { key = 'q', mods = 'CTRL|SHIFT', action = act.CloseCurrentPane { confirm = false } },
+    --/ if act.Nop is disabled from ctrl+d
     { key = 'z', mods = 'CTRL',        action = act.DisableDefaultAssignment },
     { key = 'PageUp',   mods = 'CTRL', action = act.DisableDefaultAssignment },
     { key = 'PageDown', mods = 'CTRL', action = act.DisableDefaultAssignment },
-    { key = 'd', mods = 'CTRL', action = act.Nop },
+    { key = 'd', mods = 'CTRL', action = act.DisableDefaultAssignment },
   },
 }
 
