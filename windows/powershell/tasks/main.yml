@@ -2,6 +2,7 @@
   include_vars:
     dir: "{{ role_path }}/defaults"
     extensions: ["yml"]
+  tags: [vars]
 
 - name: Allow to run local scripts
   ansible.windows.win_powershell:

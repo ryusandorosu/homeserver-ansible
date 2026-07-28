@@ -4,6 +4,7 @@
     - "{{ inventory_dir }}/../server/grafana/defaults/dashboards/common.yml"
     - "{{ inventory_dir }}/../server/grafana/defaults/dashboards/fail2ban/panels.yml"
     - "{{ inventory_dir }}/../server/promtail/defaults/labels/fail2ban.yml"
+  tags: [vars]
 
 - name: Ensure required directories exist
   file:

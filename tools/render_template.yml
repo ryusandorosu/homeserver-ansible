@@ -13,6 +13,7 @@
 #     os: "{{ ansible_os_family }}"
 #     distr: "{{ ansible_distribution }}"
 #     release: "{{ ansible_distribution_release }}"
+
   tasks:
     - name: Load all role defaults recursively
       include_vars:
@@ -25,28 +26,8 @@
     - name: Run only variable-setting tasks (set_fact/include_vars) from the target role
       include_role:
         name: "{{ playbook_dir }}/../{{ roles_dir }}/{{ role_name }}"
-        # name: "{{ playbook_dir + '/../' + roles_dir + '/' + role_name | basename }}"
         tasks_from: main.yml
       tags: [always]
-
-    # - name: Load Promtail labels
-    #   include_vars:
-    #     dir: "{{ playbook_dir + '/../' + roles_dir }}/promtail/defaults/labels"
-    #     extensions: ["yml"]
-    #   when: role_name in ['grafana','notifications','firewall','rsyslog']
-    #   failed_when: false
-    # - name: Load SSH defaults
-    #   include_vars:
-    #     dir: "{{ playbook_dir + '/../' + roles_dir }}/sshcli/defaults"
-    #     extensions: ["yml"]
-    #   when: role_name in ['mount_android']
-    #   failed_when: false
-    # - name: Load Mount Android defaults
-    #   include_vars:
-    #     dir: "{{ playbook_dir + '/..' }}/server/mount_android/defaults"
-    #     extensions: ["yml"]
-    #   when: role_name in ['scripts']
-    #   failed_when: false
 
     - name: Render template
       copy:

@@ -9,6 +9,7 @@
   with_fileglob:
     - defaults/subscription.yml
     - defaults/config/*.yml
+  tags: [vars]
 
 - name: Deploy config
   template:

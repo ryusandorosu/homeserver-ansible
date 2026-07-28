@@ -3,6 +3,7 @@
   with_fileglob:
     - defaults/*.yml
     - "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
+  tags: [vars]
 
 - name: Ensure required network vars defined
   assert:

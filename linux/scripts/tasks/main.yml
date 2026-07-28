@@ -1,6 +1,7 @@
 - name: Import mount_android role default variables
   include_vars:
     file: "{{ playbook_dir }}/../server/mount_android/defaults/main.yml"
+  tags: [vars]
 
 - name: Deploy the script that syncs music between pc and phone
   template:

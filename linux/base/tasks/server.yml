@@ -2,10 +2,13 @@
   include_vars:
     dir: "{{ role_path }}/defaults"
     extensions: ["yml"]
+  tags: [vars]
 
 - name: Import mihomo role default variables
   include_vars:
     file: "{{ inventory_dir }}/../server/mihomo/defaults/main.yml"
+  tags: [vars]
+
 - name: Configure apt proxy
   template:
     src: apt.conf.d/mihomo-proxy.j2

@@ -2,6 +2,7 @@
   include_vars: "{{ item }}"
   with_fileglob:
     - defaults/*.yml
+  tags: [vars]
 
 - name: Install required packages
   apt:

@@ -2,6 +2,7 @@
   include_vars: "{{ item }}"
   with_fileglob:
     - "{{ inventory_dir }}/../server/promtail/defaults/labels/telegram.yml"
+  tags: [vars]
 
 - name: Ensure custom logs directories exist
   file:

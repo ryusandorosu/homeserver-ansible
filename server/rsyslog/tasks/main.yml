@@ -7,6 +7,8 @@
 - name: Import promtail role nftables variables
   include_vars:
     file: "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
+  tags: [vars]
+
 - name: Deploy configs to log separately from kernel logs
   template:
     src: duplicate.j2

@@ -3,6 +3,7 @@
   with_fileglob:
     - defaults/relabels/*.yml
     - defaults/labels/*.yml
+  tags: [vars]
 
 - name: Create Promtail directories
   file:
