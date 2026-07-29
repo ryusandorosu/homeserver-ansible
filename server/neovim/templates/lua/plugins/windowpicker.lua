@@ -4,9 +4,14 @@ return {
     "s1n7ax/nvim-window-picker",
     version = "2.*",
     config = function()
+      -- https://github.com/s1n7ax/nvim-window-picker#configuration
       require("window-picker").setup({
+        picker_config = {
+          handle_mouse_click = true,
+        },
         filter_rules = {
           include_current_win = false,
+          include_unfocusable_windows = false,
           autoselect_one = true,
           -- filter using buffer options
           bo = {
