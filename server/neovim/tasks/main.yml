@@ -72,6 +72,13 @@
   with_fileglob:
     - "templates/lua/plugins/*.lua.j2"
 
+- name: Delete disabled plugin configurations
+  file:
+    path: "{{ homedir }}/{{ nvimdir.config }}/lua/plugins/{{ item | basename | regex_replace('.disabled','') }}"
+    state: absent
+  with_fileglob:
+    - "templates/lua/plugins/*.disabled"
+
 - name: Deploy lua configs
   copy:
     src: "{{ item }}"

@@ -1,25 +1,34 @@
 -- :help default-mappings
 -- :h nvim-surround.configuration -- default is 'S' when selected in visual mode
 -- :h comment.config -- default is 'gc'(nv) - opleader and 'gcc'(n) - toggler for selected lines. redefined to 'c' and 'cc'
--- ctrl-q and button: <key>; <cr> = enter, <cmd> = ':'
+-- REMINDER: ctrl-q (by default) and button: returns <key>; <cr> = enter, <cmd> = ':'
 vim.g.mapleader = " "
 
 vim.keymap.set('n',       '<C-w>',      ':w<CR>',         { desc = "Save the file" })
-vim.keymap.set('n',       '<C-x>',      ':q<CR>',         { desc = "Close current window" })
+vim.keymap.set('n',       '<C-q>',      ':q<CR>',         { desc = "Close current window" })
+vim.keymap.set('n',       '<C-x>',      ':quitall<CR>',   { desc = "Close all windows" })
+-- selection
 vim.keymap.set({'n','v'}, '<C-a>',      'ggVG',           { desc = "Select all text" })
 vim.keymap.set('i',       '<C-a>',      '<Esc>ggVG',      { desc = "Select all text" })
+-- split window
 vim.keymap.set('n',       '<leader>h',  ':split<CR>',     { desc = "Horizontal split" })
 vim.keymap.set('n',       '<leader>v',  ':vsplit<CR>',    { desc = "Vertical split" })
 
--- neotree
-vim.keymap.set('n', '<leader>n',  ':Neotree <CR>',        { desc = "Switch to Neotree" }) --<A-n>
-vim.keymap.set('n', '<A-Right>',  ':bnext<CR>',           { desc = "Neotree: switch to next buffer" })
-vim.keymap.set('n', '<A-Left>',   ':bprevious<CR>',       { desc = "Neotree: switch to previous buffer" })
+-- window-picker
+vim.keymap.set('n', '<leader><Right>',  ':bnext<CR>',     { desc = "Switch to next buffer" })
+vim.keymap.set('n', '<leader><Left>',   ':bprevious<CR>', { desc = "Switch to previous buffer" })
+vim.keymap.set('n', '<leader><Tab>', function()
+  local window_id = require('window-picker').pick_window()
+  vim.api.nvim_set_current_win(window_id)
+end, { desc = "Pick window" })
+
+-- snacks
+vim.keymap.set({'n','i','v'}, '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
 
 -- telescope
-vim.keymap.set('n', '<leader>ff', ':Telescope find_files<cr>')
-vim.keymap.set('n', '<leader>fw', ':Telescope live_grep<cr>')
-vim.keymap.set('n', '<leader>fb', ':Telescope buffers<cr>')
+vim.keymap.set('n', '<leader>f', ':Telescope find_files<cr>')
+vim.keymap.set('n', '<leader>g', ':Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>b', ':Telescope buffers<cr>')
 
 -- line moving
 vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
@@ -49,3 +58,6 @@ vim.keymap.set('v', '<leader>d', function()
   vim.api.nvim_win_set_cursor(0, { end_line + 1, 0 })
   vim.cmd("normal! V" .. (#lines - 1) .. "j")
 end, { desc = "Duplicate selection" })
+
+-- neotree
+-- vim.keymap.set('n', '<leader>n',  ':Neotree <CR>',        { desc = "Switch to Neotree" }) --<A-n>
