@@ -10,7 +10,7 @@ return {
       local api = require("Comment.api")
       vim.keymap.set({'i', 'n'}, '<leader>/', function()
         api.toggle.linewise.current()
-      end)
+      end, { desc = "Comment toggle linewise" })
     end
   }
 }
