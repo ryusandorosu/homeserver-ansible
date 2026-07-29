@@ -21,12 +21,15 @@
     detect-dark-light = never
     dark = true
   ; behavior
+    color-only = false            # disables: defaults; resets to defaults: diff-highlight, diff-so-fancy
     diff-highlight = true
     side-by-side = true
     colorMoved = default          # to check how it works
   ; formatting
+    ; requires: settings.json: "security.allowedUNCHosts": ["wsl.localhost"],
+    ; requires: see $WSL_DISTRO_NAME, variable substitution is not supported
     hyperlinks                    = true
-    hyperlinks-file-link-format   = "vscode://file/{path}:{line}"
+    hyperlinks-file-link-format   = "vscode://file//wsl.localhost/{{ ansible_facts.distribution }}{path}:{line}"
   # defaults changed
     commit-style                  = bold yellow
     file-style                    = raw blue
