@@ -65,3 +65,17 @@ vim.keymap.set('v', '<leader>d', function()
   vim.api.nvim_win_set_cursor(0, { end_line + 1, 0 })
   vim.cmd("normal! V" .. (#lines - 1) .. "j")
 end, { desc = "Duplicate selection" })
+
+-- reload settings
+vim.keymap.set('n', '<leader>rr', function()
+  for name, _ in pairs(package.loaded) do
+    if name:match('^config') then
+      package.loaded[name] = nil
+    end
+  end
+  dofile(vim.env.MYVIMRC)
+  vim.notify("Config reloaded", vim.log.levels.INFO)
+end, { desc = "Reload nvim config" })
+---- consider this if will configure autocmds:
+-- local grp = vim.api.nvim_create_augroup("MyConfig", { clear = true })
+-- vim.api.nvim_create_autocmd("ColorScheme", { group = grp, callback = set_picker_hl })
