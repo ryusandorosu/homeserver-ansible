@@ -15,8 +15,8 @@ lan_ip:
   router: 192.168.0.1
   wifi: 192.168.0.2
   server: 192.168.0.100
-  large_laptop: "{{ asus_lan.wired_to_tplink }}"
-  small_laptop: 192.168.0.102
+  asus: "{{ asus_lan.wired_to_tplink }}"
+  honor: 192.168.0.102
   diskstation: 192.168.0.111
   icl_srv: 192.168.0.109
   x96q: 192.168.0.96

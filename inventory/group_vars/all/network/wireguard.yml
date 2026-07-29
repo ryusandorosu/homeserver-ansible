@@ -6,7 +6,7 @@ wireguard_network: 10.10.0.0/24
 wireguard_server_ip: 10.10.0.1
 
 wireguard_devices:
-  large_laptop:
+  asus:
     ip: 10.10.0.2
     name: Asus K95VB
     public_key: "pjZYrTpbiOeQM0oeIDonvowhswh/cFIlAhPwFRvVpik="
@@ -18,7 +18,7 @@ wireguard_devices:
     ip: 10.10.0.4
     name: Samsung Galaxy Tab A6
     public_key: "ysX2E7FT8wBF9/oSq8wdhpwAPBiE/r1UUgwBWbjUqwg="
-  laptop:
+  honor:
     ip: 10.10.0.5
     name: Honor MagicBook X 14
     public_key: "DjgmmaaCgusEhn+PY1SjwvmMdqPfDMoGUmUGaCyFAQo="

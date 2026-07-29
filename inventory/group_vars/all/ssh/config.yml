@@ -45,14 +45,14 @@ ssh_hosts:
       - wslasus
 
   asus-lan:
-    hostname: "{{ lan_ip.large_laptop }}"
+    hostname: "{{ lan_ip.asus }}"
     user: "\"{{ whost.asus.user }}\""
     identity: asus_k95vb
     device:
       - honor
 
   asus-vpn:
-    hostname: "{{ wireguard_devices.large_laptop.ip }}"
+    hostname: "{{ wireguard_devices.asus.ip }}"
     user: "\"{{ whost.asus.user }}\""
     identity: asus_k95vb
     device:
@@ -70,14 +70,14 @@ ssh_hosts:
       - wslasus
 
   honor-lan:
-    hostname: "{{ lan_ip.small_laptop }}"
+    hostname: "{{ lan_ip.honor }}"
     user: "{{ whost.honor.user }}"
     identity: honor_magicbook
     device:
       - asus
 
   honor-vpn:
-    hostname: "{{ wireguard_devices.laptop.ip }}"
+    hostname: "{{ wireguard_devices.honor.ip }}"
     user: "{{ whost.honor.user }}"
     identity: honor_magicbook
     device:
