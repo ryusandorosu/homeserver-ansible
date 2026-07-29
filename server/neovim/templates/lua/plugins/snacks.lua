@@ -5,12 +5,14 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-      dashboard =     {
+      dashboard = {
+        -- may be also installed separately
         -- https://github.com/folke/snacks.nvim/blob/main/docs/dashboard.md
         enabled = true
       },
-      explorer =      { enabled = true },
-      picker =        {
+      -- explorer is picker included, uses picker configuration
+      explorer = { enabled = true },
+      picker = {
         enabled = true,
         -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
         -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#files

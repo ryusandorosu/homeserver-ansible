@@ -1,3 +1,4 @@
+-- alternative to this: https://github.com/willothy/nvim-cokeline
 return {
   {
     "akinsho/bufferline.nvim",
