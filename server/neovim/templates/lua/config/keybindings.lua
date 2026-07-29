@@ -6,7 +6,7 @@ vim.g.mapleader = " "
 
 vim.keymap.set('n',       '<C-w>',      ':w<CR>',         { desc = "Save the file" })
 vim.keymap.set('n',       '<C-q>',      ':q<CR>',         { desc = "Close current window" })
-vim.keymap.set('n',       '<C-x>',      ':quitall<CR>',   { desc = "Close all windows" })
+vim.keymap.set('n',       '<C-x>',      ':q!<CR>',        { desc = "Close all windows!" }) --:quitall
 -- selection
 vim.keymap.set({'n','v'}, '<C-a>',      'ggVG',           { desc = "Select all text" })
 vim.keymap.set('i',       '<C-a>',      '<Esc>ggVG',      { desc = "Select all text" })
@@ -15,6 +15,7 @@ vim.keymap.set('n',       '<leader>h',  ':split<CR>',     { desc = "Horizontal s
 vim.keymap.set('n',       '<leader>v',  ':vsplit<CR>',    { desc = "Vertical split" })
 
 -- window-picker
+vim.keymap.set('n', '<leader>q',        ':bdelete<CR>',   { desc = "Close current buffer" })
 vim.keymap.set('n', '<leader><Right>',  ':bnext<CR>',     { desc = "Switch to next buffer" })
 vim.keymap.set('n', '<leader><Left>',   ':bprevious<CR>', { desc = "Switch to previous buffer" })
 vim.keymap.set('n', '<leader><Tab>', function()
@@ -23,12 +24,14 @@ vim.keymap.set('n', '<leader><Tab>', function()
 end, { desc = "Pick window" })
 
 -- snacks
-vim.keymap.set({'n','i','v'}, '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
-
+vim.keymap.set('n', '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
 -- telescope
-vim.keymap.set('n', '<leader>f', ':Telescope find_files<cr>')
-vim.keymap.set('n', '<leader>g', ':Telescope live_grep<cr>')
-vim.keymap.set('n', '<leader>b', ':Telescope buffers<cr>')
+vim.keymap.set('n', '<leader>f',  ':Telescope find_files<cr>')
+vim.keymap.set('n', '<leader>g',  ':Telescope live_grep<cr>')
+vim.keymap.set('n', '<leader>b',  ':Telescope buffers<cr>')
+vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
+vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
+vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
 
 -- line moving
 vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })

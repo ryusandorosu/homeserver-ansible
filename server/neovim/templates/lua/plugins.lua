@@ -17,6 +17,7 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
+    -- https://github.com/nvim-telescope/telescope.nvim#pickers
     dependencies = {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
