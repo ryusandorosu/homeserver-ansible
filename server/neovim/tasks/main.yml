@@ -1,3 +1,7 @@
+- set_fact:
+    initial_nvim_install: false
+  tags: [vars]
+
 - name: Load variables
   include_vars: "{{ item }}"
   with_fileglob:
@@ -20,7 +24,7 @@
     global: true
     state: present
 
-- name: Install neovim from git repo
+- name: Install neovim AppImage from git repo
   get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
     dest: "{{ neovim }}"
@@ -95,27 +99,8 @@
   with_fileglob:
     - "templates/lua/config/*.lua.j2"
 
-- name: Synchronize lazy.nvim plugins
-  become_user: "{{ user }}"
-  command: nvim --headless "+Lazy! sync" +qa
-  environment:
-    HOME: "{{ homedir }}"
-
-- name: Install Treesitter parsers
-  become_user: "{{ user }}"
-  command: nvim --headless "+TSUpdate" +qa
-  environment:
-    HOME: "{{ homedir }}"
-  # command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
-
-- name: Install LSP servers
-  become_user: "{{ user }}"
-  command: nvim --headless "+MasonInstall {{ mason_install | join(' ') }}" +qa
-  environment:
-    HOME: "{{ homedir }}"
-  # command: nvim --headless "+MasonInstall {{ mason_lspconfig | map(attribute='mason') | join(' ') }}" +qa
-    # command: nvim --headless "+MasonInstall {{ item }}" +qa
-    # loop: "{{ mason_lspconfig | map(attribute='mason') }}"
+- import_tasks: managers.yml
+  when: initial_nvim_install
 
 - name: Create root symlink for nvim configs
   file:
@@ -129,6 +114,7 @@
     dest: "{{ ansible_facts.env.HOME }}/{{ nvimdir.share }}"
     state: link
 
-- name: Set nvim as default sudoeditor
-  become_user: root
-  command: update-alternatives --install /usr/bin/sudoedit sudoedit {{ neovim }} 50
+### seems useless
+# - name: Set nvim as default sudoeditor
+#   become_user: root
+#   command: update-alternatives --install /usr/bin/sudoedit sudoedit {{ neovim }} 50

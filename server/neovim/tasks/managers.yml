@@ -1,0 +1,21 @@
+- name: Synchronize lazy.nvim plugins
+  become_user: "{{ user }}"
+  command: nvim --headless "+Lazy! sync" +qa
+  environment:
+    HOME: "{{ homedir }}"
+
+- name: Install Treesitter parsers
+  become_user: "{{ user }}"
+  command: nvim --headless "+TSUpdate" +qa
+  environment:
+    HOME: "{{ homedir }}"
+  # command: nvim --headless "+TSInstall {{ treesitter | join(' ') }}" +qa
+
+- name: Install LSP servers
+  become_user: "{{ user }}"
+  command: nvim --headless "+MasonInstall {{ mason_install | join(' ') }}" +qa
+  environment:
+    HOME: "{{ homedir }}"
+  # command: nvim --headless "+MasonInstall {{ mason_lspconfig | map(attribute='mason') | join(' ') }}" +qa
+    # command: nvim --headless "+MasonInstall {{ item }}" +qa
+    # loop: "{{ mason_lspconfig | map(attribute='mason') }}"
