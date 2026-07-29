@@ -1,0 +1,19 @@
+telescope_ripgrep_opts:
+  - color=never
+  - no-heading
+  - with-filename
+  - line-number
+  - column
+  - smart-case
+telescope_ripgrep_and_fd_exclude_dir:
+  - .git
+  - .include
+  - .cache
+  - .vscode-server
+  - .cargo
+  - .docker
+  - .local/lib
+  - .ansible #.ansible/tmp
+  - .npm
+  - node_modules
+  - target

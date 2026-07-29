@@ -1,0 +1,37 @@
+return {
+
+  {
+    "nvim-telescope/telescope.nvim",
+    -- https://github.com/nvim-telescope/telescope.nvim#pickers
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+    },
+    config = function()
+      require('telescope').setup({
+        defaults = {
+          vimgrep_arguments = {
+            "rg",
+{% for opt in telescope_ripgrep_opts %}
+            "--{{ opt }}",
+{% endfor %}
+{% for dir in telescope_ripgrep_and_fd_exclude_dir %}
+            "--glob=!{{ dir }}/",
+{% endfor %}
+          },
+        },
+        pickers = {
+          find_files = {
+            find_command = {
+              "fd", "--type", "f", "--color", "never",
+{% for dir in telescope_ripgrep_and_fd_exclude_dir %}
+              "--exclude", "{{ dir }}",
+{% endfor %}
+            },
+          },
+        },
+      })
+    end
+  },
+
+}
