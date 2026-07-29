@@ -4,7 +4,7 @@
   pre_tasks:
     - name: Check OS family
       assert:
-        that: ansible_os_family == "Windows"
+        that: ansible_facts.os_family == "Windows"
         fail_msg: "This playbook supports only Windows"
     - name: Fail if unknown tag is used
       tags: always
