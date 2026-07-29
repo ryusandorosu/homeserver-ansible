@@ -23,8 +23,9 @@ vim.keymap.set('n', '<leader><Tab>', function()
   vim.api.nvim_set_current_win(window_id)
 end, { desc = "Pick window" })
 
--- snacks
-vim.keymap.set('n', '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
+-- neotree
+vim.keymap.set('n', '<leader><space>',  ':Neotree <CR>',  { desc = "Neotree" })
+-- vim.keymap.set('n', '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
 -- telescope
 vim.keymap.set('n', '<leader>f',  ':Telescope find_files<cr>')
 vim.keymap.set('n', '<leader>g',  ':Telescope live_grep<cr>')
@@ -32,6 +33,9 @@ vim.keymap.set('n', '<leader>b',  ':Telescope buffers<cr>')
 vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
 vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
 vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
+-- useful for debugging
+vim.keymap.set('n', '<leader>i',  ':Inspect<cr>')
+-- алсо неедед а кеймап то релоад нвим
 
 -- line moving
 vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
@@ -61,6 +65,3 @@ vim.keymap.set('v', '<leader>d', function()
   vim.api.nvim_win_set_cursor(0, { end_line + 1, 0 })
   vim.cmd("normal! V" .. (#lines - 1) .. "j")
 end, { desc = "Duplicate selection" })
-
--- neotree
--- vim.keymap.set('n', '<leader>n',  ':Neotree <CR>',        { desc = "Switch to Neotree" }) --<A-n>
