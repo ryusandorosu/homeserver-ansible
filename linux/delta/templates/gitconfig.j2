@@ -21,21 +21,21 @@
     detect-dark-light = never
     dark = true
   ; behavior
-    color-only = false            # disables: defaults; resets to defaults: diff-highlight, diff-so-fancy
-    diff-highlight = true
-    side-by-side = true
-    colorMoved = default          # to check how it works
+    color-only = {{ gitdelta.switch.color_only | lower }}
+    diff-highlight = {{ gitdelta.switch.diff_highlight | lower }}
+    diff-so-fancy = {{ gitdelta.switch.diff_so_fancy | lower }}
+    colorMoved = default
   ; formatting
     ; requires: settings.json: "security.allowedUNCHosts": ["wsl.localhost"],
     ; requires: see $WSL_DISTRO_NAME, variable substitution is not supported
     hyperlinks                    = true
     hyperlinks-file-link-format   = "vscode://file//wsl.localhost/{{ ansible_facts.distribution }}{path}:{line}"
-  # defaults changed
+  # custom
     commit-style                  = bold yellow
-    file-style                    = raw blue
-    # file-decoration-style = gray ol
-    # commit-decoration-style = ul
-  # defaults. see 'delta --show-config'
+    file-style                    = {{ gitdelta.file_style.bold }}
+{% if gitdelta.switch.diff_highlight %}
+  # defaults. some settings a little adjusted. see 'delta --show-config'
+  # also see https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
     hunk-header-style             = syntax
     minus-style                   = syntax 52 #syntax "#3f0001"
     minus-non-emph-style          = syntax 52 #syntax "#3f0001"
@@ -52,7 +52,7 @@
     blame-palette                 = "#000000 #222222 #444444"
     true-color                    = auto
     file-added-label              = added:
-    # file-modified-label           = Δ
+    file-modified-label           = #Δ
     file-removed-label            = removed:
     file-renamed-label            = renamed:
     right-arrow                   = ⟶ 
@@ -79,3 +79,4 @@
     width                         = 238
     tabs                          = 8
     word-diff-regex               = '\\w+'
+{% endif %}

@@ -1,0 +1,12 @@
+gitdelta:
+  # git config --list --show-origin | grep -i delta
+  switch:
+    color_only: false
+    # disables: defaults; resets to defaults: diff-highlight, diff-so-fancy
+    diff_highlight: true
+    # delta --diff-highlight --show-config
+    diff_so_fancy: false
+    # delta --diff-so-fancy --show-config
+  file_style:
+    bold: bold blue
+    raw: raw blue
