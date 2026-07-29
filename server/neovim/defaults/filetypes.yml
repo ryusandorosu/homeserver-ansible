@@ -32,3 +32,5 @@ luaconfig_filetypes:
     - "{{ repo_templates_path }}/smb.conf.j2"
   # yaml.docker-compose:
   # yaml.ansible:
+  gitconfig:
+    - "{{ homedir }}/zsh_settings/configs/gitdelta"
