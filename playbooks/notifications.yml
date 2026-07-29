@@ -21,7 +21,7 @@
       - telegram
       - uptime
       - services
-      - fail2ban-telegram
+      - bans
       - watchers
 
   tasks:
