@@ -1,3 +1,4 @@
+-- alternative is Snacks file explorer
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",

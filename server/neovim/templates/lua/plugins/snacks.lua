@@ -5,7 +5,10 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-      dashboard =     { enabled = true },
+      dashboard =     {
+        -- https://github.com/folke/snacks.nvim/blob/main/docs/dashboard.md
+        enabled = true
+      },
       explorer =      { enabled = true },
       picker =        {
         enabled = true,
