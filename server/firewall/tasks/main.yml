@@ -5,13 +5,14 @@
     - "{{ role_path }}/../promtail/defaults/labels/nftables.yml"
   tags: [vars]
 
-- debug:
-    msg: "dict={{ const_port.sshd }} ({{ const_port.sshd | type_debug }}), var={{ sshd_port }} ({{ sshd_port | type_debug }})"
-- debug:
-    msg: "{{ item }} -> {{ item | type_debug }}"
-  loop: "{{ firewall_tcp_ports }}"
-- debug:
-    msg: "in-check: {{ const_port.sshd in firewall_tcp_ports }}"
+### this stands here for a while because may be possibly useful later
+# - debug:
+#     msg: "sshd={{ const_port.sshd }} ({{ const_port.sshd | type_debug }}), syslog={{ const_port.syslog }} ({{ const_port.syslog | type_debug }})"
+# - debug:
+#     msg: "{{ item }} -> {{ item | type_debug }}"
+#   loop: "{{ firewall_tcp_ports }}"
+# - debug:
+#     msg: "in-check: {{ const_port.sshd in firewall_tcp_ports }}"
 
 - name: Ensure required network vars defined
   assert:
