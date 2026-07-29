@@ -3,9 +3,10 @@ return {
   {
     "willothy/nvim-cokeline",
     dependencies = {
-      "nvim-tree/nvim-web-devicons", -- If you want devicons
-      "stevearc/resession.nvim"       -- Optional, for persistent history
+      "nvim-tree/nvim-web-devicons",
+      "stevearc/resession.nvim",
     },
+    -- https://github.com/willothy/nvim-cokeline#wrench-configuration
     config = true
   },
 
