@@ -14,16 +14,20 @@
     dest: "{{ neovim }}"
     mode: '0777'
 
-- name: Create config directories
+# - debug:
+#     msg: "{{ query('community.general.filetree', role_path + '/files') }}"
+
+- name: Ensure directory structure exists
   file:
-    path: "{{ homedir }}/{{ item }}"
+    path: "{{ homedir }}/{{ nvimdir.config }}/{{ item.path }}"
     state: directory
     owner: "{{ user }}"
     group: "{{ user }}"
-    mode: '0775'
-  loop:
-    - "{{ nvimdir.config }}/lua/config"
-    - "{{ nvimdir.config }}/lua/plugins"
+    mode: "{{ item.mode }}"
+  loop: "{{ query('community.general.filetree', role_path + '/files') }}"
+  when: item.state == 'directory'
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: Ensure required root directories exist
   file:
@@ -32,49 +36,25 @@
   loop:
     - "{{ nvimdir.share | dirname }}"
 
-- name: Deploy init.lua
+- name: Deploy static files
   copy:
-    src: files/init.lua
-    dest: "{{ homedir }}/{{ nvimdir.config }}"
-    mode: '0664'
+    src: "{{ item.src }}"
+    dest: "{{ homedir }}/{{ nvimdir.config }}/{{ item.path }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ query('community.general.filetree', role_path + '/files') }}"
+  when: item.state == 'file'
+  loop_control:
+    label: "{{ item.path }}"
 
-- name: Deploy plugins.lua
-  copy:
-    src: files/lua/plugins.lua
-    dest: "{{ homedir }}/{{ nvimdir.config }}/lua"
-    mode: '0664'
-
-- name: Deploy plugin configurations
-  copy:
-    src: "{{ item }}"
-    dest: "{{ homedir }}/{{ nvimdir.config }}/lua/plugins"
-    mode: '0664'
-  with_fileglob:
-    - "files/lua/plugins/*.lua"
-
-- name: Deploy templated plugin configurations
+- name: Deploy templated files
   template:
-    src: "{{ item }}"
-    dest: "{{ homedir }}/{{ nvimdir.config }}/lua/plugins/{{ item | basename | regex_replace('.j2','') }}"
-    mode: '0664'
-  with_fileglob:
-    - "templates/lua/plugins/*.lua.j2"
-
-- name: Deploy lua configs
-  copy:
-    src: "{{ item }}"
-    dest: "{{ homedir }}/{{ nvimdir.config }}/lua/config"
-    mode: '0664'
-  with_fileglob:
-    - "files/lua/config/*.lua"
-
-- name: Deploy templated lua configs
-  template:
-    src: "{{ item }}"
-    dest: "{{ homedir }}/{{ nvimdir.config }}/lua/config/{{ item | basename | regex_replace('.j2','') }}"
-    mode: '0664'
-  with_fileglob:
-    - "templates/lua/config/*.lua.j2"
+    src: "{{ item.src }}"
+    dest: "{{ homedir }}/{{ nvimdir.config }}/{{ item.path | regex_replace('.j2', '') }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ query('community.general.filetree', role_path + '/templates') }}"
+  when: item.state == 'file'
+  loop_control:
+    label: "{{ item.path }}"
 
 - import_tasks: managers.yml
   when: initial_nvim_install
