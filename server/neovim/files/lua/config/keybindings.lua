@@ -32,8 +32,7 @@ vim.keymap.set('n', '<leader>b',  ':Telescope buffers<cr>')
 vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
 vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
 vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
--- useful for debugging
-vim.keymap.set('n', '<leader>i',  ':Inspect<cr>',         { desc = "Inspect element under cursor" })
+vim.keymap.set('n', '<leader>gg', ':Gitsigns<cr>')
 vim.keymap.set('n', '<leader><esc>', ':Alpha<cr>',        { desc = "Toggle dashboard" })
 
 -- line moving
@@ -65,6 +64,8 @@ vim.keymap.set('v', '<leader>d', function()
   vim.cmd("normal! V" .. (#lines - 1) .. "j")
 end, { desc = "Duplicate selection" })
 
+-- useful for debugging
+vim.keymap.set('n', '<leader>i',  ':Inspect<cr>',         { desc = "Inspect element under cursor" })
 -- reload settings
 vim.keymap.set('n', '<leader>rr', function()
   for name, _ in pairs(package.loaded) do
