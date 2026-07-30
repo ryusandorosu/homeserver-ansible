@@ -7,6 +7,7 @@ return {
       'nvim-lua/plenary.nvim',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
     },
+    -- https://www.lazyvim.org/extras/editor/telescope
     config = function()
       require('telescope').setup({
         defaults = {

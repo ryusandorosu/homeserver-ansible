@@ -13,3 +13,9 @@ treesitter:
   # - perl #treesitter does not support abi version 15
   - python
   - go
+  - dockerfile
+  - git_config
+  - gitcommit
+  - git_rebase
+  - gitignore
+  - gitattributes

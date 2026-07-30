@@ -44,6 +44,8 @@ mason_install:
   - jq
   - nginx-config-formatter
   - luacheck
+  - hadolint
+  - sqlfluff
 
 # too long compilation, better to install manually via :MasonInstall
 mason_manual:

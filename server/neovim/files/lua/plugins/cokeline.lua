@@ -9,5 +9,6 @@ return {
     -- https://github.com/willothy/nvim-cokeline#wrench-configuration
     config = true
   },
+  -- https://github.com/kdheepak/tabline.nvim
 
 }
