@@ -8,22 +8,6 @@
     - defaults/*.yml
   tags: [vars]
 
-- name: Install required packages
-  apt:
-    name: "{{ item }}"
-    state: present
-  loop:
-    - npm
-    - cargo
-    - golang-go
-    - cmake
-
-- name: Install required packages via npm
-  npm:
-    name: tree-sitter-cli
-    global: true
-    state: present
-
 - name: Install neovim AppImage from git repo
   get_url:
     url: https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
@@ -50,13 +34,13 @@
 
 - name: Deploy init.lua
   copy:
-    src: templates/init.lua
+    src: files/init.lua
     dest: "{{ homedir }}/{{ nvimdir.config }}"
     mode: '0664'
 
 - name: Deploy plugins.lua
   copy:
-    src: templates/lua/plugins.lua
+    src: files/lua/plugins.lua
     dest: "{{ homedir }}/{{ nvimdir.config }}/lua"
     mode: '0664'
 
@@ -66,7 +50,7 @@
     dest: "{{ homedir }}/{{ nvimdir.config }}/lua/plugins"
     mode: '0664'
   with_fileglob:
-    - "templates/lua/plugins/*.lua"
+    - "files/lua/plugins/*.lua"
 
 - name: Deploy templated plugin configurations
   template:
@@ -76,20 +60,13 @@
   with_fileglob:
     - "templates/lua/plugins/*.lua.j2"
 
-- name: Delete disabled plugin configurations
-  file:
-    path: "{{ homedir }}/{{ nvimdir.config }}/lua/plugins/{{ item | basename | regex_replace('.disabled','') }}"
-    state: absent
-  with_fileglob:
-    - "templates/lua/plugins/*.disabled"
-
 - name: Deploy lua configs
   copy:
     src: "{{ item }}"
     dest: "{{ homedir }}/{{ nvimdir.config }}/lua/config"
     mode: '0664'
   with_fileglob:
-    - "templates/lua/config/*.lua"
+    - "files/lua/config/*.lua"
 
 - name: Deploy templated lua configs
   template:

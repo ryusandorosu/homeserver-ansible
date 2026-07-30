@@ -1,3 +1,19 @@
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - npm
+    - cargo
+    - golang-go
+    - cmake
+
+- name: Install required packages via npm
+  npm:
+    name: tree-sitter-cli
+    global: true
+    state: present
+
 - name: Synchronize lazy.nvim plugins
   become_user: "{{ user }}"
   command: nvim --headless "+Lazy! sync" +qa
