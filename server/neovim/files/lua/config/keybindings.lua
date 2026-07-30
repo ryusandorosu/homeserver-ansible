@@ -25,7 +25,6 @@ end, { desc = "Pick window" })
 
 -- neotree
 vim.keymap.set('n', '<leader><space>',  ':Neotree <CR>',  { desc = "Neotree" })
--- vim.keymap.set('n', '<leader><space>', function() Snacks.explorer() end, { desc = "File Explorer" })
 -- telescope
 vim.keymap.set('n', '<leader>f',  ':Telescope find_files<cr>')
 vim.keymap.set('n', '<leader>g',  ':Telescope live_grep<cr>')
@@ -34,8 +33,8 @@ vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
 vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
 vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
 -- useful for debugging
-vim.keymap.set('n', '<leader>i',  ':Inspect<cr>')
--- алсо неедед а кеймап то релоад нвим
+vim.keymap.set('n', '<leader>i',  ':Inspect<cr>',         { desc = "Inspect element under cursor" })
+vim.keymap.set('n', '<leader><esc>', ':Alpha<cr>',        { desc = "Toggle dashboard" })
 
 -- line moving
 vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
