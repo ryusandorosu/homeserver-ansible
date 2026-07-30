@@ -25,12 +25,13 @@ return {
         dashboard.button("f", " " .. " Find file",       "<cmd> Telescope find_files <cr>"),
         dashboard.button("n", " " .. " New file",        "<cmd> ene <BAR> startinsert <cr>"),
         dashboard.button("r", " " .. " Recent files",    "<cmd> Telescope oldfiles <cr>"),
+        dashboard.button("p", " " .. " Projects",        "<cmd> lua require('custom.projects').find_projects() <cr>"),
         dashboard.button("g", " " .. " Find text",       "<cmd> Telescope live_grep <cr>"),
         dashboard.button("k", "󰧹 " .. " Keymaps",         "<cmd> Telescope keymaps <cr>"),
         dashboard.button("c", " " .. " Config",          "<cmd> lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) <cr>"),
         dashboard.button("o", " " .. " Settings",        "<cmd> Telescope vim_options <cr>"),
         dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]), --not work
-        dashboard.button("m", " " .. " Man pages",       "<cmd> Telescope man_pages <cr>"),
+        dashboard.button("m", "󰞋 " .. " Man pages",       "<cmd> Telescope man_pages <cr>"),
         dashboard.button("l", " " .. " Lazy",            "<cmd> Lazy <cr>"),
         dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
       }
@@ -44,6 +45,7 @@ return {
       dashboard.opts.layout[1].val = 8
       return dashboard
     end,
+
     config = function(_, dashboard)
       -- close Lazy and re-open when the dashboard is ready
       if vim.o.filetype == "lazy" then
