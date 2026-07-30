@@ -50,17 +50,14 @@
 - import_tasks: managers.yml
   when: initial_nvim_install
 
-- name: Create root symlink for nvim configs
+- name: Create root symlinks for nvim directories
   file:
-    src: "{{ homedir }}/{{ nvimdir.config }}"
-    dest: "{{ ansible_facts.env.HOME }}/{{ nvimdir.config }}"
+    src: "{{ homedir }}/{{ item }}"
+    dest: "{{ ansible_facts.env.HOME }}/{{ item }}"
     state: link
-
-- name: Create root symlink for nvim shares
-  file:
-    src: "{{ homedir }}/{{ nvimdir.share }}"
-    dest: "{{ ansible_facts.env.HOME }}/{{ nvimdir.share }}"
-    state: link
+  loop:
+    - "{{ nvimdir.share }}"
+    - "{{ nvimdir.config }}"
 
 ### seems useless
 # - name: Set nvim as default sudoeditor
