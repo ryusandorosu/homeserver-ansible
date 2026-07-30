@@ -12,10 +12,18 @@ return {
 
   {
     "folke/trouble.nvim",
-    -- https://github.com/folke/trouble.nvim/blob/main/docs/examples.md
-    -- https://github.com/folke/trouble.nvim#telescope
-    opts = {},
+    -- https://github.com/folke/trouble.nvim#setup
+    -- https://www.lazyvim.org/plugins/editor#troublenvim
+    opts = {
+      modes = {
+        lsp = {
+          win = { position = "right" },
+        },
+      },
+    },
     cmd = "Trouble",
+    -- https://github.com/folke/trouble.nvim#telescope
+    -- https://github.com/folke/trouble.nvim#statusline-component
   },
 
   -- https://github.com/folke/edgy.nvim -- to make ide-like layouts -- https://www.lazyvim.org/extras/ui/edgy

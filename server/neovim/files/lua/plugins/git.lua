@@ -8,7 +8,7 @@ return {
       current_line_blame_opts = {
         delay = 1500,
       },
-    }
+    },
   },
 
 }

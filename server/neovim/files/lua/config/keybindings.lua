@@ -33,8 +33,10 @@ vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
 vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
 vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
 vim.keymap.set('n', '<leader>gg', ':Gitsigns<cr>')
-vim.keymap.set('n', '<leader>e',  ':Trouble<cr>',         { desc = "Trouble plugin to inspect errors" })
 vim.keymap.set('n', '<leader><esc>', ':Alpha<cr>',        { desc = "Toggle dashboard" })
+-- trouble
+vim.keymap.set('n', '<leader>e',  ':Trouble<cr>',         { desc = "Trouble plugin menu to inspect errors" })
+vim.keymap.set('n', '<leader>ed', ':Trouble diagnostics toggle<cr>', { desc = "Toggle Trouble diagnostics" })
 
 -- line moving
 vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
