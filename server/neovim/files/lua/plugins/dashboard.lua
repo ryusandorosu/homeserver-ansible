@@ -20,14 +20,18 @@ return {
       dashboard.section.header.val = vim.split(logo, "\n")
       -- stylua: ignore
       dashboard.section.buttons.val = {
-        dashboard.button("f", " " .. " Find file",       "<cmd> lua LazyVim.pick()() <cr>"),
-        dashboard.button("n", " " .. " New file",        [[<cmd> ene <BAR> startinsert <cr>]]),
-        dashboard.button("r", " " .. " Recent files",    [[<cmd> lua LazyVim.pick("oldfiles")() <cr>]]),
-        dashboard.button("g", " " .. " Find text",       [[<cmd> lua LazyVim.pick("live_grep")() <cr>]]),
-        dashboard.button("c", " " .. " Config",          "<cmd> lua LazyVim.pick.config_files()() <cr>"),
-        dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
-        dashboard.button("x", " " .. " Lazy Extras",     "<cmd> LazyExtras <cr>"),
-        dashboard.button("l", "󰒲 " .. " Lazy",            "<cmd> Lazy <cr>"),
+        -- look for icons here :lua =require('nvim-web-devicons').get_icons()
+        -- and here https://www.nerdfonts.com/cheat-sheet
+        dashboard.button("f", " " .. " Find file",       "<cmd> Telescope find_files <cr>"),
+        dashboard.button("n", " " .. " New file",        "<cmd> ene <BAR> startinsert <cr>"),
+        dashboard.button("r", " " .. " Recent files",    "<cmd> Telescope oldfiles <cr>"),
+        dashboard.button("g", " " .. " Find text",       "<cmd> Telescope live_grep <cr>"),
+        dashboard.button("k", "󰧹 " .. " Keymaps",         "<cmd> Telescope keymaps <cr>"),
+        dashboard.button("c", " " .. " Config",          "<cmd> lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) <cr>"),
+        dashboard.button("o", " " .. " Settings",        "<cmd> Telescope vim_options <cr>"),
+        dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]), --not work
+        dashboard.button("m", " " .. " Man pages",       "<cmd> Telescope man_pages <cr>"),
+        dashboard.button("l", " " .. " Lazy",            "<cmd> Lazy <cr>"),
         dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
@@ -71,6 +75,16 @@ return {
           pcall(vim.cmd.AlphaRedraw)
         end,
       })
+
+      -- remove tildas after menu
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "alpha",
+        callback = function()
+          -- also this may be set globally in opts
+          vim.opt_local.fillchars = { eob = " " }
+        end,
+      })
+
     end,
   }
 
