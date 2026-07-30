@@ -9,21 +9,21 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     -- https://github.com/nvim-neo-tree/neo-tree.nvim#configuration
-    require("neo-tree").setup({
+    opts = {
       close_if_last_window = true,
       filesystem = {
         filtered_items = {
-          visible = true,
+          visible = true, -- when true, they will just be displayed differently than normal items
           hide_dotfiles = false,
           hide_gitignored = false,
           hide_ignored = true,
-        }
+        },
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = true,
+        },
       },
-      follow_current_file = {
-        enabled = true,
-        leave_dirs_open = true,
-      },
-    })
+    },
   },
 
   {
