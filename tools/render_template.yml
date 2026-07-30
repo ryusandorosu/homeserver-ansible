@@ -29,8 +29,14 @@
         tasks_from: main.yml
       tags: [always]
 
+    # - name: Render template
+    #   copy:
+    #     content: "{{ lookup('template', playbook_dir + '/../' + template_path) }}"
+    #     dest: "{{ output_path }}"
+    #   tags: [always]
+
     - name: Render template
-      copy:
-        content: "{{ lookup('template', playbook_dir + '/../' + template_path) }}"
+      template:
+        src: "{{ playbook_dir }}/../{{ template_path }}"
         dest: "{{ output_path }}"
       tags: [always]
