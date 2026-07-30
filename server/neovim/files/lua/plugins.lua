@@ -8,12 +8,6 @@ return {
     end
   },
 
-  -- { "tpope/vim-fugitive" }, -- disable it
-  -- { "airblade/vim-gitgutter" }, -- gitsigns is much faster
-
-  -- https://github.com/lewis6991/gitsigns.nvim -- https://www.lazyvim.org/plugins/editor#gitsignsnvim
-  { "lewis6991/gitsigns.nvim" },
-
   { "RRethy/vim-illuminate" },
 
   -- https://github.com/folke/edgy.nvim -- to make ide-like layouts -- https://www.lazyvim.org/extras/ui/edgy
