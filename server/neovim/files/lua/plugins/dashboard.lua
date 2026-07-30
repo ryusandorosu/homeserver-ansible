@@ -30,7 +30,7 @@ return {
         dashboard.button("k", "󰧹 " .. " Keymaps",         "<cmd> Telescope keymaps <cr>"),
         dashboard.button("c", " " .. " Config",          "<cmd> lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) <cr>"),
         dashboard.button("o", " " .. " Settings",        "<cmd> Telescope vim_options <cr>"),
-        dashboard.button("s", " " .. " Restore Session", [[<cmd> lua require("persistence").load() <cr>]]), --not work
+        dashboard.button("s", " " .. " Restore Session", "<cmd> lua require('persistence').load() <cr>"),
         dashboard.button("m", "󰞋 " .. " Man pages",       "<cmd> Telescope man_pages <cr>"),
         dashboard.button("l", " " .. " Lazy",            "<cmd> Lazy <cr>"),
         dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
