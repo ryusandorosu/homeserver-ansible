@@ -15,10 +15,27 @@
     group: "{{ user }}"
     mode: '0644'
 
-### windows
-# it is better to make a task that adds a json field if it is not present instead of just replacing file
+### windows (delegated)
+- name: Resolve current Windows host alias
+  set_fact:
+    windows_target_host: >-
+      {{
+        whost
+        | dict2items
+        | selectattr('value.name', 'equalto', ansible_hostname)
+        | map(attribute='value.host')
+        | first
+      }}
+
+# - name: Gather Windows facts
+#   ansible.windows.setup:
+#   delegate_to: "{{ windows_target_host }}"
+#   delegate_facts: true
+
 - name: Deploy VSCode task keybinding to run 'tools/j2render.sh'
   win_copy:
     src: keybindings.json
-    # dest: /C:/Users/Булат Сибгатуллин/AppData/Roaming/Code/User/keybindings.json
-    dest: "{{ ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
+    # dest: "{{ ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
+    # dest: "{{ hostvars[windows_target_host].ansible_env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
+    dest: "{{ hostvars[windows_target_host].ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
+  delegate_to: "{{ windows_target_host }}"
