@@ -1,0 +1,24 @@
+### wsl
+- name: Create custom VSCode tasks directory in HOME workspace
+  file:
+    path: "{{ homedir }}/.vscode"
+    state: directory
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0755'
+
+- name: Deploy VSCode task enabling 'tools/j2render.sh'
+  template:
+    src: tasks.json.j2
+    dest: "{{ homedir }}/.vscode/tasks.json"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: '0644'
+
+### windows
+# it is better to make a task that adds a json field if it is not present instead of just replacing file
+- name: Deploy VSCode task keybinding to run 'tools/j2render.sh'
+  win_copy:
+    src: keybindings.json
+    # dest: /C:/Users/Булат Сибгатуллин/AppData/Roaming/Code/User/keybindings.json
+    dest: "{{ ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"

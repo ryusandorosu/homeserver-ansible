@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Render Ansible Template",
+      "type": "shell",
+      "command": "${workspaceFolder}/{{ ansible_config_file | dirname | basename }}/tools/j2render.sh",
+      "args": [
+        "${file}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/{{ ansible_config_file | dirname | basename }}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}

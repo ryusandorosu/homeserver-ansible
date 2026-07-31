@@ -1,0 +1,10 @@
+// Place your key bindings in this file to override the defaults
+[
+  {
+    // "key": "shift+r",
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.tasks.runTask",
+    "when": "editorFocus",
+    "args": "Render Ansible Template"
+  }
+]
