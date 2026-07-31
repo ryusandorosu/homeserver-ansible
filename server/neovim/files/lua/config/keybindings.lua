@@ -1,6 +1,7 @@
 -- :help default-mappings
 -- :h nvim-surround.configuration -- default is 'S' when selected in visual mode
 -- :h comment.config -- default is 'gc'(nv) - opleader and 'gcc'(n) - toggler for selected lines. redefined to 'c' and 'cc'
+-- :checkhealth which-key not only shows health of the plugin, but overlapping keymaps as well
 -- REMINDER: ctrl-q (by default) and button: returns <key>; <cr> = enter, <cmd> = ':'
 vim.g.mapleader = " "
 
@@ -33,7 +34,7 @@ vim.keymap.set('n', '<leader>c',  ':Telescope commands<cr>')
 vim.keymap.set('n', '<leader>fc', ':Telescope command_history<cr>')
 vim.keymap.set('n', '<leader>k',  ':Telescope keymaps<cr>')
 vim.keymap.set('n', '<leader>gg', ':Gitsigns<cr>')
-vim.keymap.set('n', '<leader><esc>', ':Alpha<cr>',        { desc = "Toggle dashboard" })
+vim.keymap.set('n', '<esc><esc>', ':Alpha<cr>',           { desc = "Toggle dashboard" })
 -- trouble
 vim.keymap.set('n', '<leader>e',  ':Trouble<cr>',         { desc = "Trouble plugin menu to inspect errors" })
 vim.keymap.set('n', '<leader>ed', ':Trouble diagnostics toggle<cr>', { desc = "Toggle Trouble diagnostics" })

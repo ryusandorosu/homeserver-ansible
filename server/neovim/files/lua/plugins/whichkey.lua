@@ -2,16 +2,13 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     -- https://github.com/folke/which-key.nvim#-triggers
     -- https://www.lazyvim.org/plugins/editor#which-keynvim
-    opts = {},
-    -- keys = {
-    --   {
-    --     "<leader>?", function()
-    --       require("which-key").show({ keys = "<c-w>", loop = true })
-    --     end,
-    --     desc = "Window Hydra Mode (which-key)",
-    --   },
-    -- },
+    opts = {
+      preset = "modern",
+      delay = 2500,
+      expand = 1,
+    },
   },
 }
