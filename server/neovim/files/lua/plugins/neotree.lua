@@ -14,7 +14,7 @@ return {
       close_if_last_window = true,
       filesystem = {
         filtered_items = {
-          visible = true, -- when true, they will just be displayed differently than normal items
+          visible = true,
           hide_dotfiles = false,
           hide_gitignored = false,
           hide_ignored = true,
