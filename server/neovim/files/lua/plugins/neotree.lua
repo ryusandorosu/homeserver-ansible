@@ -1,7 +1,8 @@
--- https://github.com/nvim-tree/nvim-tree.lua -- base version
 return {
+
   {
     "nvim-neo-tree/neo-tree.nvim",
+    enabled = true,
     branch = "v3.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -31,6 +32,23 @@ return {
     config = function()
       require("lsp-file-operations").setup()
     end
+  },
+
+  -- neotree alternatives:
+
+  {
+    "ms-jpq/chadtree",
+    enabled = false,
+    build=":CHADdeps",
+    -- vim.keymap.set('n', '<leader><space>',  ':CHADopen <CR>',  { desc = "ChadTree" }),
+  },
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    enabled = false,
+    opts = {
+      -- vim.keymap.set('n', '<leader><space>',  ':NvimTreeOpen <CR>',  { desc = "NvimTree" }),
+    }
   },
 
 }
