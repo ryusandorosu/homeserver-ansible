@@ -27,15 +27,33 @@
         | first
       }}
 
-# - name: Gather Windows facts
-#   ansible.windows.setup:
-#   delegate_to: "{{ windows_target_host }}"
-#   delegate_facts: true
+- set_fact:
+    whost_AppData: "{{ hostvars[windows_target_host].ansible_facts.env.APPDATA }}"
+
+## imported from windows roles
+- name: Read remote keybindings before deploy
+  ansible.windows.slurp:
+    path: "{{ whost_AppData }}\\Code\\User\\keybindings.json"
+  delegate_to: "{{ windows_target_host }}"
+  register: before_keybind
+  ignore_errors: true
+
+- name: Render repo keybindings
+  set_fact:
+    rendered_keybind: "{{ lookup('file', 'files/keybindings.json') }}"
+
+- name: Show config unified diff 
+  delegate_to: localhost
+  vars:
+    before: "{{ before_keybind.content | b64decode }}"
+    after: "{{ rendered_keybind }}"
+  shell: |
+    {{ lookup('template', inventory_dir ~ '/../windows/templates/pyshell.sh.j2') }}
+  ignore_errors: true
+## /imported from windows roles
 
 - name: Deploy VSCode task keybinding to run 'tools/j2render.sh'
   win_copy:
     src: keybindings.json
-    # dest: "{{ ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
-    # dest: "{{ hostvars[windows_target_host].ansible_env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
-    dest: "{{ hostvars[windows_target_host].ansible_facts.env.APPDATA }}\\Roaming\\Code\\User\\keybindings.json"
+    dest: "{{ whost_AppData }}\\Code\\User\\keybindings.json"
   delegate_to: "{{ windows_target_host }}"
