@@ -7,7 +7,8 @@
       "command": "${workspaceFolder}/{{ ansible_config_file | dirname | basename }}/tools/j2render.sh",
       "args": [
         "${file}",
-        "${input:itemExpr}"
+        "${input:itemPattern}",
+        "${input:itemArg}"
       ],
       "options": {
         "cwd": "${workspaceFolder}/{{ ansible_config_file | dirname | basename }}"
@@ -21,9 +22,21 @@
   ],
   "inputs": [
     {
-      "id": "itemExpr",
+      "id": "itemPattern",
+      "type": "pickString",
+      "description": "Variable type passed to {% raw %}{{ item }}{% endraw %} from role tasks.",
+      "options": [
+        "none",
+        "list-index",
+        "dict2items-index",
+        "dict2items-key"
+      ],
+      "default": "none"
+    },
+    {
+      "id": "itemArg",
       "type": "promptString",
-      "description": "Jinja expression passed to {% raw %}{{ item }}{% endraw %} from role tasks. Leave empty if 'item'/'loop:'/'with_*:' are not used. Examples: '(loop_variable | dict2items)[index]', \"(loop_variable | dict2items | selectattr('key','equalto','VAR') | first)\"",
+      "description": "Loop variable name (+ index/key if needed)",
       "default": ""
     }
   ]

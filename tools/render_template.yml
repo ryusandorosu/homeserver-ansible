@@ -5,15 +5,6 @@
   gather_subset:
     - min
 
-# - debug:
-#     msg: "{{ ansible_facts }}"
-# - debug:
-#   msg: >
-#     arch: "{{ ansible_facts.architecture }}"
-#     os: "{{ ansible_facts.os_family }}"
-#     distr: "{{ ansible_facts.distribution }}"
-#     release: "{{ ansible_facts.distribution_release }}"
-
   tasks:
     - name: Load all role defaults recursively
       include_vars:
