@@ -1,3 +1,4 @@
 python3 - << 'EOF'
-{{ lookup('template', '../templates/diff.py.j2') }}
+{# {{ lookup('template', '../templates/diff.py.j2') }} #}
+{{ lookup('template', inventory_dir ~ '/../windows/templates/diff.py.j2') }}
 EOF
