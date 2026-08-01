@@ -24,7 +24,7 @@
         | select('match', '^local-')
         | map('extract', hostvars)
         | selectattr('wsl_hostname', 'defined')
-        | selectattr('wsl_hostname', 'equalto', ansible_hostname)
+        | selectattr('wsl_hostname', 'equalto', ansible_facts.hostname)
         | map(attribute='inventory_hostname')
         | first
       }}
