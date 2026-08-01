@@ -33,6 +33,7 @@
     update_homebrew: true
   loop:
     - bat
+    - yq
   # nvim requirements also used in zsh fzf plugin:
     - fd
     - ripgrep
