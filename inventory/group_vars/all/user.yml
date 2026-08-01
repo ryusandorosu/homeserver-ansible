@@ -17,16 +17,13 @@ termux:
     key: android_x96q
 
 # Windows
-### think how to define whost.*.name without whost.*.host
 whost:
   asus:
     user: Булат Сибгатуллин
     name: DESKTOP-5EFI5KM
-    host: local-asus
   honor:
     user: kutae
     name: DESKTOP-2MJ0UCN
-    host: local-honor
 
 # services
 grafana_user: 472
