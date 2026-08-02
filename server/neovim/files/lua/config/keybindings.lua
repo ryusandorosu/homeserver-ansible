@@ -41,12 +41,12 @@ vim.keymap.set('n', '<leader>e',  ':Trouble<cr>',         { desc = "Trouble plug
 vim.keymap.set('n', '<leader>ed', ':Trouble diagnostics toggle<cr>', { desc = "Toggle Trouble diagnostics" })
 
 -- line moving
-vim.keymap.set('n', '<C-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
-vim.keymap.set('n', '<C-Down>',   ':m .+1<CR>==',         { desc = "Move line down" })
-vim.keymap.set('i', '<C-Up>',     "<Esc>:m .-2<CR>==gi",  { desc = "Move line up" })
-vim.keymap.set('i', '<C-Down>',   "<Esc>:m .+1<CR>==gi",  { desc = "Move line down" })
-vim.keymap.set('v', '<C-Up>',     ":m '<-2<CR>gv=gv",     { desc = "Move selection up" })
-vim.keymap.set('v', '<C-Down>',   ":m '>+1<CR>gv=gv",     { desc = "Move selection down" })
+vim.keymap.set('n', '<A-Up>',     ':m .-2<CR>==',         { desc = "Move line up" })
+vim.keymap.set('n', '<A-Down>',   ':m .+1<CR>==',         { desc = "Move line down" })
+vim.keymap.set('i', '<A-Up>',     "<Esc>:m .-2<CR>==gi",  { desc = "Move line up" })
+vim.keymap.set('i', '<A-Down>',   "<Esc>:m .+1<CR>==gi",  { desc = "Move line down" })
+vim.keymap.set('v', '<A-Up>',     ":m '<-2<CR>gv=gv",     { desc = "Move selection up" })
+vim.keymap.set('v', '<A-Down>',   ":m '>+1<CR>gv=gv",     { desc = "Move selection down" })
 -- indentation
 vim.keymap.set('n', '<Tab>',      '>>',                   { desc = "Indent right" })
 vim.keymap.set('n', '<S-Tab>',    '<<',                   { desc = "Indent left" })
