@@ -17,21 +17,36 @@ return {
           },
         },
         sections = {
+          lualine_a = {'mode'},
+          lualine_b = {'branch', 'diff', 'diagnostics'},
           lualine_c = {
             {
               "filename",
-              path = 4,
+              path = 3,
               file_status = true,
               new_file_status = true,
             },
           },
           lualine_x = {
-            "encoding",
+            { "encoding", show_bomb = true },
             "fileformat",
-            "lsp_status",
+            {
+              "lsp_status",
+              icon = '',
+              symbols = {
+                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                done = '✓',
+                separator = ' ',
+              },
+              ignore_lsp = {},
+              show_name = true,
+            },
             "filetype",
           },
+          lualine_y = {'progress'},
+          lualine_z = {'location'},
         },
+        -- https://github.com/nvim-lualine/lualine.nvim#tabline
       })
     end
   },
