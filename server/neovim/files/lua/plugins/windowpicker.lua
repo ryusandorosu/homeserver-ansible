@@ -10,7 +10,7 @@ return {
           handle_mouse_click = true,
         },
         filter_rules = {
-          include_current_win = false,
+          include_current_win = true,
           include_unfocusable_windows = false,
           autoselect_one = true,
           -- filter using buffer options
