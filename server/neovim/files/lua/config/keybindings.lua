@@ -1,7 +1,7 @@
+vim.g.mapleader = " " -- <leader> = <space>
 -- :h nvim-surround.configuration -- default is 'S' when selected in visual mode
 -- :h comment.config -- default is 'gc'(nv) - opleader and 'gcc'(n) - toggler for selected lines. redefined to 'c' and 'cc'
 -- REMINDER: ctrl-q (by default) and button: returns <key>; <cr> = enter, <cmd> = ':'
-vim.g.mapleader = " "
 
 vim.keymap.set('n',       '<esc><esc>',       ':Alpha <CR>',                                    { desc = "Toggle dashboard" })
 vim.keymap.set('n',       '<leader><space>',  ':Neotree <CR>',                                  { desc = "Neotree" })
