@@ -2,6 +2,7 @@ return {
 
   {
     "nvim-mini/mini.pairs",
+    enabled = false,
     version = '*',
     event = "VeryLazy",
     -- https://www.lazyvim.org/plugins/coding#minipairs
