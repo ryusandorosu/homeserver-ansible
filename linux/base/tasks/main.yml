@@ -37,6 +37,7 @@
   # nvim requirements also used in zsh fzf plugin:
     - fd
     - ripgrep
+    - sad
 
 - import_tasks: rc.yml
 
