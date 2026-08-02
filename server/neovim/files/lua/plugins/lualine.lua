@@ -9,7 +9,7 @@ return {
         options  = {
           component_separators = {
             left = '',
-            -- right = '',
+            right = '',
           },
           section_separators = {
             left = '',
@@ -29,14 +29,13 @@ return {
           },
           lualine_x = {
             { "encoding", show_bomb = true },
-            "fileformat",
+            { "fileformat", separator = ' ' },
             {
               "lsp_status",
               icon = '',
               symbols = {
                 spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
                 done = '✓',
-                separator = ' ',
               },
               ignore_lsp = {},
               show_name = true,
@@ -46,7 +45,31 @@ return {
           lualine_y = {'progress'},
           lualine_z = {'location'},
         },
-        -- https://github.com/nvim-lualine/lualine.nvim#tabline
+        tabline = {
+          lualine_a = {
+            {
+              "buffers",
+              mode = 2,
+              show_filename_only = true,
+              hide_filename_extension = true,
+              use_mode_colors = true,
+            },
+          },
+          lualine_y = {
+            {
+              "tabs",
+              mode = 0,
+              use_mode_colors = true,
+            },
+          },
+          lualine_z = {
+            {
+              "windows",
+              mode = 0,
+              use_mode_colors = true,
+            },
+          },
+        },
       })
     end
   },
@@ -54,8 +77,8 @@ return {
   {
     "kdheepak/tabline.nvim",
     dependencies = {
-      { "hoob3rt/lualine.nvim", opt = true },
-      { "kyazdani42/nvim-web-devicons", opt = true },
+      { "nvim-lualine/lualine.nvim", opt = true },
+      { "nvim-tree/nvim-web-devicons", opt = true },
     },
     -- https://github.com/kdheepak/tabline.nvim#installation
     config = function()
