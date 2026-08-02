@@ -9,9 +9,23 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-tree/nvim-web-devicons",
     },
+    lazy = false,
     -- https://github.com/nvim-neo-tree/neo-tree.nvim#configuration
     opts = {
-      close_if_last_window = true,
+      close_if_last_window = false,
+      default_component_configs = {
+        modified = {
+          symbol = "",
+          highlight = "NeoTreeModified",
+        },
+        window = {
+          position = "left",
+          mappings = {
+            ["h"] = "open_split",
+            ["s"] = "open_vsplit",
+          },
+        },
+      },
       filesystem = {
         filtered_items = {
           visible = true,
