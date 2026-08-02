@@ -17,8 +17,10 @@ return {
       dashboard.section.buttons.val = {
         -- look for icons here :lua =require('nvim-web-devicons').get_icons()
         -- and here https://www.nerdfonts.com/cheat-sheet
-        dashboard.button("s", " " .. " Restore session in current directory", "<cmd> lua require('persistence').load() <cr>"),
-        dashboard.button("a", " " .. " Saved sessions", "<cmd> lua require('persistence').select() <cr>"),
+        dashboard.button("s", " " .. " Restore last session", "<cmd> lua require('resession').load('last') <cr>"),
+        dashboard.button("a", " " .. " Saved sessions",  "<cmd> lua require('resession').load() <cr>"),
+        -- dashboard.button("s", " " .. " Restore session in current directory", "<cmd> lua require('persistence').load() <cr>"),
+        -- dashboard.button("a", " " .. " Saved sessions", "<cmd> lua require('persistence').select() <cr>"),
         dashboard.button("r", " " .. " Recent files",    "<cmd> Telescope oldfiles <cr>"),
         dashboard.button("p", " " .. " Projects",        "<cmd> lua require('custom.projects').find_projects() <cr>"),
         dashboard.button("f", " " .. " Find file",       "<cmd> Telescope find_files <cr>"),

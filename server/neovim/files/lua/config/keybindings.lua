@@ -6,6 +6,7 @@
 vim.g.mapleader = " "
 
 vim.keymap.set('n',       '<C-w>',      ':w<CR>',         { desc = "Save the file" })
+vim.keymap.set('n',       '<C-s>',      ':lua require("resession").save("manual") <cr>', { desc = "Save current session" })
 vim.keymap.set('n',       '<C-q>',      ':q<CR>',         { desc = "Close current window" })
 vim.keymap.set('n',       '<C-x>',      ':q!<CR>',        { desc = "Close all windows!" }) --:quitall/:qa
 -- selection
