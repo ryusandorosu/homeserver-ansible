@@ -10,6 +10,8 @@ return {
       need = 1,
       branch = true,
     },
+    -- dashboard.button("s", " " .. " Restore session in current directory", "<cmd> lua require('persistence').load() <cr>"),
+    -- dashboard.button("a", " " .. " Saved sessions", "<cmd> lua require('persistence').select() <cr>"),
   },
 
   {
