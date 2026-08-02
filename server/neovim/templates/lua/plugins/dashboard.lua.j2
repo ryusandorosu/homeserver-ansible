@@ -14,7 +14,6 @@ return {
 
       dashboard.section.header.val = vim.split(logo, "\n")
       dashboard.section.buttons.val = {
-        -- look for icons here :lua =require('nvim-web-devicons').get_icons()
         -- and here https://www.nerdfonts.com/cheat-sheet
         dashboard.button("s", " " .. " Restore last session",  "<cmd> lua require('resession').load('last') <cr>"),
         dashboard.button("a", " " .. " Saved sessions",        "<cmd> lua require('resession').load() <cr>"),
@@ -39,7 +38,7 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
-      dashboard.opts.layout[1].val = 8
+      dashboard.opts.layout[1].val = 0 --set this value according to logo height
       return dashboard
     end,
 

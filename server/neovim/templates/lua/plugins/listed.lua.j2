@@ -1,0 +1,30 @@
+return {
+
+  { "RRethy/vim-illuminate" },
+  -- https://github.com/folke/edgy.nvim -- to make ide-like layouts -- https://www.lazyvim.org/extras/ui/edgy
+  -- https://nvimdev.github.io/lspsaga/
+  -- https://github.com/stevearc/aerial.nvim -- https://github.com/hedyhli/outline.nvim
+  -- https://github.com/nvim-mini/mini.move
+  -- https://github.com/ThePrimeagen/refactoring.nvim
+  -- https://github.com/gbprod/yanky.nvim
+{% if not override_devicons %}
+  { "nvim-tree/nvim-web-devicons" },
+{% else %}
+  {
+    "nvim-tree/nvim-web-devicons",
+    -- if 'nf-dev-yaml \ue8eb' is not displayed, override it with 'nf-seti-yml \ue6a8'
+    -- better solution: https://www.nerdfonts.com/font-downloads -> JetBrainsMonoNerdFont-Regular.ttf -> set 'JetBrainsMono NF ' in terminal settings
+    require("nvim-web-devicons").set_icon({
+      yaml = {
+        icon = "",
+        name = "Yaml",
+      },
+      yml = {
+        icon = "",
+        name = "Yml",
+      },
+    }),
+  },
+{% endif %}
+
+}
