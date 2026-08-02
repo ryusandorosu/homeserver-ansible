@@ -17,9 +17,10 @@ vim.keymap.set('n',       '<leader>v',  ':vsplit<CR>',    { desc = "Vertical spl
 
 -- window-picker
 vim.keymap.set('n', '<leader>q',        ':bdelete<CR>',   { desc = "Close current buffer" })
+vim.keymap.set('n', '<leader><Tab>',    '<C-w>w',         { desc = "Cycle windows" })
 vim.keymap.set('n', '<leader><Right>',  ':bnext<CR>',     { desc = "Switch to next buffer" })
 vim.keymap.set('n', '<leader><Left>',   ':bprevious<CR>', { desc = "Switch to previous buffer" })
-vim.keymap.set('n', '<leader><Tab>', function()
+vim.keymap.set('n', '<leader>w', function()
   local window_id = require('window-picker').pick_window()
   vim.api.nvim_set_current_win(window_id)
 end, { desc = "Pick window" })
