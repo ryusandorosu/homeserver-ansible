@@ -4,7 +4,6 @@ local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
--- same logic as in ~/zsh_settings/fzf/completion/git.zsh
 local M = {}
 
 function M.find_projects(opts)
@@ -15,7 +14,10 @@ function M.find_projects(opts)
     "--max-depth", "2",
     "--exclude", ".local",
     "--exclude", ".vim",
-    "^\\.git$", vim.env.HOME,
+    "^\\.git$",
+    "--search-path", vim.env.HOME,
+    "--search-path", "/mnt/k95vb/ytdl_rdgf_script/",
+    "--search-path", "/mnt/k95vb/s21/",
   }
 
   pickers.new(opts, {
