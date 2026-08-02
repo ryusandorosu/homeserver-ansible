@@ -9,29 +9,28 @@ return {
     opts = function()
       local dashboard = require("alpha.themes.dashboard")
       local logo = [[
-        {{ lookup('file', 'logotypes/bismillah.j2') | indent(8) }}
+        {{ lookup('file', 'logotypes/none.j2') | indent(8) }}
       ]]
 
       dashboard.section.header.val = vim.split(logo, "\n")
-      -- stylua: ignore
       dashboard.section.buttons.val = {
         -- look for icons here :lua =require('nvim-web-devicons').get_icons()
         -- and here https://www.nerdfonts.com/cheat-sheet
-        dashboard.button("s", " " .. " Restore last session", "<cmd> lua require('resession').load('last') <cr>"),
-        dashboard.button("a", " " .. " Saved sessions",  "<cmd> lua require('resession').load() <cr>"),
-        dashboard.button("r", " " .. " Recent files",    "<cmd> Telescope oldfiles <cr>"),
-        dashboard.button("p", " " .. " Projects",        "<cmd> lua require('custom.projects').find_projects() <cr>"),
-        dashboard.button("f", " " .. " Find file",       "<cmd> Telescope find_files <cr>"),
-        dashboard.button("g", " " .. " Grep text",       "<cmd> Telescope live_grep <cr>"),
-        dashboard.button("n", " " .. " New file",        "<cmd> ene <BAR> startinsert <cr>"),
-        dashboard.button("c", " " .. " Config",          "<cmd> lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) <cr>"),
-        dashboard.button("o", " " .. " Settings",        "<cmd> Telescope vim_options <cr>"),
-        dashboard.button("k", "󰧹 " .. " Keymaps",         "<cmd> Telescope keymaps <cr>"),
-        dashboard.button("h", "󰞋 " .. " Man pages",       "<cmd> Telescope man_pages <cr>"),
-        dashboard.button("t", "󰔱 " .. " Update Treesitter", "<cmd> TSUpdate <cr>"),
-        dashboard.button("m", " " .. " Mason",           "<cmd> Mason <cr>"),
-        dashboard.button("l", " " .. " Lazy",            "<cmd> Lazy <cr>"),
-        dashboard.button("q", " " .. " Quit",            "<cmd> qa <cr>"),
+        dashboard.button("s", " " .. " Restore last session",  "<cmd> lua require('resession').load('last') <cr>"),
+        dashboard.button("a", " " .. " Saved sessions",        "<cmd> lua require('resession').load() <cr>"),
+        dashboard.button("r", " " .. " Recent files",          "<cmd> Telescope oldfiles <cr>"),
+        dashboard.button("p", " " .. " Projects",              "<cmd> lua require('custom.projects').find_projects() <cr>"),
+        dashboard.button("f", " " .. " Find file",             "<cmd> Telescope find_files <cr>"),
+        dashboard.button("g", " " .. " Grep text",             "<cmd> Telescope live_grep <cr>"),
+        dashboard.button("n", " " .. " New file",              "<cmd> ene <BAR> startinsert <cr>"),
+        dashboard.button("c", " " .. " Config",                "<cmd> lua require('telescope.builtin').find_files({ cwd = vim.fn.stdpath('config') }) <cr>"),
+        dashboard.button("o", " " .. " Settings",              "<cmd> Telescope vim_options <cr>"),
+        dashboard.button("k", "󰧹 " .. " Keymaps",               "<cmd> Telescope keymaps <cr>"),
+        dashboard.button("h", "󰞋 " .. " Man pages",             "<cmd> Telescope man_pages <cr>"),
+        dashboard.button("t", "󰔱 " .. " Update Treesitter",     "<cmd> TSUpdate <cr>"),
+        dashboard.button("m", " " .. " Mason",                 "<cmd> Mason <cr>"),
+        dashboard.button("l", " " .. " Lazy",                  "<cmd> Lazy <cr>"),
+        dashboard.button("q", " " .. " Quit",                  "<cmd> qa <cr>"),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
