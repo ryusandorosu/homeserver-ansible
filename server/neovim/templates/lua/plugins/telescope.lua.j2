@@ -9,8 +9,14 @@ return {
     },
     -- https://www.lazyvim.org/extras/editor/telescope
     config = function()
+      local actions = require('telescope.actions')
       require('telescope').setup({
         defaults = {
+          mappings = {
+            i = {
+              ["<Esc>"] = actions.close,
+            },
+          },
           vimgrep_arguments = {
             "rg",
 {% for opt in telescope_ripgrep_opts %}
