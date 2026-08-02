@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = false
+vim.g.loaded_netrwPlugin = false
+
 vim.opt.termguicolors = true
 vim.opt.guifont = "JetBrainsMono Nerd Font:h12"
 
