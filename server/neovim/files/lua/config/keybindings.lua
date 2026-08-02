@@ -49,6 +49,7 @@ vim.keymap.set('v', '<C-Down>',   ":m '>+1<CR>gv=gv",     { desc = "Move selecti
 -- indentation
 vim.keymap.set('n', '<Tab>',      '>>',                   { desc = "Indent right" })
 vim.keymap.set('n', '<S-Tab>',    '<<',                   { desc = "Indent left" })
+vim.keymap.set('i', '<Tab><Tab>', '<Esc> >>gi',           { desc = "Indent right" })
 vim.keymap.set('i', '<S-Tab>',    '<Esc> <<gi',           { desc = "Indent left" })
 vim.keymap.set('v', '<Tab>',      '>gv',                  { desc = "Indent right" })
 vim.keymap.set('v', '<S-Tab>',    '<gv',                  { desc = "Indent left" })
