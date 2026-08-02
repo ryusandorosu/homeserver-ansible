@@ -55,6 +55,14 @@ vim.keymap.set('i', '<S-Tab>',    '<Esc> <<gi',           { desc = "Indent left"
 vim.keymap.set('v', '<Tab>',      '>gv',                  { desc = "Indent right" })
 vim.keymap.set('v', '<S-Tab>',    '<gv',                  { desc = "Indent left" })
 
+-- TO FIX. now it just overrides <tab> indentation keymap when neotree is active.
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "neo-tree",
+  callback = function(args)
+    vim.keymap.set('n', '<Tab>', '<CR>', { buffer = args.buf, desc = "Open file/expand" })
+  end,
+})
+
 -- line duplication
 vim.keymap.set({'n','v'}, '<C-d>', function()
   local line = vim.api.nvim_get_current_line()
