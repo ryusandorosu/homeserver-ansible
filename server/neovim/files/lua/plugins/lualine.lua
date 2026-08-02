@@ -2,6 +2,10 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      -- "ryanoasis/vim-devicons",
+    },
     config = function()
       -- https://github.com/nvim-lualine/lualine.nvim#default-configuration
       -- https://github.com/nvim-lualine/lualine.nvim#available-options
