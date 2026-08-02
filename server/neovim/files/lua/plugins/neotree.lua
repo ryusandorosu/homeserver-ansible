@@ -18,12 +18,12 @@ return {
           symbol = "",
           highlight = "NeoTreeModified",
         },
-        window = {
-          position = "left",
-          mappings = {
-            ["h"] = "open_split",
-            ["s"] = "open_vsplit",
-          },
+      },
+      window = {
+        position = "left",
+        mappings = {
+          ["s"] = "open_split",
+          ["h"] = "open_vsplit",
         },
       },
       filesystem = {
