@@ -17,6 +17,14 @@ return {
           },
         },
         sections = {
+          lualine_c = {
+            {
+              "filename",
+              path = 4,
+              file_status = true,
+              new_file_status = true,
+            },
+          },
           lualine_x = {
             "encoding",
             "fileformat",
