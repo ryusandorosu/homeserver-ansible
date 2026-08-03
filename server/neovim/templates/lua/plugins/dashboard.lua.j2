@@ -16,8 +16,8 @@ return {
       dashboard.section.buttons.val = {
         -- and here https://www.nerdfonts.com/cheat-sheet
         dashboard.button("d", " " .. " Restore directory session",  "<cmd> lua require('resession').load(vim.fn.getcwd()) <cr>"),
-        dashboard.button("s", " " .. " Restore last session",  "<cmd> lua require('resession').load('last') <cr>"),
-        dashboard.button("a", " " .. " Saved sessions",        "<cmd> lua require('resession').load() <cr>"),
+        dashboard.button("a", " " .. " Restore last session",  "<cmd> lua require('resession').load('last') <cr>"),
+        dashboard.button("s", " " .. " Saved sessions",        "<cmd> lua require('resession').load() <cr>"),
         dashboard.button("r", " " .. " Recent files",          "<cmd> Telescope oldfiles <cr>"),
         dashboard.button("p", " " .. " Projects",              "<cmd> lua require('custom.projects').find_projects() <cr>"),
         dashboard.button("f", " " .. " Find file",             "<cmd> Telescope find_files <cr>"),
