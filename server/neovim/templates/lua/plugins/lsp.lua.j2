@@ -1,7 +1,27 @@
 return {
 
   -- https://www.lazyvim.org/plugins/lsp
-  { "neovim/nvim-lspconfig" },
+  { "neovim/nvim-lspconfig",
+    lazy = false,
+    dependencies = {
+      { "ms-jpq/coq_nvim", branch = "coq" },
+      { "ms-jpq/coq.artifacts", branch = "artifacts" },
+      -- Need to **configure separately**
+      { 'ms-jpq/coq.thirdparty', branch = "3p" },
+    },
+    config = function()
+      -- https://github.com/ms-jpq/coq_nvim#lazynvim
+      local coq = require "coq"
+{# coq.nvim: lsp_ensure_capabilities is a no-op in v2. neovim 0.12's vim.lsp.protocol.make_client_capabilities() already covers what v1 used to inject. Drop the wrapping call. #}
+{# vim.lsp.config("{{ language_server }}", { coq.lsp_ensure_capabilities() }) #}
+{% for language_server in mason_lspconfig | map(attribute='config') %}
+      vim.lsp.config["{{ language_server }}"] = {}
+{% endfor %}
+{% for language_server in mason_lspconfig | map(attribute='config') %}
+      vim.lsp.enable("{{ language_server }}")
+{% endfor %}
+    end
+  },
  
   { "williamboman/mason.nvim",
     config = function()
@@ -11,20 +31,13 @@ return {
   
   { "williamboman/mason-lspconfig.nvim",
     config = function()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          {% for language_server in mason_lspconfig | map(attribute='config') %}"{{ language_server }}"{% if not loop.last %}, {% endif %}
-{% endfor %}
-        }
-      })
-{% for language_server in mason_lspconfig | map(attribute='config') %}
-      vim.lsp.enable("{{ language_server }}")
-{% endfor %}
+      require("mason-lspconfig").setup({})
     end
   },
 
   -- https://github.com/saghen/blink.cmp -- https://www.lazyvim.org/extras/coding/blink
   { "hrsh7th/nvim-cmp",
+    enabled = false,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -47,7 +60,7 @@ return {
     end
   },
 
-  { "stevearc/conform.nvim" },
+  { "stevearc/conform.nvim" }, --formatter
   -- https://github.com/mfussenegger/nvim-lint -- https://www.lazyvim.org/plugins/linting
 
 }
