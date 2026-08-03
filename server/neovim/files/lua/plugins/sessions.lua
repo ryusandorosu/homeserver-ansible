@@ -18,6 +18,10 @@ return {
     "stevearc/resession.nvim",
     enabled = true,
     event = "BufReadPre",
+    dependencies = {
+      -- replaces vim.ui.select for resession.load()
+      "stevearc/dressing.nvim",
+    },
     opts = {},
     config = function()
       local resession = require("resession")
