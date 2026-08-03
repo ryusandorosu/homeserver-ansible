@@ -48,3 +48,21 @@
 
 - name: Refresh font cache
   command: fc-cache -f
+
+- name: Install fbterm
+  apt:
+    name: fbterm
+    state: present
+    update_cache: yes
+
+- name: Deploy fbtermrc
+  copy:
+    src: fbtermrc
+    dest: "{{ homedir }}/.fbtermrc"
+    mode: '0644'
+
+- name: Grant privileges to fbterm binary
+  file:
+    path: /usr/bin/fbterm
+    mode: u+s
+  # setcap cap_sys_tty_config+ep /usr/bin/fbterm
