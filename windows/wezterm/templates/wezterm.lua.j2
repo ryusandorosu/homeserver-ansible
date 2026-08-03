@@ -14,19 +14,26 @@ local config = {
     local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
     window:gui_window():maximize()
   end),
+  -- tabline options
   tab_bar_at_bottom = true,
   use_fancy_tab_bar = false,
+  -- font appearance
   font_size = 10,
   font = wezterm.font_with_fallback({
     { family = 'JetBrainsMono NF', weight = 'Medium' }, -- JetBrainsMonoNerdFont-Regular.ttf
     { family = 'JetBrains Mono', weight = 'Medium' },
   }),
   harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
+  -- color overrides
   colors = {
     cursor_bg = 'white',
     selection_bg = '#fffacd',
     selection_fg = 'black',
   },
+  -- cursor options
+  default_cursor_style = 'SteadyBlock',
+  force_reverse_video_cursor = true,
+  -- keymaps
   keys = {
     { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
     { key = 'v', mods = 'CTRL', action = act.PasteFrom 'PrimarySelection' },
