@@ -34,6 +34,8 @@ mason_lspconfig:
     config: dockerls
   - mason: docker-language-server
     config: docker_language_server
+  - mason: lua-language-server
+    config: lua_ls
 
 mason_install:
   - yamllint
