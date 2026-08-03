@@ -1,7 +1,8 @@
 return {
 
   -- https://www.lazyvim.org/plugins/lsp
-  { "neovim/nvim-lspconfig",
+  {
+    "neovim/nvim-lspconfig",
     lazy = false,
     dependencies = {
       { "ms-jpq/coq_nvim", branch = "coq" },
@@ -11,9 +12,7 @@ return {
     },
     config = function()
       -- https://github.com/ms-jpq/coq_nvim#lazynvim
-      local coq = require "coq"
-{# coq.nvim: lsp_ensure_capabilities is a no-op in v2. neovim 0.12's vim.lsp.protocol.make_client_capabilities() already covers what v1 used to inject. Drop the wrapping call. #}
-{# vim.lsp.config("{{ language_server }}", { coq.lsp_ensure_capabilities() }) #}
+      -- local coq = require "coq"
 {% for language_server in mason_lspconfig | map(attribute='config') %}
       vim.lsp.config["{{ language_server }}"] = {}
 {% endfor %}
@@ -22,21 +21,22 @@ return {
 {% endfor %}
     end
   },
- 
-  { "williamboman/mason.nvim",
+
+  {
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+    },
     config = function()
-      require("mason").setup()
-    end
-  },
-  
-  { "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason-lspconfig").setup({})
+      require("mason-lspconfig").setup({
+        ensure_installed = { {% for language_server in mason_lspconfig | map(attribute='config') %}"{{ language_server }}"{% if not loop.last %}, {% endif %}{% endfor %} },
+      })
     end
   },
 
   -- https://github.com/saghen/blink.cmp -- https://www.lazyvim.org/extras/coding/blink
-  { "hrsh7th/nvim-cmp",
+  {
+    "hrsh7th/nvim-cmp",
     enabled = false,
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
