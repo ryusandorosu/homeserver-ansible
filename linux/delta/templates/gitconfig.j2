@@ -23,7 +23,6 @@
   ; behavior
     color-only = {{ gitdelta.switch.color_only | lower }}
     diff-highlight = {{ gitdelta.switch.diff_highlight | lower }}
-    diff-so-fancy = {{ gitdelta.switch.diff_so_fancy | lower }}
     colorMoved = default
   ; formatting
     ; requires: settings.json: "security.allowedUNCHosts": ["wsl.localhost"],
@@ -34,7 +33,7 @@
     commit-style                  = bold yellow
     file-style                    = {{ gitdelta.file_style.bold }}
 {% if gitdelta.switch.diff_highlight %}
-  # defaults. some settings a little adjusted. see 'delta --show-config'
+  # defaults. some settings a little adjusted. see 'delta --show-config' and https://dandavison.github.io/delta/full---help-output.html for reference
   # also see https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
     hunk-header-style             = syntax
     minus-style                   = syntax 52 #syntax "#3f0001"
@@ -64,8 +63,13 @@
     line-numbers-plus-style       = 28
     line-numbers-left-style       = blue
     line-numbers-right-style      = blue
+{% if gitdelta.switch.side_by_side %}
     line-numbers-left-format      = │{nm:^4}│
     line-numbers-right-format     = │{np:^4}│
+{% else %}
+    line-numbers-left-format      = {nm:^4}⋮
+    line-numbers-right-format     = {np:^4}│
+{% endif %}
     max-line-distance             = 0.6
     max-line-length               = 3000
     diff-stat-align-width         = 48
@@ -74,7 +78,7 @@
     navigate-regex                = ^(commit|added:|removed:|renamed:|Δ|•)
     pager                         = none
     paging                        = auto
-    side-by-side                  = true
+    side-by-side                  = {{ gitdelta.switch.side_by_side | lower }}
     syntax-theme                  = Monokai Extended
     width                         = 238
     tabs                          = 8
