@@ -1,0 +1,43 @@
+- set_fact:
+    kmscon_vt: tty2
+
+- name: Add trixie-backports repository
+  apt_repository:
+    repo: "deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware"
+    filename: trixie-backports
+    state: present
+
+- name: Install kmscon from backports
+  apt:
+    name: kmscon
+    state: present
+    default_release: trixie-backports
+    update_cache: yes
+
+- name: Deploy kmscon.conf
+  copy:
+    src: kmscon.conf
+    dest: /etc/kmscon/kmscon.conf
+    mode: '0644'
+  notify: restart kmscon
+
+- name: Disable getty on target vt
+  systemd:
+    name: "getty@{{ kmscon_vt }}.service"
+    enabled: false
+    state: stopped
+
+- name: Enable kmscon on target vt
+  systemd:
+    name: "kmsconvt@{{ kmscon_vt }}.service"
+    enabled: true
+    state: started
+
+- name: Install Nerd Font's JetBrains Mono
+  become: false
+  community.general.homebrew:
+    name: font-jetbrains-mono-nerd-font
+    state: present
+
+- name: Refresh font cache
+  command: fc-cache -f

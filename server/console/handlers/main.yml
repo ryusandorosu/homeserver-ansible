@@ -1,0 +1,4 @@
+- name: restart kmscon
+  systemd:
+    name: "kmsconvt@{{ kmscon_vt }}.service"
+    state: restarted

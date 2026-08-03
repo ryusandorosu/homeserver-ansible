@@ -42,6 +42,7 @@
       - certificates
       - mihomo
       - cockpit
+      - console
       - far2l
       - neovim
       - docker
