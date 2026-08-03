@@ -2,9 +2,16 @@
     kmscon_vt: tty2
 
 - name: Add trixie-backports repository
-  apt_repository:
-    repo: "deb http://deb.debian.org/debian trixie-backports main contrib non-free non-free-firmware"
-    filename: trixie-backports
+  deb822_repository:
+    name: trixie-backports
+    types: deb
+    uris: http://deb.debian.org/debian
+    suites: trixie-backports
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
     state: present
 
 - name: Install kmscon from backports
