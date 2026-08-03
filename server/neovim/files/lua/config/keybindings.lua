@@ -6,7 +6,6 @@ vim.g.mapleader = " " -- <leader> = <space>
 vim.keymap.set('n',       '<esc><esc>',       ':Alpha <CR>',                                    { desc = "Toggle dashboard" })
 vim.keymap.set('n',       '<leader><space>',  ':Neotree <CR>',                                  { desc = "Neotree" })
 vim.keymap.set('n',       '<C-w>',            ':w<CR>',                                         { desc = "Save the file" })
-vim.keymap.set('n',       '<C-s>',            function() require("resession").save() end,       { desc = "Save current session" })
 vim.keymap.set('n',       '<C-q>',            ':q<CR>',                                         { desc = "Close current window" })
 vim.keymap.set('n',       '<C-x>',            ':qa!<CR>',                                       { desc = "Close all windows!" }) --:quitall
 vim.keymap.set('n',       '<leader>q',        ':bdelete<CR>',                                   { desc = "Close current buffer" })
@@ -67,9 +66,9 @@ vim.keymap.set('v',       '<leader>d',        function()
 end, { desc = "Duplicate selection" })
 
 -- useful for debugging
-vim.keymap.set('n', '<leader>i', ':Inspect<cr>', { desc = "Inspect element under cursor" })
+vim.keymap.set('n',       '<leader>i',        ':Inspect<cr>',                                   { desc = "Inspect element under cursor" })
 -- reload settings
-vim.keymap.set('n', '<leader>rr', function()
+vim.keymap.set('n',       '<leader>rr',       function()
   for name, _ in pairs(package.loaded) do
     if name:match('^config') then
       package.loaded[name] = nil
@@ -81,3 +80,15 @@ end, { desc = "Reload nvim config" })
 ---- consider this if will configure autocmds:
 -- local grp = vim.api.nvim_create_augroup("MyConfig", { clear = true })
 -- vim.api.nvim_create_autocmd("ColorScheme", { group = grp, callback = set_picker_hl })
+
+vim.keymap.set('n',       '<C-s>',            function()
+  require("resession").save(
+    vim.ui.input({ prompt = "Session name: " },
+    function(name)
+      if not name or name == "" then
+        return
+      end
+      require("resession").save(name)
+    end)
+  ) 
+end, { desc = "Save current session" })
