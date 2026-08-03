@@ -6,7 +6,7 @@ vim.g.mapleader = " " -- <leader> = <space>
 vim.keymap.set('n',       '<esc><esc>',       ':Alpha <CR>',                                    { desc = "Toggle dashboard" })
 vim.keymap.set('n',       '<leader><space>',  ':Neotree <CR>',                                  { desc = "Neotree" })
 vim.keymap.set('n',       '<C-w>',            ':w<CR>',                                         { desc = "Save the file" })
-vim.keymap.set('n',       '<C-s>', function() require("resession").save("manual") end,          { desc = "Save current session" })
+vim.keymap.set('n',       '<C-s>',            function() require("resession").save() end,       { desc = "Save current session" })
 vim.keymap.set('n',       '<C-q>',            ':q<CR>',                                         { desc = "Close current window" })
 vim.keymap.set('n',       '<C-x>',            ':qa!<CR>',                                       { desc = "Close all windows!" }) --:quitall
 vim.keymap.set('n',       '<leader>q',        ':bdelete<CR>',                                   { desc = "Close current buffer" })
