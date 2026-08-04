@@ -33,6 +33,9 @@
     dest: "{{ homedir }}/.config/foot/foot.ini"
     mode: '0644'
 
+- name: Validate foot config
+  command: "foot -C {{ homedir }}/.config/foot/foot.ini"
+
 - name: Disable getty on target vt
   systemd:
     name: "getty@{{ wayland_vt }}.service"

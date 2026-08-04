@@ -7,5 +7,5 @@
 - name: Refresh font cache
   command: fc-cache -f
 
-- import_tasks: kmscon.yml
+# - import_tasks: kmscon.yml
 - import_tasks: wayland.yml
