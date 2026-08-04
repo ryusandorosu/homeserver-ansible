@@ -4,15 +4,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     lazy = false,
-    dependencies = {
-      { "ms-jpq/coq_nvim", branch = "coq" },
-      { "ms-jpq/coq.artifacts", branch = "artifacts" },
-      -- Need to **configure separately**
-      { 'ms-jpq/coq.thirdparty', branch = "3p" },
-    },
     config = function()
-      -- https://github.com/ms-jpq/coq_nvim#lazynvim
-      -- local coq = require "coq"
 {% for language_server in mason_lspconfig | map(attribute='config') %}
       vim.lsp.config["{{ language_server }}"] = {}
 {% endfor %}
@@ -32,6 +24,20 @@ return {
         ensure_installed = { {% for language_server in mason_lspconfig | map(attribute='config') %}"{{ language_server }}"{% if not loop.last %}, {% endif %}{% endfor %} },
       })
     end
+  },
+
+  {
+    "ms-jpq/coq_nvim",
+    branch = "coq",
+    lazy = false,
+    dependencies = {
+      { "ms-jpq/coq.artifacts", branch = "artifacts" },
+      { 'ms-jpq/coq.thirdparty', branch = "3p" },
+    },
+    config = function()
+      -- https://github.com/ms-jpq/coq_nvim#lazynvim
+      require("coq").setup({})
+    end,
   },
 
   -- https://github.com/saghen/blink.cmp -- https://www.lazyvim.org/extras/coding/blink
