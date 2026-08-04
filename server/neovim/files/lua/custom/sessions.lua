@@ -58,16 +58,19 @@ function M.picker()
         local json = vim.fn.json_decode(
           table.concat(vim.fn.readfile(entry.value.path), "\n")
         )
-        local lines = {}
-        table.insert(lines, "Session : " .. entry.value.name)
-        table.insert(lines, "Saved   : " ..
-          os.date("%c", entry.value.mtime))
-        table.insert(lines, "")
-        table.insert(lines, "cwd:")
-        table.insert(lines, "  " .. short(json.global.cwd))
-        table.insert(lines, "")
-        table.insert(lines, "buffers:")
-        table.insert(lines, "")
+        local lines = {
+          "Session",
+          "  " .. entry.value.name,
+          "",
+          "Saved",
+          "  " .. os.date("%c", entry.value.mtime),
+          "",
+          "Working directory",
+          "  " .. short(json.global.cwd),
+          "",
+          string.format("Buffers (%d)", #json.buffers),
+          "",
+        }
         for _, buf in ipairs(json.buffers) do
           table.insert(lines, "• " .. short(buf.name))
         end
