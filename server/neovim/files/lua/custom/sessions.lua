@@ -34,9 +34,9 @@ function M.picker()
   pickers.new({}, {
     layout_strategy = "horizontal",
     layout_config = {
-      width = 0.95,
-      height = 0.95,
-      preview_width = 0.70,
+      width = 0.90,
+      height = 0.90,
+      preview_width = 0.67,
     },
     prompt_title = "Sessions",
     finder = finders.new_table {
@@ -74,13 +74,17 @@ function M.picker()
         for _, buf in ipairs(json.buffers) do
           table.insert(lines, "• " .. short(buf.name))
         end
-        vim.api.nvim_buf_set_lines(
-          self.state.bufnr,
-          0,
-          -1,
-          false,
-          lines
-        )
+        vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
+        local buf = self.state.bufnr
+        -- vim.api.nvim_buf_add_highlight(buffer, namespace, highlight, line, start_col, end_col)
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 0, 0, -1) --Session
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 3, 0, -1) --Saved
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 6, 0, -1) --Working directory
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 9, 0, -1) --Buffers (count)
+        vim.bo[self.state.bufnr].modifiable = false
+        vim.bo[self.state.bufnr].filetype = "markdown"
+        vim.wo[self.state.winid].wrap = true
+        vim.wo[self.state.winid].linebreak = true
       end,
     }),
     sorter = conf.generic_sorter({}),
