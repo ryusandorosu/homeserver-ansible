@@ -1,4 +1,0 @@
-neovim: /usr/local/bin/nvim
-nvimdir:
-  config: .config/nvim
-  share: .local/share/nvim
