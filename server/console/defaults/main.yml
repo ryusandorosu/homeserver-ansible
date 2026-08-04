@@ -1,4 +1,3 @@
 wayland_vt: tty2
-kmscon_vt: tty3
 footopts:
   - working-directory={{ homedir }}
