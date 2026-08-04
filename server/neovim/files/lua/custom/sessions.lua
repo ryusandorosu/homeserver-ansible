@@ -55,9 +55,11 @@ function M.picker()
     },
     previewer = require("telescope.previewers").new_buffer_previewer({
       define_preview = function(self, entry)
-        local json = vim.fn.json_decode(
-          table.concat(vim.fn.readfile(entry.value.path), "\n")
-        )
+        local fd = vim.uv.fs_open(entry.value.path, "r", 438)
+        local stat = vim.uv.fs_fstat(fd)
+        local text = vim.uv.fs_read(fd, stat.size, 0)
+        vim.uv.fs_close(fd)
+        local json = vim.json.decode(text)
         local lines = {
           "Session",
           "  " .. entry.value.name,
