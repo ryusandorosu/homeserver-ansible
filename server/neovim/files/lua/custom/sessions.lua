@@ -1,13 +1,38 @@
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
-local conf = require("telescope.config").values
+local conf    = require("telescope.config").values
 local actions = require("telescope.actions")
-local state = require("telescope.actions.state")
-
+local state   = require("telescope.actions.state")
 local sessions = require("resession")
+
 local home = vim.uv.os_homedir()
 local function short(path)
   return path:gsub("^" .. vim.pesc(home), "~")
+end
+
+local function preview_lines(entry)
+  local fd = vim.uv.fs_open(entry.value.path, "r", 438)
+  local stat = vim.uv.fs_fstat(fd)
+  local text = vim.uv.fs_read(fd, stat.size, 0)
+  vim.uv.fs_close(fd)
+  local json = vim.json.decode(text)
+  local lines = {
+    "Session",
+    "  " .. entry.value.name,
+    "",
+    "Saved",
+    "  " .. os.date("%c", entry.value.mtime),
+    "",
+    "Working directory",
+    "  " .. short(json.global.cwd),
+    "",
+    string.format("Buffers (%d)", #json.buffers),
+    "",
+  }
+  for _, buf in ipairs(json.buffers) do
+    table.insert(lines, "• " .. short(buf.name))
+  end
+  return lines
 end
 
 local M = {}
@@ -55,27 +80,7 @@ function M.picker()
     },
     previewer = require("telescope.previewers").new_buffer_previewer({
       define_preview = function(self, entry)
-        local fd = vim.uv.fs_open(entry.value.path, "r", 438)
-        local stat = vim.uv.fs_fstat(fd)
-        local text = vim.uv.fs_read(fd, stat.size, 0)
-        vim.uv.fs_close(fd)
-        local json = vim.json.decode(text)
-        local lines = {
-          "Session",
-          "  " .. entry.value.name,
-          "",
-          "Saved",
-          "  " .. os.date("%c", entry.value.mtime),
-          "",
-          "Working directory",
-          "  " .. short(json.global.cwd),
-          "",
-          string.format("Buffers (%d)", #json.buffers),
-          "",
-        }
-        for _, buf in ipairs(json.buffers) do
-          table.insert(lines, "• " .. short(buf.name))
-        end
+        local lines = preview_lines(entry)
         vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
         local buf = self.state.bufnr
         -- vim.api.nvim_buf_add_highlight(buffer, namespace, highlight, line, start_col, end_col)
