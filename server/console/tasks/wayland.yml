@@ -1,0 +1,46 @@
+- name: Install minimal wayland terminal gui set
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - cage
+    - foot
+
+- name: Deploy cage service
+  template:
+    src: cage.conf.j2
+    dest: "{{ systemd_services }}/cage@.service"
+    mode: '0644'
+  notify:
+    - daemon reload
+    - restart cage
+
+- name: Deploy cage pam settings
+  copy:
+    src: files/pam.d/cage
+    dest: /etc/pam.d/cage
+    mode: '0644'
+
+- name: Create foot config dir
+  file:
+    path: "{{ homedir }}/.config/foot"
+    state: directory
+
+- name: Deploy foot settings
+  copy:
+    src: foot.ini
+    dest: "{{ homedir }}/.config/foot/foot.ini"
+    mode: '0644'
+
+- name: Disable getty on target vt
+  systemd:
+    name: "getty@{{ wayland_vt }}.service"
+    enabled: false
+    state: stopped
+
+- name: Enable cage on target vt
+  systemd:
+    name: "cage@{{ wayland_vt }}.service"
+    enabled: true
+    state: started

@@ -1,0 +1,28 @@
+[Unit]
+Description=Cage Wayland compositor on %I
+After=systemd-user-sessions.service plymouth-quit-wait.service
+Before=multi-user.target
+ConditionPathExists=/dev/tty0
+Wants=dbus.socket systemd-logind.service
+After=dbus.socket systemd-logind.service
+Conflicts=getty@%i.service
+After=getty@%i.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/cage -- /usr/bin/foot {% for opt in footopts %}--{{ opt }} {% endfor %}
+
+ExecStartPost=+sh -c 'tty_name="%i"; exec chvt $${tty_name#tty}'
+Restart=always
+User={{ user }}
+UtmpIdentifier=%I
+UtmpMode=user
+TTYPath=/dev/%I
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+StandardInput=tty-fail
+PAMName=cage
+
+[Install]
+WantedBy=multi-user.target

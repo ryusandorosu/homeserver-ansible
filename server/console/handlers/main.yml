@@ -2,3 +2,12 @@
   systemd:
     name: "kmsconvt@{{ kmscon_vt }}.service"
     state: restarted
+
+- name: restart cage
+  systemd:
+    name: "cage@{{ wayland_vt }}.service"
+    state: restarted
+
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
