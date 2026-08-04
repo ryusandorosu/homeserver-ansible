@@ -1,7 +1,14 @@
 - import_tasks: server.yml
   when: ansible_facts.hostname == "nuc-server"
 
-- name: Install base packages
+- name: Install Homebrew
+  become: false
+  shell: >
+    NONINTERACTIVE=1 /bin/bash -c "$(
+      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    )"
+
+- name: Install essential packages
   apt:
     name: "{{ item }}"
     state: present
@@ -9,15 +16,22 @@
   loop:
     - git # omz needs it
     - curl
-    - jq
-    - tree
+    - jq # watcher scripts need to run it as root
     - tcpdump
-    - rsync
     - gcc
     - make
     - ca-certificates
-    - unattended-upgrades
     - build-essential
+
+- name: Install additional packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - tree
+    - rsync
+    - unattended-upgrades
     - bind9-dnsutils
     - btop
     - strace
@@ -33,6 +47,7 @@
     update_homebrew: true
   loop:
     - bat
+    - jq
     - yq
     - sad
     - sd
