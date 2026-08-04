@@ -38,6 +38,7 @@
     - bubblewrap
     - autossh
     - plocate
+    - lnav
 
 - name: Install newer packages from Homebrew
   become: false
