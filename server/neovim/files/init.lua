@@ -1,6 +1,7 @@
 require("config.opt")
 require("config.clipboard")
-require("config.keybindings")
+require("config.keymapcmd")
+require("config.keymapfunc")
 require("config.lazy")
 require("config.filetypes")
 vim.cmd.colorscheme("gruvbox")
