@@ -5,8 +5,12 @@ local actions = require("telescope.actions")
 local state = require("telescope.actions.state")
 
 local sessions = require("resession")
-local M = {}
+local home = vim.uv.os_homedir()
+local function short(path)
+  return path:gsub("^" .. vim.pesc(home), "~")
+end
 
+local M = {}
 function M.picker()
 
   local uv = vim.uv or vim.loop
@@ -60,12 +64,12 @@ function M.picker()
           os.date("%c", entry.value.mtime))
         table.insert(lines, "")
         table.insert(lines, "cwd:")
-        table.insert(lines, "  " .. json.global.cwd)
+        table.insert(lines, "  " .. short(json.global.cwd))
         table.insert(lines, "")
         table.insert(lines, "buffers:")
         table.insert(lines, "")
         for _, buf in ipairs(json.buffers) do
-          table.insert(lines, "• " .. buf.name)
+          table.insert(lines, "• " .. short(buf.name))
         end
         vim.api.nvim_buf_set_lines(
           self.state.bufnr,
