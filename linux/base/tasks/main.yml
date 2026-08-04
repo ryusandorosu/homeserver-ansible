@@ -40,13 +40,7 @@
     - fd
     - ripgrep
 
-- import_tasks: rc.yml
-
-- name: Enable apt unattended-upgrades
-  copy:
-    src: apt.conf.d/auto-upgrades
-    dest: /etc/apt/apt.conf.d/20auto-upgrades
-    mode: '0644'
+- import_tasks: configs.yml
 
 - name: Install required Ansible collections
   become: false

@@ -6,7 +6,7 @@
     - "{{ homedir }}"
     - "{{ ansible_facts.env.HOME }}"
 
-- name: Bat settings
+- name: Bat default settings
   copy:
     content: |
       --color=always

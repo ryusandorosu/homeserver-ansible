@@ -1,0 +1,16 @@
+- name: Import mihomo role default variables
+  include_vars:
+    file: "{{ inventory_dir }}/../server/mihomo/defaults/main.yml"
+  tags: [vars]
+
+- name: Configure apt proxy
+  template:
+    src: mihomo-proxy.j2
+    dest: /etc/apt/apt.conf.d/99-mihomo-proxy
+    mode: '0644'
+
+- name: Enable apt unattended-upgrades
+  copy:
+    src: auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    mode: '0644'
