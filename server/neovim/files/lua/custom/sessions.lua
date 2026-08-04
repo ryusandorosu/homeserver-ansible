@@ -28,6 +28,12 @@ function M.picker()
   end)
 
   pickers.new({}, {
+    layout_strategy = "horizontal",
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+      preview_width = 0.70,
+    },
     prompt_title = "Sessions",
     finder = finders.new_table {
       results = entries,
