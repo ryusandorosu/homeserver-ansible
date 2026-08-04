@@ -1,5 +1,8 @@
+### note that all of these have instable graphic rendering
 - set_fact:
     kmscon_vt: tty2
+- set_fact:
+    fbterm_vt: tty3
 
 - name: Add trixie-backports repository
   deb822_repository:
@@ -66,3 +69,18 @@
     path: /usr/bin/fbterm
     mode: u+s
   # setcap cap_sys_tty_config+ep /usr/bin/fbterm
+
+- name: Ensure getty stays enabled on fbterm's dedicated vt
+  systemd:
+    name: "getty@{{ fbterm_vt }}.service"
+    enabled: true
+    state: started
+
+### in case if autovt gets pointing to ksmconvt on all ttys
+## checks
+# ls -la /etc/systemd/system/autovt@.service 2>/dev/null
+# systemctl status getty@tty1.service getty@tty3.service getty@tty4.service getty@tty5.service getty@tty6.service
+# loginctl list-sessions
+## solution
+# sudo rm /etc/systemd/system/autovt@.service && sudo systemctl daemon-reload
+# sudo systemctl enable --now getty@tty1.service getty@tty3.service getty@tty4.service getty@tty5.service getty@tty6.service
