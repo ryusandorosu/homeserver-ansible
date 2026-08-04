@@ -46,7 +46,10 @@ vim.keymap.set('n', '<C-s>',
 function()
   require("resession").save(
     vim.ui.input(
-      { prompt = "Session name: " },
+      {
+        prompt = "Session name: ",
+        default = vim.fn.fnamemodify(vim.fn.getcwd(), ":t"),
+      },
       function(name)
         if not name or name == "" then
           return
