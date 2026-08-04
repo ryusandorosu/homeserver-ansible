@@ -1,0 +1,3 @@
+[submodule "server/neovim"]
+	path = server/neovim
+	url = git@github.com:ryusandorosu/neovim-ansible.git
