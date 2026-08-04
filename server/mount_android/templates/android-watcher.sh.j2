@@ -12,8 +12,7 @@ mount_android() {
   local MOUNTPOINT="$5"
   local TARGET="$6"
 
-  # replace with autossh in different commit
-  local SSH_COMMAND="ssh -i $SSH_KEY -p {{ lan_port.termux }}"
+  local SSH_COMMAND="autossh -i $SSH_KEY -p {{ lan_port.termux }}"
 
   if ping -c1 -W1 "$IP" >/dev/null 2>&1; then
     if ! mountpoint -q "$MOUNTPOINT"; then
