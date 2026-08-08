@@ -5,9 +5,13 @@
 
 - name: Install zsh
   apt:
-    name: zsh
+    name: "{{ item }}"
     state: present
     update_cache: yes
+  loop:
+    - zsh
+    - zsh-doc
+    - info
 
 # {{ zsh_repo_url }}/init.sh does the same
 - name: Clone personal configs repo
