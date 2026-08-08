@@ -7,5 +7,6 @@ service_state:
   - dnsmasq
   - smbd
   - docker
+  - containerd
   - docker-container-watcher
   - logrotate
