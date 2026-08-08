@@ -1,0 +1,7 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ inventory_dir }}/../server/promtail/defaults/labels/docker_update.yml"
+  tags: [vars]
+
+- import_tasks: "{{ role_path }}/../services/tasks/main.yml"

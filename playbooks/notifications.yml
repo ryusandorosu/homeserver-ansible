@@ -23,6 +23,7 @@
       - services
       - bans
       - watchers
+      - updates
 
   tasks:
     - name: Include roles dynamically

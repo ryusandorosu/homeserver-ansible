@@ -1,9 +1,3 @@
-- name: Load values
-  include_vars: "{{ item }}"
-  with_fileglob:
-    - "{{ inventory_dir }}/../server/promtail/defaults/labels/docker_update.yml"
-  tags: [vars]
-
 - name: Ensure required directories exist
   file:
     path: "{{ item }}"
