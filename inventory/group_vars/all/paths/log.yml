@@ -11,6 +11,7 @@ custom_logs:
   container: "{{ telegram_bot_logs }}/systemd/docker_events.log"
   services: "{{ telegram_bot_logs }}/systemd/service_state.log"
   fail2ban: "{{ telegram_bot_logs }}/grafana/fail2ban-actions-log.json"
+  docker_update: "{{ telegram_bot_logs }}/systemd/docker-update-log.json"
 customlog_dateformat: "(date '+%b %d %H:%M:%S')"
 customlog_datefile: "(date '+%F_%H-%M-%S')"
 

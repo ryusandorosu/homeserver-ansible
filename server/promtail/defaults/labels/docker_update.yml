@@ -1,0 +1,13 @@
+docker_upd_fields:
+  timestamp:
+    bash: "{{ customlog_dateformat }}"
+  service:
+    bash: service
+    label: true
+  status:
+    bash: status
+    label: true
+  old_id:
+    bash: old
+  new_id:
+    bash: new

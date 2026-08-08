@@ -1,0 +1,9 @@
+[Unit]
+Description=Docker auto-update for :latest tagged containers
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+Environment="PATH={{ brewbin }}:{{ default_pathenv | join(':') }}"
+ExecStart=/bin/bash {{ docker_updater_script }}

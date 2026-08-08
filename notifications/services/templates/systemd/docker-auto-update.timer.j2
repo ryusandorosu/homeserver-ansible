@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily docker auto-update run
+
+[Timer]
+OnCalendar=*-*-* 13:17:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -34,6 +34,8 @@ scrape_configs:
     {{ lookup('template', 'pipelines/auditd.yml.j2') | indent(4) }}
 {% elif job.pipeline == 'watcher_vpn' %}
     {{ lookup('template', 'pipelines/watcher_vpn.yml.j2') | indent(4) }}
+{% elif job.pipeline == 'docker_update' %}
+    {{ lookup('template', 'pipelines/docker_update.yml.j2') | indent(4) }}
 {% endif %}
 {% endif %}
 

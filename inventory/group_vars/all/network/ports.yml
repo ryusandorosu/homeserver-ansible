@@ -38,6 +38,7 @@ docker:
   grafana:
     name: grafana
     port: 3000
+    changelog: https://github.com/grafana/grafana/blob/main/CHANGELOG.md
   privoxy:
     name: privoxy
     port: 8118 #http_proxy_port
@@ -88,6 +89,7 @@ docker:
   actual:
     name: actual
     port: 5006
+    changelog: https://actualbudget.org/docs/releases/
   vdf:
     name: vdf
     port:

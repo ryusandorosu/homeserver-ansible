@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+LOGFILE="{{ custom_logs.docker_update }}"
+[[ ! -f "$LOGFILE" ]] && touch "$LOGFILE"
+
+declare -A CHANGELOG_URLS=(
+{% for key, value in docker.items() %}{% if value.changelog is defined %}
+  [{{ key }}]="{{ value.changelog }}"
+{% endif %}{% endfor %}
+)
+
+log_event() {
+  local service="$1" status="$2" old="$3" new="$4"
+  local logline
+  logline="$(jq -nc \
+{% for jq, value in docker_upd_fields.items() %}
+    {% if value.json is defined %}--argjson{% else %}--arg{% endif %} {{ jq }} "${{ value.bash }}" \
+{% endfor %}
+  '{
+{% for json, value in docker_upd_fields.items() %}
+    {{ json }}:${{ json }}{% if not loop.last %},
+{% endif %}
+{% endfor %}
+
+  }')"
+  echo "$logline" >> "$LOGFILE"
+}
+
+notify() {
+  local msg="$1"
+  {{ telegram_script }} "$msg" status "$0"
+}
+
+for compose_file in /opt/*/docker-compose.yml; do
+  project_dir="$(dirname "$compose_file")"
+  project_name="$(basename "$project_dir")"
+
+  # список сервисов с тегом latest (или без явного тега, что тоже означает latest)
+  services_to_check=$(
+    docker compose -f "$compose_file" config \
+    | yq -r '
+        .services | to_entries[]
+        | select(.value.image != null)
+        | select(.value.image | test(":latest$") or (test(":") | not))
+        | .key
+      '
+  )
+
+  [[ -z "$services_to_check" ]] && continue
+
+  for service in $services_to_check; do
+    container_id=$(docker compose -f "$compose_file" ps -q "$service" 2>/dev/null)
+    [[ -z "$container_id" ]] && continue
+
+    old_image_id=$(docker inspect --format '{{ '{{' }}.Image{{ '}}' }}' "$container_id" 2>/dev/null)
+
+    if ! docker compose -f "$compose_file" pull "$service" >>"$LOGFILE.raw" 2>&1; then
+      log_event "$project_name/$service" "pull_failed" "$old_image_id" ""
+      notify "🔴 $(hostname) update check failed for $project_name/$service: pull error"
+      continue
+    fi
+
+    new_image_id=$(docker compose -f "$compose_file" config --images "$service" | xargs -r docker image inspect --format '{{ '{{' }}.Id{{ '}}' }}' 2>/dev/null)
+
+    if [[ "$old_image_id" == "$new_image_id" ]]; then
+      log_event "$project_name/$service" "up_to_date" "$old_image_id" "$new_image_id"
+      continue
+    fi
+
+    backup_tag="${service}:backup-$(date +%Y%m%d_%H%M%S)"
+    docker commit "$container_id" "$backup_tag" >/dev/null 2>&1
+
+    # держим только 3 последних бэкапа на сервис
+    docker images --filter "reference=${service}:backup-*" --format '{{ '{{' }}.Repository{{ '}}' }}:{{ '{{' }}.Tag{{ '}}' }}' \
+      | sort -r | tail -n +4 | xargs -r docker rmi >/dev/null 2>&1
+
+    if docker compose -f "$compose_file" up -d "$service" >>"$LOGFILE.raw" 2>&1; then
+      log_event "$project_name/$service" "updated" "$old_image_id" "$new_image_id"
+      changelog=""
+      [[ -n "${CHANGELOG_URLS[$project_name]:-}" ]] && changelog=$'\n'"Changelog: ${CHANGELOG_URLS[$project_name]}"
+      notify "🟢 $(hostname) updated $project_name/$service${changelog}"
+    else
+      log_event "$project_name/$service" "recreate_failed" "$old_image_id" "$new_image_id"
+      notify "🔴 $(hostname) failed to recreate $project_name/$service after pull"
+    fi
+  done
+done

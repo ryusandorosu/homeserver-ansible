@@ -6,4 +6,13 @@ system_logs:
   kernel: /var/log/kern.log
   auditd: /var/log/audit/audit.log
 
+brewbin: /home/linuxbrew/.linuxbrew/bin
+default_pathenv:
+  - /usr/local/sbin
+  - /usr/local/bin
+  - /usr/sbin
+  - /usr/bin
+  - /sbin
+  - /bin
+
 vimplugins: .vim/pack/plugins/start

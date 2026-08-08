@@ -1,3 +1,9 @@
+- name: Load values
+  include_vars: "{{ item }}"
+  with_fileglob:
+    - "{{ inventory_dir }}/../server/promtail/defaults/labels/docker_update.yml"
+  tags: [vars]
+
 - name: Ensure required directories exist
   file:
     path: "{{ item }}"
@@ -18,12 +24,12 @@
     - daemon reload
     - restart services
 
-- name: Deploy systemd services
+- name: Deploy systemd services and timers
   template:
     src: "{{ item }}"
     dest: "{{ systemd_services }}/{{ item | basename | regex_replace('.j2','') }}"
   with_fileglob:
-    - "templates/systemd/*.service.j2"
+    - "templates/systemd/*.j2"
   notify: daemon reload
 
 - name: Enable services
@@ -33,3 +39,13 @@
     state: started
   with_fileglob:
     - "templates/systemd/*.service.j2"
+  notify: daemon reload
+
+- name: Enable timers
+  systemd:
+    name: "{{ item | basename | regex_replace('.j2','') }}"
+    enabled: yes
+    state: started
+  with_fileglob:
+    - "templates/systemd/*.timer.j2"
+  notify: daemon reload

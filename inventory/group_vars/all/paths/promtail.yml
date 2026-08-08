@@ -55,6 +55,10 @@ promtail_logs:
     name: Fail2Ban Actions
     path: "{{ custom_logs.fail2ban }}"
     pipeline: fail2ban_action
+  docker_update:
+    name: Docker auto-update
+    path: "{{ custom_logs.docker_update }}"
+    pipeline: docker_update
 
 promtail_systemd:
   - docker
@@ -64,5 +68,6 @@ promtail_systemd:
   - systemd-logind
   - wg-quick@{{ wireguard_interface }}
   - vpn-success-watcher
+  - docker-auto-update
   - nginx
   - logrotate
