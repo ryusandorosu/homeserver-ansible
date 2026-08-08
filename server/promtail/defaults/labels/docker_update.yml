@@ -7,6 +7,10 @@ docker_upd_fields:
   status:
     bash: status
     label: true
+  old_version:
+    bash: old_version
+  new_version:
+    bash: new_version
   old_id:
     bash: old
   new_id:
