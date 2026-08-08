@@ -16,13 +16,15 @@ docker:
       mixed: 7890 #http and socks5
       socks5: 7891
       web: 9092
-    changelog: https://github.com/MetaCubeX/mihomo/releases
+    version:
+      changelog: https://github.com/MetaCubeX/mihomo/releases
 
   mihomo_dashboard:
     name: "{{ mihomo_interface.name }}"
     port: "{{ mihomo_interface.port }}"
-    changelog: "{{ mihomo_interface.changelog }}"
-    version: "{{ mihomo_interface.version }}"
+    version:
+      changelog: "{{ mihomo_interface.changelog }}"
+      cmd: "{{ mihomo_interface.version }}"
   wireguard_dashboard:
     name: wg_dashboard
     port: 10086
@@ -30,7 +32,8 @@ docker:
   nginx_auth:
     name: "{{ nginx_authentication.name }}"
     port: "{{ nginx_authentication.port }}"
-    changelog: "{{ nginx_authentication.changelog }}"
+    version:
+      changelog: "{{ nginx_authentication.changelog }}"
 
   # monitoring
   promtail:
@@ -39,11 +42,14 @@ docker:
   loki:
     name: loki
     port: 3100
-    changelog: https://github.com/grafana/loki/blob/main/CHANGELOG.md
+    version:
+      changelog: https://github.com/grafana/loki/blob/main/CHANGELOG.md
+      cmd: /usr/bin/loki --version | head -n1 | grep -oP '\d+\.\d+\.\d+'
   grafana:
     name: grafana
     port: 3000
-    changelog: https://github.com/grafana/grafana/blob/main/CHANGELOG.md
+    version:
+      changelog: https://github.com/grafana/grafana/blob/main/CHANGELOG.md
   privoxy:
     name: privoxy
     port: 8118 #http_proxy_port
@@ -52,7 +58,8 @@ docker:
     port:
       exposed: 9091
       internal: 9090
-    changelog: https://github.com/prometheus/prometheus/blob/main/CHANGELOG.md
+    version:
+      changelog: https://github.com/prometheus/prometheus/blob/main/CHANGELOG.md
 
   monitoring:
     node:
@@ -85,19 +92,23 @@ docker:
     name: guacd
   postgres:
     name: postgres
+    version:
+      env: PG_VERSION
   guacamole:
     name: guacamole
     port:
       exposed: 8085
       internal: 8080
-    changelog: https://guacamole.apache.org/releases/
+    version:
+      changelog: https://guacamole.apache.org/releases/
 
   ### non-infra:
   actual:
     name: actual
     port: 5006
-    changelog: https://actualbudget.org/docs/releases/
-    version: "cat package.json | jq -r .version"
+    version:
+      changelog: https://actualbudget.org/docs/releases/
+      cmd: cat package.json | jq -r .version
   vdf:
     name: vdf
     port:

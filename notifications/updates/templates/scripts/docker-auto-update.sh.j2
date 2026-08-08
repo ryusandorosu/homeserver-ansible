@@ -5,14 +5,20 @@ LOGFILE="{{ custom_logs.docker_update }}"
 [[ ! -f "$LOGFILE" ]] && touch "$LOGFILE"
 
 declare -A CHANGELOG_URLS=(
-{% for key, value in docker.items() %}{% if value.changelog is defined %}
-  [{{ key }}]="{{ value.changelog }}"
+{% for key, value in docker.items() %}{% if value.version.changelog is defined %}
+  [{{ key }}]="{{ value.version.changelog }}"
 {% endif %}{% endfor %}
 )
 
 declare -A VERSION_CMD=(
-{% for key, value in docker.items() %}{% if value.version is defined %}
-  [{{ key }}]="docker exec {{ key }} {{ value.version }}"
+{% for key, value in docker.items() %}{% if value.version.cmd is defined %}
+  [{{ key }}]="docker exec {{ key }} {{ value.version.cmd }}"
+{% endif %}{% endfor %}
+)
+
+declare -A VERSION_ENV=(
+{% for key, value in docker.items() %}{% if value.version.env is defined %}
+  [{{ key }}]="{{ value.version.env }}"
 {% endif %}{% endfor %}
 )
 
@@ -33,12 +39,21 @@ log_event() {
   echo "$logline" >> "$LOGFILE"
 }
 
+get_env_version() {
+  local image_id="$1" var_name="$2"
+  docker image inspect "$image_id" 2>/dev/null \
+    | jq -r --arg v "$var_name" '.[0].Config.Env[]? | select(startswith($v + "=")) | sub($v + "="; "")'
+}
+
 get_version() {
   local image_id="$1"
   local service_name="$2"
   local v
   v=$(docker image inspect --format '{{ '{{' }} index .Config.Labels "org.opencontainers.image.version" {{ '}}' }}' "$image_id" 2>/dev/null)
   if [[ -z "$v" || "$v" == "<no value>" ]]; then
+    v=$(get_env_version "$image_id" "${VERSION_ENV[$service_name]}")
+  fi
+  if [[ -z "$v" && -n "${VERSION_CMD[$service_name]:-}" ]]; then
     v=$(${VERSION_CMD[$service_name]})
   fi
   if [[ -z "$v" ]]; then

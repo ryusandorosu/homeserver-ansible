@@ -4,7 +4,7 @@ mihomo_interface:
   name: metacubexd
   port: 9094
   changelog: https://github.com/MetaCubeX/metacubexd/releases
-  version: "cat .output/server/package.json | jq -r .version"
+  version: cat .output/server/package.json | jq -r .version
   # name: yacd
   # port: 9088
 nginx_authentication:
