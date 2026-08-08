@@ -46,3 +46,10 @@
     ### cannot restart docker because of vdf. need to wait until it finishes.
     ### check 'docker-auto-update.sh';'bat /var/log/telegram/systemd/docker-update-log.json' after that and see if 'pull_failed' errors are gone
     - restart docker
+
+- name: Enable docker live-restore
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    mode: '0644'
+  notify: reload docker
