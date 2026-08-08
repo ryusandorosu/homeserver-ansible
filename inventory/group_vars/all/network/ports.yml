@@ -8,7 +8,7 @@ lan_port:
   synology_dsm: 5001
   termux: 8022
 
-
+# affected roles to deploy on change: nginx,grafana,promtail,prometheus notifications:services
 docker:
   mihomo:
     name: mihomo
@@ -16,10 +16,12 @@ docker:
       mixed: 7890 #http and socks5
       socks5: 7891
       web: 9092
+    changelog: https://github.com/MetaCubeX/mihomo/releases
 
   mihomo_dashboard:
     name: "{{ mihomo_interface.name }}"
     port: "{{ mihomo_interface.port }}"
+    changelog: "{{ mihomo_interface.changelog }}"
   wireguard_dashboard:
     name: wg_dashboard
     port: 10086
@@ -27,6 +29,7 @@ docker:
   nginx_auth:
     name: "{{ nginx_authentication.name }}"
     port: "{{ nginx_authentication.port }}"
+    changelog: "{{ nginx_authentication.changelog }}"
 
   # monitoring
   promtail:
@@ -35,6 +38,7 @@ docker:
   loki:
     name: loki
     port: 3100
+    changelog: https://github.com/grafana/loki/blob/main/CHANGELOG.md
   grafana:
     name: grafana
     port: 3000
@@ -47,6 +51,7 @@ docker:
     port:
       exposed: 9091
       internal: 9090
+    changelog: https://github.com/prometheus/prometheus/blob/main/CHANGELOG.md
 
   monitoring:
     node:
@@ -84,6 +89,7 @@ docker:
     port:
       exposed: 8085
       internal: 8080
+    changelog: https://guacamole.apache.org/releases/
 
   ### non-infra:
   actual:

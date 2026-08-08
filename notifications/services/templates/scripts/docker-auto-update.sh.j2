@@ -78,7 +78,7 @@ for compose_file in /opt/*/docker-compose.yml; do
     if docker compose -f "$compose_file" up -d "$service" >>"$LOGFILE.raw" 2>&1; then
       log_event "$project_name/$service" "updated" "$old_image_id" "$new_image_id"
       changelog=""
-      [[ -n "${CHANGELOG_URLS[$project_name]:-}" ]] && changelog=$'\n'"Changelog: ${CHANGELOG_URLS[$project_name]}"
+      [[ -n "${CHANGELOG_URLS[$service]:-}" ]] && changelog=$'\n'"Changelog: ${CHANGELOG_URLS[$service]}"
       notify "🟢 $(hostname) updated $project_name/$service${changelog}"
     else
       log_event "$project_name/$service" "recreate_failed" "$old_image_id" "$new_image_id"

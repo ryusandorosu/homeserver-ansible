@@ -3,13 +3,16 @@ domain: ryusandorosu.ru
 mihomo_interface:
   name: metacubexd
   port: 9094
+  changelog: https://github.com/MetaCubeX/metacubexd/releases
   # name: yacd
   # port: 9088
 nginx_authentication:
   name: oauth
   port: 4180
+  changelog: https://github.com/oauth2-proxy/oauth2-proxy/releases
   # name: authelia
   # port: 9095 #9091
+  # changelog: https://github.com/authelia/authelia/releases
 
 nginx_public_sites:
   - "{{ domain }}"
