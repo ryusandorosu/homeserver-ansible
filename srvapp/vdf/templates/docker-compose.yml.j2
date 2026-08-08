@@ -9,9 +9,8 @@ services:
     environment:
       - VDF_WEB_AUTH=false
     volumes:
-      # switch their places
-      - "{{ vdf_dir }}/vdf-db:/root/.config/VDF"
-      - "{{ vdf_dir }}/vdf-state:/root/.local/state/VDF"
+      - "{{ vdf_dir }}/config:/root/.config/VDF"
+      - "{{ vdf_dir }}/db:/root/.local/state/VDF"
 {% for path in vault_vdf_volumes %}
       - {{ path }}
 {% endfor %}

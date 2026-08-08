@@ -11,8 +11,8 @@
     mode: "0755"
   loop:
     - "{{ vdf_dir }}"
-    - "{{ vdf_dir }}/vdf-db"
-    - "{{ vdf_dir }}/vdf-state"
+    - "{{ vdf_dir }}/db"
+    - "{{ vdf_dir }}/config"
 
 - name: Deploy docker-compose
   template:
