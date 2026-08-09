@@ -13,7 +13,7 @@ config_replacements:
   - regex: UseExternalViewer=0
     replace: UseExternalViewer=1
   - regex: ^ExternalViewerName=(.*)$
-    replace: ExternalViewerName=batcat --{{ batcat_opts | join(" --") }} "!.!"
+    replace: ExternalViewerName=bat --{{ batcat_opts | join(" --") }} "!.!"
   - regex: TTYPaletteOverride=1
     replace: TTYPaletteOverride=0
   - regex: DelShowTotal=0
