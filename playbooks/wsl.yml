@@ -18,7 +18,6 @@
 
   vars:
     roles_list:
-      - brew
       - base
       - delta
       - sshcli

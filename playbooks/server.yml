@@ -18,7 +18,6 @@
   vars:
     includes_list:
       - apt
-      - brew
       - base
       - delta
       - sshcli
