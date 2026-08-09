@@ -1,0 +1,19 @@
+- name: Install elio from Homebrew
+  become: false
+  homebrew:
+    name: elio
+    state: present
+    update_homebrew: true
+
+- name: Create elio config dir
+  become: false
+  file:
+    path: "{{ homedir }}/.config/elio"
+    state: directory
+
+- name: Deploy elio config
+  become: false
+  copy:
+    src: config.toml
+    dest: "{{ homedir }}/.config/elio/config.toml"
+    mode: '0644'

@@ -11,13 +11,6 @@
     mode: '0644'
   notify: update db
 
-- name: Install elio from Homebrew
-  become: false
-  community.general.homebrew:
-    name: elio
-    state: present
-    update_homebrew: true
-
 - name: Remove mail from motd
   file:
     path: "/var/mail/{{ user }}"

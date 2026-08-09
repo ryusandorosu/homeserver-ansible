@@ -1,0 +1,9 @@
+# https://elio-fm.github.io/docs/configuration/
+[ui]
+show_top_bar = true
+show_hidden = true
+
+[open]
+rules = [
+  { type = ["text", "code", "config"], command = "$EDITOR", terminal = true },
+]

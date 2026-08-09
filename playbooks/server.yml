@@ -45,6 +45,7 @@
       - cockpit
       - console
       - far2l
+      - elio
       - neovim
       - docker
     docker_list:
