@@ -18,8 +18,9 @@
 
   vars:
     roles_list:
-      - delta
+      - brew
       - base
+      - delta
       - sshcli
       - zsh
       - vim

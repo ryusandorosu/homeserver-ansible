@@ -1,13 +1,6 @@
 - import_tasks: server.yml
   when: ansible_facts.hostname == "nuc-server"
 
-- name: Install Homebrew
-  become: false
-  shell: >
-    NONINTERACTIVE=1 /bin/bash -c "$(
-      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
-    )"
-
 - name: Install essential packages
   apt:
     name: "{{ item }}"

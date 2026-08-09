@@ -18,8 +18,9 @@
   vars:
     includes_list:
       - apt
-      - delta
+      - brew
       - base
+      - delta
       - sshcli
       - zsh
     roles_list:

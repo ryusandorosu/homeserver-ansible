@@ -5,5 +5,5 @@ Requires=docker.service
 
 [Service]
 Type=oneshot
-Environment="PATH={{ brewbin }}:{{ default_pathenv | join(':') }}"
+Environment="PATH={{ brew.bin }}:{{ default_pathenv | join(':') }}"
 ExecStart=/bin/bash {{ docker_updater_script }}

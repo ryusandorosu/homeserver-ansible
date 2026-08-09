@@ -6,7 +6,9 @@ system_logs:
   kernel: /var/log/kern.log
   auditd: /var/log/audit/audit.log
 
-brewbin: /home/linuxbrew/.linuxbrew/bin
+brew:
+  bin: /home/linuxbrew/.linuxbrew/bin
+  sbin: /home/linuxbrew/.linuxbrew/sbin
 default_pathenv:
   - /usr/local/sbin
   - /usr/local/bin
