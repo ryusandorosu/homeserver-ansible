@@ -1,0 +1,19 @@
+upd_labels: >-
+  {{
+    docker_upd_fields
+    | dict2items
+    | selectattr('value.label', 'defined')
+    | map(attribute='key')
+    | list
+  }}
+
+# |^$ - empty label value fallback
+upd_filters: >-
+  {%- for filter in upd_labels -%}
+  {{ filter }} =~ "${{ filter }}|^$"{% if not loop.last %}, {% endif %}
+  {%- endfor -%}
+
+upd_matchlog_filters: >-
+  {%- for filter in upd_labels -%}
+  {{ filter }}={% raw %}{{ {% endraw %}.{{ filter }}{% raw %} }} {% endraw %}
+  {%- endfor -%}

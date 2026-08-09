@@ -1,0 +1,33 @@
+upd_expr: >-
+  job = "{{ promtail_logs.docker_update.name }}", {{ upd_filters }}
+
+upd_dashboard:
+  uid: docker_container_updates
+  showtime: "{{ showtime.longer }}"
+  expr_rate: "{{ refresh_time.long }}"
+
+upd_dashboard_panels:
+  plain:
+    title: "Updates plain log"
+    type: logs
+    expr: '{ {{ upd_expr }} }'
+
+  pretty:
+    title: "Updates expanded logs"
+    type: logs
+    json: true
+    expr: >
+      { {{ upd_expr }} }
+      | json
+
+  upd_status:
+    title: Update status ratio
+    type: timeseries
+    label: status
+    expr: >
+      sum by (status) (
+        count_over_time(
+          { {{ upd_expr }} }
+          [{{ upd_dashboard.showtime }}]
+        )
+      )
