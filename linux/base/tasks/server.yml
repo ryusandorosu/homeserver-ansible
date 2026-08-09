@@ -4,6 +4,14 @@
     extensions: ["yml"]
   tags: [vars]
 
+- name: Install additional server packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - w3m
+
 - name: Locate updatedb settings
   template:
     src: plocatedb.conf.j2
