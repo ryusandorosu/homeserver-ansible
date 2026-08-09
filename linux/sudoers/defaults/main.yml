@@ -1,0 +1,3 @@
+sudo_secure_paths:
+  - "{{ brew.bin }}"
+  - "{{ brew.sbin }}"

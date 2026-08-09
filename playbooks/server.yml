@@ -19,6 +19,7 @@
     includes_list:
       - apt
       - base
+      - sudoers
       - delta
       - sshcli
       - zsh

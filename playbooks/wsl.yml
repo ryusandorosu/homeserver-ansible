@@ -19,6 +19,7 @@
   vars:
     roles_list:
       - base
+      - sudoers
       - delta
       - sshcli
       - zsh
