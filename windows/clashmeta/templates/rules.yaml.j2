@@ -4,12 +4,15 @@ prepend:
   - IP-CIDR,{{ subnet }},DIRECT
 {% endfor %}{% endfor %}
   - 2,PROCESS-NAME,:System,DIRECT
-{% for rule, values in clash_exclude.items() %}{% for domain in values if rule not in ['cidrs'] %}
+{% for rule, values in clash_exclude.items() %}{% for domain in values if rule in ['domains_dns'] %}
   - DOMAIN-SUFFIX,{{ domain }},DIRECT
 {% endfor %}{% endfor %}
 {% for item in clash_domain_configured.values() %}
   - DOMAIN-SUFFIX,{{ item.domain }},{{ item.rule }}
 {% endfor %}
   - GEOIP,RU,DIRECT
-append: []
+append:
+{% for rule, values in clash_exclude.items() %}{% for domain in values if rule in ['domains'] %}
+  - DOMAIN-SUFFIX,{{ domain }},DIRECT
+{% endfor %}{% endfor %}
 delete: []

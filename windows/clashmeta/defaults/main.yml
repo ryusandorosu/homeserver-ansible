@@ -5,15 +5,20 @@ clash_exclude:
     - github.com
     - ryusandorosu.ru
     - home.arpa
-    - vk.com
+    - vk.ru
   domains:
     - gosuslugi.ru
+    - esia.gosuslugi.ru
+    - gu-st.ru
     - tatenergosbyt.ru
     - akbars.ru
     - vk-next.net
     - vknext.net
-    - vk.ru
     - vkuserphoto.ru
+    - samokat.ru
+    - yandex.ru
+    - platform.21-school.ru
+    - auth.21-school.ru
   cidrs:
     - "{{ home_network }}"
     - "{{ wireguard_network }}"
