@@ -1,115 +1,389 @@
 clash_proxies:
-  - name: 🇩🇪 Germany - grpc
+  - name: 🇩🇪 Germany — RAW
     type: vless
     server: de.mirolit.ru
-    port: 2053
-    network: grpc
+    port: 443
+    network: tcp
     udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+    tls: true
+    servername: de.mirolit.ru
+    reality-opts:
+      public-key: OanCI5yFvJjATXFs2gN00sa66rOUTz8P2Hmm7Z5FunQ
+      short-id: 0a02108a6840b019
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇩🇪
+  - name: 🇩🇪 Germany — XHTTP
+    type: vless
+    server: de.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
     tls: true
     servername: de.mirolit.ru
     alpn:
       - h2
-    grpc-opts:
-      grpc-service-name: grpc
-    reality-opts:
-      public-key: XVvbs2QDNuFhDtim7EVhd_yjY0QXjdWVnwi-r10Z61c
-      short-id: 2cdea27c989bce3e
-    client-fingerprint: random
-    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
-    packet-encoding: xudp
-  - name: 🇩🇪 Germany - tcp
-    type: vless
+    xhttp-opts:
+      path: /api/v1/7ad9078af72be1d6fe012b0f2ebe9248/
+      host: de.mirolit.ru
+      mode: auto
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇩🇪
+  - name: 🇩🇪 Germany — Hysteria2
+    type: hysteria2
     server: de.mirolit.ru
-    port: "{{ const_port.https }}"
+    port: 443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: de.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h3
+    serverDescription: РФ/YouTube→РФ; остальное→🇩🇪
+  - name: 🇩🇪 Germany via RU — RAW
+    type: vless
+    server: runewconf.mirolit.ru
+    port: 443
     network: tcp
     udp: true
+    uuid: 59e99893-a211-02c1-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
     tls: true
-    servername: de.mirolit.ru
+    servername: runewconf.mirolit.ru
+    reality-opts:
+      public-key: MfoGd5iC5tHAy5MD470QG2VGrz9v536rEGVReDH6T0s
+      short-id: dffde80e279a2c6c
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇩🇪
+  - name: 🇩🇪 Germany via RU — XHTTP (Cloudflare CDN)
+    type: vless
+    server: assets-r1.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: assets-r1.mirolit.ru
     alpn:
       - h2
-    reality-opts:
-      public-key: h6Cfxf_OaxW9-K-3-MM2Dp_kX9xyAbv3Ul88GAFOV0U
-      short-id: 0cdea27c989bce3e
-    client-fingerprint: random
+    xhttp-opts:
+      path: /api/v1/47a04024b0f0ef3fa7f88394c6ba738c/
+      host: assets-r1.mirolit.ru
+      mode: packet-up
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇩🇪
+  - name: 🇳🇱 Netherlands — RAW
+    type: vless
+    server: nl.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
     uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
     packet-encoding: xudp
     flow: xtls-rprx-vision
-  - name: 🇳🇱 Netherlands - grpc
+    tls: true
+    servername: nl.mirolit.ru
+    reality-opts:
+      public-key: MEIjvmO7SNABpyAvk5_Ez5t1yvIGcDDx90ztZvPlvTY
+      short-id: df443e6d8c75f0b2
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇳🇱
+  - name: 🇳🇱 Netherlands — XHTTP
     type: vless
     server: nl.mirolit.ru
-    port: 2053
-    network: grpc
+    port: 443
+    network: xhttp
     udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
     tls: true
     servername: nl.mirolit.ru
     alpn:
       - h2
-    grpc-opts:
-      grpc-service-name: grpc
-    reality-opts:
-      public-key: 3qx-ddt6u0Th2WSkgxKJ70P4enZhD8NkA0HLENjvtmU
-      short-id: 6fa58d13db0ba66e
-    client-fingerprint: random
-    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
-    packet-encoding: xudp
-  - name: 🇳🇱 Netherlands - tcp
-    type: vless
+    xhttp-opts:
+      path: /api/v1/bab3d43b62cbccfc2c136584756d9953/
+      host: nl.mirolit.ru
+      mode: auto
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇳🇱
+  - name: 🇳🇱 Netherlands — Hysteria2
+    type: hysteria2
     server: nl.mirolit.ru
-    port: "{{ const_port.https }}"
+    port: 443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: nl.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h3
+    serverDescription: РФ/YouTube→РФ; остальное→🇳🇱
+  - name: 🇳🇱 Netherlands via RU — RAW
+    type: vless
+    server: runewconf.mirolit.ru
+    port: 443
     network: tcp
     udp: true
+    uuid: 59e99893-a211-02c0-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
     tls: true
-    servername: nl.mirolit.ru
+    servername: runewconf.mirolit.ru
+    reality-opts:
+      public-key: MfoGd5iC5tHAy5MD470QG2VGrz9v536rEGVReDH6T0s
+      short-id: dffde80e279a2c6c
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇳🇱
+  - name: 🇳🇱 Netherlands via RU — XHTTP (Cloudflare CDN)
+    type: vless
+    server: assets-r1.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: assets-r1.mirolit.ru
     alpn:
       - h2
-    reality-opts:
-      public-key: q00THBp4dHVXS8jEAoY5LG53UHN2V0SNxK0GvAvxXT0
-      short-id: 8fa58d13db0ba66e
-    client-fingerprint: random
+    xhttp-opts:
+      path: /api/v1/3a65def082114dd1e1d272c0e958b606/
+      host: assets-r1.mirolit.ru
+      mode: packet-up
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇳🇱
+  - name: 🇫🇮 Finland — RAW
+    type: vless
+    server: fi.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
     uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
     packet-encoding: xudp
     flow: xtls-rprx-vision
-  - name: 🇫🇮 Finland - grpc
+    tls: true
+    servername: fi.mirolit.ru
+    reality-opts:
+      public-key: zV_Rs7cyZ1FtQ-OuOScmlXWinhhmIaRSehqNeJntjzM
+      short-id: bd43397faeb693bd
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇫🇮
+  - name: 🇫🇮 Finland — XHTTP
     type: vless
     server: fi.mirolit.ru
-    port: 8443
-    network: grpc
+    port: 443
+    network: xhttp
     udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
     tls: true
     servername: fi.mirolit.ru
     alpn:
       - h2
-    grpc-opts:
-      grpc-service-name: grpc
-    reality-opts:
-      public-key: gp1VaLSSTty79cKOx96HhKE1uwV7Sn-MRJK_cWe5wj0
-      short-id: 2c0b3b481635dbb8
-    client-fingerprint: random
-    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
-    packet-encoding: xudp
-  - name: 🇫🇮 Finland - raw
-    type: vless
+    xhttp-opts:
+      path: /api/v1/adc65c532dbea235495e0b849bb73b7e/
+      host: fi.mirolit.ru
+      mode: auto
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇫🇮
+  - name: 🇫🇮 Finland — Hysteria2
+    type: hysteria2
     server: fi.mirolit.ru
-    port: "{{ const_port.https }}"
+    port: 443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: fi.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h3
+    serverDescription: РФ/YouTube→РФ; остальное→🇫🇮
+  - name: 🇫🇮 Finland via RU — RAW
+    type: vless
+    server: runewconf.mirolit.ru
+    port: 443
     network: tcp
     udp: true
+    uuid: 59e99893-a211-02bf-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
     tls: true
-    servername: fi.mirolit.ru
+    servername: runewconf.mirolit.ru
+    reality-opts:
+      public-key: MfoGd5iC5tHAy5MD470QG2VGrz9v536rEGVReDH6T0s
+      short-id: dffde80e279a2c6c
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇫🇮
+  - name: 🇫🇮 Finland via RU — XHTTP (Cloudflare CDN)
+    type: vless
+    server: assets-r1.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: assets-r1.mirolit.ru
     alpn:
       - h2
-    reality-opts:
-      public-key: rhWG0KJfuzgL4XXH_PCKvh21twr5uxpFU_5yxQij7Rg
-      short-id: 1c0b3b481635dbb7
-    client-fingerprint: random
+    xhttp-opts:
+      path: /api/v1/30469b5dc5b301abcbdc3dde08a4423f/
+      host: assets-r1.mirolit.ru
+      mode: packet-up
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇫🇮
+  - name: 🇸🇬 Singapore — RAW
+    type: vless
+    server: sgnewconf.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
     uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
     packet-encoding: xudp
     flow: xtls-rprx-vision
-  - name: 🇷🇺 Russia - Shadowsocks
-    type: ss
+    tls: true
+    servername: sgnewconf.mirolit.ru
+    reality-opts:
+      public-key: GqMI_a7hTVTzFFfkY8MsFy2XaT-JHp1sDdrqG-RyonU
+      short-id: 048ed98fc2765efa
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇸🇬
+  - name: 🇸🇬 Singapore — XHTTP
+    type: vless
+    server: sgnewconf.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: sgnewconf.mirolit.ru
+    alpn:
+      - h2
+    xhttp-opts:
+      path: /api/v1/6caea7b14ff345baa92949f1291a0238/
+      host: sgnewconf.mirolit.ru
+      mode: auto
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇸🇬
+  - name: 🇸🇬 Singapore — Hysteria2
+    type: hysteria2
+    server: sgnewconf.mirolit.ru
+    port: 443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: sgnewconf.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h3
+    serverDescription: РФ/YouTube→РФ; остальное→🇸🇬
+  - name: 🇸🇬 Singapore via RU — RAW
+    type: vless
+    server: runewconf.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
+    uuid: 59e99893-a211-02be-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+    tls: true
+    servername: runewconf.mirolit.ru
+    reality-opts:
+      public-key: MfoGd5iC5tHAy5MD470QG2VGrz9v536rEGVReDH6T0s
+      short-id: dffde80e279a2c6c
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇸🇬
+  - name: 🇸🇬 Singapore via RU — XHTTP (Cloudflare CDN)
+    type: vless
+    server: assets-r1.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-02be-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: assets-r1.mirolit.ru
+    alpn:
+      - h2
+    xhttp-opts:
+      path: /api/v1/37166887efb142e0af71b1c2e262ca42/
+      host: assets-r1.mirolit.ru
+      mode: packet-up
+    client-fingerprint: firefox
+    serverDescription: РФ/YouTube→РФ; остальное→🇸🇬
+  - name: 🇷🇺 Russia - tcp
+    type: vless
     server: ru.mirolit.ru
-    port: 10443
+    port: 443
     network: tcp
     udp: true
-    client-fingerprint: random
-    password: "{{ vault_clash_ru_shadowsocks_pass }}"
-    cipher: chacha20-ietf-poly1305
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+    tls: true
+    servername: ru.mirolit.ru
+    reality-opts:
+      public-key: Mu1uN2i7juNrO-GPvUX-9HHDkYHuPwyY20D2qi9SaCA
+      short-id: c46e9e30e61eacd8
+    client-fingerprint: firefox
+    serverDescription: Весь трафик→🇷🇺
+  - name: 🇷🇺 Russia -  hysteria2
+    type: hysteria2
+    server: ru.mirolit.ru
+    port: 4443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: ru.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h2
+    serverDescription: Весь трафик→🇷🇺
+  - name: 🇷🇺 Russia — RAW
+    type: vless
+    server: runewconf.mirolit.ru
+    port: 443
+    network: tcp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    flow: xtls-rprx-vision
+    tls: true
+    servername: runewconf.mirolit.ru
+    reality-opts:
+      public-key: MfoGd5iC5tHAy5MD470QG2VGrz9v536rEGVReDH6T0s
+      short-id: dffde80e279a2c6c
+    client-fingerprint: firefox
+    serverDescription: Весь трафик→🇷🇺
+  - name: 🇷🇺 Russia — XHTTP (Cloudflare CDN)
+    type: vless
+    server: assets-r1.mirolit.ru
+    port: 443
+    network: xhttp
+    udp: true
+    uuid: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    packet-encoding: xudp
+    tls: true
+    servername: assets-r1.mirolit.ru
+    alpn:
+      - h2
+    xhttp-opts:
+      path: /api/v1/20a07902427943fcb0d2d73c20fd5234/
+      host: assets-r1.mirolit.ru
+      mode: packet-up
+    client-fingerprint: firefox
+    serverDescription: Весь трафик→🇷🇺
+  - name: 🇷🇺 Russia — Hysteria2
+    type: hysteria2
+    server: runewconf.mirolit.ru
+    port: 443
+    udp: true
+    password: 59e99893-a211-4cbc-ae0d-96bcac95ab8c
+    sni: runewconf.mirolit.ru
+    client-fingerprint: firefox
+    alpn:
+      - h3
+    serverDescription: Весь трафик→🇷🇺
